@@ -1,8 +1,6 @@
-import { usePlayerStore } from '~/composables/player'
-
 export default defineNuxtRouteMiddleware(async () => {
-  const user = useSupabaseUser()
   const { initPlayer } = usePlayerStore()
+  const user = useSupabaseUser()
 
   const role = await $fetch('/api/player', {
     params: {

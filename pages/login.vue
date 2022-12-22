@@ -9,25 +9,17 @@ const password = ref('')
 const email = ref('')
 
 const handleLogin = async () => {
-  try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email.value,
-      password: password.value,
-    })
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email.value,
+    password: password.value,
+  })
 
-    if (data.user)
-      return navigateTo('/role')
+  if (data.user) 
+    return navigateTo('/role')
 
-    if (error) {
-      throw createError({
-        status: error.statusCode,
-        message: 'Kiểm tra lại thông tin đang không chính xác',
-      })
-    }
-  }
-  catch (error) {
-    alert(error.message)
-  }
+
+  if (error)
+    alert(error)
 }
 </script>
 

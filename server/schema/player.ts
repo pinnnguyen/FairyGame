@@ -18,6 +18,7 @@ const schema = new mongoose.Schema(
     power: Number,
     vipLevel: Number,
     level: Number,
+      exp: Number,
     midId: Number,
     userId: String,
   },

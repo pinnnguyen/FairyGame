@@ -15,4 +15,5 @@ export const DEFAULT_ATTRIBUTE = {
   hpSuck: 0,
   crit: 0,
   exp: 0,
+  speed: 1,
 }

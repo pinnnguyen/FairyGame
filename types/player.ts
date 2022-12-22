@@ -19,12 +19,12 @@ export interface Player {
   midId: number
   userId: string
   vipLevel: number
+  exp: number
 }
 
 export interface PlayerAttribute extends BaseAttributes, Slot {
   _id: string
   sid: string
-  exp: number
 }
 
 export interface PlayerResponse {

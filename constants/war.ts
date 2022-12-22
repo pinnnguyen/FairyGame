@@ -3,5 +3,10 @@ export const KIND = {
 }
 
 export const TARGET_TYPE = {
-    MONSTER: 'monster',
+  MONSTER: 'monster',
+}
+
+export const WINNER = {
+  YOU_WIN: 'you_win',
+  YOU_LOSE: 'you_lose',
 }
