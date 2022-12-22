@@ -1,0 +1,15 @@
+[
+    {
+        "id": 1,
+        "name": "Ngạnh sí phong",
+        "level": 1,
+        "info": "",
+        "sex": "",
+        "damage": 5,
+        "def": 0,
+        "hp": 100,
+        "mp": 0,
+        "cript": 0,
+        "hpSuck": 0
+    }
+]

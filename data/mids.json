@@ -1,0 +1,11 @@
+[
+    {
+        "num": 1,
+        "name": "Quảng Trường Thôn",
+        "description": "Cửa thôn, thường thường có quái vật đột kích",
+        "monsterId": 1,
+        "isPvp": true,
+        "rateExp": 10,
+        "rateResporce": 10
+    }
+]
