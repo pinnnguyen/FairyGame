@@ -20,7 +20,7 @@ const handlePlayerVsMonster = async (player: PlayerInfo, monsterId: string) => {
 }
 
 const handleWars = async (request: WarRequest) => {
-  const player = await PlayerSchema.getPlayer(request.player.userId)
+  const player = await (PlayerSchema as any).getPlayer(request.player.userId)
 
   if (!player) {
     return createError({
@@ -35,7 +35,7 @@ const handleWars = async (request: WarRequest) => {
       statusMessage: 'target not found!',
     })
   }
-    
+
   switch (request.target.type) {
     case TARGET_TYPE.MONSTER:
       return handlePlayerVsMonster(player, request.target.id)

@@ -19,7 +19,7 @@ const schema = new mongoose.Schema<Monsters>(
     def: Number,
     hp: Number,
     mp: Number,
-    crit: Number,
+      critical: Number,
     hpSuck: Number,
     itemIds: [],
     rateItem: Number,

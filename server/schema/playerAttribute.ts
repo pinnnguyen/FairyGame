@@ -15,7 +15,7 @@ const schema = new mongoose.Schema<PlayerAttribute>(
     def: Number,
     hp: Number,
     mp: Number,
-    crit: Number,
+      critical: Number,
     hpSuck: Number,
     slot_1: Number,
     slot_2: Number,

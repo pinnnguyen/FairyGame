@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/supabase',
     '@nuxt/image-edge',
+    'nuxt-full-static',
   ],
   experimental: {
     reactivityTransform: false,

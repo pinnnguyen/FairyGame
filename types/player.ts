@@ -5,7 +5,7 @@ export interface BaseAttributes {
   def: number
   hp: number
   mp: number
-  crit: number
+  critical: number
   hpSuck: number
 }
 export interface Player {
