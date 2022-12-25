@@ -1,6 +1,9 @@
+import { BASE_EXP, TRAINING_RESOURCE } from '~/server/rule/reward'
+import mid from '~/server/schema/mid'
 import type { Monsters, PlayerInfo } from '~/types'
-import { TURN, WINNER } from '~/constants/war'
-import type { Emulator, BaseProperties, WarResponse } from '~/types/war'
+import { BATTLE_ACTION, WINNER } from '~/constants/war'
+import type { BaseProperties, Emulator, WarResponse } from '~/types/war'
+import { convertMillisecondsToSeconds } from '~/common'
 
 export const receiveDamage = (player: PlayerInfo, enemy: Monsters) => {
   let inflictDMG = 0
@@ -49,114 +52,109 @@ export const enemyDeep = (enemy: Monsters) => {
   } as BaseProperties
 }
 
-export const playerDeep = (player: PlayerInfo) => {
+export const playerDeep = (params: PlayerInfo) => {
   return {
-    level: player?.level,
-    damage: player?.attribute?.damage,
-    def: player?.attribute?.def,
-    hp: player?.attribute?.hp,
-    speed: player?.attribute?.speed,
-    critical: player?.attribute?.critical,
-    name: player?.name,
+    level: params?.player?.level,
+    damage: params?.attribute?.damage,
+    def: params?.attribute?.def,
+    hp: params?.attribute?.hp,
+    speed: params?.attribute?.speed,
+    critical: params?.attribute?.critical,
+    name: params?.player?.name,
   } as BaseProperties
 }
 
-export const startWar = (player: PlayerInfo, enemy: Monsters) => {
-  const enemyClone = enemyDeep(enemy)
-  const playerClone = playerDeep(player)
+export const startWar = (_p: PlayerInfo, _enemy: Monsters) => {
+  const enemyClone = enemyDeep(_enemy)
+  const playerClone = playerDeep(_p)
 
-  const receiveDMG = receiveDamage(player, enemy) // Mục tiêu gây sát thương lên người chơi.
-  const inflictDMG = inflictDamage(player, enemy) // Người chơi gây sát thương lên mục tiêu.
+  const receiveDMG = receiveDamage(_p, _enemy) // Mục tiêu gây sát thương lên người chơi.
+  const inflictDMG = inflictDamage(_p, _enemy) // Người chơi gây sát thương lên mục tiêu.
 
   const emulators: Emulator[] = []
   let endWar = false
   let winner = ''
-  let firstTurn = TURN.PLAYER
 
   while (!endWar) {
-    player.attribute.hp -= formatHP(player.attribute.hp, receiveDMG)
-    enemy.hp -= formatHP(enemy.hp, inflictDMG)
+    _p.attribute.hp -= formatHP(_p.attribute.hp, receiveDMG)
+    _enemy.hp -= formatHP(_enemy.hp, inflictDMG)
 
     //  Tốc độ cao hơn sẽ đánh
-    if (player?.attribute?.speed < enemy?.speed) {
-      firstTurn = TURN.ENEMY
+    if (_p?.attribute?.speed < _enemy?.speed) {
       emulators.push({
-        enemy: {
-          action: 'attack',
+        [`${1}_enemy`]: {
+          action: BATTLE_ACTION.ATTACK,
           critical: false,
           state: {
             damage: receiveDMG,
           },
           now: {
             hp: {
-              player: player?.attribute?.hp,
+              player: _p?.attribute?.hp,
             },
             mp: {
-              enemy: enemy?.mp,
+              enemy: _enemy?.mp,
             },
           },
         },
-        player: {
-          action: 'attack',
+        [`${2}_player`]: {
+          action: BATTLE_ACTION.ATTACK,
           critical: false,
           state: {
             damage: inflictDMG,
           },
           now: {
             hp: {
-              enemy: enemy?.hp,
+              enemy: _enemy?.hp,
             },
             mp: {
-              player: player?.attribute?.mp,
+              player: _p?.attribute?.mp,
             },
           },
         },
       })
     }
     else {
-      firstTurn = TURN.PLAYER
       emulators.push({
-        player: {
-          action: 'attack',
+        [`${1}_player`]: {
+          action: BATTLE_ACTION.ATTACK,
           critical: false,
           state: {
             damage: inflictDMG,
           },
           now: {
             hp: {
-              enemy: enemy?.hp,
+              enemy: _enemy?.hp,
             },
             mp: {
-              player: player?.attribute?.mp,
+              player: _p?.attribute?.mp,
             },
           },
         },
-        enemy: {
-          action: 'attack',
+        [`${2}_enemy`]: {
+          action: BATTLE_ACTION.ATTACK,
           critical: false,
           state: {
             damage: receiveDMG,
           },
           now: {
             hp: {
-              player: player?.attribute?.hp,
+              player: _p?.attribute?.hp,
             },
             mp: {
-              enemy: enemy?.mp,
+              enemy: _enemy?.mp,
             },
           },
         },
       })
     }
 
-    console.log('emulators', emulators)
-
-    if (player.attribute.hp <= 0) {
+    if (_p.attribute.hp <= 0) {
       endWar = true
-      winner = WINNER.YOU_WIN
+      winner = WINNER.YOU_LOSE
     }
 
-    if (enemy.hp <= 0) {
+    if (_enemy.hp <= 0) {
       endWar = true
       winner = WINNER.YOU_WIN
     }
@@ -167,6 +165,5 @@ export const startWar = (player: PlayerInfo, enemy: Monsters) => {
     enemy: enemyClone,
     emulators,
     winner,
-    firstTurn,
   } as WarResponse
 }

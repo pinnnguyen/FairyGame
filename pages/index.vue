@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { onClickOutside, set } from '@vueuse/core'
 import { usePlayerStore } from '~/composables/player'
 
 const { playerInfo } = storeToRefs(usePlayerStore())
@@ -8,17 +9,47 @@ definePageMeta({
   middleware: ['game'],
 })
 
+const togglePopupRss = ref(false)
+const togglePlayerInfo = ref(false)
+const resources = ref({})
+
+const playerInfoComponent = ref(null)
+onClickOutside(playerInfoComponent, event => togglePlayerInfo.value = false)
+
 const onAttach = async () => {
-  return navigateTo('/pve')
+  return navigateTo('/battle')
 }
 
-//
-// const nextMid = () => {
-//   playerInfo.value.mid_id += 1
-// }
+onMounted(async () => {
+  // const tupo = shouldTupo({
+  //   level: playerInfo.value?.level,
+  //   floor: playerInfo.value?.floor,
+  //   levelTitle: playerInfo.value?.levelTitle,
+  // })
+
+  // setInterval(async () => {
+  //   console.log('runn')
+  //   resources.value = await $fetch('/api/reward/training', {
+  //     method: 'POST',
+  //     body: {
+  //       sid: playerInfo.value?.sid,
+  //     },
+  //   })
+  //
+  //   if (resources.value)
+  //     set(togglePopupRss, true)
+  // }, 60000)
+})
+
+const closePopupRss = () => {
+  set(togglePopupRss, false)
+}
 </script>
 
 <template>
+  <PopupTupo v-if="false" />
+  <PopupResource v-if="togglePopupRss" :exp="resources.exp" :gold="resources.gold" :minutes="resources.minutes" @close="closePopupRss" />
+  <PlayerInfomation ref="playerInfoComponent" :class="{ 'h-[0px]': !togglePlayerInfo }" />
   <PageSection class="flex-1 flex items-center relative justify-center">
     <div class="absolute bottom-0 w-full">
       <div class="w-full relative h-[100px]">
@@ -34,7 +65,7 @@ const onAttach = async () => {
         <NuxtImg src="/center/bg-home.jpg" class="w-full h-[300px] object-cover" />
         <div class="flex flex-col absolute top-[10px] text-white">
           <a class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
-            <NuxtImg class="w-[40px]" src="bottom/bottom-3.png" />
+            <NuxtImg class="w-[40px]" src="bottom/bottom-3.png" @click.stop="togglePlayerInfo = !togglePlayerInfo" />
           </a>
           <a class="items-center justify-center flex flex-col w-[50px] mb-3">
             <NuxtImg class="w-[40px]" src="/bottom/bottom-2.png" />

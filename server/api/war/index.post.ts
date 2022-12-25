@@ -6,8 +6,20 @@ import MonsterSchema from '~/server/schema/monster'
 import { TARGET_TYPE } from '~/constants/war'
 import type { PlayerInfo } from '~/types'
 import { startWar } from '~/helpers/war'
+import BattleSchema from '~/server/schema/battle'
 
-const handlePlayerVsMonster = async (player: PlayerInfo, monsterId: string) => {
+const handlePlayerVsMonster = async (_p: PlayerInfo, monsterId: string) => {
+  // Get battle information has already used it
+  const battle = await BattleSchema.findOne({ 'sid': _p.player.sid, 'kind': 'pve', 'mid.id': _p.player.midId })
+  if (battle) {
+    return {
+      player: battle.player,
+      enemy: battle.enemy,
+      emulators: battle.emulators,
+      winner: battle.winner,
+    }
+  }
+
   const monster = await MonsterSchema.findOne({ id: monsterId })
   if (!monster) {
     return createError({
@@ -16,7 +28,28 @@ const handlePlayerVsMonster = async (player: PlayerInfo, monsterId: string) => {
     })
   }
 
-  return startWar(player, monster)
+  const {
+    player,
+    enemy,
+    emulators,
+    winner,
+  } = startWar(_p, monster)
+
+  // Lưu lịch sử trận đánh
+  await new BattleSchema({
+    sid: _p.player.sid,
+    mid: {
+      id: _p.player.midId,
+    },
+    kind: 'pve',
+    player,
+    enemy,
+    emulators,
+    winner,
+  }).save()
+
+  await PlayerSchema.updateOne({ sid: _p.player.sid }, { lastTimeReceivedRss: new Date().getTime() })
+  return startWar(_p, monster)
 }
 
 const handleWars = async (request: WarRequest) => {

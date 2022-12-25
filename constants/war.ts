@@ -11,7 +11,14 @@ export const WINNER = {
   YOU_LOSE: 'you_lose',
 }
 
-export const TURN = {
+export const BATTLE_TURN = {
   PLAYER: 'player',
   ENEMY: 'enemy',
+}
+
+export const BATTLE_ACTION = {
+  BUFF: 'buff',
+  ATTACK: 'attack',
+  DRUNK: 'drunk',
+  FIRE: 'fire',
 }

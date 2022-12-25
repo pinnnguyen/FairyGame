@@ -1,0 +1,216 @@
+//@font-face {
+//    font-family: 'Poppins';
+//    src: url('../fonts/Poppins.eot?#iefix') format('embedded-opentype'), url('../fonts/Poppins.woff') format('woff'), url('../fonts/Poppins.ttf')  format('truetype'), url('../fonts/Poppins.svg#Poppins') format('svg');
+//    font-weight: 500;
+//    font-style: normal;
+//}
+//@font-face {
+//    font-family: 'Poppins';
+//    src: url('../fonts/PoppinsMedium.eot?#iefix') format('embedded-opentype'),url('../fonts/PoppinsMedium.woff') format('woff'), url('../fonts/PoppinsMedium.ttf')  format('truetype'), url('../fonts/PoppinsMedium.svg#PoppinsMedium') format('svg');
+//    font-weight: 600;
+//    font-style: normal;
+//}
+//@font-face {
+//    font-family: 'Poppins';
+//    src: url('../fonts/PoppinsSemiBold.eot?#iefix') format('embedded-opentype'),url('../fonts/PoppinsSemiBold.woff') format('woff'), url('../fonts/PoppinsSemiBold.ttf')  format('truetype'), url('../fonts/PoppinsSemiBold.svg#PoppinsSemiBold') format('svg');
+//    font-weight: 700;
+//    font-style: normal;
+//}
+//
+//@font-face {
+//    font-family: 'Poppins';
+//    src: url('../fonts/PoppinsBold.eot?#iefix') format('embedded-opentype'),url('../fonts/PoppinsBold.woff') format('woff'), url('../fonts/PoppinsBold.ttf')  format('truetype'), url('../fonts/PoppinsBold.svg#PoppinsBold') format('svg');
+//    font-weight: 800;
+//    font-style: normal;
+//}
+
+@font-face {
+    font-family: 'Montserrat';
+    src:  url('../fonts/Montserrat-Medium.woff2')  format('woff2'), url('../fonts/Montserrat-Medium.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src:  url('../fonts/Montserrat-Regular.woff2')  format('woff2'), url('../fonts/Montserrat-Regular.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src:  url('../fonts/Montserrat-SemiBold.woff2')  format('woff2'), url('../fonts/Montserrat-SemiBold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src:  url('../fonts/Montserrat-Bold.woff2')  format('woff2'), url('../fonts/Montserrat-Bold.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+}
+//@font-face {
+//    font-family: 'Marujo';
+//    src:  url('../fonts/Marujo.woff2')  format('woff2'), url('../fonts/Marujo.woff') format('woff');
+//    font-weight: 700;
+//    font-style: normal;
+//}
+//@font-face {
+//    font-family: 'Marujo';
+//    src:  url('../fonts/MarujoBold.woff2')  format('woff2'), url('../fonts/MarujoBold.woff') format('woff');
+//    font-weight: 600;
+//    font-style: normal;
+//}
+.transform-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes true-damage {
+    0% {
+        opacity: 0;
+        bottom: 80px;
+    }
+    20% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    99% {
+        opacity: 1;
+        bottom: 160px;
+    }
+    100% {
+        opacity: 0;
+        bottom: 80px;
+    }
+}
+
+.battle-damage.show {
+    animation-name: true-damage;
+    animation-duration: 1s;
+}
+
+.battle-damage {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 80px;
+    z-index: 2;
+    opacity: 0;
+}
+
+.blocker {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    z-index: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #000;
+    background-color: rgba(0,0,0,0.75);
+    text-align: center;
+}
+
+body .button-confirm {
+    width: 175px;
+    line-height: 35px;
+    border: none;
+    margin-top: 20px;
+    text-align: center;
+    background-color: #ffd400;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #333;
+    font-weight: 600;
+    border-radius: 150px;
+}
+
+body .button-cancel {
+    width: 175px;
+    line-height: 35px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: white;
+    background-color: transparent;
+    border: 3px solid #ffffff;
+    color: #ffffff;
+    border-radius: 25px;
+    margin-left: 10px;
+    font-weight: 600;
+}
+
+
+.glow-on-hover {
+    width: 175px;
+    line-height: 35px;
+    height: 50px;
+    border: none;
+    outline: none;
+    color: #333;
+    background-color: #ffd400;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, #ffdd00, rgba(255, 221, 0, 0.91), rgba(255, 221, 0, 0.87), rgba(255, 221, 0, 0.68), #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left:-2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+}
+
+.glow-on-hover:active {
+    color: #000
+}
+
+.glow-on-hover:active:after {
+    background: transparent;
+}
+
+.glow-on-hover:before {
+    opacity: 1;
+}
+
+.glow-on-hover:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ffd400;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}

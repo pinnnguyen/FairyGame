@@ -1,15 +1,15 @@
 import { storeToRefs } from 'pinia'
 
 export default defineNuxtRouteMiddleware(async () => {
-  const user = useSupabaseUser()
+  const userSupabase = useSupabaseUser()
   const playerStore = usePlayerStore()
   const { getPlayer } = playerStore
   const { playerInfo } = storeToRefs(playerStore)
 
-  if (!user.value)
+  if (!userSupabase.value)
     return navigateTo('/login')
 
-  if (playerInfo.value?.id)
+  if (playerInfo.value?._id)
     return
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

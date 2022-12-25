@@ -20,3 +20,20 @@ export const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+export const randomNumber = (min: number, max: number) => {
+  return Math.random() * (max - min) + min
+}
+
+export const convertMillisecondsToSeconds = (milliseconds: number) => {
+  return milliseconds / 1000
+}
+
+export const convertSecondsToMinutes = (seconds: number) => {
+  return seconds / 60
+}
+
+export const formatNumber = (str: string) => {
+  if (!str)
+    return
+  return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}

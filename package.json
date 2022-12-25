@@ -11,26 +11,20 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.30.1",
-    "@iconify-json/carbon": "^1.1.10",
-    "@iconify-json/twemoji": "^1.1.5",
     "@nuxt/image-edge": "^1.0.0-27840416.dc1ed65",
-    "@nuxtjs/color-mode": "^3.2.0",
     "@nuxtjs/supabase": "^0.3.0",
     "@pinia/nuxt": "^0.4.3",
-    "@unocss/nuxt": "^0.46.5",
     "@vueuse/nuxt": "^9.5.0",
+    "consola": "^2.15.3",
     "eslint": "^8.27.0",
     "mongoose": "^6.8.1",
-    "mongoose-bcrypt": "^1.10.0",
     "nuxt": "^3.0.0",
+    "nuxt-full-static": "^0.2.1",
+    "nuxt-windicss": "^2.6.0",
+    "ohash": "^1.0.0",
     "pinia": "^2.0.23",
     "sass": "^1.57.0",
-    "typescript": "^4.9.3"
-  },
-  "dependencies": {
-    "consola": "^2.15.3",
-    "nuxt-full-static": "^0.2.1",
-    "ohash": "^1.0.0",
+    "typescript": "^4.9.3",
     "uuid4": "^2.0.3"
   }
 }

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import type { PlayerAttribute } from '~/types';
+import type { PlayerAttribute } from '~/types'
 const ObjectId = mongoose.Types.ObjectId
 
 const schema = new mongoose.Schema<PlayerAttribute>(
@@ -15,7 +15,8 @@ const schema = new mongoose.Schema<PlayerAttribute>(
     def: Number,
     hp: Number,
     mp: Number,
-      critical: Number,
+    speed: Number,
+    critical: Number,
     hpSuck: Number,
     slot_1: Number,
     slot_2: Number,

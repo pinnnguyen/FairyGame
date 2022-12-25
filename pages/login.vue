@@ -1,4 +1,6 @@
 <script setup>
+import {useCookie} from "#app";
+
 const supabase = useSupabaseClient()
 
 definePageMeta({
@@ -14,9 +16,11 @@ const handleLogin = async () => {
     password: password.value,
   })
 
-  if (data.user) 
+  if (data.user) {
+    const nuxtSSID = useCookie('NUXT_SS_ID')
+    nuxtSSID.value = data.user.id
     return navigateTo('/role')
-
+  }
 
   if (error)
     alert(error)

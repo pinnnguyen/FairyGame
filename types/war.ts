@@ -11,42 +11,19 @@ export interface WarRequest {
   }
 }
 
-interface EmulatorPlayer {
+export interface EmulatorBattle {
   action: string
   critical: boolean
   state: {
     damage: number
   }
   now: {
-    hp: {
-      enemy: number
-    }
-    mp: {
-      player: number
-    }
+    hp: Record<string | 'player' | 'enemy', number>
+    mp: Record<string | 'player' | 'enemy', number>
   }
 }
 
-interface EmulatorEnemy {
-  action: string
-  critical: boolean
-  state: {
-    damage: number
-  }
-  now: {
-    hp: {
-      player: number
-    }
-    mp: {
-      enemy: number
-    }
-  }
-}
-export interface Emulator {
-  player: EmulatorPlayer
-  enemy: EmulatorEnemy
-}
-
+export type Emulator = Record<string | 'player' | 'enemy', EmulatorBattle>
 export interface BaseProperties extends BaseAttributes {
   name: string
   level: number
@@ -57,5 +34,4 @@ export interface WarResponse {
   enemy: BaseProperties
   winner: string
   emulators: Emulator[]
-  firstTurn: string
 }

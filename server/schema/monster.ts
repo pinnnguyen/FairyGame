@@ -19,10 +19,11 @@ const schema = new mongoose.Schema<Monsters>(
     def: Number,
     hp: Number,
     mp: Number,
-      critical: Number,
+    critical: Number,
     hpSuck: Number,
     itemIds: [],
     rateItem: Number,
+    speed: Number,
   },
   { timestamps: true, strict: true, strictQuery: true },
 )

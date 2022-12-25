@@ -29,6 +29,8 @@
   position: relative;
   overflow: hidden;
   background: white;
+  font-size: 14px;
+  user-select: none;
 }
 
 .footer {

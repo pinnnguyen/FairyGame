@@ -1,11 +1,16 @@
+import { useCookie } from '#app'
+
 export default defineNuxtRouteMiddleware(async () => {
   const { initPlayer } = usePlayerStore()
   const user = useSupabaseUser()
 
-  console.log('user', user)
+  let uid: any = user.value?.id
+  if (!uid)
+    uid = useCookie('NUXT_SS_ID').value
+
   const role = await $fetch('/api/player', {
     params: {
-      userId: user.value?.id,
+      userId: uid,
     },
   })
 
