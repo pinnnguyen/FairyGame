@@ -14,6 +14,7 @@ const schema = new mongoose.Schema<Mid>(
     name: String,
     description: String,
     monsterId: Number,
+    ms: Number,
     isPvp: String,
     rateExp: Number,
     rateResource: Number,

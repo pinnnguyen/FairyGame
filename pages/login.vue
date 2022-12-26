@@ -1,6 +1,5 @@
 <script setup>
-import {useCookie} from "#app";
-
+import { useCookie } from '#app'
 const supabase = useSupabaseClient()
 
 definePageMeta({

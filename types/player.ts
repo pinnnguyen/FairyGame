@@ -10,20 +10,20 @@ export interface BaseAttributes {
 }
 export interface Player {
   _id?: string
-  sid?: string
-  name?: string
-  gold?: number
-  coin?: number
-  power?: number
-  level?: number
-  midId?: number
-  userId?: string
-  vipLevel?: number
-  exp?: number
-  lastTimeReceivedRss?: string
-  levelTitle?: string
-  floor?: string
-  expLimited?: number
+  sid: string
+  name: string
+  gold: number
+  coin: number
+  power: number
+  level: number
+  midId: number
+  userId: string
+  vipLevel: number
+  exp: number
+  lastTimeReceivedRss: string
+  levelTitle: string
+  floor: string
+  expLimited: number
 }
 
 export interface PlayerAttribute extends BaseAttributes, Slot {

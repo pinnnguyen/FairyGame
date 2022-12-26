@@ -6,16 +6,16 @@ const { playerInfo, attribute } = storeToRefs(usePlayerStore())
 </script>
 
 <template>
-  <div class="bg-[#1b345d] text-white w-full z-9 duration-500 absolute bottom-0 h-[70%]">
+  <div v-if="playerInfo.id" class="bg-[#1b345d] text-white w-full z-9 duration-500 absolute bottom-0 h-[70%]">
     <div class="h-full">
       <div class="absolute top-[-25px] flex items-center justify-center w-full">
-        <div>
+        <div class="bg-[#455875] m-2 p-1">
           Trang bị
         </div>
-        <div>
+        <div class="bg-[#455875] m-2 p-1">
           Chỉ số
         </div>
-        <div>
+        <div class="bg-[#455875] m-2 p-1">
           Thành tựu
         </div>
       </div>
@@ -42,17 +42,17 @@ const { playerInfo, attribute } = storeToRefs(usePlayerStore())
             Hệ: Tu tiên
           </div>
           <div class="  my-1 px-2">
-            Tiên ngọc: {{ playerInfo.coin }}
+            Tiên ngọc: {{ playerInfo?.coin }}
           </div>
           <div class="  my-1 px-2">
-            Linh thạch: {{ playerInfo.gold }}
+            Linh thạch: {{ playerInfo?.gold }}
           </div>
 
           <div class="   my-1 px-2">
-            Tu vị: {{ playerInfo.exp }}/{{ playerInfo.expLimited }}
+            Tu vị: {{ playerInfo?.exp }}/{{ playerInfo?.expLimited }}
           </div>
           <div class="   my-1 px-2">
-            Tốc độ: {{ attribute.speed ?? 0 }}
+            Tốc độ: {{ attribute?.speed ?? 0 }}
           </div>
           <div class="   my-1 px-2">
             Khí huyết: {{ attribute.hp ?? 0 }}
@@ -72,51 +72,8 @@ const { playerInfo, attribute } = storeToRefs(usePlayerStore())
           <div class="   my-1 px-2">
             Hút máu: {{ attribute.suckHp ?? 0 }}%
           </div>
-          <div>
-            <div class="text-sm text-center font-semibold mb-2">
-              Trang bị
-            </div>
-
-            <div class="grid grid-cols-4 gap-2">
-              <div class="relative">
-                <img class="w-[60px] h-[55px]" src="images/trangbi/vukhi.png">
-                <!--                        Vũ khí: -->
-              </div>
-              <div class="relative">
-                <img class="w-[60px] h-[55px]" src="images/trangbi/ngocboi.png">
-                <!--                        Ngọc Bội: -->
-              </div>
-              <div class="relative">
-                <img class="w-[60px] h-[55px]" src="images/trangbi/giap.png">
-                <!--                        áo: -->
-              </div>
-              <div class="relative">
-                <img class="w-[60px] h-[55px]" src="images/trangbi/baotay.png">
-                <!--                        Bao tay: -->
-              </div>
-              <div class="relative">
-                <img class="w-[60px] h-[55px]" src="images/trangbi/rinh.png">
-                <!--                        Nhẫn: -->
-              </div>
-              <div class="relative">
-                <img class="w-[60px] h-[55px]" src="images/trangbi/giay.png">
-                <!--                        Giày: -->
-              </div>
-              <div class="relative">
-                <img class="w-[60px] h-[55px]" src="images/trangbi/ngoc.png">
-                <!--                        Giày: -->
-              </div>
-              <div class="relative">
-                <img class="w-[60px] h-[55px]" src="images/trangbi/mu.png">
-                <!--                        Giày: -->
-              </div>
-            </div>
-          </div>
+          <div />
         </div>
-      </div>
-      <div class="absolute bottom-0 h-[50px] ml-6">
-        <a style="background: radial-gradient(black, transparent);" class="text-white" onclick="javascript :history.back(-1);">Trở về</a>
-        <a style="background: radial-gradient(black, transparent);" class="text-white" href="?cmd=Yc2x1pkhPpWdvbWlkJm5ld21pZD0yNDgmc2lkPTQ3MTRjMmE2NDNmOTQwMTY3NWE5YjY0OTFhZDJiOGQ4">Trở về trò chơi</a>
       </div>
     </div>
   </div>

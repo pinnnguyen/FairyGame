@@ -1,4 +1,3 @@
-import type { Model } from 'mongoose'
 import mongoose from 'mongoose'
 import { conditionForUpLevel } from '~/server/common/level'
 import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule/level'

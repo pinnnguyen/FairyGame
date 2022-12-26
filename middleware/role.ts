@@ -14,7 +14,8 @@ export default defineNuxtRouteMiddleware(async () => {
     },
   })
 
-  if (role) {
+  console.log('role', role)
+  if (role.player.sid) {
     initPlayer(role)
     return navigateTo('/')
   }

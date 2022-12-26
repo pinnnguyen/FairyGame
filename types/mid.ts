@@ -5,6 +5,7 @@ export interface Mid {
   description: string
   monsterId: string
   isPvp: boolean
+  ms: number
   rateExp?: number // type unknown;
   rateResource?: number // type unknown;
 }

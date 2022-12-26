@@ -24,6 +24,8 @@
     "ohash": "^1.0.0",
     "pinia": "^2.0.23",
     "sass": "^1.57.0",
+    "socket.io": "^4.5.4",
+    "socket.io-client": "^4.5.4",
     "typescript": "^4.9.3",
     "uuid4": "^2.0.3"
   }

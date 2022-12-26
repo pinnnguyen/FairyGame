@@ -19,5 +19,5 @@ const schema = new mongoose.Schema(
   },
   { timestamps: true, strict: true, strictQuery: true },
 )
-
+schema.index({ createdAt: -1 })
 export default mongoose.model('BattleSchema', schema, 'battles')

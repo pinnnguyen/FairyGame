@@ -25,11 +25,11 @@ export const randomNumber = (min: number, max: number) => {
 }
 
 export const convertMillisecondsToSeconds = (milliseconds: number) => {
-  return milliseconds / 1000
+  return Math.round(milliseconds / 1000)
 }
 
 export const convertSecondsToMinutes = (seconds: number) => {
-  return seconds / 60
+  return Math.round(seconds / 60)
 }
 
 export const formatNumber = (str: string) => {

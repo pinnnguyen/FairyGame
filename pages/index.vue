@@ -2,7 +2,9 @@
 import { storeToRefs } from 'pinia'
 import { onClickOutside, set } from '@vueuse/core'
 import { usePlayerStore } from '~/composables/player'
-
+// import useSocket from '~/composables/useSocket'
+//
+// const { _socket } = useSocket()
 const { playerInfo } = storeToRefs(usePlayerStore())
 
 definePageMeta({

@@ -10,14 +10,29 @@ const {
   playerEffect,
   realTime,
   battleRounds,
+  battleResource,
+  inRefresh,
+  refreshTime,
 } = storeToRefs(useBattleRoundStore())
+
+const { onRefreshFinished } = useBattleRoundStore()
 
 definePageMeta({
   middleware: ['game'],
 })
+
+const refreshFinished = () => {
+  onRefreshFinished()
+}
+
+const doCloseBattleR = () => {
+  battleResource.value.show = false
+}
 </script>
 
 <template>
+  <PopupBattleResult v-if="battleResource.show" @close="doCloseBattleR" :battle-resource="battleResource" />
+  <PopupRefreshMid v-if="inRefresh" :refresh-time="refreshTime" @refreshFinished="refreshFinished" />
   <loadingScreen v-if="loading" />
   <div v-else class="h-screen bg-white">
     <div class="text-center pt-2 font-semibold">
@@ -112,8 +127,8 @@ definePageMeta({
       </div>
       <div class="flex justify-around mt-8">
         <div
-          class="relative duration-500 transition-transform" :style="{
-            transform: playerEffect === BATTLE_TURN.PLAYER ? 'translate(50%)' : '',
+          class="relative duration-300 transition-transform" :style="{
+            transform: playerEffect === BATTLE_TURN.PLAYER ? 'translate(30%)' : '',
           }"
         >
           <span class="font-semibold text-2xl text-red-500 battle-damage" :class="{ show: realTime.player.trueDamage }">
@@ -122,8 +137,8 @@ definePageMeta({
           <NuxtImg format="webp" class="h-[160px]" src="/pve/player.png" />
         </div>
         <div
-          class="relative duration-500 transition-transform" :style="{
-            transform: playerEffect === BATTLE_TURN.ENEMY ? 'translate(-50%)' : '',
+          class="relative duration-300 transition-transform" :style="{
+            transform: playerEffect === BATTLE_TURN.ENEMY ? 'translate(-30%)' : '',
           }"
         >
           <span class="font-semibold text-2xl text-red-500 battle-damage" :class="{ show: realTime.enemy.trueDamage }">

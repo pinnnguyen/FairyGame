@@ -2,7 +2,7 @@ import { BASE_EXP, TRAINING_RESOURCE } from '~/server/rule/reward'
 import mid from '~/server/schema/mid'
 import type { Monsters, PlayerInfo } from '~/types'
 import { BATTLE_ACTION, WINNER } from '~/constants/war'
-import type { BaseProperties, Emulator, WarResponse } from '~/types/war'
+import type { BaseProperties, Emulator, BattleResponse } from '~/types/war'
 import { convertMillisecondsToSeconds } from '~/common'
 
 export const receiveDamage = (player: PlayerInfo, enemy: Monsters) => {
@@ -165,5 +165,5 @@ export const startWar = (_p: PlayerInfo, _enemy: Monsters) => {
     enemy: enemyClone,
     emulators,
     winner,
-  } as WarResponse
+  } as BattleResponse
 }

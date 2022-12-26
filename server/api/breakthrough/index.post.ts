@@ -1,4 +1,4 @@
-import { playerLevelUp, shouldTupo, conditionForUpLevel } from '~/server/common/level'
+import { conditionForUpLevel, playerLevelUp, shouldTupo } from '~/server/common/level'
 import PlayerSchema from '~/server/schema/player'
 import PlayerAttribute from '~/server/schema/playerAttribute'
 import { randomNumber } from '~/common'

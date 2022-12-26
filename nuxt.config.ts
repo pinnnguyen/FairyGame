@@ -1,9 +1,20 @@
 export default defineNuxtConfig({
   nitro: {
-    plugins: ['~/server/index.ts'],
+    plugins: [
+      '~/server/index.ts',
+      '~/server/plugins/socket'],
   },
   runtimeConfig: {
     mongoUrl: process.env.MONGO_URL,
+    socketClientURL: 'http://localhost:3005',
+    socketIO: {
+      cors: {
+        origin: 'http://localhost:3000',
+        allowedHeaders: ['x-game'],
+        credentials: true,
+      },
+      port: 3005,
+    },
   },
   modules: [
     '@vueuse/nuxt',
@@ -34,7 +45,7 @@ export default defineNuxtConfig({
       // see https://github.com/unjs/listhen#options
       server: {
         port: 4444,
-        open: true,
+        open: false,
       },
     },
   },

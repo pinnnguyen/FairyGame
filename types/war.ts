@@ -1,7 +1,7 @@
 import type { BaseAttributes } from '~/types/player'
 
-export interface WarRequest {
-  kind: 'solo'
+export interface BattleRequest {
+  kind: string
   player: {
     userId: string
   }
@@ -29,9 +29,14 @@ export interface BaseProperties extends BaseAttributes {
   level: number
 }
 
-export interface WarResponse {
+export interface BattleResponse extends BattleInRefresh {
   player: BaseProperties
   enemy: BaseProperties
   winner: string
   emulators: Emulator[]
+}
+
+export interface BattleInRefresh {
+  inRefresh: boolean
+  refreshTime: number
 }

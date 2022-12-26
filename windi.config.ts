@@ -72,6 +72,15 @@ export default defineConfig({
     ],
   },
   theme: {
+    backgroundImage: {
+      iconbg_0: 'url(\'/quality_bg/iconbg_0.png\')',
+      iconbg_1: 'url(\'/quality_bg/iconbg_1.png\')',
+      iconbg_2: 'url(\'/quality_bg/iconbg_2.png\')',
+      iconbg_3: 'url(\'/quality_bg/iconbg_3.png\')',
+      iconbg_4: 'url(\'/quality_bg/iconbg_4.png\')',
+      iconbg_5: 'url(\'/quality_bg/iconbg_5.png\')',
+      iconbg_6: 'url(\'/quality_bg/iconbg_6.png\')',
+    },
     extend: {
       keyframes: {
         'true-damage': {
