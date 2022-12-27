@@ -1,16 +1,17 @@
+import type { RateReward } from '~/types/equiment'
 import type { BaseAttributes } from '~/types/player'
 
-export interface Monsters extends BaseAttributes {
+export type EnemyObject = Monster
+
+export interface Monster extends BaseAttributes {
   _id: string /* primary key */
   id: number
   name: any // type unknown;
   level: number
   info: any // type unknown;
   sex: any // type unknown;
-  itemIds: []
-  rateItem: number
+  equipments: RateReward[]
 }
-
 
 export interface Boss extends BaseAttributes {
   _id: string /* primary key */
@@ -19,6 +20,5 @@ export interface Boss extends BaseAttributes {
   level: number
   info: any // type unknown;
   sex: any // type unknown;
-  itemIds: []
-  rateItem: number
+  equipments: RateReward[]
 }

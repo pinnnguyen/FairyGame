@@ -1,4 +1,4 @@
-import PlayerSchema from '~/server/schema/player'
+import { PlayerSchema } from '~/server/schema'
 import type { PlayerServerResponse } from '~/types'
 import { serverSupabaseUser } from '#supabase/server'
 

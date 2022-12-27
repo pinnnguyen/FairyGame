@@ -1,8 +1,7 @@
-import { conditionForUpLevel, playerLevelUp, shouldTupo } from '~/server/common/level'
-import PlayerSchema from '~/server/schema/player'
-import PlayerAttribute from '~/server/schema/playerAttribute'
+import { conditionForUpLevel, playerLevelUp, shouldTupo } from '~/server/common'
+import { PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
 import { randomNumber } from '~/common'
-import { UPGRADE_LEVEL } from '~/server/rule/level'
+import { UPGRADE_LEVEL } from '~/server/rule'
 
 interface Response {
   level: number
@@ -20,7 +19,7 @@ const caseNone = (response: Response) => {
 }
 
 const caseBigLevel = async (response: Response, sjs: number, sid: string) => {
-  const pAttribute = await PlayerAttribute.findOne({ sid })
+  const pAttribute = await PlayerAttributeSchema.findOne({ sid })
   if (!pAttribute) {
     return createError({
       statusCode: 400,
@@ -39,7 +38,7 @@ const caseBigLevel = async (response: Response, sjs: number, sid: string) => {
     return response
   }
   // Đại cảnh giới đc tăng thêm chỉ số
-  await PlayerAttribute.updateOne({ sid }, {
+  await PlayerAttributeSchema.updateOne({ sid }, {
     $inc: {
       hp: uhp,
       damage: udmg,

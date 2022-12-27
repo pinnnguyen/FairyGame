@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
-import type { Monsters } from '~/types/monster'
+import type { Monster } from '~/types/monster'
 const ObjectId = mongoose.Types.ObjectId
 
-const schema = new mongoose.Schema<Monsters>(
+const schema = new mongoose.Schema<Monster>(
   {
     _id: {
       type: String,
@@ -21,11 +21,10 @@ const schema = new mongoose.Schema<Monsters>(
     mp: Number,
     critical: Number,
     hpSuck: Number,
-    itemIds: [],
-    rateItem: Number,
+    equipments: [],
     speed: Number,
   },
   { timestamps: true, strict: true, strictQuery: true },
 )
 
-export default mongoose.model('MonsterSchema', schema, 'monsters')
+export const MonsterSchema = mongoose.model('MonsterSchema', schema, 'monsters')

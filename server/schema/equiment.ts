@@ -9,6 +9,7 @@ const schema = new mongoose.Schema(
         return new ObjectId().toString()
       },
     },
+    id: Number,
     name: String,
     info: String,
     damage: Number,
@@ -24,5 +25,7 @@ const schema = new mongoose.Schema(
   },
   { timestamps: true, strict: true, strictQuery: true },
 )
-// schema.index({ createdAt: -1 })
-export default mongoose.model('EquipmentSchema', schema, 'equipments')
+schema.index({ slot: -1 })
+schema.index({ level: -1 })
+schema.index({ rank: -1 })
+export const EquipmentSchema = mongoose.model('EquipmentSchema', schema, 'equipments')

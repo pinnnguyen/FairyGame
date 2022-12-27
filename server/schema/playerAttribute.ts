@@ -31,4 +31,4 @@ const schema = new mongoose.Schema<PlayerAttribute>(
 )
 
 schema.index({ sid: -1 })
-export default mongoose.model('PlayerAttributeSchema', schema, 'player_attributes')
+export const PlayerAttributeSchema = mongoose.model('PlayerAttributeSchema', schema, 'player_attributes')

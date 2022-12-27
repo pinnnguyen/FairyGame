@@ -15,7 +15,7 @@ export interface EmulatorBattle {
   action: string
   critical: boolean
   state: {
-    damage: number
+    damage?: number
   }
   now: {
     hp: Record<string | 'player' | 'enemy', number>

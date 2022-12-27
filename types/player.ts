@@ -1,12 +1,12 @@
 import type { Mid } from '~/types/mid'
 export interface BaseAttributes {
-  speed?: number
-  damage?: number
-  def?: number
-  hp?: number
-  mp?: number
-  critical?: number
-  hpSuck?: number
+  speed: number
+  damage: number
+  def: number
+  hp: number
+  mp: number
+  critical: number
+  hpSuck: number
 }
 export interface Player {
   _id?: string
@@ -28,7 +28,7 @@ export interface Player {
 
 export interface PlayerAttribute extends BaseAttributes, Slot {
   _id?: string
-  sid?: string
+  sid: string
 }
 
 export interface PlayerResponse {
@@ -57,21 +57,21 @@ export interface PlayerInfo {
 }
 
 export interface PlayerServerResponse {
-  player?: Player
-  attribute?: PlayerAttribute
-  mid?: {
+  player: Player
+  attribute: PlayerAttribute
+  mid: {
     current?: Mid
     next?: Mid
   }
   upgrade: Upgrade
 }
 export interface PlayerDataResponse extends Player {
-  attribute?: PlayerAttribute
-  mid?: {
+  attribute: PlayerAttribute
+  mid: {
     current?: Mid
     next?: Mid
   }
-  upgrade?: Upgrade
+  upgrade: Upgrade
 }
 
 export interface Upgrade {

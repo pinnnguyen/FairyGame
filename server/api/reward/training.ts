@@ -1,5 +1,4 @@
-import BattleSchema from '~/server/schema/battle'
-import PlayerSchema from '~/server/schema/player'
+import { BattleSchema, PlayerSchema } from '~/server/schema'
 import { resourceReceived } from '~/helpers/reward'
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)

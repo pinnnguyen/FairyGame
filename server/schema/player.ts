@@ -1,8 +1,7 @@
 import mongoose from 'mongoose'
 import { conditionForUpLevel } from '~/server/common/level'
 import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule/level'
-import PlayerAttribute from '~/server/schema/playerAttribute'
-import MidSchema from '~/server/schema/mid'
+import { MidSchema, PlayerAttributeSchema } from '~/server/schema'
 import type { Player } from '~/types'
 const ObjectId = mongoose.Types.ObjectId
 
@@ -50,10 +49,10 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
           return null
 
         const { needGold } = conditionForUpLevel(player)
-        const attribute = await PlayerAttribute.findOne({ sid: player.sid })
+        const attribute = await PlayerAttributeSchema.findOne({ sid: player.sid })
         const mid = await MidSchema.find({
           id: {
-            $in: [player.midId, (player.midId as number) + 1],
+            $in: [player.midId, (player.midId) + 1],
           },
         })
 
@@ -102,4 +101,4 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
 )
 
 schema.index({ sid: -1 })
-export default mongoose.model('PlayerSchema', schema, 'players')
+export const PlayerSchema = mongoose.model('PlayerSchema', schema, 'players')

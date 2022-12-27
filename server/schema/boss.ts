@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import type { Boss } from '~/types/monster'
+import type { Boss } from '~/types'
 const ObjectId = mongoose.Types.ObjectId
 
 const schema = new mongoose.Schema<Boss>(
@@ -21,11 +21,9 @@ const schema = new mongoose.Schema<Boss>(
     mp: Number,
     critical: Number,
     hpSuck: Number,
-    itemIds: [],
-    rateItem: Number,
     speed: Number,
   },
   { timestamps: true, strict: true, strictQuery: true },
 )
 
-export default mongoose.model('BossSchema', schema, 'boss')
+export const BossSchema = mongoose.model('BossSchema', schema, 'boss')

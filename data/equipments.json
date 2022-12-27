@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "[Tân thủ] Mộc Kiếm",
+    "info": "",
+    "damage": 10,
+    "speed": 1,
+    "def": 0,
+    "hp": 0,
+    "mp": 0,
+    "critical": 5,
+    "hpSuck": 5,
+    "rank": 1,
+    "level": 1,
+    "slot": 1
+  },
+  {
+    "id": 2,
+    "name": "[Tân thủ] Mộc Giáp",
+    "info": "",
+    "damage": 0,
+    "speed": 1,
+    "def": 1,
+    "hp": 200,
+    "mp": 0,
+    "critical": 5,
+    "hpSuck": 5,
+    "rank": 1,
+    "level": 1,
+    "slot": 2
+  },
+  {
+    "id": 3,
+    "name": "[Tân thủ] Mộc Khôi",
+    "info": "",
+    "damage": 0,
+    "speed": 1,
+    "def": 1,
+    "hp": 200,
+    "mp": 0,
+    "critical": 5,
+    "hpSuck": 5,
+    "rank": 1,
+    "level": 1,
+    "slot": 3
+  },
+  {
+    "id": 4,
+    "name": "[Tân thủ] Mộc Nhẫn",
+    "info": "",
+    "damage": 0,
+    "speed": 1,
+    "def": 1,
+    "hp": 200,
+    "mp": 0,
+    "critical": 5,
+    "hpSuck": 5,
+    "rank": 1,
+    "level": 1,
+    "slot": 4
+  }
+]

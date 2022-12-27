@@ -1,7 +1,5 @@
 import mongoose from 'mongoose'
-import PlayerSchema from '~/server/schema/player'
-import MidSchema from '~/server/schema/mid'
-import PlayerAttribute from '~/server/schema/playerAttribute'
+import { MidSchema, PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
 import { DEFAULT_ATTRIBUTE, DEFAULT_ROLE } from '~/constants'
 import { serverSupabaseUser } from '#supabase/server'
 const ObjectId = mongoose.Types.ObjectId
@@ -35,7 +33,7 @@ export default defineEventHandler(async (event) => {
   })
 
   await createRole.save()
-  const createAttribute = new PlayerAttribute({
+  const createAttribute = new PlayerAttributeSchema({
     sid: createRole.sid,
     ...DEFAULT_ATTRIBUTE,
   })

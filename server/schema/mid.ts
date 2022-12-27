@@ -23,4 +23,4 @@ const schema = new mongoose.Schema<Mid>(
 )
 
 schema.index({ id: -1 })
-export default mongoose.model('MidSchema', schema, 'mids')
+export const MidSchema = mongoose.model('MidSchema', schema, 'mids')

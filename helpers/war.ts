@@ -1,8 +1,8 @@
-import type { Monsters, PlayerInfo } from '~/types'
+import type { EnemyObject, PlayerInfo } from '~/types'
 import { BATTLE_ACTION, WINNER } from '~/constants/war'
 import type { BaseProperties, BattleResponse, Emulator } from '~/types/war'
 
-export const receiveDamage = (player: PlayerInfo, enemy: Monsters) => {
+export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   let inflictDMG = 0
 
   const enemyDMG = (enemy?.damage as number)
@@ -16,7 +16,7 @@ export const receiveDamage = (player: PlayerInfo, enemy: Monsters) => {
   return inflictDMG
 }
 
-export const inflictDamage = (player: PlayerInfo, enemy: Monsters) => {
+export const inflictDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   let inflictDMG = 0
 
   const playerDMG = (player?.attribute?.damage as number)
@@ -37,7 +37,7 @@ export const formatHP = (hp: number, limit: number) => {
   return limit
 }
 
-export const enemyDeep = (enemy: Monsters) => {
+export const enemyDeep = (enemy: EnemyObject) => {
   return {
     level: enemy?.level,
     damage: enemy?.damage,
@@ -61,7 +61,7 @@ export const playerDeep = (params: PlayerInfo) => {
   } as BaseProperties
 }
 
-export const startWar = (_p: PlayerInfo, _enemy: Monsters) => {
+export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
   const enemyClone = enemyDeep(_enemy)
   const playerClone = playerDeep(_p)
 
@@ -69,15 +69,16 @@ export const startWar = (_p: PlayerInfo, _enemy: Monsters) => {
   const inflictDMG = inflictDamage(_p, _enemy) // Người chơi gây sát thương lên mục tiêu.
 
   const emulators: Emulator[] = []
+  const playerAttribute = _p.attribute
   let endWar = false
   let winner = ''
 
   while (!endWar) {
-    _p.attribute.hp -= formatHP(_p.attribute.hp, receiveDMG)
+    playerAttribute.hp -= formatHP(playerAttribute?.hp, receiveDMG)
     _enemy.hp -= formatHP(_enemy.hp, inflictDMG)
 
     //  Tốc độ cao hơn sẽ đánh
-    if (_p?.attribute?.speed < _enemy?.speed) {
+    if (playerAttribute?.speed < _enemy?.speed) {
       emulators.push({
         [`${1}_enemy`]: {
           action: BATTLE_ACTION.ATTACK,
@@ -87,7 +88,7 @@ export const startWar = (_p: PlayerInfo, _enemy: Monsters) => {
           },
           now: {
             hp: {
-              player: _p?.attribute?.hp,
+              player: playerAttribute?.hp,
             },
             mp: {
               enemy: _enemy?.mp,
@@ -105,7 +106,7 @@ export const startWar = (_p: PlayerInfo, _enemy: Monsters) => {
               enemy: _enemy?.hp,
             },
             mp: {
-              player: _p?.attribute?.mp,
+              player: playerAttribute?.mp,
             },
           },
         },
@@ -124,7 +125,7 @@ export const startWar = (_p: PlayerInfo, _enemy: Monsters) => {
               enemy: _enemy?.hp,
             },
             mp: {
-              player: _p?.attribute?.mp,
+              player: playerAttribute?.mp,
             },
           },
         },
@@ -136,7 +137,7 @@ export const startWar = (_p: PlayerInfo, _enemy: Monsters) => {
           },
           now: {
             hp: {
-              player: _p?.attribute?.hp,
+              player: playerAttribute?.hp,
             },
             mp: {
               enemy: _enemy?.mp,
@@ -146,12 +147,12 @@ export const startWar = (_p: PlayerInfo, _enemy: Monsters) => {
       })
     }
 
-    if (_p.attribute.hp <= 0) {
+    if (playerAttribute?.hp <= 0) {
       endWar = true
       winner = WINNER.YOU_LOSE
     }
 
-    if (_enemy.hp <= 0) {
+    if (_enemy?.hp <= 0) {
       endWar = true
       winner = WINNER.YOU_WIN
     }

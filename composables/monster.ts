@@ -1,9 +1,9 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { set } from '@vueuse/core'
-import type { Monsters } from '~/types/monster'
+import type { Monster } from '~/types/monster'
 
 export const useMonsterStore = defineStore('monster', () => {
-  const monsterBattle = ref<Monsters>({})
+  const monsterBattle = ref<Monster>()
 
   const fetchMonsterById = async (id: number) => {
     const data = await $fetch('/api/monster', {

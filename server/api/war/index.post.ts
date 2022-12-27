@@ -1,15 +1,12 @@
 import type { H3Event } from 'h3'
 import { createError, sendError } from 'h3'
-import { pveBaseReward } from '~/server/helpers/reward'
-import type { BattleRequest, BattleResponse } from '~/types/war'
-import PlayerSchema from '~/server/schema/player'
-import MonsterSchema from '~/server/schema/monster'
-import { BATTLE_KIND, TARGET_TYPE } from '~/constants/war'
-import type { PlayerInfo } from '~/types'
-import { startWar } from '~/helpers/war'
-import BattleSchema from '~/server/schema/battle'
+import { pveBaseReward, receivedEquipment, setLastTimeReceivedRss } from '~/server/helpers'
+import type { BattleRequest, BattleResponse, PlayerInfo } from '~/types'
+import { BattleSchema, MonsterSchema, PlayerSchema } from '~/server/schema'
+import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
+import { startWar } from '~/helpers'
 
-export const handlePlayerVsMonster = async (_p: PlayerInfo, monsterId: string) => {
+export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: BattleRequest) => {
   // Get battle information has already used it
   const battle = await BattleSchema
     .findOne({ 'sid': _p.player.sid, 'kind': BATTLE_KIND.PVE, 'mid.id': _p.player.midId })
@@ -30,8 +27,15 @@ export const handlePlayerVsMonster = async (_p: PlayerInfo, monsterId: string) =
     }
   }
 
-  const monster = await MonsterSchema.findOne({ id: monsterId })
-  if (!monster) {
+  let _enemyObj: any = {}
+  if (battleRequest.target.type === TARGET_TYPE.MONSTER)
+    _enemyObj = await MonsterSchema.findOne({ id: battleRequest.target.id })
+
+  // if (battleRequest.target.type === TARGET_TYPE.BOSS_DAILY) {
+  //   _enemyObj = await MonsterSchema.findOne({ id: battleRequest.target.id })
+  // }
+
+  if (!_enemyObj) {
     return createError({
       statusCode: 400,
       statusMessage: 'monster not found!',
@@ -43,9 +47,11 @@ export const handlePlayerVsMonster = async (_p: PlayerInfo, monsterId: string) =
     enemy,
     emulators,
     winner,
-  } = startWar(_p, monster)
+  } = startWar(_p, _enemyObj)
 
   const { exp, gold } = await pveBaseReward(_p.player.sid, _p.player.midId)
+  await receivedEquipment(_p.player.sid, _enemyObj)
+  await setLastTimeReceivedRss(_p.player.sid)
 
   // Lưu lịch sử trận đánh
   await new BattleSchema({
@@ -53,7 +59,7 @@ export const handlePlayerVsMonster = async (_p: PlayerInfo, monsterId: string) =
     mid: {
       id: _p.player.midId,
     },
-    kind: BATTLE_KIND.PVE,
+    kind: battleRequest.kind,
     player,
     enemy,
     emulators,
@@ -64,7 +70,7 @@ export const handlePlayerVsMonster = async (_p: PlayerInfo, monsterId: string) =
     },
   }).save()
 
-  await PlayerSchema.updateOne({ sid: _p.player.sid }, { lastTimeReceivedRss: new Date().getTime() })
+  // await PlayerSchema.updateOne({ sid: _p.player.sid }, { lastTimeReceivedRss: new Date().getTime() })
 
   return {
     player,
@@ -95,12 +101,7 @@ export const handleWars = async (request: BattleRequest) => {
     })
   }
 
-  switch (request.target.type) {
-    case TARGET_TYPE.MONSTER:
-      return handlePlayerVsMonster(player, request.target.id)
-  }
-
-  return true
+  return handlePlayerVsTarget(player, request)
 }
 
 export default defineEventHandler(async (event: H3Event) => {
