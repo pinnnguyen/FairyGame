@@ -1,18 +1,12 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { set } from '@vueuse/core'
-import { useCookie } from '#app'
 import type { PlayerDataResponse, PlayerServerResponse } from '~/types'
 
 export const usePlayerStore = defineStore('player', () => {
-  const playerInfo = ref<PlayerDataResponse>({})
-  const auth = useSupabaseUser()
+  const playerInfo = ref<PlayerDataResponse>()
 
-  let uid: any = auth.value?.id
-  if (!uid)
-    uid = useCookie('NUXT_SS_ID').value
-
-  const upgrade = computed(() => playerInfo.value.upgrade)
-  const attribute = computed(() => playerInfo.value.attribute)
+  const upgrade = computed(() => playerInfo.value?.upgrade)
+  const attribute = computed(() => playerInfo.value?.attribute)
 
   const initPlayer = (data: any) => {
     set(playerInfo, {
@@ -30,22 +24,20 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const getPlayer = async () => {
-    const data = await $fetch<PlayerServerResponse>('/api/player', {
-      params: {
-        userId: uid,
-      },
+    const { data } = await useFetch<PlayerServerResponse>('/api/player', {
+      headers: (useRequestHeaders(['cookie']) as any),
     })
 
     set(playerInfo, {
-      ...data.player,
+      ...data.value?.player,
       attribute: {
-        ...data.attribute,
+        ...data.value?.attribute,
       },
       mid: {
-        ...data.mid,
+        ...data.value?.mid,
       },
       upgrade: {
-        ...data.upgrade,
+        ...data.value?.upgrade,
       },
     })
   }

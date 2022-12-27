@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 export default defineNuxtRouteMiddleware(async () => {
   const userSupabase = useSupabaseUser()
   const playerStore = usePlayerStore()
+
   const { getPlayer } = playerStore
   const { playerInfo } = storeToRefs(playerStore)
 

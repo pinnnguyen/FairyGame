@@ -16,6 +16,7 @@ const schema = new mongoose.Schema(
     enemy: {},
     player: {},
     winner: String,
+    reward: {},
   },
   { timestamps: true, strict: true, strictQuery: true },
 )

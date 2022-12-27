@@ -1,7 +1,16 @@
 <script setup lang='ts'>
+const user = useSupabaseUser()
+
 definePageMeta({
   middleware: ['role'],
   layout: 'auth',
+})
+
+console.log('Role')
+watchEffect(() => {
+  console.log('user?.value?.id', user?.value?.id)
+  if (user?.value?.id)
+    navigateTo('/')
 })
 
 const name = ref('')

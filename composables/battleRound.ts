@@ -2,8 +2,8 @@ import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
 import { set } from '@vueuse/core'
 import { sleep } from '~/common'
 import { usePlayerStore } from '~/composables/player'
-import { BATTLE_TURN } from '~/constants/war'
-import type { BaseProperties, BattleResponse } from '~/types/war'
+import { BATTLE_KIND, BATTLE_TURN, TARGET_TYPE } from '~/constants/war'
+import type { BaseProperties, BaseReward, BattleResponse } from '~/types/war'
 import { useSocket } from '#imports'
 
 export const useBattleRoundStore = defineStore('battleRound', () => {
@@ -15,6 +15,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   const battleRounds: any = ref([])
   const inRefresh = ref(false)
   const refreshTime = ref(0)
+  const reward = ref<BaseReward>({})
 
   const state = ref<{
     player?: BaseProperties
@@ -32,8 +33,8 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   }>({})
 
   const receiver = ref<Record<string | 'player' | 'enemy', {
-    hp: number
-    mp: number
+    hp?: number
+    mp?: number
   }>>({})
 
   const realTime = ref<Record<string | 'player' | 'enemy', {
@@ -64,31 +65,33 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   })
 
   const onRefreshFinished = () => {
-    _socket.emit('refreshBattle', playerInfo.value.midId)
+    _socket.emit('battleRefresh')
   }
 
   onMounted(async () => {
-    _socket.emit('joinBattle', `${playerInfo.value._id}-battle`, {
-      kind: 'solo',
+    _socket.emit('battle', `${playerInfo.value?._id}-battle`, {
+      kind: BATTLE_KIND.PVE,
       player: {
         userId: playerInfo.value?.userId,
       },
       target: {
-        type: 'monster',
+        type: TARGET_TYPE.MONSTER,
         id: playerInfo.value?.mid?.current?.monsterId,
       },
     })
 
-    _socket.on('battleResult', async (war: BattleResponse) => {
+    _socket.on('battleStart', async (war: BattleResponse) => {
       console.log('--BATTLE RESULT--', war)
       set(inRefresh, false)
       set(refreshTime, 0)
       set(loading, false)
       set(battleRounds, [])
+      set(reward, {})
 
       if (!war)
         return
 
+      set(reward, war.reward)
       state.value.player = war.player
       state.value.enemy = war.enemy
 
@@ -143,7 +146,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
               realTime.value[__turn].trueDamage = false
             }, DAMAGE_DELAY)
 
-            if (receiver.value[__turn].hp <= 0) {
+            if ((receiver.value[__turn].hp as number) <= 0) {
               setTimeout(() => {
                 battleResource.value = {
                   show: true,
@@ -163,19 +166,20 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   })
 
   onUnmounted(() => {
-    _socket.emit('leaveBattle')
+    _socket.emit('battleLeave')
   })
 
   return {
-    loading,
     state,
+    reward,
+    loading,
     receiver,
-    playerEffect,
     realTime,
-    battleRounds,
-    battleResource,
     inRefresh,
     refreshTime,
+    playerEffect,
+    battleRounds,
+    battleResource,
     onRefreshFinished,
   }
 })

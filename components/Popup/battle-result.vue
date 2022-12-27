@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { convertMillisecondsToSeconds } from '~/common'
 import { WINNER } from '~/constants/war'
+import { ITEM_ICON } from '~/constants/items'
 
 defineProps({
   battleResource: String,
+  reward: {},
 })
-const emits = defineEmits(['close'])
 
+const emits = defineEmits(['close'])
 const endTime = ref(6000)
 const close = () => {
   emits('close')
@@ -26,18 +28,20 @@ const time = setInterval(() => {
       <NuxtImg class="w-[300px]" format="webp" :src="battleResource.win === WINNER.YOU_WIN ? 'battle/win.png' : 'battle/lose.png' " />
       <div class="w-[250px] h-[250px] border border-[#6d6c6c] bg-black rounded-md">
         <ul class="h-full w-full p-1">
-          <li class="float-left w-[calc(23%_-_8px)] h-[48px] ml-2 m-1 bg-iconbg_3 bg-cover">
+          <li v-for="(value, key) in reward" :key="key" class="float-left w-[calc(23%_-_8px)] h-[48px] ml-2 m-1 bg-iconbg_3 bg-cover ">
             <div class="relative">
-              <NuxtImg src="items/7.png" format="webp" />
-              <p class="absolute bottom-0 right-0 text-xs font-bold text-white pr-1 pb-1">
-                112120
-              </p>
+              <NuxtImg :src="ITEM_ICON[key]" format="webp" />
+              <div class="absolute bottom-0 right-0 text-xs text-white pr-1 w-full text-right">
+                <p class="">
+                  {{ value }}
+                </p>
+              </div>
             </div>
           </li>
         </ul>
       </div>
-      <ButtonConfirm class="m-2" @close="close">
-        <span class="font-semibold">Nhận thưởng ({{ convertMillisecondsToSeconds(endTime) }})</span>
+      <ButtonConfirm class-name="h-[30px]" class="m-2" @close="close">
+        <span class="font-semibold z-9">Nhận thưởng ({{ convertMillisecondsToSeconds(endTime) }})</span>
       </ButtonConfirm>
     </div>
   </div>

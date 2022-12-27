@@ -3,7 +3,9 @@ import PlayerSchema from '~/server/schema/player'
 import MidSchema from '~/server/schema/mid'
 import PlayerAttribute from '~/server/schema/playerAttribute'
 import { DEFAULT_ATTRIBUTE, DEFAULT_ROLE } from '~/constants'
+import { serverSupabaseUser } from '#supabase/server'
 const ObjectId = mongoose.Types.ObjectId
+
 interface CreateRoleBody {
   name: string
   userId: string
@@ -12,8 +14,9 @@ interface CreateRoleBody {
 export default defineEventHandler(async (event) => {
   const body = await readBody<CreateRoleBody>(event)
   const sid = new ObjectId().toString()
+  const serverUser = await serverSupabaseUser(event)
 
-  const playerResource = await PlayerSchema.getPlayer(body.userId)
+  const playerResource = await (PlayerSchema as any).getPlayer(serverUser?.id)
 
   if (playerResource) {
     return {
@@ -39,7 +42,7 @@ export default defineEventHandler(async (event) => {
 
   const mid = await MidSchema.find({
     id: {
-      $in: [createRole.midId, (createRole.midId as number) + 1],
+      $in: [createRole.midId, (createRole.midId) + 1],
     },
   })
 

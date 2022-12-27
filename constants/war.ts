@@ -16,6 +16,10 @@ export const BATTLE_TURN = {
   ENEMY: 'enemy',
 }
 
+export const BATTLE_KIND = {
+  PVE: 'pve',
+}
+
 export const BATTLE_ACTION = {
   BUFF: 'buff',
   ATTACK: 'attack',

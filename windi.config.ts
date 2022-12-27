@@ -72,7 +72,13 @@ export default defineConfig({
     ],
   },
   theme: {
+    fontSize: {
+      xxs: '10px',
+    },
     backgroundImage: {
+      boss_daily_panel: 'url("/panel/boss_daily.png")',
+      pve: 'url("/pve/bg-pve.png")',
+      right_bottom: 'url("/button/right_bottom.png")',
       iconbg_0: 'url(\'/quality_bg/iconbg_0.png\')',
       iconbg_1: 'url(\'/quality_bg/iconbg_1.png\')',
       iconbg_2: 'url(\'/quality_bg/iconbg_2.png\')',

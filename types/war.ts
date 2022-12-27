@@ -3,11 +3,11 @@ import type { BaseAttributes } from '~/types/player'
 export interface BattleRequest {
   kind: string
   player: {
-    userId: string
+    userId?: string
   }
   target: {
-    id: string
-    type: string
+    id?: string
+    type?: string
   }
 }
 
@@ -29,11 +29,17 @@ export interface BaseProperties extends BaseAttributes {
   level: number
 }
 
+export interface BaseReward {
+  exp?: number
+  gold?: number
+}
+
 export interface BattleResponse extends BattleInRefresh {
   player: BaseProperties
   enemy: BaseProperties
   winner: string
   emulators: Emulator[]
+  reward: BaseReward
 }
 
 export interface BattleInRefresh {

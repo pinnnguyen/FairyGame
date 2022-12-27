@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '~/composables/player'
+import { formatCash } from '~/common'
+
 const { playerInfo } = storeToRefs(usePlayerStore())
 </script>
 
@@ -11,11 +13,19 @@ const { playerInfo } = storeToRefs(usePlayerStore())
         <span class="">{{ playerInfo.levelTitle }} {{ playerInfo.floor }}</span>
       </span>
       <div class="flex items-center">
-        <span class="text-white text-xs flex items-center">
-          <NuxtImg class="w-[20px]" format="webp" src="bag/00578.png" /> {{ playerInfo?.gold }} Linh thạch
-        </span>
-        <span class="text-white text-xs flex items-center">
-          <NuxtImg class="w-[22px]" format="webp" src="/items/41.png" />{{ playerInfo?.coin }} Tiên ngọc
+        <div class="text-white text-xs flex items-center mr-2 bg-[#454c66] rounded-xl m-1">
+          <div class="px-1 flex items-center">
+            <NuxtImg class="w-[17px]" format="webp" src="items/1_s.png" />
+            <span>{{ formatCash(playerInfo?.gold) }}</span>
+          </div>
+          <NuxtImg class="w-5 ml-3" src="button/add_price.png" />
+        </div>
+        <span class="text-white text-xs flex items-center bg-[#454c66] rounded-xl m-1">
+          <div class="px-1 flex items-center">
+            <NuxtImg class="w-[17px]" format="webp" src="/items/41.png" />
+            <span>{{ formatCash(playerInfo?.coin) }}</span>
+          </div>
+          <NuxtImg class="w-5 ml-3" src="button/add_price.png" />
         </span>
       </div>
     </div>

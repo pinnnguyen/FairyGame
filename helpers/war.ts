@@ -1,9 +1,6 @@
-import { BASE_EXP, TRAINING_RESOURCE } from '~/server/rule/reward'
-import mid from '~/server/schema/mid'
 import type { Monsters, PlayerInfo } from '~/types'
 import { BATTLE_ACTION, WINNER } from '~/constants/war'
-import type { BaseProperties, Emulator, BattleResponse } from '~/types/war'
-import { convertMillisecondsToSeconds } from '~/common'
+import type { BaseProperties, BattleResponse, Emulator } from '~/types/war'
 
 export const receiveDamage = (player: PlayerInfo, enemy: Monsters) => {
   let inflictDMG = 0

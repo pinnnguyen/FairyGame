@@ -1,13 +1,14 @@
+import type { Socket } from 'socket.io-client'
 import { io } from 'socket.io-client'
+import type { ClientToServerEvents, ServerToClientEvents } from '~/types/socket'
 
 const socketClient = () => {
   // const config = useRuntimeConfig()
-  return io('http://localhost:3005', {
+  const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('http://localhost:3005', {
     withCredentials: true,
-    // extraHeaders: {
-    //   'x-meem-io': 'true'
-    // }
   })
+
+  return socket
 }
 
 const useSocket = () => {

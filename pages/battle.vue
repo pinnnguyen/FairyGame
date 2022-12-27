@@ -13,6 +13,7 @@ const {
   battleResource,
   inRefresh,
   refreshTime,
+  reward,
 } = storeToRefs(useBattleRoundStore())
 
 const { onRefreshFinished } = useBattleRoundStore()
@@ -31,15 +32,24 @@ const doCloseBattleR = () => {
 </script>
 
 <template>
-  <PopupBattleResult v-if="battleResource.show" @close="doCloseBattleR" :battle-resource="battleResource" />
-  <PopupRefreshMid v-if="inRefresh" :refresh-time="refreshTime" @refreshFinished="refreshFinished" />
+  <LazyPopupBattleResult
+    v-if="battleResource.show"
+    :battle-resource="battleResource"
+    :reward="reward"
+    @close="doCloseBattleR"
+  />
+  <LazyPopupRefreshMid
+    v-if="inRefresh"
+    :refresh-time="refreshTime"
+    @refreshFinished="refreshFinished"
+  />
   <loadingScreen v-if="loading" />
   <div v-else class="h-screen bg-white">
     <div class="text-center pt-2 font-semibold">
       [Bắt đầu chiến đấu]
     </div>
 
-    <div class="h-[60%]">
+    <div class="h-[60%] bg-pve bg-cover">
       <div class="flex justify-between p-2 pt-2">
         <div>
           <div>
@@ -127,7 +137,7 @@ const doCloseBattleR = () => {
       </div>
       <div class="flex justify-around mt-8">
         <div
-          class="relative duration-300 transition-transform" :style="{
+          class="relative duration-500 transition-transform" :style="{
             transform: playerEffect === BATTLE_TURN.PLAYER ? 'translate(30%)' : '',
           }"
         >
@@ -137,7 +147,7 @@ const doCloseBattleR = () => {
           <NuxtImg format="webp" class="h-[160px]" src="/pve/player.png" />
         </div>
         <div
-          class="relative duration-300 transition-transform" :style="{
+          class="relative duration-500 transition-transform" :style="{
             transform: playerEffect === BATTLE_TURN.ENEMY ? 'translate(-30%)' : '',
           }"
         >
@@ -148,23 +158,23 @@ const doCloseBattleR = () => {
         </div>
       </div>
     </div>
-    <div class="p-4 h-[35%] overflow-scroll">
-      <h2 class="text-center font-semibold text-xl pb-2">
-        Chiến đấu
-      </h2>
-      <div v-for="(round, index) in battleRounds" :key="index" class="mb-2 border-b border-gray-300">
-        <h3 class="font-semibold">
-          [Lượt {{ round.roundNum }}]
-        </h3>
-        <strong>
-          {{ round.turn === BATTLE_TURN.PLAYER ? 'Bạn' : 'Muc Tiêu' }}
-        </strong> gây
-        <strong class="text-red-600">
-          {{ round.damage }}
-        </strong>
-        sát thương lên
-        <strong>{{ round.turn === BATTLE_TURN.PLAYER ? 'Mục tiêu' : 'Bạn' }}</strong>
-      </div>
-    </div>
+<!--    <div class="p-4 h-[35%] overflow-scroll">-->
+<!--      <h2 class="text-center font-semibold text-xl pb-2">-->
+<!--        Chiến đấu-->
+<!--      </h2>-->
+<!--      <div v-for="(round, index) in battleRounds" :key="index" class="mb-2 border-b border-gray-300">-->
+<!--        <h3 class="font-semibold">-->
+<!--          [Lượt {{ round.roundNum }}]-->
+<!--        </h3>-->
+<!--        <strong>-->
+<!--          {{ round.turn === BATTLE_TURN.PLAYER ? 'Bạn' : 'Muc Tiêu' }}-->
+<!--        </strong> gây-->
+<!--        <strong class="text-red-600">-->
+<!--          {{ round.damage }}-->
+<!--        </strong>-->
+<!--        sát thương lên-->
+<!--        <strong>{{ round.turn === BATTLE_TURN.PLAYER ? 'Mục tiêu' : 'Bạn' }}</strong>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>

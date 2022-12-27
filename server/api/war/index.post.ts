@@ -1,16 +1,20 @@
 import type { H3Event } from 'h3'
 import { createError, sendError } from 'h3'
-import type { BattleRequest } from '~/types/war'
+import { pveBaseReward } from '~/server/helpers/reward'
+import type { BattleRequest, BattleResponse } from '~/types/war'
 import PlayerSchema from '~/server/schema/player'
 import MonsterSchema from '~/server/schema/monster'
-import { TARGET_TYPE } from '~/constants/war'
+import { BATTLE_KIND, TARGET_TYPE } from '~/constants/war'
 import type { PlayerInfo } from '~/types'
 import { startWar } from '~/helpers/war'
 import BattleSchema from '~/server/schema/battle'
 
 export const handlePlayerVsMonster = async (_p: PlayerInfo, monsterId: string) => {
   // Get battle information has already used it
-  const battle = await BattleSchema.findOne({ 'sid': _p.player.sid, 'kind': 'pve', 'mid.id': _p.player.midId }).sort({ createdAt: -1 })
+  const battle = await BattleSchema
+    .findOne({ 'sid': _p.player.sid, 'kind': BATTLE_KIND.PVE, 'mid.id': _p.player.midId })
+    .sort({ createdAt: -1 })
+
   if (battle) {
     const doRefresh = new Date(battle.createdAt).getTime() + (_p as any)?.mid?.current?.ms ?? 60000
     const now = new Date().getTime()
@@ -21,6 +25,7 @@ export const handlePlayerVsMonster = async (_p: PlayerInfo, monsterId: string) =
         refreshTime: doRefresh - now,
         player: battle.player,
         enemy: battle.enemy,
+        reward: battle.reward,
       }
     }
   }
@@ -40,26 +45,37 @@ export const handlePlayerVsMonster = async (_p: PlayerInfo, monsterId: string) =
     winner,
   } = startWar(_p, monster)
 
+  const { exp, gold } = await pveBaseReward(_p.player.sid, _p.player.midId)
+
   // Lưu lịch sử trận đánh
   await new BattleSchema({
     sid: _p.player.sid,
     mid: {
       id: _p.player.midId,
     },
-    kind: 'pve',
+    kind: BATTLE_KIND.PVE,
     player,
     enemy,
     emulators,
     winner,
+    reward: {
+      exp,
+      gold,
+    },
   }).save()
 
   await PlayerSchema.updateOne({ sid: _p.player.sid }, { lastTimeReceivedRss: new Date().getTime() })
+
   return {
     player,
     enemy,
     emulators,
     winner,
-  }
+    reward: {
+      exp,
+      gold,
+    },
+  } as BattleResponse
 }
 
 export const handleWars = async (request: BattleRequest) => {

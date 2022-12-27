@@ -19,9 +19,9 @@ const time = setInterval(() => {
 <template>
   <div class="blocker duration-500 transition-colors transition-opacity">
     <div class="text-white flex flex-col items-center justify-center w-full h-full">
-      <div class="text-base">Chờ hồi sinh {{ convertMillisecondsToSeconds(endTime) }}</div>
+      <div class="text-base">Đang hồi sinh {{ convertMillisecondsToSeconds(endTime) }}</div>
       <ButtonConfirm class="mt-2" @click="navigateTo('/')">
-        Về thành
+        <span class="z-9 font-semibold">Về thành</span>
       </ButtonConfirm>
     </div>
   </div>

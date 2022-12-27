@@ -2,7 +2,8 @@ export default defineNuxtConfig({
   nitro: {
     plugins: [
       '~/server/index.ts',
-      '~/server/plugins/socket'],
+      '~/server/plugins/socket',
+    ],
   },
   runtimeConfig: {
     mongoUrl: process.env.MONGO_URL,
@@ -10,7 +11,7 @@ export default defineNuxtConfig({
     socketIO: {
       cors: {
         origin: 'http://localhost:3000',
-        allowedHeaders: ['x-game'],
+        allowedHeaders: ['gl'],
         credentials: true,
       },
       port: 3005,
@@ -22,7 +23,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/supabase',
     '@nuxt/image-edge',
-    'nuxt-full-static',
+    // 'nuxt-full-static',
     'nuxt-windicss',
     // 'virtual:windi-base.css',
     // 'virtual:windi-components.css',
