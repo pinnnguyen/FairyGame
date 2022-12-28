@@ -11,6 +11,7 @@ import defaultTheme from 'windicss/defaultTheme'
 import TypographyPlugin from 'windicss/plugin/typography'
 import AspectRatioPlugin from 'windicss/plugin/aspect-ratio'
 import FiltersPlugin from 'windicss/plugin/filters'
+import LineClampPlugin from 'windicss/plugin/line-clamp'
 
 const MyTheme = {
   colors: {
@@ -125,5 +126,6 @@ export default defineConfig({
     FiltersPlugin as Plugin,
     TypographyPlugin as Plugin,
     AspectRatioPlugin as Plugin,
+    LineClampPlugin as Plugin,
   ] as Plugin[],
 })

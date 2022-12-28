@@ -1,9 +1,18 @@
+import {BATTLE_KIND} from "~/constants";
 import { BattleSchema, PlayerSchema } from '~/server/schema'
-import { resourceReceived } from '~/helpers/reward'
-export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
+import { resourceReceived } from '~/helpers'
+import { serverSupabaseUser } from '#supabase/server'
 
-  const _p: any = await PlayerSchema.findOne({ sid: body.sid })
+export default defineEventHandler(async (event) => {
+  const serverUser = await serverSupabaseUser(event)
+  if (!serverUser) {
+    return createError({
+      statusCode: 401,
+      statusMessage: 'Unauthorized',
+    })
+  }
+
+  const _p: any = await PlayerSchema.findOne({ userId: serverUser.id })
   if (!_p) {
     return createError({
       statusCode: 400,
@@ -11,7 +20,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const battle = await BattleSchema.findOne({ 'sid': body.sid, 'mid.id': _p.midId, 'kind': 'pve' })
+  const battle = await BattleSchema.findOne({ 'sid': _p.sid, 'mid.id': _p.midId, 'kind': BATTLE_KIND.PVE })
   if (!battle) {
     return createError({
       statusCode: 400,

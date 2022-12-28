@@ -4,8 +4,14 @@ import { serverSupabaseUser } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   const serverUser = await serverSupabaseUser(event)
-  const playerResource = await (PlayerSchema as any).getPlayer(serverUser?.id)
+  if (!serverUser) {
+    return createError({
+      statusCode: 401,
+      statusMessage: 'Unauthorized',
+    })
+  }
 
+  const playerResource = await (PlayerSchema as any).getPlayer(serverUser?.id)
   return {
     player: playerResource?.player,
     attribute: playerResource?.attribute,

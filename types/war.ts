@@ -1,3 +1,4 @@
+import type { PlayerEquipment } from '~/types/equiment'
 import type { BaseAttributes } from '~/types/player'
 
 export interface BattleRequest {
@@ -39,7 +40,10 @@ export interface BattleResponse extends BattleInRefresh {
   enemy: BaseProperties
   winner: string
   emulators: Emulator[]
-  reward: BaseReward
+  reward: {
+    base: BaseReward
+    equipments?: PlayerEquipment[]
+  }
 }
 
 export interface BattleInRefresh {

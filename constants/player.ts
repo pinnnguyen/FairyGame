@@ -12,7 +12,7 @@ export const DEFAULT_ATTRIBUTE = {
   def: 15,
   hp: 100,
   mp: 50,
-  hpSuck: 0,
+  bloodsucking: 0,
   critical: 0,
   exp: 0,
   speed: 1,

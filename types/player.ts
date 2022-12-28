@@ -6,7 +6,7 @@ export interface BaseAttributes {
   hp: number
   mp: number
   critical: number
-  hpSuck: number
+  bloodsucking: number
 }
 export interface Player {
   _id?: string
@@ -37,14 +37,14 @@ export interface PlayerResponse {
 }
 
 export interface Slot {
-  slot_1?: number
-  slot_2?: number
-  slot_3?: number
-  slot_4?: number
-  slot_5?: number
-  slot_6?: number
-  slot_7?: number
-  slot_8?: number
+  slot_1?: string
+  slot_2?: string
+  slot_3?: string
+  slot_4?: string
+  slot_5?: string
+  slot_6?: string
+  slot_7?: string
+  slot_8?: string
 }
 
 export interface PlayerInfo {

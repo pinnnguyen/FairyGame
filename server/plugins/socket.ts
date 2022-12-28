@@ -22,13 +22,17 @@ export default function () {
 
       socket.on('battleRefresh', async () => {
         const battle = await handleWars(request)
-        io.to(_channel).emit('battleEnd', battle)
+        io.to(_channel).emit('battleStart', battle)
       })
 
       socket.on('battleLeave', () => {
         socket.disconnect()
       })
     })
+
+    // socket.on('bag:join', (_channel: string) => {
+    //   socket.join(_channel)
+    // })
 
     socket.on('disconnect', () => {
       socket.disconnect()

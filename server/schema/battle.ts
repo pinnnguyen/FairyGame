@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
+import type { Battle } from '~/types'
 const ObjectId = mongoose.Types.ObjectId
 
-const schema = new mongoose.Schema(
+const schema = new mongoose.Schema<Battle>(
   {
     _id: {
       type: String,

@@ -1,28 +1,36 @@
 <script setup lang='ts'>
-const user = useSupabaseUser()
+const uClient = useSupabaseUser()
+const { initPlayer } = usePlayerStore()
 
 definePageMeta({
-  middleware: ['role'],
+  // middleware: ['role'],
   layout: 'auth',
 })
 
-console.log('Role')
-watchEffect(() => {
-  console.log('user?.value?.id', user?.value?.id)
-  if (user?.value?.id)
+onMounted(async () => {
+  const role = await $fetch('/api/player', {
+    headers: (useRequestHeaders(['cookie']) as any),
+  })
+
+  if (role?.player?.sid) {
+    initPlayer(role)
+    return navigateTo('/')
+  }
+
+  if (uClient?.value?.id)
     navigateTo('/')
 })
 
 const name = ref('')
 const handleCreateFigure = async () => {
-  const user = useSupabaseUser()
   const { initPlayer } = usePlayerStore()
 
   const role = await $fetch('/api/player/create-role', {
     method: 'POST',
+    headers: (useRequestHeaders(['cookie']) as any),
     body: {
       name: name.value,
-      userId: user.value?.id,
+      userId: uClient.value?.id,
     },
   })
 

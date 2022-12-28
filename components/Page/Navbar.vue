@@ -10,7 +10,7 @@ const { playerInfo } = storeToRefs(usePlayerStore())
   <div style="background: url('/common/bj_tongyong_2.png'); background-size: cover">
     <div class="flex items-center justify-between mx-2">
       <span class="text-white ml-2">
-        <span class="">{{ playerInfo.levelTitle }} {{ playerInfo.floor }}</span>
+        <span class="">{{ playerInfo?.levelTitle }} {{ playerInfo?.floor }}</span>
       </span>
       <div class="flex items-center">
         <div class="text-white text-xs flex items-center mr-2 bg-[#454c66] rounded-xl m-1">

@@ -5,4 +5,4 @@ export * from './mid'
 export * from './profile'
 export * from './socket'
 export * from './war'
-
+export * from './battle'

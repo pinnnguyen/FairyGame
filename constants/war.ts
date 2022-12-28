@@ -8,8 +8,8 @@ export const TARGET_TYPE = {
 }
 
 export const WINNER = {
-  YOU_WIN: 'you_win',
-  YOU_LOSE: 'you_lose',
+  youwin: 'youwin',
+  youlose: 'youlose',
 }
 
 export const BATTLE_TURN = {
@@ -19,6 +19,10 @@ export const BATTLE_TURN = {
 
 export const BATTLE_KIND = {
   PVE: 'pve',
+  PVP: 'pvp',
+  BOSS: 'boss',
+  BOSS_DAILY: 'boss_daily',
+  DUNGEON: 'dungeon',
 }
 
 export const BATTLE_ACTION = {

@@ -149,12 +149,12 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
 
     if (playerAttribute?.hp <= 0) {
       endWar = true
-      winner = WINNER.YOU_LOSE
+      winner = WINNER.youlose
     }
 
     if (_enemy?.hp <= 0) {
       endWar = true
-      winner = WINNER.YOU_WIN
+      winner = WINNER.youwin
     }
   }
 

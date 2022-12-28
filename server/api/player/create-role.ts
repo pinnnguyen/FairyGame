@@ -13,9 +13,14 @@ export default defineEventHandler(async (event) => {
   const body = await readBody<CreateRoleBody>(event)
   const sid = new ObjectId().toString()
   const serverUser = await serverSupabaseUser(event)
+  if (!serverUser) {
+    return createError({
+      statusCode: 401,
+      statusMessage: 'Unauthorized',
+    })
+  }
 
   const playerResource = await (PlayerSchema as any).getPlayer(serverUser?.id)
-
   if (playerResource) {
     return {
       player: playerResource.player,

@@ -1,7 +1,6 @@
-<script setup>
-import { useCookie } from '#app'
-const supabase = useSupabaseClient()
-const user = useSupabaseUser()
+<script setup lang="ts">
+const client = useSupabaseClient()
+const uClient = useSupabaseUser()
 
 definePageMeta({
   layout: 'auth',
@@ -10,20 +9,19 @@ definePageMeta({
 const password = ref('')
 const email = ref('')
 
-if (user?.value?.id)
-  navigateTo('/')
+onMounted(() => {
+  if (uClient?.value?.id)
+    navigateTo('/')
+})
 
 const handleLogin = async () => {
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await client.auth.signInWithPassword({
     email: email.value,
     password: password.value,
   })
 
-  if (data.user) {
-    // const nuxtSSID = useCookie('NUXT_SS_ID')
-    // nuxtSSID.value = data.user.id
+  if (data.user)
     return navigateTo('/role')
-  }
 
   if (error)
     alert(error)

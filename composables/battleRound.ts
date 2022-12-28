@@ -3,6 +3,7 @@ import { set } from '@vueuse/core'
 import { sleep } from '~/common'
 import { usePlayerStore } from '~/composables/player'
 import { BATTLE_KIND, BATTLE_TURN, TARGET_TYPE } from '~/constants/war'
+import type { PlayerEquipment } from '~/types'
 import type { BaseProperties, BaseReward, BattleResponse } from '~/types/war'
 import { useSocket } from '#imports'
 
@@ -15,7 +16,10 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   const battleRounds: any = ref([])
   const inRefresh = ref(false)
   const refreshTime = ref(0)
-  const reward = ref<BaseReward>({})
+  const reward = ref<{
+    base: BaseReward
+    equipments: PlayerEquipment[]
+  }>()
 
   const state = ref<{
     player?: BaseProperties
@@ -59,12 +63,13 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   const DAMAGE_DELAY = 700
   const SHOULD_WIN_DELAY = 1000
 
-  const battleResource = ref({
+  const battleResult = ref({
     show: false,
     win: '',
   })
 
   const onRefreshFinished = () => {
+    console.log('onRefreshFinished')
     _socket.emit('battleRefresh')
   }
 
@@ -86,7 +91,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
       set(refreshTime, 0)
       set(loading, false)
       set(battleRounds, [])
-      set(reward, {})
+      set(reward, null)
 
       if (!war)
         return
@@ -148,7 +153,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
 
             if ((receiver.value[__turn].hp as number) <= 0) {
               setTimeout(() => {
-                battleResource.value = {
+                battleResult.value = {
                   show: true,
                   win: war.winner,
                 }
@@ -179,7 +184,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     refreshTime,
     playerEffect,
     battleRounds,
-    battleResource,
+    battleResult,
     onRefreshFinished,
   }
 })

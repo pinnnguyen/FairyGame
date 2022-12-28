@@ -6,8 +6,7 @@ import {
   RANGE_PLAYER_BIG_LEVEL, UPGRADE_LEVEL,
 } from '~/server/rule/level'
 import type { Player } from '~/types'
-import PlayerSchema from '~/server/schema/player'
-import PlayerAttribute from '~/server/schema/playerAttribute'
+import { PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
 
 export const shouldTupo = (_p: Player) => {
   const playerNextLevel = _p.level + 1
@@ -48,7 +47,7 @@ export const playerLevelUp = async (sid: string) => {
     const playerNextLevel = _p.player.level + 1
     for (let i = 0; i < RANGE_PLAYER_BIG_LEVEL.length; i++) {
       if (playerNextLevel >= RANGE_PLAYER_BIG_LEVEL[i] && playerNextLevel < RANGE_PLAYER_BIG_LEVEL[i + 1]) {
-        await PlayerAttribute.updateOne({ sid }, {
+        await PlayerAttributeSchema.updateOne({ sid }, {
           $inc: {
             hp: RANGE_HP_A_LEVEL[i],
             damage: RANGE_DMG_A_LEVEL[i],

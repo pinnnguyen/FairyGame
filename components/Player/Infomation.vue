@@ -4,7 +4,7 @@ import { onClickOutside } from '@vueuse/core'
 import { usePlayerStore } from '~/composables/player'
 import { useAppStore } from '~/composables/app'
 
-const { togglePlayerInfo } = storeToRefs(useAppStore())
+const { playerInfoComponent } = storeToRefs(useAppStore())
 const playerRef = ref(null)
 const currentTab = ref('attribute')
 const tabs = ref([
@@ -18,13 +18,13 @@ const tabs = ref([
   },
 ])
 
-onClickOutside(playerRef, event => togglePlayerInfo.value = false)
+onClickOutside(playerRef, event => playerInfoComponent.value = false)
 
 const { playerInfo, attribute } = storeToRefs(usePlayerStore())
 </script>
 
 <template>
-  <div ref="playerRef" class="bg-[#1b345d] text-white w-full z-99 duration-500 absolute bottom-0 h-[70%]">
+    <div ref="playerRef" class="bg-[#1b345d] text-white w-full z-99 duration-500 absolute bottom-0 h-[70%]">
     <div class="h-full">
       <div class="absolute top-[-25px] flex items-center justify-center w-full">
         <div
@@ -46,13 +46,13 @@ const { playerInfo, attribute } = storeToRefs(usePlayerStore())
               <img class="h-[50px] mr-2" src="pve/player-avatar.png">
               <div>
                 <div>
-                  Tên: {{ playerInfo.name }}
+                  Tên: {{ playerInfo?.name }}
                 </div>
                 <div>
-                  Cảnh giới: {{ playerInfo.levelTitle }} {{ playerInfo.floor }}
+                  Cảnh giới: {{ playerInfo?.levelTitle }} {{ playerInfo?.floor }}
                 </div>
                 <div>
-                  Đẳng cấp: {{ playerInfo.level }}
+                  Đẳng cấp: {{ playerInfo?.level }}
                 </div>
               </div>
             </div>
@@ -76,35 +76,57 @@ const { playerInfo, attribute } = storeToRefs(usePlayerStore())
               Tốc độ: {{ attribute?.speed ?? 0 }}
             </div>
             <div class="   my-1 px-2">
-              Khí huyết: {{ attribute.hp ?? 0 }}
+              Khí huyết: {{ attribute?.hp ?? 0 }}
             </div>
             <div class="   my-1 px-2">
-              Công Kích: {{ attribute.damage ?? 0 }}
+              Công Kích: {{ attribute?.damage ?? 0 }}
             </div>
             <div class="   my-1 px-2">
-              Phòng Ngự: {{ attribute.def ?? 0 }}
+              Phòng Ngự: {{ attribute?.def ?? 0 }}
             </div>
             <div class="   my-1 px-2">
-              Bạo kích: {{ attribute.critical ?? 0 }}%
+              Bạo kích: {{ attribute?.critical ?? 0 }}%
             </div>
             <div class="   my-1 px-2">
               Sát thương bạo kích: 150%
             </div>
             <div class="   my-1 px-2">
-              Hút máu: {{ attribute.suckHp ?? 0 }}%
+              Hút máu: {{ attribute?.suckHp ?? 0 }}%
             </div>
             <div />
+          </div>
+        </div>
+        <div v-if="currentTab === 'equipment'" class="h-full flex items-end justify-center">
+          <div class="grid grid-cols-4 gap-2 mb-2">
+            <div class="relative">
+              <img class="w-[60px] h-[55px]" src="equipment/vukhi.png">
+            </div>
+            <div class="relative">
+              <img class="w-[60px] h-[55px]" src="equipment/ngocboi.png">
+            </div>
+            <div class="relative">
+              <img class="w-[60px] h-[55px]" src="equipment/giap.png">
+            </div>
+            <div class="relative">
+              <img class="w-[60px] h-[55px]" src="equipment/baotay.png">
+            </div>
+            <div class="relative">
+              <img class="w-[60px] h-[55px]" src="equipment/rinh.png">
+
+            </div>
+            <div class="relative">
+              <img class="w-[60px] h-[55px]" src="equipment/giay.png">
+
+            </div>
+            <div class="relative">
+              <img class="w-[60px] h-[55px]" src="equipment/ngoc.png">
+            </div>
+            <div class="relative">
+              <img class="w-[60px] h-[55px]" src="equipment/mu.png">
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.tab {
-  border-width: 4px 30px 4px 30px;
-  border-color: #cc0000;
-  border-radius:100px 100px 0 0 ;
-}
-</style>

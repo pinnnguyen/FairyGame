@@ -20,11 +20,11 @@ const schema = new mongoose.Schema<Monster>(
     hp: Number,
     mp: Number,
     critical: Number,
-    hpSuck: Number,
+    bloodsucking: Number,
     equipments: [],
     speed: Number,
   },
   { timestamps: true, strict: true, strictQuery: true },
 )
-
+schema.index({ id: -1 }, { unique: true })
 export const MonsterSchema = mongoose.model('MonsterSchema', schema, 'monsters')

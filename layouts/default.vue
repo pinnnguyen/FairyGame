@@ -1,13 +1,13 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '~/composables/app'
-const { togglePlayerInfo } = storeToRefs(useAppStore())
+const { playerInfoComponent } = storeToRefs(useAppStore())
 </script>
 
 <template>
   <div>
     <div class="flex flex-col min-h-screen">
-      <PlayerInfomation ref="playerInfoComponent" :class="{ '!h-[0px] opacity-0': !togglePlayerInfo }" />
+      <PlayerInfomation :class="{ '!h-[0px] opacity-0': !playerInfoComponent }" />
       <slot name="header">
         <PageNavbar />
       </slot>

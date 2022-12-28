@@ -10,9 +10,19 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
   // Get battle information has already used it
   const battle = await BattleSchema
     .findOne({ 'sid': _p.player.sid, 'kind': BATTLE_KIND.PVE, 'mid.id': _p.player.midId })
-    .sort({ createdAt: -1 })
+    .sort({ createdAt: -1 }).select('player enemy reward createdAt')
 
   if (battle) {
+    // Clear pve history
+    await BattleSchema.deleteMany({
+      '_id': {
+        $nin: [battle._id],
+      },
+      'kind': BATTLE_KIND.PVE,
+      'sid': _p.player.sid,
+      'mid.id': _p.player.midId,
+    })
+
     const doRefresh = new Date(battle.createdAt).getTime() + (_p as any)?.mid?.current?.ms ?? 60000
     const now = new Date().getTime()
 
@@ -50,7 +60,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
   } = startWar(_p, _enemyObj)
 
   const { exp, gold } = await pveBaseReward(_p.player.sid, _p.player.midId)
-  await receivedEquipment(_p.player.sid, _enemyObj)
+  const { equipments } = await receivedEquipment(_p.player.sid, _enemyObj)
   await setLastTimeReceivedRss(_p.player.sid)
 
   // Lưu lịch sử trận đánh
@@ -65,8 +75,11 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     emulators,
     winner,
     reward: {
-      exp,
-      gold,
+      base: {
+        exp,
+        gold,
+      },
+      equipments,
     },
   }).save()
 
@@ -78,8 +91,11 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     emulators,
     winner,
     reward: {
-      exp,
-      gold,
+      base: {
+        exp,
+        gold,
+      },
+      equipments,
     },
   } as BattleResponse
 }

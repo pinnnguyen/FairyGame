@@ -4,17 +4,24 @@ import { serverSupabaseUser } from '#supabase/server'
 
 export default defineEventHandler(async (event: H3Event) => {
   const uServer = await serverSupabaseUser(event)
-  const sid = await PlayerSchema.findOne({ userId: uServer?.id }).select('sid')
-  if (!sid) {
+  if (!uServer) {
+    return createError({
+      statusCode: 401,
+      statusMessage: 'Unauthorized',
+    })
+  }
+
+  const player = await PlayerSchema.findOne({ userId: uServer?.id }).select('sid')
+  if (!player?.sid) {
     return createError({
       statusCode: 404,
       statusMessage: 'Người chơi không tồn tại',
     })
   }
 
-  const equipment = await PlayerEquipmentSchema.find({ sid })
+  const equipments = await PlayerEquipmentSchema.find({ sid: player?.sid })
 
   return {
-    equipment,
+    equipments,
   }
 })

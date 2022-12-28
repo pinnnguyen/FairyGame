@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useBattleRoundStore } from '#imports'
+import { useBattleRoundStore, usePlayerStore } from '#imports'
 import { BATTLE_TURN } from '~/constants/war'
 
 const {
@@ -10,13 +10,14 @@ const {
   playerEffect,
   realTime,
   battleRounds,
-  battleResource,
+  battleResult,
   inRefresh,
   refreshTime,
   reward,
 } = storeToRefs(useBattleRoundStore())
 
 const { onRefreshFinished } = useBattleRoundStore()
+const { playerInfo } = storeToRefs(usePlayerStore())
 
 definePageMeta({
   middleware: ['game'],
@@ -27,28 +28,22 @@ const refreshFinished = () => {
 }
 
 const doCloseBattleR = () => {
-  battleResource.value.show = false
+  battleResult.value.show = false
 }
 </script>
 
 <template>
   <LazyPopupBattleResult
-    v-if="battleResource.show"
-    :battle-resource="battleResource"
+    v-if="battleResult.show"
+    :battle-result="battleResult"
     :reward="reward"
     @close="doCloseBattleR"
   />
-  <LazyPopupRefreshMid
-    v-if="inRefresh"
-    :refresh-time="refreshTime"
-    @refreshFinished="refreshFinished"
-  />
   <loadingScreen v-if="loading" />
   <div v-else class="h-screen bg-white">
-    <div class="text-center pt-2 font-semibold">
-      [Bắt đầu chiến đấu]
+    <div class="text-center pt-2 font-semibold flex items-center justify-center">
+      [{{ playerInfo.mid.current.name }}]
     </div>
-
     <div class="h-[60%] bg-pve bg-cover">
       <div class="flex justify-between p-2 pt-2">
         <div>
@@ -58,7 +53,6 @@ const doCloseBattleR = () => {
               <NuxtImg format="webp" class="h-[40px]" src="/pve/player-avatar.png" />
             </div>
           </div>
-
           <div class="mt-2">
             <div class="flex items-center justify-start">
               <span class="pr-2">
@@ -100,7 +94,6 @@ const doCloseBattleR = () => {
               <NuxtImg format="webp" class="h-[40px]" src="/pve/monter-avatar.png" />
             </div>
           </div>
-
           <div class="mt-2">
             <div class="flex items-center justify-end">
               <div class="h-3 w-28 rounded-full bg-[#212121] flex items-center p-[2px]">
@@ -158,23 +151,37 @@ const doCloseBattleR = () => {
         </div>
       </div>
     </div>
-<!--    <div class="p-4 h-[35%] overflow-scroll">-->
-<!--      <h2 class="text-center font-semibold text-xl pb-2">-->
-<!--        Chiến đấu-->
-<!--      </h2>-->
-<!--      <div v-for="(round, index) in battleRounds" :key="index" class="mb-2 border-b border-gray-300">-->
-<!--        <h3 class="font-semibold">-->
-<!--          [Lượt {{ round.roundNum }}]-->
-<!--        </h3>-->
-<!--        <strong>-->
-<!--          {{ round.turn === BATTLE_TURN.PLAYER ? 'Bạn' : 'Muc Tiêu' }}-->
-<!--        </strong> gây-->
-<!--        <strong class="text-red-600">-->
-<!--          {{ round.damage }}-->
-<!--        </strong>-->
-<!--        sát thương lên-->
-<!--        <strong>{{ round.turn === BATTLE_TURN.PLAYER ? 'Mục tiêu' : 'Bạn' }}</strong>-->
-<!--      </div>-->
-<!--    </div>-->
+    <div class="p-4 h-[23%] overflow-scroll">
+      <div v-for="(round, index) in battleRounds" :key="index" class="mb-2 border-b border-gray-300">
+        <h3 class="font-semibold">
+          [Lượt {{ round.roundNum }}]
+        </h3>
+        <strong>
+          {{ round.turn === BATTLE_TURN.PLAYER ? 'Bạn' : 'Muc Tiêu' }}
+        </strong> gây
+        <strong class="text-red-600">
+          {{ round.damage }}
+        </strong>
+        sát thương lên
+        <strong>{{ round.turn === BATTLE_TURN.PLAYER ? 'Mục tiêu' : 'Bạn' }}</strong>
+      </div>
+    </div>
+    <LazyPopupRefreshMid
+        v-if="inRefresh"
+        :refresh-time="refreshTime"
+        @refreshFinished="refreshFinished"
+    />
+    <div class="flex items-center justify-center">
+      <ButtonCancel class="mx-2" class-name="h-[23px]" @click.stop="navigateTo('/')">
+        <span class="z-9">
+          Về thành
+        </span>
+      </ButtonCancel>
+      <ButtonConfirm class="mx-2">
+        <span class="z-9">
+          Ải tiếp
+        </span>
+      </ButtonConfirm>
+    </div>
   </div>
 </template>

@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
+import { $in } from 'sift'
 import { conditionForUpLevel } from '~/server/common/level'
 import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule/level'
-import { MidSchema, PlayerAttributeSchema } from '~/server/schema'
+import { MidSchema, PlayerAttributeSchema, PlayerEquipmentSchema } from '~/server/schema'
 import type { Player } from '~/types'
 const ObjectId = mongoose.Types.ObjectId
 
@@ -70,6 +71,35 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
           }
         }
 
+        const equipId = []
+        if (attribute?.slot_1)
+          equipId.push(attribute?.slot_1)
+        if (attribute?.slot_2)
+          equipId.push(attribute?.slot_2)
+        if (attribute?.slot_3)
+          equipId.push(attribute?.slot_3)
+        if (attribute?.slot_4)
+          equipId.push(attribute?.slot_4)
+        if (attribute?.slot_5)
+          equipId.push(attribute?.slot_5)
+        if (attribute?.slot_6)
+          equipId.push(attribute?.slot_6)
+        if (attribute?.slot_7)
+          equipId.push(attribute?.slot_7)
+        if (attribute?.slot_8)
+          equipId.push(attribute?.slot_8)
+
+        const playerEquips = await PlayerEquipmentSchema.find({
+          _id: {
+            $in: equipId,
+          },
+        })
+
+        if (playerEquips.length > 0 && attribute) {
+          for (let i = 0; i < playerEquips.length; i++)
+            attribute.hp += playerEquips[i].hp
+        }
+
         return {
           player,
           mid: {
@@ -100,5 +130,5 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
   },
 )
 
-schema.index({ sid: -1 })
+schema.index({ sid: -1 }, { unique: true })
 export const PlayerSchema = mongoose.model('PlayerSchema', schema, 'players')

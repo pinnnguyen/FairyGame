@@ -18,13 +18,15 @@ const schema = new mongoose.Schema(
     hp: Number,
     mp: Number,
     critical: Number,
-    hpSuck: Number,
+    bloodsucking: Number,
     rank: Number,
     level: Number,
     slot: Number,
+    preview: String,
   },
   { timestamps: true, strict: true, strictQuery: true },
 )
+schema.index({ id: -1 }, { unique: true })
 schema.index({ slot: -1 })
 schema.index({ level: -1 })
 schema.index({ rank: -1 })

@@ -10,7 +10,7 @@
         "hp": 100,
         "mp": 0,
         "critical": 0,
-        "hpSuck": 0,
+        "bloodsucking": 0,
         "equipments": [
             {
                 "id": 1,
@@ -29,7 +29,7 @@
         "hp": 200,
         "mp": 0,
         "critical": 0,
-        "hpSuck": 0,
+        "bloodsucking": 0,
         "equipments": [
             {
                 "id": 1,
@@ -48,7 +48,7 @@
         "hp": 500,
         "mp": 0,
         "critical": 0,
-        "hpSuck": 0,
+        "bloodsucking": 0,
         "equipments": [
             {
                 "id": 1,

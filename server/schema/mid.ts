@@ -22,5 +22,5 @@ const schema = new mongoose.Schema<Mid>(
   { timestamps: true, strict: true, strictQuery: true },
 )
 
-schema.index({ id: -1 })
+schema.index({ id: -1 }, { unique: true })
 export const MidSchema = mongoose.model('MidSchema', schema, 'mids')

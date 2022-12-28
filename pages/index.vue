@@ -13,6 +13,7 @@ definePageMeta({
 
 const togglePopupRss = ref(false)
 const resources = ref({})
+const timer = ref()
 
 const onAttach = async () => {
   return navigateTo('/battle')
@@ -25,18 +26,18 @@ onMounted(async () => {
   //   levelTitle: playerInfo.value?.levelTitle,
   // })
 
-  // setInterval(async () => {
-  //   console.log('runn')
-  //   resources.value = await $fetch('/api/reward/training', {
-  //     method: 'POST',
-  //     body: {
-  //       sid: playerInfo.value?.sid,
-  //     },
-  //   })
-  //
-  //   if (resources.value)
-  //     set(togglePopupRss, true)
-  // }, 60000)
+  timer.value = setInterval(async () => {
+    resources.value = await $fetch('/api/reward/training', {
+      headers: (useRequestHeaders(['cookie']) as any),
+    })
+
+    if (resources.value)
+      set(togglePopupRss, true)
+  }, 65000)
+})
+
+onUnmounted(() => {
+  clearInterval(timer.value)
 })
 
 const closePopupRss = () => {

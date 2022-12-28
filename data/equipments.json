@@ -9,10 +9,11 @@
     "hp": 0,
     "mp": 0,
     "critical": 5,
-    "hpSuck": 5,
+    "bloodsucking": 5,
     "rank": 1,
     "level": 1,
-    "slot": 1
+    "slot": 1,
+    "preview": "items/34.png"
   },
   {
     "id": 2,
@@ -24,10 +25,11 @@
     "hp": 200,
     "mp": 0,
     "critical": 5,
-    "hpSuck": 5,
+    "bloodsucking": 5,
     "rank": 1,
     "level": 1,
-    "slot": 2
+    "slot": 2,
+    "preview": "items/34.png"
   },
   {
     "id": 3,
@@ -39,10 +41,11 @@
     "hp": 200,
     "mp": 0,
     "critical": 5,
-    "hpSuck": 5,
+    "bloodsucking": 5,
     "rank": 1,
     "level": 1,
-    "slot": 3
+    "slot": 3,
+    "preview": "items/34.png"
   },
   {
     "id": 4,
@@ -54,9 +57,10 @@
     "hp": 200,
     "mp": 0,
     "critical": 5,
-    "hpSuck": 5,
+    "bloodsucking": 5,
     "rank": 1,
     "level": 1,
-    "slot": 4
+    "slot": 4,
+    "preview": "items/34.png"
   }
 ]

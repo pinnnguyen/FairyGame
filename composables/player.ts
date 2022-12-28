@@ -8,6 +8,14 @@ export const usePlayerStore = defineStore('player', () => {
   const upgrade = computed(() => playerInfo.value?.upgrade)
   const attribute = computed(() => playerInfo.value?.attribute)
 
+  const hasEquip = (pos: number, _equipId: string) => {
+    return attribute.value[(`slot_${pos}`)] === _equipId
+  }
+
+  const changeEquip = (pos: number, _equipId: string) => {
+    return attribute.value[`slot_${pos}`] = _equipId
+  }
+
   const initPlayer = (data: any) => {
     set(playerInfo, {
       ...data.player,
@@ -24,20 +32,20 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const getPlayer = async () => {
-    const { data } = await useFetch<PlayerServerResponse>('/api/player', {
+    const data = await $fetch<PlayerServerResponse>('/api/player', {
       headers: (useRequestHeaders(['cookie']) as any),
     })
 
     set(playerInfo, {
-      ...data.value?.player,
+      ...data?.player,
       attribute: {
-        ...data.value?.attribute,
+        ...data?.attribute,
       },
       mid: {
-        ...data.value?.mid,
+        ...data?.mid,
       },
       upgrade: {
-        ...data.value?.upgrade,
+        ...data?.upgrade,
       },
     })
   }
@@ -48,6 +56,8 @@ export const usePlayerStore = defineStore('player', () => {
     initPlayer,
     upgrade,
     attribute,
+    hasEquip,
+    changeEquip,
   }
 })
 

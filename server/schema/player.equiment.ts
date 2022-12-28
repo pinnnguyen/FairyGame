@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
+import type { PlayerEquipment } from '~/types'
 const ObjectId = mongoose.Types.ObjectId
 
-const schema = new mongoose.Schema(
+const schema = new mongoose.Schema<PlayerEquipment>(
   {
     _id: {
       type: String,
@@ -19,10 +20,11 @@ const schema = new mongoose.Schema(
     hp: Number,
     mp: Number,
     critical: Number,
-    hpSuck: Number,
+    bloodsucking: Number,
     rank: Number,
     level: Number,
     slot: Number,
+    preview: String,
   },
   { timestamps: true, strict: true, strictQuery: true },
 )
