@@ -8,7 +8,7 @@ export interface BattleRequest {
   }
   target: {
     id?: string
-    type?: string
+    type?: string | 'monster' | 'boss-daily'
   }
 }
 
@@ -31,8 +31,8 @@ export interface BaseProperties extends BaseAttributes {
 }
 
 export interface BaseReward {
-  exp?: number
-  gold?: number
+  exp: number
+  gold: number
 }
 
 export interface BattleResponse extends BattleInRefresh {

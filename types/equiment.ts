@@ -5,10 +5,21 @@ export interface RateReward {
   rate: number
 }
 
-export interface PlayerEquipment extends BaseAttributes {
+export interface Equipment extends BaseAttributes {
   _id: string
+  id: number
+  name: string
+  info?: string
+  rank?: number
+  level?: number
+  slot: number
+  preview?: string
+}
+
+export interface PlayerEquipment extends BaseAttributes {
+  _id?: string
   sid: string
-  equipmentId: number
+  equipmentId?: number
   name?: string
   info?: string
   rank?: number

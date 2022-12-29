@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useBattleRoundStore, usePlayerStore } from '#imports'
-import { BATTLE_TURN } from '~/constants/war'
+import { BATTLE_TURN, TARGET_TYPE } from '~/constants'
 
 const {
   loading,
@@ -14,6 +14,7 @@ const {
   inRefresh,
   refreshTime,
   reward,
+  queryTarget
 } = storeToRefs(useBattleRoundStore())
 
 const { onRefreshFinished } = useBattleRoundStore()
@@ -29,6 +30,9 @@ const refreshFinished = () => {
 
 const doCloseBattleR = () => {
   battleResult.value.show = false
+  console.log('queryTarget.value', queryTarget.value)
+if (queryTarget.value === TARGET_TYPE.BOSS_DAILY)
+    return navigateTo('/boss-daily')
 }
 </script>
 

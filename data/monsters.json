@@ -11,12 +11,18 @@
         "mp": 0,
         "critical": 0,
         "bloodsucking": 0,
-        "equipments": [
+        "reward": {
+          "base": {
+            "exp": 10,
+            "gold": 10
+          },
+          "equipRates": [
             {
-                "id": 1,
-                "rate": 1
+              "id": 1,
+              "rate": 20
             }
-        ]
+          ]
+        }
     },
     {
         "id": 2,
@@ -30,12 +36,18 @@
         "mp": 0,
         "critical": 0,
         "bloodsucking": 0,
-        "equipments": [
+        "reward": {
+          "base": {
+            "exp": 10,
+            "gold": 10
+          },
+          "equipRates": [
             {
-                "id": 1,
-                "rate": 1
+              "id": 1,
+              "rate": 20
             }
-        ]
+          ]
+        }
     },
     {
         "id": 3,
@@ -49,11 +61,17 @@
         "mp": 0,
         "critical": 0,
         "bloodsucking": 0,
-        "equipments": [
+        "reward": {
+          "base": {
+            "exp": 10,
+            "gold": 10
+          },
+          "equipRates": [
             {
-                "id": 1,
-                "rate": 1
+              "id": 1,
+              "rate": 20
             }
-        ]
+          ]
+        }
     }
 ]

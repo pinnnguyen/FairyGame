@@ -17,9 +17,11 @@ interface Props {
 defineProps<Props>()
 const emits = defineEmits(['close'])
 const endTime = ref(6000)
+
 const close = () => {
   emits('close')
 }
+
 const time = setInterval(() => {
   endTime.value = endTime.value - 1000
   if (endTime.value <= 0) {

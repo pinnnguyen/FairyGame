@@ -8,6 +8,7 @@ export interface Battle {
   mid: {
     id: number
   }
+  targetId: number
   kind: 'pve' | 'pvp' | 'boss' | 'boss-daily' | 'dungeon'
   emulators: Emulator[]
   enemy: EnemyObject

@@ -15,10 +15,12 @@ const { hasEquip } = usePlayerStore()
 const { data: bagDataResponse } = await useFetch<Bag>('/api/bag', {
   headers: (useRequestHeaders(['cookie']) as any),
 })
+
 const pickItem = (item: PlayerEquipment) => {
   set(itemSelected, item)
   set(toggleDetail, true)
 }
+
 const goToHome = () => {
   navigateTo('/')
 }
@@ -35,7 +37,7 @@ const goToHome = () => {
         <span class="font-semibold absolute w-[40px] left-[calc(50%_-_10px)] top-[-1px] text-[#656f99]">TÚI</span>
         <NuxtImg class="w-full h-full" format="webp" src="/common/bj_tongyong_1.png" />
         <div class="absolute top-[30px] flex flex-col gap-1 items-center justify-center w-full">
-          <div class="grid grid-cols-5 gap-2">
+          <div class="grid grid-cols-5 gap-2 h-[465px] overflow-scroll">
             <div
               v-for="equipment in bagDataResponse.equipments"
               :key="equipment.id"

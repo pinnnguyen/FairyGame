@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import { $in } from 'sift'
 import { conditionForUpLevel } from '~/server/common/level'
 import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule/level'
 import { MidSchema, PlayerAttributeSchema, PlayerEquipmentSchema } from '~/server/schema'
@@ -93,11 +92,18 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
           _id: {
             $in: equipId,
           },
-        })
+        }).select('damage hp speed def mp critical bloodsucking')
 
         if (playerEquips.length > 0 && attribute) {
-          for (let i = 0; i < playerEquips.length; i++)
+          for (let i = 0; i < playerEquips.length; i++) {
+            attribute.damage += playerEquips[i].damage
             attribute.hp += playerEquips[i].hp
+            attribute.speed += playerEquips[i].speed
+            attribute.def += playerEquips[i].def
+            attribute.mp += playerEquips[i].mp
+            attribute.critical += playerEquips[i].critical
+            attribute.bloodsucking += playerEquips[i].bloodsucking
+          }
         }
 
         return {

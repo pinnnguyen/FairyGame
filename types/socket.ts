@@ -1,13 +1,14 @@
 import type { BattleRequest } from '~/types/war'
 
 export interface ServerToClientEvents {
-  battleStart: (response: any) => void
-  battleEnd: (response: any) => void
+  'battle:start': (response: any) => void
+  'boss-daily:start': (response: any) => void
 }
 
 export interface ClientToServerEvents {
-  battle: (_channel: string, request: BattleRequest) => void
-  // 'bag:join': (_channel: string) => void
-  battleLeave: () => void
-  battleRefresh: () => void
+  'boss-daily:join': (_channel: string, sid: string) => void
+  'battle:join': (_channel: string, request: BattleRequest) => void
+  'battle:leave': () => void
+  'battle:refresh': () => void
+  'channel:leave': () => void
 }

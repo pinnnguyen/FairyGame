@@ -19,7 +19,7 @@ export default defineEventHandler(async (event: H3Event) => {
     })
   }
 
-  const equipments = await PlayerEquipmentSchema.find({ sid: player?.sid })
+  const equipments = await PlayerEquipmentSchema.find({ sid: player?.sid }).limit(25)
 
   return {
     equipments,

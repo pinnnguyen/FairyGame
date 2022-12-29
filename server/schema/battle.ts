@@ -11,6 +11,7 @@ const schema = new mongoose.Schema<Battle>(
       },
     },
     sid: String,
+    targetId: Number,
     mid: {},
     kind: String,
     emulators: [],

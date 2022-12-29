@@ -10,11 +10,17 @@ import { useSocket } from '#imports'
 export const useBattleRoundStore = defineStore('battleRound', () => {
   const { playerInfo } = storeToRefs(usePlayerStore())
   const { _socket } = useSocket()
+  const route = useRoute()
+
+  const queryTarget = computed(() => (route.query.target as string))
+  const queryTargetId = computed(() => (route.query.id as string))
 
   const loading = ref(true)
   const playerEffect = ref('')
+
   const battleRounds: any = ref([])
   const inRefresh = ref(false)
+
   const refreshTime = ref(0)
   const reward = ref<{
     base: BaseReward
@@ -70,22 +76,28 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
 
   const onRefreshFinished = () => {
     console.log('onRefreshFinished')
-    _socket.emit('battleRefresh')
+    if (queryTarget.value)
+      return
+    _socket.emit('battle:refresh')
   }
 
+  let kind = BATTLE_KIND.PVE
+  if (queryTarget.value)
+    kind = BATTLE_KIND.BOSS_DAILY
+
   onMounted(async () => {
-    _socket.emit('battle', `${playerInfo.value?._id}-battle`, {
-      kind: BATTLE_KIND.PVE,
+    _socket.emit('battle:join', `${playerInfo.value?._id}-battle`, {
+      kind,
       player: {
         userId: playerInfo.value?.userId,
       },
       target: {
-        type: TARGET_TYPE.MONSTER,
-        id: playerInfo.value?.mid?.current?.monsterId,
+        type: queryTarget.value ?? TARGET_TYPE.MONSTER,
+        id: queryTargetId.value ?? playerInfo.value?.mid?.current?.monsterId,
       },
     })
 
-    _socket.on('battleStart', async (war: BattleResponse) => {
+    _socket.on('battle:start', async (war: BattleResponse) => {
       console.log('--BATTLE RESULT--', war)
       set(inRefresh, false)
       set(refreshTime, 0)
@@ -171,7 +183,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   })
 
   onUnmounted(() => {
-    _socket.emit('battleLeave')
+    _socket.emit('battle:leave')
   })
 
   return {
@@ -181,6 +193,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     receiver,
     realTime,
     inRefresh,
+    queryTarget,
     refreshTime,
     playerEffect,
     battleRounds,

@@ -21,8 +21,8 @@ const schema = new mongoose.Schema<Monster>(
     mp: Number,
     critical: Number,
     bloodsucking: Number,
-    equipments: [],
     speed: Number,
+    reward: {},
   },
   { timestamps: true, strict: true, strictQuery: true },
 )

@@ -11,6 +11,7 @@ const schema = new mongoose.Schema<Boss>(
       },
     },
     id: Number,
+    kind: String,
     name: String,
     level: Number,
     info: String,
@@ -22,6 +23,8 @@ const schema = new mongoose.Schema<Boss>(
     critical: Number,
     bloodsucking: Number,
     speed: Number,
+    reward: {},
+    numberOfTurn: Number,
   },
   { timestamps: true, strict: true, strictQuery: true },
 )

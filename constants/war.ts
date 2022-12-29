@@ -4,7 +4,7 @@ export const KIND = {
 
 export const TARGET_TYPE = {
   MONSTER: 'monster',
-  BOSS_DAILY: 'monster',
+  BOSS_DAILY: 'boss-daily',
 }
 
 export const WINNER = {

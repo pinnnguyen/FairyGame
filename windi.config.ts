@@ -74,7 +74,10 @@ export default defineConfig({
   },
   theme: {
     fontSize: {
-      xxs: '10px',
+      8: '8px',
+      9: '9px',
+      10: '10px',
+      12: '12px',
     },
     backgroundImage: {
       boss_daily_panel: 'url("/panel/boss_daily.png")',

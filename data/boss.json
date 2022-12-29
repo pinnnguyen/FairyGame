@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1,
+    "name": "10 Cấp",
+    "kind": "daily",
+    "level": 10,
+    "info": "",
+    "sex": "",
+    "damage": 5,
+    "def": 0,
+    "hp": 500,
+    "mp": 0,
+    "critical": 0,
+    "bloodsucking": 0,
+    "reward": {
+        "base": {
+            "exp": 10,
+            "gold": 10
+        },
+      "equipRates": [
+            {
+                "id": 1,
+                "rate": 20
+            }
+        ]
+    },
+    "avatar": "monster/310001.png"
+  },
+  {
+    "id": 2,
+    "name": "20 Cấp",
+    "kind": "daily",
+    "level": 20,
+    "info": "",
+    "sex": "",
+    "damage": 50,
+    "def": 0,
+    "hp": 1000,
+    "mp": 0,
+    "critical": 0,
+    "bloodsucking": 0,
+      "reward": {
+          "base": {
+              "exp": 10,
+              "gold": 10
+          },
+        "equipRates": [
+              {
+                  "id": 1,
+                  "rate": 20
+              }
+          ]
+      },
+    "avatar": "monster/310002.png"
+  },
+  {
+    "id": 3,
+    "name": "30 Cấp",
+    "kind": "daily",
+    "level": 30,
+    "info": "",
+    "sex": "",
+    "damage": 100,
+    "def": 0,
+    "hp": 1500,
+    "mp": 0,
+    "critical": 0,
+    "bloodsucking": 0,
+      "reward": {
+          "base": {
+              "exp": 10,
+              "gold": 10
+          },
+        "equipRates": [
+              {
+                  "id": 1,
+                  "rate": 20
+              }
+          ]
+      },
+    "avatar": "monster/310003.png"
+  }
+]

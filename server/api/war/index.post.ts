@@ -1,13 +1,18 @@
 import type { H3Event } from 'h3'
 import { createError, sendError } from 'h3'
-import { pveBaseReward, receivedEquipment, setLastTimeReceivedRss } from '~/server/helpers'
+import moment from 'moment'
+import { getBaseReward, receivedEquipment, setLastTimeReceivedRss } from '~/server/helpers'
 import type { BattleRequest, BattleResponse, PlayerInfo } from '~/types'
-import { BattleSchema, MonsterSchema, PlayerSchema } from '~/server/schema'
+import { BattleSchema, BossSchema, MonsterSchema, PlayerSchema } from '~/server/schema'
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { startWar } from '~/helpers'
 
 export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: BattleRequest) => {
   // Get battle information has already used it
+  console.log('--battleRequest--', battleRequest)
+  const today = moment().startOf('day')
+  const now = new Date().getTime()
+
   const battle = await BattleSchema
     .findOne({ 'sid': _p.player.sid, 'kind': BATTLE_KIND.PVE, 'mid.id': _p.player.midId })
     .sort({ createdAt: -1 }).select('player enemy reward createdAt')
@@ -23,8 +28,8 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
       'mid.id': _p.player.midId,
     })
 
+    // validate
     const doRefresh = new Date(battle.createdAt).getTime() + (_p as any)?.mid?.current?.ms ?? 60000
-    const now = new Date().getTime()
 
     if (doRefresh > now) {
       return {
@@ -41,15 +46,33 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
   if (battleRequest.target.type === TARGET_TYPE.MONSTER)
     _enemyObj = await MonsterSchema.findOne({ id: battleRequest.target.id })
 
-  // if (battleRequest.target.type === TARGET_TYPE.BOSS_DAILY) {
-  //   _enemyObj = await MonsterSchema.findOne({ id: battleRequest.target.id })
-  // }
+  if (battleRequest.target.type === TARGET_TYPE.BOSS_DAILY)
+    _enemyObj = await BossSchema.findOne({ id: battleRequest.target.id })
 
   if (!_enemyObj) {
     return createError({
       statusCode: 400,
       statusMessage: 'monster not found!',
     })
+  }
+
+  if (battleRequest.target.type === TARGET_TYPE.BOSS_DAILY) {
+    const numberOfbattle = await BattleSchema.find({
+      sid: _p.player.sid,
+      kind: BATTLE_KIND.BOSS_DAILY,
+      targetId: battleRequest.target.id,
+      createdAt: {
+        $gte: moment().startOf('day'),
+        $lte: moment(today).endOf('day').toDate(),
+      },
+    }).count()
+
+    if (numberOfbattle > _enemyObj.numberOfTurn) {
+      return {
+        inRefresh: true,
+        refreshTime: new Date(moment(today).endOf('day').toDate()).getTime() - now,
+      }
+    }
   }
 
   const {
@@ -59,7 +82,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     winner,
   } = startWar(_p, _enemyObj)
 
-  const { exp, gold } = await pveBaseReward(_p.player.sid, _p.player.midId)
+  const { exp, gold } = await getBaseReward(_p.player.sid, _enemyObj)
   const { equipments } = await receivedEquipment(_p.player.sid, _enemyObj)
   await setLastTimeReceivedRss(_p.player.sid)
 
@@ -70,6 +93,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
       id: _p.player.midId,
     },
     kind: battleRequest.kind,
+    targetId: _enemyObj.id,
     player,
     enemy,
     emulators,
@@ -82,8 +106,6 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
       equipments,
     },
   }).save()
-
-  // await PlayerSchema.updateOne({ sid: _p.player.sid }, { lastTimeReceivedRss: new Date().getTime() })
 
   return {
     player,
