@@ -7,7 +7,6 @@ import { UserSchema } from '~/server/schema'
 export default NuxtAuthHandler({
   // secret needed to run nuxt-auth in production mode (used to encrypt data)
   secret: process.env.NUXT_SECRET,
-  pages: '/login',
   providers: [
     //    GithubProvider.default({
     //      clientId: process.env.GITHUB_CLIENT_ID,
@@ -32,7 +31,6 @@ export default NuxtAuthHandler({
           password: credentials?.password,
         })
 
-        console.log('findUser', findUser)
         if (findUser)
           return findUser
 
