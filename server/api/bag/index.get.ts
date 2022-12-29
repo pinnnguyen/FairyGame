@@ -1,9 +1,9 @@
 import type { H3Event } from 'h3'
 import { PlayerEquipmentSchema, PlayerSchema } from '~/server/schema'
-import { serverSupabaseUser } from '#supabase/server'
+import { getServerSession } from '#auth'
 
 export default defineEventHandler(async (event: H3Event) => {
-  const uServer = await serverSupabaseUser(event)
+  const uServer = await getServerSession(event)
   if (!uServer) {
     return createError({
       statusCode: 401,
@@ -11,7 +11,7 @@ export default defineEventHandler(async (event: H3Event) => {
     })
   }
 
-  const player = await PlayerSchema.findOne({ userId: uServer?.id }).select('sid')
+  const player = await PlayerSchema.findOne({ userId: uServer?.user?.email }).select('sid')
   if (!player?.sid) {
     return createError({
       statusCode: 404,

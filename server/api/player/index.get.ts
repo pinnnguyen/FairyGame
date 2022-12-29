@@ -1,17 +1,24 @@
 import { PlayerSchema } from '~/server/schema'
 import type { PlayerServerResponse } from '~/types'
-import { serverSupabaseUser } from '#supabase/server'
+import { getServerSession } from '#auth'
 
 export default defineEventHandler(async (event) => {
-  const serverUser = await serverSupabaseUser(event)
-  if (!serverUser) {
+  const session = await getServerSession(event)
+  if (!session) {
     return createError({
       statusCode: 401,
       statusMessage: 'Unauthorized',
     })
   }
 
-  const playerResource = await (PlayerSchema as any).getPlayer(serverUser?.id)
+  const playerResource = await (PlayerSchema as any).getPlayer(session?.user?.email)
+  if (!playerResource) {
+    return createError({
+      statusCode: 404,
+      statusMessage: 'Player not found',
+    })
+  }
+
   return {
     player: playerResource?.player,
     attribute: playerResource?.attribute,

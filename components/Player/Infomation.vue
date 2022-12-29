@@ -5,8 +5,12 @@ import { usePlayerStore } from '~/composables/player'
 import { useAppStore } from '~/composables/app'
 
 const { playerInfoComponent } = storeToRefs(useAppStore())
+const { playerInfo, attribute } = storeToRefs(usePlayerStore())
+
 const playerRef = ref(null)
 const currentTab = ref('attribute')
+onClickOutside(playerRef, event => playerInfoComponent.value = false)
+
 const tabs = ref([
   {
     key: 'equipment',
@@ -18,13 +22,18 @@ const tabs = ref([
   },
 ])
 
-onClickOutside(playerRef, event => playerInfoComponent.value = false)
+const classToTitle = {
+  1: 'Tu tiên',
+  2: 'Tu yêu',
+  3: 'Tu ma',
+  4: 'Nhân tộc',
+}
 
-const { playerInfo, attribute } = storeToRefs(usePlayerStore())
+const classTitle = computed(() => classToTitle[playerInfo.value.class])
 </script>
 
 <template>
-    <div ref="playerRef" class="bg-[#1b345d] text-white w-full z-99 duration-500 absolute bottom-0 h-[70%]">
+  <div ref="playerRef" class="bg-[#1b345d] text-white w-full z-99 duration-500 absolute bottom-0 h-[70%]">
     <div class="h-full">
       <div class="absolute top-[-25px] flex items-center justify-center w-full">
         <div
@@ -60,7 +69,7 @@ const { playerInfo, attribute } = storeToRefs(usePlayerStore())
           </div>
           <div class="m-3">
             <div class="  my-1 px-2">
-              Hệ: Tu tiên
+              Hệ: {{ classTitle }}
             </div>
             <div class="  my-1 px-2">
               Tiên ngọc: {{ playerInfo?.coin }}
@@ -112,11 +121,9 @@ const { playerInfo, attribute } = storeToRefs(usePlayerStore())
             </div>
             <div class="relative">
               <img class="w-[60px] h-[55px]" src="equipment/rinh.png">
-
             </div>
             <div class="relative">
               <img class="w-[60px] h-[55px]" src="equipment/giay.png">
-
             </div>
             <div class="relative">
               <img class="w-[60px] h-[55px]" src="equipment/ngoc.png">

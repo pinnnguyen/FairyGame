@@ -1,17 +1,21 @@
 import { storeToRefs } from 'pinia'
+import { usePlayerStore } from '~/composables/player'
 
 export default defineNuxtRouteMiddleware(async () => {
-  const userSupabase = useSupabaseUser()
-  const playerStore = usePlayerStore()
+  const { status } = useSession()
 
-  const { getPlayer } = playerStore
-  const { playerInfo } = storeToRefs(playerStore)
+  const { getPlayer } = usePlayerStore()
+  const { playerInfo } = storeToRefs(usePlayerStore())
 
-  if (!userSupabase.value)
+  console.log('---playerInfo---', playerInfo.value)
+  if (status.value !== 'authenticated')
     return navigateTo('/login')
 
-  if (playerInfo.value?._id)
+  if (playerInfo.value?.name)
     return
+//
+//  else
+//    return navigateTo('/role')
 
   await getPlayer()
 })

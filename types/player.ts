@@ -7,6 +7,7 @@ export interface BaseAttributes {
   mp: number
   critical: number
   bloodsucking: number
+  criticalDamage: number
 }
 export interface Player {
   _id?: string
@@ -24,6 +25,7 @@ export interface Player {
   levelTitle: string
   floor: string
   expLimited: number
+  class: number
 }
 
 export interface PlayerAttribute extends BaseAttributes, Slot {

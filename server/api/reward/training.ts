@@ -1,18 +1,18 @@
-import {BATTLE_KIND} from "~/constants";
+import { BATTLE_KIND } from '~/constants'
 import { BattleSchema, PlayerSchema } from '~/server/schema'
 import { resourceReceived } from '~/helpers'
-import { serverSupabaseUser } from '#supabase/server'
+import { getServerSession } from '#auth'
 
 export default defineEventHandler(async (event) => {
-  const serverUser = await serverSupabaseUser(event)
-  if (!serverUser) {
+  const session = await getServerSession(event)
+  if (!session) {
     return createError({
       statusCode: 401,
       statusMessage: 'Unauthorized',
     })
   }
 
-  const _p: any = await PlayerSchema.findOne({ userId: serverUser.id })
+  const _p: any = await PlayerSchema.findOne({ userId: session?.user?.email })
   if (!_p) {
     return createError({
       statusCode: 400,

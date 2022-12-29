@@ -1,5 +1,5 @@
 import { PlayerAttributeSchema, PlayerEquipmentSchema, PlayerSchema } from '~/server/schema'
-import { serverSupabaseUser } from '#supabase/server'
+import { getServerSession } from '#auth'
 import { prepareSlots } from '~/server/helpers'
 interface Equip {
   action: 'equip' | 'unequip'
@@ -8,17 +8,17 @@ interface Equip {
 }
 
 export default defineEventHandler(async (event) => {
-  const serverUser = await serverSupabaseUser(event)
+  const session = await getServerSession(event)
   const body = await readBody<Equip>(event)
 
-  if (!serverUser) {
+  if (!session) {
     return createError({
       statusCode: 401,
       statusMessage: 'Unauthorized',
     })
   }
 
-  const player = await PlayerSchema.findOne({ userId: serverUser.id }).select('sid')
+  const player = await PlayerSchema.findOne({ userId: session?.user?.email }).select('sid')
   if (!player) {
     return createError({
       statusCode: 404,

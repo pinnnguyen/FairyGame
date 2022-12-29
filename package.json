@@ -14,6 +14,7 @@
     "@nuxt/image-edge": "^1.0.0-27840416.dc1ed65",
     "@nuxtjs/supabase": "^0.3.0",
     "@pinia/nuxt": "^0.4.3",
+    "@sidebase/nuxt-auth": "^0.3.2",
     "@vueuse/nuxt": "^9.5.0",
     "consola": "^2.15.3",
     "eslint": "^8.27.0",

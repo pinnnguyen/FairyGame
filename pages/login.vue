@@ -1,30 +1,25 @@
 <script setup lang="ts">
-const client = useSupabaseClient()
-const uClient = useSupabaseUser()
+import { useToast } from 'vue-toastification'
+const { signIn } = useSession()
 
 definePageMeta({
+  auth: false,
   layout: 'auth',
 })
 
 const password = ref('')
 const email = ref('')
-
-onMounted(() => {
-  if (uClient?.value?.id)
-    navigateTo('/')
-})
+const toast = useToast()
 
 const handleLogin = async () => {
-  const { data, error } = await client.auth.signInWithPassword({
-    email: email.value,
-    password: password.value,
-  })
-
-  if (data.user)
-    return navigateTo('/role')
+  const { error, url } = await signIn('credentials', { username: email.value, password: password.value, redirect: false })
+  if (url) {
+    toast.info('Đăng nhập thành công!')
+    return navigateTo('/')
+  }
 
   if (error)
-    alert(error)
+    toast.info('Tài khoản mật khẩu không chính xác')
 }
 </script>
 
@@ -40,7 +35,7 @@ const handleLogin = async () => {
           <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
             Đăng nhập tài khoản của bạn
           </h1>
-          <form class="space-y-4 md:space-y-6" @submit.prevent="handleLogin">
+          <div class="space-y-4 md:space-y-6">
             <div>
               <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
               <input id="email" v-model="email" type="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="">
@@ -52,15 +47,36 @@ const handleLogin = async () => {
             <div class="flex items-center justify-between text-right">
               <a href="#" class="w-full text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Quên mật khẩu?</a>
             </div>
-            <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:hover:bg-primary-700">
+            <button type="button" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:hover:bg-primary-700" @click="handleLogin">
               Đăng nhập
             </button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
               Bạn chưa có tài khoản? <a href="/register" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Đăng ký</a>
             </p>
-          </form>
+          </div>
         </div>
       </div>
     </div>
   </section>
 </template>
+<!-- file: ~/pages/login.vue -->
+<!-- <script setup lang="ts"> -->
+<!-- definePageMeta({ -->
+<!--  auth: false, -->
+<!--  layout: 'auth', -->
+<!-- }) -->
+<!-- const { signIn } = useSession() -->
+<!-- </script> -->
+
+<!-- <template> -->
+<!--  <div> -->
+<!--    <p>Sign-In Options:</p> -->
+<!--    <button @click="signIn('github')"> -->
+<!--      Github -->
+<!--    </button> -->
+<!--    &lt;!&ndash; NOTE: Here we hard-coded username and password, on your own page this should probably be connected to two inputs for username + password &ndash;&gt; -->
+<!--    <button @click="signIn('credentials', { username: 'test', password: 'hunter2' })"> -->
+<!--      Username and Password -->
+<!--    </button> -->
+<!--  </div> -->
+<!-- </template> -->

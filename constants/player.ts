@@ -5,6 +5,7 @@ export const DEFAULT_ROLE = {
   vip_level: 0,
   level: 1,
   midId: 1,
+  exp: 0,
 }
 
 export const DEFAULT_ATTRIBUTE = {

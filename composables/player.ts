@@ -41,6 +41,9 @@ export const usePlayerStore = defineStore('player', () => {
       headers: (useRequestHeaders(['cookie']) as any),
     })
 
+    if (!data)
+      return navigateTo('/role')
+
     set(playerInfo, {
       ...data?.player,
       attribute: {

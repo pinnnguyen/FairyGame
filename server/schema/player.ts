@@ -31,6 +31,7 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
     levelTitle: String,
     floor: String,
     expLimited: Number,
+    class: Number,
   },
   {
     timestamps: true,
@@ -38,6 +39,7 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
     strictQuery: true,
     statics: {
       async getPlayer(userId: string, sid: string) {
+        console.log('getPlayer')
         const player = await this.findOne({
           $or: [
             { userId },
@@ -70,27 +72,55 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
           }
         }
 
-        const equipId = []
+        console.log('player.class --->', player)
+        if (player.class > 0 && attribute) {
+          attribute.criticalDamage = 1.5 // 150% sat thuong bao kich
+          switch (player.class) {
+            case 1:
+              // Tu tiên 10% tấn công & 5% sát thương bạo tăng kích
+              attribute.damage += (10 * attribute.damage) / 100
+              attribute.criticalDamage += (5 * attribute.criticalDamage) / 100
+              break
+            case 2:
+              // Tu yeu 10% sinh luc & 5% phong thu
+              attribute.hp += (10 * attribute.hp) / 100
+              attribute.def += (5 * attribute.def) / 100
+              break
+            case 3:
+              // Tu ma 10% sinh luc & 5% phong thu
+              attribute.damage += (5 * attribute.damage) / 100
+              attribute.criticalDamage += (10 * attribute.criticalDamage) / 100
+              break
+            case 4:
+              // Nhan toc 10% sinh luc & 5% phong thu
+              attribute.damage += (5 * attribute.damage) / 100
+              attribute.hp += (5 * attribute.hp) / 100
+              attribute.def += (5 * attribute.def) / 100
+              break
+          }
+        }
+
+        const equipIds = []
         if (attribute?.slot_1)
-          equipId.push(attribute?.slot_1)
+          equipIds.push(attribute?.slot_1)
         if (attribute?.slot_2)
-          equipId.push(attribute?.slot_2)
+          equipIds.push(attribute?.slot_2)
         if (attribute?.slot_3)
-          equipId.push(attribute?.slot_3)
+          equipIds.push(attribute?.slot_3)
         if (attribute?.slot_4)
-          equipId.push(attribute?.slot_4)
+          equipIds.push(attribute?.slot_4)
         if (attribute?.slot_5)
-          equipId.push(attribute?.slot_5)
+          equipIds.push(attribute?.slot_5)
         if (attribute?.slot_6)
-          equipId.push(attribute?.slot_6)
+          equipIds.push(attribute?.slot_6)
         if (attribute?.slot_7)
-          equipId.push(attribute?.slot_7)
+          equipIds.push(attribute?.slot_7)
         if (attribute?.slot_8)
-          equipId.push(attribute?.slot_8)
+          equipIds.push(attribute?.slot_8)
 
         const playerEquips = await PlayerEquipmentSchema.find({
           _id: {
-            $in: equipId,
+            $in: equipIds,
           },
         }).select('damage hp speed def mp critical bloodsucking')
 

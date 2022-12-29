@@ -1,5 +1,4 @@
 <script setup lang='ts'>
-const uClient = useSupabaseUser()
 const { initPlayer } = usePlayerStore()
 
 definePageMeta({
@@ -16,12 +15,53 @@ onMounted(async () => {
     initPlayer(role)
     return navigateTo('/')
   }
-
-  if (uClient?.value?.id)
-    navigateTo('/')
 })
 
 const name = ref('')
+const classList = [
+  {
+    id: 1,
+    name: 'Tu tiên',
+    img: 'role/fs_007_1.png',
+    description: `              <p class="text-12 mt-1">
+                              Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu ma
+                            </p>
+                            <span class="text-12 font-normal">Huyết mạch: </span><span class="text-12">Tăng <strong class="text-red">10%</strong> tấn công, <strong>5%</strong> sát thương bạo kích cơ bản (Không bao gồm trang bị)</span>
+                          `,
+  },
+  {
+    id: 2,
+    name: 'Tu yêu',
+    img: 'role/fs_007_2.png',
+    description: `                <p class="text-12 mt-1">
+                              Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu tiên
+                            </p>
+                            <span class="text-12 font-normal">Huyết mạch: </span><span class="text-12">Tăng <strong class="text-[#03a9f4]">10%</strong> sinh lực, <strong class="text-green">5%</strong> phòng thủ cơ bản (Không bao gồm trang bị)</span>
+                           `,
+  },
+  {
+    id: 3,
+    name: 'Tu ma',
+    img: 'role/fs_007_4.png',
+    description: `                   <p class="text-12 mt-1">
+                              Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi nhân tộc
+                            </p>
+                            <span class="text-12 font-normal">Huyết mạch: </span><span class="text-12">Tăng <strong class="text-red">5%</strong> Tấn công, <strong>10%</strong> sát thương bạo kích (Không bao gồm trang bị)</span>
+                          `,
+  },
+  {
+    id: 4,
+    name: 'Nhân tộc',
+    img: 'role/fs_007_3.png',
+    description: `              <p class="text-12 mt-1">
+                              Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu yêu
+                            </p>
+                            <span class="text-12 font-normal">Huyết mạch: </span><span class="text-12">Tăng <strong class="text-red">5%</strong> Tấn công, <strong class="text-[#03a9f4]">5%</strong> sinh lực, <strong class="text-green">5%</strong> phòng thủ (Không bao gồm trang bị)</span>
+                         `,
+  },
+]
+
+const seleted = ref(classList[0])
 const handleCreateFigure = async () => {
   const { initPlayer } = usePlayerStore()
 
@@ -30,37 +70,52 @@ const handleCreateFigure = async () => {
     headers: (useRequestHeaders(['cookie']) as any),
     body: {
       name: name.value,
-      userId: uClient.value?.id,
+      class: seleted.value.id,
     },
   })
 
   initPlayer(role)
+  navigateTo('/')
 }
 </script>
 
 <template>
-  <section class="bg-gray-50 dark:bg-gray-900">
-    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-        <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
-        Tu Tiên Giới
-      </a>
-      <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-        <div class="p-6 space-y-6 sm:p-8">
-          <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-            Tạo nhân vật
-          </h1>
-          <form class="space-y-4 md:space-y-6" @submit.prevent="handleCreateFigure">
-            <div>
-              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tên nhân vật</label>
-              <input id="name" v-model="name" type="text" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="">
+  <div class="h-[95vh] relative bg-black/70">
+    <div class="text-white p-2 h-full">
+      <form class="h-full bg-black p-2 relative" @submit.prevent="handleCreateFigure">
+        <div>
+          <p class="text-center text-base font-semibold uppercase mb-1">
+            Hệ phái
+          </p>
+          <div class="flex items-start justify-between grid grid-cols-4">
+            <div v-for="classE in classList" :key="classE.name" class="mb-4 p-2" @click="seleted = classE">
+              <p class="text-center font-semibold">
+                {{ classE.name }}
+              </p>
+              <NuxtImg
+                class="w-full duration-500 transition transform h-[300px] object-cover"
+                :class="{ 'scale-130': seleted ? seleted.id === classE.id : 0 }"
+                format="webg"
+                :src="classE.img"
+              />
             </div>
-            <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:hover:bg-primary-700">
-              Đăng nhập
-            </button>
-          </form>
+          </div>
         </div>
-      </div>
+        <div class="pt-10 duration" v-html="seleted.description" />
+        <div class="absolute bottom-0 left-0 mb-4 flex w-full justify-center items-center">
+          <div>
+            <p>
+              <input v-model="name" placeholder="Tên nhân vật" class="w-[160px] border border-[#dcc18d] focus:border-[#dcc18d] bg-[#2d251d] rounded h-[30px] leading-[35px] text-center flex items-center justify-center" type="text" name="username" maxlength="16">
+            </p>
+          </div>
+
+          <div class="ml-2">
+            <button class="bg-[#ffd400] text-base border-none leading-8 h-[30px] text-black flex items-center justify-center !w-[70px] !m-0 !rounded" type="submit" value="Tạo">
+              Tạo
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
-  </section>
+  </div>
 </template>

@@ -33,17 +33,19 @@ const pickItem = (equipment) => {
 }
 
 const startWar = (boss) => {
-  toast.success('My toast content', {
-    timeout: 2000000000,
+  console.log('click', boss)
+  if (boss.numberOfTurn <= 0) {
+    toast('Lượt khiêu chiến trong ngày đã hết')
+    return
+  }
+
+  navigateTo({
+    path: '/battle',
+    query: {
+      target: 'boss-daily',
+      id: boss.id,
+    },
   })
-  console.log('click')
-//  navigateTo({
-//    path: '/battle',
-//    query: {
-//      target: 'boss-daily',
-//      id: boss.id,
-//    },
-//  })
 }
 
 const goToHome = () => {

@@ -1,4 +1,8 @@
 export default defineNuxtConfig({
+  auth: {
+    origin: process.env.ORIGIN,
+    enableGlobalAppMiddleware: true,
+  },
   nitro: {
     plugins: [
       '~/server/index.ts',
@@ -10,7 +14,7 @@ export default defineNuxtConfig({
     socketClientURL: 'http://localhost:3005',
     socketIO: {
       cors: {
-        origin: 'http://localhost:3000',
+        origin: process.env.ORIGIN,
         allowedHeaders: ['gl'],
         credentials: true,
       },
@@ -21,13 +25,11 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     // '@unocss/nuxt',
     '@pinia/nuxt',
-    '@nuxtjs/supabase',
+    //    '@nuxtjs/supabase',
     '@nuxt/image-edge',
     // 'nuxt-full-static',
     'nuxt-windicss',
-    // 'virtual:windi-base.css',
-    // 'virtual:windi-components.css',
-    // 'virtual:windi-utilities.css',
+    '@sidebase/nuxt-auth',
   ],
   experimental: {
     reactivityTransform: false,
@@ -36,6 +38,7 @@ export default defineNuxtConfig({
   css: [
     // '@unocss/reset/tailwind.css',
     '~/assets/css/main.scss',
+    '~/assets/css/toast.css',
     'virtual:windi.css',
   ],
   windicss: {

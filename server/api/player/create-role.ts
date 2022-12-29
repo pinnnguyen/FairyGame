@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
+import { getServerSession } from '#auth'
 import { MidSchema, PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
 import { DEFAULT_ATTRIBUTE, DEFAULT_ROLE } from '~/constants'
-import { serverSupabaseUser } from '#supabase/server'
 const ObjectId = mongoose.Types.ObjectId
 
 interface CreateRoleBody {
@@ -10,30 +10,31 @@ interface CreateRoleBody {
 }
 
 export default defineEventHandler(async (event) => {
+  const session = await getServerSession(event)
   const body = await readBody<CreateRoleBody>(event)
   const sid = new ObjectId().toString()
-  const serverUser = await serverSupabaseUser(event)
-  if (!serverUser) {
+
+  if (!session) {
     return createError({
       statusCode: 401,
       statusMessage: 'Unauthorized',
     })
   }
 
-  const playerResource = await (PlayerSchema as any).getPlayer(serverUser?.id)
+  const playerResource = await (PlayerSchema as any).getPlayer(session?.user?.email)
   if (playerResource) {
     return {
       player: playerResource.player,
       attribute: playerResource.attribute,
       mid: playerResource.mid,
-
     }
   }
 
   const createRole = new PlayerSchema({
     sid,
     name: body.name,
-    userId: body.userId,
+    userId: session?.user?.email,
+    class: body.class,
     ...DEFAULT_ROLE,
   })
 
