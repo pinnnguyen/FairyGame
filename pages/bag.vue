@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { set } from '@vueuse/core'
 import { useFetch } from '#app'
-import { usePlayerStore } from '~/composables/player'
+import { usePlayerStore } from '~/composables/usePlayer'
 import type { Bag, PlayerEquipment } from '~/types'
 
 definePageMeta({
@@ -45,8 +45,8 @@ const goToHome = () => {
               @click.stop="pickItem(equipment)"
             >
               <span v-if="hasEquip(equipment.slot, equipment._id)" class="bg-gray-100 text-gray-500 text-xxs right-0 transform rotate-45 rounded absolute top-[10px]" style="font-size: 7px">Trang bị</span>
-              <NuxtImg format="webp" src="items/23.png" />
-              <p class="text-xxs text-[#7c4ea2] font-semibold line-clamp-2">
+              <NuxtImg format="webp" src="/items/23.png" />
+              <p class="text-10 text-[#7c4ea2] font-semibold line-clamp-2">
                 {{ equipment.name }}
               </p>
             </div>

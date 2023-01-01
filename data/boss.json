@@ -24,7 +24,8 @@
             }
         ]
     },
-    "avatar": "monster/310001.png"
+    "avatar": "/monster/310001.png",
+    "class": 1
   },
   {
     "id": 2,
@@ -51,7 +52,8 @@
               }
           ]
       },
-    "avatar": "monster/310002.png"
+    "avatar": "/monster/310002.png",
+    "class": 2
   },
   {
     "id": 3,
@@ -78,6 +80,7 @@
               }
           ]
       },
-    "avatar": "monster/310003.png"
+    "avatar": "/monster/310003.png",
+    "class": 3
   }
 ]

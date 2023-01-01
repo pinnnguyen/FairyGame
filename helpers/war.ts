@@ -20,9 +20,9 @@ export const inflictDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   let inflictDMG = 0
 
   const playerDMG = (player?.attribute?.damage as number)
-  const monsterDef = (enemy?.def as number)
+  const enemyDef = (enemy?.def as number)
 
-  inflictDMG = Math.round(playerDMG - monsterDef * 0.75)
+  inflictDMG = Math.round(playerDMG - enemyDef * 0.75)
 
   if (inflictDMG < playerDMG * 0.15)
     inflictDMG = Math.round(playerDMG * 0.15)

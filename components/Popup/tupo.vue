@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from 'pinia'
-import { usePlayerStore } from '~/composables/player'
+import { usePlayerStore } from '~/composables/usePlayer'
 
 const emits = defineEmits(['close'])
 const { playerInfo, upgrade } = storeToRefs(usePlayerStore())
@@ -62,7 +62,7 @@ const close = () => {
             Linh thạch cần
           </p>
           <div class="border border-[#dcc18d] bg-[#2d251d] rounded h-[35px] leading-[35px] text-center flex items-center justify-center">
-            <img class="w-[20px] pb-[2px] pr-[2px]" src="bag/00578.png" alt=""> {{ upgrade?.condition?.needGold }} / {{ playerInfo.gold }}
+            <img class="w-[20px] pb-[2px] pr-[2px]" src="/bag/00578.png" alt=""> {{ upgrade?.condition?.needGold }} / {{ playerInfo.gold }}
           </div>
         </div>
       </div>

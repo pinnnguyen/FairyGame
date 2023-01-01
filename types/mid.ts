@@ -1,3 +1,5 @@
+import {BaseReward} from "~/types/war";
+
 export interface Mid {
   _id: string /* primary key */
   name: string
@@ -6,6 +8,9 @@ export interface Mid {
   monsterId: string
   isPvp: boolean
   ms: number
-  rateExp?: number // type unknown;
-  rateResource?: number // type unknown;
+  reward: {
+    base: BaseReward
+  }
+  // rateExp?: number // type unknown;
+  // rateResource?: number // type unknown;
 }

@@ -15,7 +15,7 @@ const handleLogin = async () => {
   const { error, url } = await signIn('credentials', { username: email.value, password: password.value, redirect: false })
   if (url) {
     toast.info('Đăng nhập thành công!')
-    return navigateTo('/')
+    return navigateTo('/role')
   }
 
   if (error)
@@ -59,24 +59,3 @@ const handleLogin = async () => {
     </div>
   </section>
 </template>
-<!-- file: ~/pages/login.vue -->
-<!-- <script setup lang="ts"> -->
-<!-- definePageMeta({ -->
-<!--  auth: false, -->
-<!--  layout: 'auth', -->
-<!-- }) -->
-<!-- const { signIn } = useSession() -->
-<!-- </script> -->
-
-<!-- <template> -->
-<!--  <div> -->
-<!--    <p>Sign-In Options:</p> -->
-<!--    <button @click="signIn('github')"> -->
-<!--      Github -->
-<!--    </button> -->
-<!--    &lt;!&ndash; NOTE: Here we hard-coded username and password, on your own page this should probably be connected to two inputs for username + password &ndash;&gt; -->
-<!--    <button @click="signIn('credentials', { username: 'test', password: 'hunter2' })"> -->
-<!--      Username and Password -->
-<!--    </button> -->
-<!--  </div> -->
-<!-- </template> -->

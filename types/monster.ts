@@ -12,6 +12,7 @@ export interface Monster extends BaseAttributes {
     equipRates: RateReward[]
     equipments?: PlayerEquipment[]
   }
+  class: number
 }
 
 export interface Boss extends BaseAttributes {
@@ -26,8 +27,9 @@ export interface Boss extends BaseAttributes {
     base: BaseReward
     equipRates: RateReward[]
     equipments: PlayerEquipment[]
-  },
+  }
   numberOfTurn: number
+  class: number
 }
 
 export type EnemyObject = Monster | Boss

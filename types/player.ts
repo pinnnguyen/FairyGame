@@ -14,6 +14,7 @@ export interface Player {
   sid: string
   name: string
   gold: number
+  knb: number
   coin: number
   power: number
   level: number
@@ -21,7 +22,7 @@ export interface Player {
   userId: string
   vipLevel: number
   exp: number
-  lastTimeReceivedRss: string
+  lastTimeReceivedRss: number
   levelTitle: string
   floor: string
   expLimited: number
@@ -66,6 +67,8 @@ export interface PlayerServerResponse {
     next?: Mid
   }
   upgrade: Upgrade
+  equipments: any
+  playerEquipUpgrade: any
 }
 export interface PlayerDataResponse extends Player {
   attribute: PlayerAttribute
@@ -74,6 +77,8 @@ export interface PlayerDataResponse extends Player {
     next?: Mid
   }
   upgrade: Upgrade
+  equipments: any
+  playerEquipUpgrade: any
 }
 
 export interface Upgrade {

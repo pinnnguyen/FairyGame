@@ -25,6 +25,7 @@ const schema = new mongoose.Schema<Boss>(
     speed: Number,
     reward: {},
     numberOfTurn: Number,
+    class: Number,
   },
   { timestamps: true, strict: true, strictQuery: true },
 )

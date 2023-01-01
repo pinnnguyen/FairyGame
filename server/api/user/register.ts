@@ -4,7 +4,6 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
   const user = await UserSchema.findOne({ email: body.email })
-  console.log('user', user)
   if (user) {
     return createError({
       statusCode: 400,

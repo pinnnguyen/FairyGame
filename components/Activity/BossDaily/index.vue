@@ -16,8 +16,8 @@ const close = () => {
           <div class="w-[90%] h-[80px] bg-[#a0aac0cf] rounded flex justify-between">
             <div class="flex flex-col items-center justify-center">
               <div class="relative mr-2">
-                <NuxtImg class="w-[55px] h-[55px] rounded-full border border-[#bbc4d2]" format="webp" src="monster/310001.png" />
-                <NuxtImg class="w-10 h-3 object-cover absolute bottom-0 left-[calc(50%_-_20px)]" format="webp" src="panel/common_2.png" />
+                <NuxtImg class="w-[55px] h-[55px] rounded-full border border-[#bbc4d2]" format="webp" src="/monster/310001.png" />
+                <NuxtImg class="w-10 h-3 object-cover absolute bottom-0 left-[calc(50%_-_20px)]" format="webp" src="/panel/common_2.png" />
               </div>
             </div>
             <div class="flex items-center justify-center">

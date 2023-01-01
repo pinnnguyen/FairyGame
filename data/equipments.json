@@ -13,7 +13,7 @@
     "rank": 1,
     "level": 1,
     "slot": 1,
-    "preview": "items/34.png"
+    "preview": "/items/34.png"
   },
   {
     "id": 2,
@@ -29,7 +29,7 @@
     "rank": 1,
     "level": 1,
     "slot": 2,
-    "preview": "items/34.png"
+    "preview": "/items/34.png"
   },
   {
     "id": 3,
@@ -45,7 +45,7 @@
     "rank": 1,
     "level": 1,
     "slot": 3,
-    "preview": "items/34.png"
+    "preview": "/items/34.png"
   },
   {
     "id": 4,
@@ -61,6 +61,6 @@
     "rank": 1,
     "level": 1,
     "slot": 4,
-    "preview": "items/34.png"
+    "preview": "/items/34.png"
   }
 ]

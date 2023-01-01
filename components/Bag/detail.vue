@@ -2,7 +2,7 @@
 import { onClickOutside } from '@vueuse/core'
 import type { PlayerEquipment } from '~/types'
 import { EQUIPMENT_SLOT } from '~/constants'
-import { usePlayerStore } from '~/composables/player'
+import { usePlayerStore } from '~/composables/usePlayer'
 
 interface Prop {
   item: PlayerEquipment

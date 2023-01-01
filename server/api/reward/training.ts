@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const _p: any = await PlayerSchema.findOne({ userId: session?.user?.email })
+  const _p = await PlayerSchema.findOne({ userId: session?.user?.email })
   if (!_p) {
     return createError({
       statusCode: 400,
@@ -28,14 +28,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { exp, gold, minutes } = resourceReceived(_p.lastTimeReceivedRss, _p.midId)
-  await PlayerSchema.updateOne({ sid: _p.sid }, {
-    lastTimeReceivedRss: new Date().getTime(),
-    $inc: {
-      exp,
-      gold,
-    },
-  })
+  const { exp, gold, minutes } = await resourceReceived(_p.sid, _p.lastTimeReceivedRss, _p.midId)
 
   return {
     exp,

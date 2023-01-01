@@ -1,0 +1,26 @@
+import mongoose from 'mongoose'
+const ObjectId = mongoose.Types.ObjectId
+
+const schema = new mongoose.Schema(
+  {
+    _id: {
+      type: String,
+      default() {
+        return new ObjectId().toString()
+      },
+    },
+    sid: String,
+    slot: Number,
+    upgradeLevel: {
+      type: Number,
+      default: 0,
+    },
+    startLevel: {
+      type: Number,
+      default: 0,
+    },
+  },
+  { timestamps: true, strict: true, strictQuery: true },
+)
+schema.index({ sid: -1 })
+export const PlayerEquipUpgradeSchema = mongoose.model('PlayerEquipUpgradeSchema', schema, 'player_equip_upgrade')

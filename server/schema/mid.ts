@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import type { Mid } from '~/types/mid'
+
 const ObjectId = mongoose.Types.ObjectId
 
 const schema = new mongoose.Schema<Mid>(
@@ -16,10 +17,15 @@ const schema = new mongoose.Schema<Mid>(
     monsterId: Number,
     ms: Number,
     isPvp: String,
-    rateExp: Number,
-    rateResource: Number,
+    reward: {},
+    // rateExp: Number,
+    // rateResource: Number,
   },
-  { timestamps: true, strict: true, strictQuery: true },
+  {
+    timestamps: true,
+    strict: true,
+    strictQuery: true,
+  },
 )
 
 schema.index({ id: -1 }, { unique: true })

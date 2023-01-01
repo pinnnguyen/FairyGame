@@ -1,12 +1,16 @@
+import functions from './server/sockets'
 export default defineNuxtConfig({
+  socketIO: {
+    socketFunctions: functions,
+  },
   auth: {
     origin: process.env.ORIGIN,
-    enableGlobalAppMiddleware: true,
+    enableGlobalAppMiddleware: false,
   },
   nitro: {
     plugins: [
       '~/server/index.ts',
-      '~/server/plugins/socket',
+      // '~/server/plugins/socket',
     ],
   },
   runtimeConfig: {
@@ -23,20 +27,17 @@ export default defineNuxtConfig({
   },
   modules: [
     '@vueuse/nuxt',
-    // '@unocss/nuxt',
     '@pinia/nuxt',
-    //    '@nuxtjs/supabase',
     '@nuxt/image-edge',
-    // 'nuxt-full-static',
     'nuxt-windicss',
     '@sidebase/nuxt-auth',
+    'nuxt-internal-socket',
   ],
   experimental: {
     reactivityTransform: false,
     inlineSSRStyles: false,
   },
   css: [
-    // '@unocss/reset/tailwind.css',
     '~/assets/css/main.scss',
     '~/assets/css/toast.css',
     'virtual:windi.css',

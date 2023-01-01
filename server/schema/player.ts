@@ -1,15 +1,11 @@
 import mongoose from 'mongoose'
 import { conditionForUpLevel } from '~/server/common/level'
 import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule/level'
-import { MidSchema, PlayerAttributeSchema, PlayerEquipmentSchema } from '~/server/schema'
+import { MidSchema, PlayerAttributeSchema, PlayerEquipUpgradeSchema, PlayerEquipmentSchema } from '~/server/schema'
 import type { Player } from '~/types'
 const ObjectId = mongoose.Types.ObjectId
 
-interface PlayerModel {
-  getPlayer(): any
-}
-
-const schema = new mongoose.Schema<Player, PlayerModel>(
+const schema = new mongoose.Schema<Player>(
   {
     _id: {
       type: String,
@@ -19,6 +15,7 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
     },
     sid: { type: String, unique: true },
     name: String,
+    knb: Number,
     gold: Number,
     coin: Number,
     power: Number,
@@ -27,7 +24,7 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
     exp: Number,
     midId: Number,
     userId: String,
-    lastTimeReceivedRss: String,
+    lastTimeReceivedRss: Number,
     levelTitle: String,
     floor: String,
     expLimited: Number,
@@ -39,7 +36,6 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
     strictQuery: true,
     statics: {
       async getPlayer(userId: string, sid: string) {
-        console.log('getPlayer')
         const player = await this.findOne({
           $or: [
             { userId },
@@ -72,7 +68,6 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
           }
         }
 
-        console.log('player.class --->', player)
         if (player.class > 0 && attribute) {
           attribute.criticalDamage = 1.5 // 150% sat thuong bao kich
           switch (player.class) {
@@ -118,11 +113,12 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
         if (attribute?.slot_8)
           equipIds.push(attribute?.slot_8)
 
+        const playerEquipUpgrade = await PlayerEquipUpgradeSchema.find({ sid: player.sid })
         const playerEquips = await PlayerEquipmentSchema.find({
           _id: {
             $in: equipIds,
           },
-        }).select('damage hp speed def mp critical bloodsucking')
+        }).select('damage hp speed def mp critical bloodsucking preview slot level rank').sort({ slot: -1 })
 
         if (playerEquips.length > 0 && attribute) {
           for (let i = 0; i < playerEquips.length; i++) {
@@ -135,6 +131,18 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
             attribute.bloodsucking += playerEquips[i].bloodsucking
           }
         }
+
+        // format attribute
+        if (attribute) {
+          attribute.damage = Math.round(attribute.damage)
+          attribute.hp = Math.round(attribute.hp)
+          attribute.speed = Math.round(attribute.speed)
+          attribute.def = Math.round(attribute.def)
+          attribute.mp = Math.round(attribute.mp)
+          attribute.critical = Math.round(attribute.critical)
+          attribute.bloodsucking = Math.round(attribute.bloodsucking)
+        }
+
 
         return {
           player,
@@ -149,6 +157,8 @@ const schema = new mongoose.Schema<Player, PlayerModel>(
               beUpgraded: player?.exp >= player?.expLimited,
             },
           },
+          equipments: playerEquips,
+          playerEquipUpgrade,
         }
       },
       async changeCurrency(params: {

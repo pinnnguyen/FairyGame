@@ -1,15 +1,26 @@
 import { convertMillisecondsToSeconds, convertSecondsToMinutes } from '~/common'
-import { BASE_EXP, BASE_GOLD, TRAINING_RESOURCE } from '~/server/rule/reward'
+import { BASE_EXP, BASE_GOLD } from '~/server/rule/reward'
+import { MidSchema, PlayerSchema } from '~/server/schema'
 
-export const resourceReceived = (lastTimeReceivedRss: number, midId: string) => {
+export const resourceReceived = async (sid: string, lastTimeReceivedRss: number, midId: string) => {
   const now = new Date().getTime()
   const seconds = Math.round(convertMillisecondsToSeconds(now - lastTimeReceivedRss))
   const minutes = Math.round(convertSecondsToMinutes(seconds))
 
-  const expInMinute = Math.round(BASE_EXP() * TRAINING_RESOURCE[midId][0])
-  const goldInMinute = Math.round(BASE_GOLD() * TRAINING_RESOURCE[midId][1])
+  const mid = await MidSchema.findOne({ id: midId })
+  if (!mid) {
+    return {
+      exp: 0,
+      gold: 0,
+      minutes: 0,
+    }
+  }
 
-  if (seconds < 59) {
+  const expInMinute = Math.round(BASE_EXP() * mid.reward.base.exp)
+  const goldInMinute = Math.round(BASE_GOLD() * mid.reward.base.gold)
+
+  console.log('seconds', seconds)
+  if (seconds < 60) {
     return {
       exp: 0,
       gold: 0,
@@ -24,6 +35,14 @@ export const resourceReceived = (lastTimeReceivedRss: number, midId: string) => 
     exp += expInMinute
     gold += goldInMinute
   }
+
+  await PlayerSchema.updateOne({ sid }, {
+    lastTimeReceivedRss: new Date().getTime(),
+    $inc: {
+      exp,
+      gold,
+    },
+  })
 
   return {
     exp,

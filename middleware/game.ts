@@ -1,5 +1,5 @@
 import { storeToRefs } from 'pinia'
-import { usePlayerStore } from '~/composables/player'
+import { usePlayerStore } from '~/composables/usePlayer'
 
 export default defineNuxtRouteMiddleware(async () => {
   const { status } = useSession()

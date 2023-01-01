@@ -23,6 +23,7 @@ const schema = new mongoose.Schema<Monster>(
     bloodsucking: Number,
     speed: Number,
     reward: {},
+    class: Number,
   },
   { timestamps: true, strict: true, strictQuery: true },
 )

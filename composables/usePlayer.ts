@@ -6,8 +6,11 @@ export const usePlayerStore = defineStore('player', () => {
   const playerInfo = ref<PlayerDataResponse>()
 
   const sid = computed(() => playerInfo.value?.sid)
+  const mids = computed(() => playerInfo.value?.mid)
   const upgrade = computed(() => playerInfo.value?.upgrade)
   const attribute = computed(() => playerInfo.value?.attribute)
+  const equipments = computed(() => playerInfo.value?.equipments)
+  const playerEquipUpgrade = computed(() => playerInfo.value?.playerEquipUpgrade)
 
   const hasEquip = (pos: number, _equipId: string) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -21,7 +24,7 @@ export const usePlayerStore = defineStore('player', () => {
     return attribute.value[`slot_${pos}`] = _equipId
   }
 
-  const initPlayer = (data: any) => {
+  const loadPlayer = (data: any) => {
     set(playerInfo, {
       ...data.player,
       attribute: {
@@ -33,6 +36,8 @@ export const usePlayerStore = defineStore('player', () => {
       upgrade: {
         ...data.upgrade,
       },
+      equipments: data.equipments,
+      playerEquipUpgrade: data.playerEquipUpgrade,
     })
   }
 
@@ -55,18 +60,23 @@ export const usePlayerStore = defineStore('player', () => {
       upgrade: {
         ...data?.upgrade,
       },
+      equipments: data.equipments,
+      playerEquipUpgrade: data.playerEquipUpgrade,
     })
   }
 
   return {
     sid,
+    mids,
     playerInfo,
     getPlayer,
-    initPlayer,
+    loadPlayer,
     upgrade,
     attribute,
     hasEquip,
     changeEquip,
+    equipments,
+    playerEquipUpgrade,
   }
 })
 

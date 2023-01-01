@@ -2,13 +2,19 @@ import { randomNumber } from '~/common'
 import { BASE_EXP, BASE_GOLD } from '~/server/rule/reward'
 import { EquipmentSchema, PlayerEquipmentSchema, PlayerSchema } from '~/server/schema'
 import type { EnemyObject, PlayerEquipment } from '~/types'
-import { MAX_RATE_RECEIVED_RSS, MIN_RATE_RECEIVED_RSS } from '~/constants'
+import { MAX_RATE_RECEIVED_RSS, MIN_RATE_RECEIVED_RSS, WINNER } from '~/constants'
 
 export const setLastTimeReceivedRss = async (sid: string) => {
   await PlayerSchema.updateOne({ sid }, { lastTimeReceivedRss: new Date().getTime() })
 }
 
-export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject) => {
+export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject, winner: string) => {
+  if (winner === WINNER.youwin) {
+    return {
+      equipments: [],
+    }
+  }
+
   const equipmentIds = []
   const playerEquipments: PlayerEquipment[] = []
 
@@ -43,6 +49,7 @@ export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject) => 
         mp: equipments[i].mp ?? 0,
         critical: equipments[i].critical ?? 0,
         bloodsucking: equipments[i].bloodsucking ?? 0,
+        criticalDamage: 0,
         rank: equipments[i].rank,
         level: equipments[i].level,
         slot: equipments[i].slot,
@@ -57,7 +64,14 @@ export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject) => 
     equipments: playerEquipments,
   }
 }
-export const getBaseReward = async (sid: string, _enemyObj: EnemyObject) => {
+export const getBaseReward = async (sid: string, _enemyObj: EnemyObject, winner: string) => {
+  if (winner !== WINNER.youwin) {
+    return {
+      exp: 0,
+      gold: 0,
+    }
+  }
+
   if (!_enemyObj) {
     return {
       exp: 0,

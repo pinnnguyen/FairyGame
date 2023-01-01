@@ -23,6 +23,5 @@ export default defineNuxtPlugin((nuxtApp) => {
     icon: false,
     rtl: false,
     maxToasts: 5,
-    newestOnTop: true,
   })
 })

@@ -24,5 +24,7 @@ export default defineEventHandler(async (event) => {
     attribute: playerResource?.attribute,
     mid: playerResource?.mid,
     upgrade: playerResource?.upgrade,
+    equipments: playerResource.equipments,
+    playerEquipUpgrade: playerResource.playerEquipUpgrade,
   } as PlayerServerResponse
 })

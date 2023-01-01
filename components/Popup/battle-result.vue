@@ -34,7 +34,7 @@ const time = setInterval(() => {
 <template>
   <div class="blocker duration-500 transition-colors transition-opacity z-9">
     <div class="flex flex-col items-center">
-      <NuxtImg class="w-[300px]" format="webp" :src="battleResult.win === WINNER.youwin ? 'battle/win.png' : 'battle/lose.png' " />
+      <NuxtImg class="w-[300px]" format="webp" :src="battleResult.win === WINNER.youwin ? '/battle/win.png' : '/battle/lose.png' " />
       <div class="w-[250px] h-[250px] border border-[#6d6c6c] bg-black rounded-md">
         <ul class="h-full w-full p-1">
           <li v-for="(value, key) in reward.base" :key="key" class="float-left w-[calc(23%_-_8px)] h-[48px] ml-2 m-1 bg-iconbg_3 bg-cover ">

@@ -80,8 +80,9 @@ export default defineConfig({
       12: '12px',
     },
     backgroundImage: {
+      bg_5: 'url("/common/bg_5.jpg")',
       boss_daily_panel: 'url("/panel/boss_daily.png")',
-      pve: 'url("/pve/bg-pve.png")',
+      pve: 'url("/pve/image_xm_zxbg.png")',
       right_bottom: 'url("/button/right_bottom.png")',
       iconbg_0: 'url(\'/quality_bg/iconbg_0.png\')',
       iconbg_1: 'url(\'/quality_bg/iconbg_1.png\')',

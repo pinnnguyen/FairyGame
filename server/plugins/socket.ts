@@ -3,9 +3,17 @@ import { Server } from 'socket.io'
 import moment from 'moment'
 import { BATTLE_KIND } from '~/constants'
 import { handleWars } from '~/server/api/war/index.post'
+import { needResourceUpgrade } from '~/server/helpers'
 import type { BattleRequest } from '~/types/war'
 import type { ClientToServerEvents, ServerToClientEvents } from '~/types/socket'
-import { BattleSchema, BossSchema, EquipmentSchema } from '~/server/schema'
+import {
+  BattleSchema,
+  BossSchema,
+  EquipmentSchema,
+  PlayerEquipUpgradeSchema,
+  PlayerEquipmentSchema,
+  PlayerItemSchema, PlayerSchema,
+} from '~/server/schema'
 const httpServer = createServer()
 
 const battleJoinHandler = async (params: {
@@ -24,7 +32,8 @@ const battleJoinHandler = async (params: {
   })
 
   params.socket.on('battle:leave', () => {
-    params.socket.disconnect()
+    console.log('battle:leave')
+    // params.io.socket.socketsLeave([params._channel])
   })
 }
 
@@ -64,7 +73,8 @@ const bossDailyJoinHandler = async (params: {
   })
 
   params.socket.on('channel:leave', () => {
-    console.log('channel leave')
+    console.log('channel leave boss')
+    // params.io.socket.socketsLeave([params.request._channel])
     //    params.socket.disconnect()
   })
 }
@@ -77,9 +87,21 @@ export default function () {
     // transports: ['websocket'],
   })
 
-  io.listen(config.socketIO.port)
-  // console.log(`Socket start port: ${config.socketIO.port}`)
-  io.on('connect', (socket) => {
+  // globalThis.__io = io
+  io.on('connect', async (socket) => {
+    console.log(`Socket connected: ${socket.id}`)
+    socket.on('send-notify', (message) => {
+      socket.broadcast.emit('send-message', message)
+    })
+    // const changeStream = await PlayerSchema.watch()
+    //
+    // changeStream.on('change', (next) => {
+    //   if (next?.operationType === 'insert') {
+    //     console.log('A change occurred:', next.operationType)
+    //     socket.broadcast.emit('notify', next.fullDocument)
+    //   }
+    // })string
+
     socket.on('battle:join', async (_channel: string, request: BattleRequest) => {
       await battleJoinHandler({
         io,
@@ -100,10 +122,75 @@ export default function () {
       })
     })
 
+    socket.on('equip:upgrade:start', (_channel) => {
+      socket.join(_channel)
+      socket.on('equip:upgrade:preview', async (_equipId) => {
+        const equip = await PlayerEquipmentSchema.findById(_equipId)
+        if (!equip)
+          return
+
+        const equipUpgrade = await PlayerEquipUpgradeSchema.findOneAndUpdate({ sid: equip.sid, slot: equip.slot }, {}, { upsert: true })
+        if (!equipUpgrade)
+          return
+
+        const { gold, cuongHoaThach } = needResourceUpgrade('upgrade', equipUpgrade.upgradeLevel)
+        const totalCuongHoaThach = await PlayerItemSchema.findOne({ kind: 1, sid: equip.sid })
+
+        const require = {
+          gold,
+          cuongHoaThach,
+          totalCuongHoaThach: totalCuongHoaThach?.sum ? totalCuongHoaThach?.sum : 0,
+        }
+
+        io.to(_channel).emit('equip:preview:response', require)
+      })
+
+      socket.on('equip:upgrade', async (type: string, _equipId: string) => {
+        const equip = await PlayerEquipmentSchema.findById(_equipId)
+        if (!equip)
+          return
+
+        const equipUpgrade = await PlayerEquipUpgradeSchema.findOne({ sid: equip.sid, slot: equip.slot })
+        if (!equipUpgrade)
+          return
+
+        const reedRss = needResourceUpgrade('upgrade', equipUpgrade.upgradeLevel)
+        await PlayerItemSchema.findOneAndUpdate({ kind: 1, sid: equip.sid }, {
+          $inc: {
+            sum: -reedRss.cuongHoaThach,
+          },
+        })
+
+        await PlayerSchema.findOneAndUpdate({ sid: equip.sid }, {
+          $inc: {
+            gold: -reedRss.gold,
+          },
+        })
+
+        const equipUpgradeUpdated = await PlayerEquipUpgradeSchema.findOneAndUpdate({ sid: equip.sid }, {
+          $inc: {
+            upgradeLevel: 1,
+          },
+        })
+
+        const playerItem = await PlayerItemSchema.findOne({ kind: 1, sid: equip.sid })
+        const { gold, cuongHoaThach } = needResourceUpgrade('upgrade', equipUpgradeUpdated ? equipUpgradeUpdated.upgradeLevel : equipUpgrade.upgradeLevel)
+
+        io.to(_channel).emit('equip:upgrade:response', {
+          gold,
+          cuongHoaThach,
+          totalCuongHoaThach: playerItem?.sum,
+        })
+      })
+
+      socket.on('equip:upgrade:leave', () => {
+        socket.leave(_channel)
+      })
+    })
+
     socket.on('disconnect', () => {
       socket.disconnect()
     })
   })
-
-  return io
+  io.listen(3002)
 }

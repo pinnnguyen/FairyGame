@@ -12,7 +12,6 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.30.1",
     "@nuxt/image-edge": "^1.0.0-27840416.dc1ed65",
-    "@nuxtjs/supabase": "^0.3.0",
     "@pinia/nuxt": "^0.4.3",
     "@sidebase/nuxt-auth": "^0.3.2",
     "@vueuse/nuxt": "^9.5.0",
@@ -22,19 +21,17 @@
     "mongoose": "^6.8.1",
     "nuxt": "^3.0.0",
     "nuxt-full-static": "^0.2.1",
+    "nuxt-internal-socket": "^1.0.3",
     "nuxt-windicss": "^2.6.0",
     "ohash": "^1.0.0",
     "pinia": "^2.0.23",
     "sass": "^1.57.0",
-    "socket.io": "^4.5.4",
-    "socket.io-client": "^4.5.4",
     "typescript": "^4.9.3",
-    "uuid4": "^2.0.3",
     "vue-marquee-text-component": "^2.0.1"
   },
   "dependencies": {
     "@vueuse/core": "^9.9.0",
-    "vue-toasted": "^1.1.28",
+    "nuxt3-socket.io": "^0.0.11",
     "vue-toastification": "^2.0.0-rc.5"
   }
 }

@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
 import { set } from '@vueuse/core'
 import { sleep } from '~/common'
-import { usePlayerStore } from '~/composables/player'
+import { usePlayerStore } from '~/composables/usePlayer'
 import { BATTLE_KIND, BATTLE_TURN, TARGET_TYPE } from '~/constants/war'
 import type { PlayerEquipment } from '~/types'
 import type { BaseProperties, BaseReward, BattleResponse } from '~/types/war'
@@ -78,6 +78,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     console.log('onRefreshFinished')
     if (queryTarget.value)
       return
+
     _socket.emit('battle:refresh')
   }
 
@@ -98,7 +99,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     })
 
     _socket.on('battle:start', async (war: BattleResponse) => {
-      console.log('--BATTLE RESULT--', war)
+      console.log('war', war)
       set(inRefresh, false)
       set(refreshTime, 0)
       set(loading, false)
@@ -184,6 +185,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
 
   onUnmounted(() => {
     _socket.emit('battle:leave')
+    _socket.emit('disconnect')
   })
 
   return {

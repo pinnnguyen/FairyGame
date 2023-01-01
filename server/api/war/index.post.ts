@@ -9,7 +9,6 @@ import { startWar } from '~/helpers'
 
 export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: BattleRequest) => {
   // Get battle information has already used it
-  console.log('--battleRequest--', battleRequest)
   const today = moment().startOf('day')
   const now = new Date().getTime()
 
@@ -82,8 +81,8 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     winner,
   } = startWar(_p, _enemyObj)
 
-  const { exp, gold } = await getBaseReward(_p.player.sid, _enemyObj)
-  const { equipments } = await receivedEquipment(_p.player.sid, _enemyObj)
+  const { exp, gold } = await getBaseReward(_p.player.sid, _enemyObj, winner)
+  const { equipments } = await receivedEquipment(_p.player.sid, _enemyObj, winner)
   await setLastTimeReceivedRss(_p.player.sid)
 
   // Lưu lịch sử trận đánh

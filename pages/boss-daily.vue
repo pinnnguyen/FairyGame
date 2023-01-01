@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { useToast } from 'vue-toastification'
 import useSocket from '~/composables/useSocket'
-import { usePlayerStore } from '~/composables/player'
+import { usePlayerStore } from '~/composables/usePlayer'
 
 definePageMeta({
   middleware: ['game'],
@@ -18,13 +18,13 @@ const equipShow = ref(false)
 onMounted(() => {
   _socket.emit('boss-daily:join', `boss-daily-${sid.value}`, sid.value)
   _socket.on('boss-daily:start', (dataRes) => {
-    console.log('bossDaily', dataRes)
     bossDaily.value = dataRes.bossDaily
   })
 })
 
 onUnmounted(() => {
-  _socket.emit('channel:leave')
+  // _socket.emit('channel:leave')
+  _socket.emit('disconnect')
 })
 
 const pickItem = (equipment) => {
@@ -33,7 +33,6 @@ const pickItem = (equipment) => {
 }
 
 const startWar = (boss) => {
-  console.log('click', boss)
   if (boss.numberOfTurn <= 0) {
     toast('Lượt khiêu chiến trong ngày đã hết')
     return
@@ -67,7 +66,7 @@ const goToHome = () => {
             <div class="flex flex-col items-center justify-center">
               <div class="relative mr-2">
                 <NuxtImg class="w-[55px] h-[55px] rounded-full border border-[#bbc4d2]" format="webp" :src="boss.avatar" />
-                <NuxtImg class="w-10 h-3 object-cover absolute bottom-0 left-[calc(50%_-_20px)]" format="webp" src="panel/common_2.png" />
+                <NuxtImg class="w-10 h-3 object-cover absolute bottom-0 left-[calc(50%_-_20px)]" format="webp" src="/panel/common_2.png" />
                 <p class="text-10 text-white h-3 object-cover absolute bottom-[2px] left-[calc(50%_-_20px)]">
                   {{ boss.name }}
                 </p>

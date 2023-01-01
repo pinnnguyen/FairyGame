@@ -1,28 +1,18 @@
 <script setup lang='ts'>
-const { initPlayer } = usePlayerStore()
+import { useSocket } from '#imports'
 
 definePageMeta({
-  // middleware: ['role'],
+  middleware: ['role'],
   layout: 'auth',
 })
 
-onMounted(async () => {
-  const role = await $fetch('/api/player', {
-    headers: (useRequestHeaders(['cookie']) as any),
-  })
-
-  if (role?.player?.sid) {
-    initPlayer(role)
-    return navigateTo('/')
-  }
-})
-
+const { _socket } = useSocket()
 const name = ref('')
 const classList = [
   {
     id: 1,
     name: 'Tu tiên',
-    img: 'role/fs_007_1.png',
+    img: '/role/fs_007_1.png',
     description: `              <p class="text-12 mt-1">
                               Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu ma
                             </p>
@@ -32,7 +22,7 @@ const classList = [
   {
     id: 2,
     name: 'Tu yêu',
-    img: 'role/fs_007_2.png',
+    img: '/role/fs_007_2.png',
     description: `                <p class="text-12 mt-1">
                               Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu tiên
                             </p>
@@ -42,7 +32,7 @@ const classList = [
   {
     id: 3,
     name: 'Tu ma',
-    img: 'role/fs_007_4.png',
+    img: '/role/fs_007_4.png',
     description: `                   <p class="text-12 mt-1">
                               Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi nhân tộc
                             </p>
@@ -52,7 +42,7 @@ const classList = [
   {
     id: 4,
     name: 'Nhân tộc',
-    img: 'role/fs_007_3.png',
+    img: '/role/fs_007_3.png',
     description: `              <p class="text-12 mt-1">
                               Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu yêu
                             </p>
@@ -61,22 +51,27 @@ const classList = [
   },
 ]
 
-const seleted = ref(classList[0])
+const selected = ref(classList[2])
 const handleCreateFigure = async () => {
-  const { initPlayer } = usePlayerStore()
+  const { loadPlayer } = usePlayerStore()
 
   const role = await $fetch('/api/player/create-role', {
     method: 'POST',
     headers: (useRequestHeaders(['cookie']) as any),
     body: {
       name: name.value,
-      class: seleted.value.id,
+      class: selected.value.id,
     },
   })
 
-  initPlayer(role)
+  _socket.emit('send-notify', `Chào mừng người chơi ${role.player.name} bước vào tu tiên giới`)
+  loadPlayer(role)
   navigateTo('/')
 }
+
+onUnmounted(() => {
+  _socket.emit('disconnect')
+})
 </script>
 
 <template>
@@ -88,20 +83,20 @@ const handleCreateFigure = async () => {
             Hệ phái
           </p>
           <div class="flex items-start justify-between grid grid-cols-4">
-            <div v-for="classE in classList" :key="classE.name" class="mb-4 p-2" @click="seleted = classE">
+            <div v-for="classE in classList" :key="classE.name" class="mb-4 p-2" @click="selected = classE">
               <p class="text-center font-semibold">
                 {{ classE.name }}
               </p>
               <NuxtImg
                 class="w-full duration-500 transition transform h-[300px] object-cover"
-                :class="{ 'scale-130': seleted ? seleted.id === classE.id : 0 }"
+                :class="{ 'scale-130': selected ? selected.id === classE.id : 0 }"
                 format="webg"
                 :src="classE.img"
               />
             </div>
           </div>
         </div>
-        <div class="pt-10 duration" v-html="seleted.description" />
+        <div class="pt-10 duration" v-html="selected.description" />
         <div class="absolute bottom-0 left-0 mb-4 flex w-full justify-center items-center">
           <div>
             <p>

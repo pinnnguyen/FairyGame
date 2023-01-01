@@ -7,6 +7,7 @@ const ObjectId = mongoose.Types.ObjectId
 interface CreateRoleBody {
   name: string
   userId: string
+  class: number
 }
 
 export default defineEventHandler(async (event) => {
@@ -34,7 +35,7 @@ export default defineEventHandler(async (event) => {
     sid,
     name: body.name,
     userId: session?.user?.email,
-    class: body.class,
+    class: body?.class,
     ...DEFAULT_ROLE,
   })
 
