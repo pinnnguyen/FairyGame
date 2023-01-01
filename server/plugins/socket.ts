@@ -88,7 +88,7 @@ export default function () {
   })
 
   // globalThis.__io = io
-  io.on('connect', async (socket) => {
+  io.on('connection', async (socket) => {
     console.log(`Socket connected: ${socket.id}`)
     socket.on('send-notify', (message) => {
       socket.broadcast.emit('send-message', message)
