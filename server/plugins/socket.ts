@@ -8,31 +8,13 @@ import type { BattleRequest } from '~/types/war'
 import type { ClientToServerEvents, ServerToClientEvents } from '~/types/socket'
 import {
   BattleSchema,
-} from '~/server/schema/battle'
-
-import {
   BossSchema,
-} from '~/server/schema/boss'
-
-import {
   EquipmentSchema,
-} from '~/server/schema/equiment'
-
-import {
   PlayerEquipUpgradeSchema,
-} from '~/server/schema/playerEquipUpgrade'
-
-import {
   PlayerEquipmentSchema,
-} from '~/server/schema/player.equiment'
-
-import {
   PlayerItemSchema,
-} from '~/server/schema/playerItem'
-
-import {
-  PlayerSchema,
-} from '~/server/schema/player'
+  PlayerSchema
+} from '~/server/schema'
 
 const httpServer = createServer()
 

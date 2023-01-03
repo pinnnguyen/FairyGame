@@ -1,6 +1,4 @@
-import { PlayerAttributeSchema } from '~/server/schema/playerAttribute'
-import { PlayerEquipmentSchema } from '~/server/schema/player.equiment'
-import { PlayerSchema } from '~/server/schema/player'
+import { PlayerSchema, PlayerEquipmentSchema, PlayerAttributeSchema } from '~/server/schema'
 
 import { getServerSession } from '#auth'
 import { prepareSlots } from '~/server/helpers'

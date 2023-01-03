@@ -1,9 +1,9 @@
 <script setup lang="ts">
 defineProps<{
-  receiverHp: number
-  hp: number
-  mp: number
-  receiverMp: number
+  receiverHp?: number
+  hp?: number
+  mp?: number
+  receiverMp?: number
 }>()
 </script>
 

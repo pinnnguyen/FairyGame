@@ -22,7 +22,7 @@ const tabs = ref([
 </script>
 
 <template>
-  <div class="bg-[#1b345d] text-white w-full z-99 duration-500 absolute bottom-0 h-[70%]">
+  <div class="bg-[#475181] text-white w-full z-99 duration-500 absolute bottom-0 h-[70%]">
     <div class="h-full">
       <div class="absolute top-[-25px] flex items-center justify-center w-full">
         <div
@@ -35,8 +35,7 @@ const tabs = ref([
         </div>
       </div>
       <div
-        class="m-3 rounded-md pt-2 text-12"
-        style="background-image: linear-gradient(to bottom right, #314b76, #455776, #4c5b74); height: calc(100% - 60px);"
+        class="m-3 rounded-md pt-2 text-12 h-[calc(100%_-_60px)]"
       >
         <PlayerAttributeTab v-if="currentTab === 'attribute'" />
         <PlayerEquipTab v-if="currentTab === 'equipment'" />

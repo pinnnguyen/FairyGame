@@ -6,7 +6,7 @@ import { UserSchema } from '~/server/schema/user'
 
 export default NuxtAuthHandler({
   // secret needed to run nuxt-auth in production mode (used to encrypt data)
-  secret: process.env.NUXT_SECRET,
+  secret: 'kkfo2i1o2n2nfjjk2k22k2e2ejf',
   providers: [
     //    GithubProvider.default({
     //      clientId: process.env.GITHUB_CLIENT_ID,

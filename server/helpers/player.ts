@@ -1,3 +1,4 @@
+import type { PlayerAttribute } from './../../types/player'
 // import type { EnemyObject, PlayerInfo } from '~/types'
 //
 // export const classPlayerCounter = (_p: PlayerInfo, _enemyObject: EnemyObject) => {
@@ -45,7 +46,57 @@ import { conditionForUpLevel } from '~/server/common'
 import { equipUpgradeWithLevel, formatAttributes, useEquipment } from '~/server/helpers/equipment'
 import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule'
 import { MidSchema, PlayerAttributeSchema, PlayerEquipUpgradeSchema, PlayerEquipmentSchema, PlayerSchema } from '~/server/schema'
-import type { PlayerServerResponse } from '~/types'
+import type { Player, PlayerServerResponse } from '~/types'
+
+const useClass = (ofClass: number, attribute: PlayerAttribute) => {
+  attribute.criticalDamage = 1.5 // 150% sat thuong bao kich
+  switch (ofClass) {
+    case 1:
+      // Tu tiên 10% tấn công & 5% sát thương bạo tăng kích
+      attribute.damage += (10 * attribute.damage) / 100
+      attribute.criticalDamage += (5 * attribute.criticalDamage) / 100
+      break
+    case 2:
+      // Tu yeu 10% sinh luc & 5% phong thu
+      attribute.hp += (10 * attribute.hp) / 100
+      attribute.def += (5 * attribute.def) / 100
+      break
+    case 3:
+      // Tu ma 10% sinh luc & 5% phong thu
+      attribute.damage += (5 * attribute.damage) / 100
+      attribute.criticalDamage += (10 * attribute.criticalDamage) / 100
+      break
+    case 4:
+      // Nhan toc 10% sinh luc & 5% phong thu
+      attribute.damage += (5 * attribute.damage) / 100
+      attribute.hp += (5 * attribute.hp) / 100
+      attribute.def += (5 * attribute.def) / 100
+      break
+  }
+}
+
+const useAttribute = (_p: Player, attribute: PlayerAttribute) => {
+  if (_p.ofPower > 0) {
+    attribute.hp += 10 * _p.ofPower
+    attribute.damage += (0.2 * _p.ofPower) * attribute.damage / 100
+  }
+
+  if (_p.ofAgility) {
+    attribute.speed += 0.5 * _p.ofAgility
+    attribute.critical += (0.2 * _p.ofAgility) * attribute.critical / 100
+  }
+
+  if (_p.ofVitality) {
+    attribute.def += 2 + 0.5 * _p.ofVitality
+    attribute.hp += 10 + (0.2 * _p.ofVitality) * attribute.hp / 100
+  }
+
+  if (_p.ofSkillful) {
+    attribute.speed += 0.5 * _p.ofSkillful
+    attribute.def += 2 + 0.5 * _p.ofSkillful
+    attribute.critical += (0.1 * _p.ofSkillful) * attribute.critical / 100
+  }
+}
 
 export const getPlayer = async (userId: string | null | undefined, sid: string) => {
   const player = await PlayerSchema.findOne({
@@ -80,32 +131,9 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
     }
   }
 
-  if (player.class > 0 && attribute) {
-    attribute.criticalDamage = 1.5 // 150% sat thuong bao kich
-    switch (player.class) {
-      case 1:
-        // Tu tiên 10% tấn công & 5% sát thương bạo tăng kích
-        attribute.damage += (10 * attribute.damage) / 100
-        attribute.criticalDamage += (5 * attribute.criticalDamage) / 100
-        break
-      case 2:
-        // Tu yeu 10% sinh luc & 5% phong thu
-        attribute.hp += (10 * attribute.hp) / 100
-        attribute.def += (5 * attribute.def) / 100
-        break
-      case 3:
-        // Tu ma 10% sinh luc & 5% phong thu
-        attribute.damage += (5 * attribute.damage) / 100
-        attribute.criticalDamage += (10 * attribute.criticalDamage) / 100
-        break
-      case 4:
-        // Nhan toc 10% sinh luc & 5% phong thu
-        attribute.damage += (5 * attribute.damage) / 100
-        attribute.hp += (5 * attribute.hp) / 100
-        attribute.def += (5 * attribute.def) / 100
-        break
-    }
-  }
+  useAttribute(player, attribute)
+  if (player.class > 0 && attribute)
+    useClass(player.class, attribute)
 
   const equipIds = []
   if (attribute?.slot_1)

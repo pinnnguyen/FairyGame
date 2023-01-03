@@ -44,6 +44,7 @@ export const playerLevelUp = async (sid: string) => {
       $inc: {
         exp: -_p.player.expLimited,
         level: 1,
+        ofAttribute: 2,
       },
     })
 

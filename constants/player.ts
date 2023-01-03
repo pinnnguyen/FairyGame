@@ -3,7 +3,7 @@ export const DEFAULT_ROLE = {
   coin: 0,
   power: 0,
   vip_level: 0,
-  level: 1,
+  level: 0,
   midId: 1,
   exp: 0,
 }

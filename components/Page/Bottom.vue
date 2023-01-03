@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useIntervalFn } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { useToast } from 'vue-toastification'
 import { useAppStore, usePlayerStore } from '#imports'
+import { sendMessage } from '~/composables/useMessage'
 
 const { playerInfoComponent } = storeToRefs(useAppStore())
 const { playerInfo } = storeToRefs(usePlayerStore())
@@ -16,7 +16,6 @@ const toggle = reactive<Record<string, boolean>>({
   tienLinh: false,
 })
 
-const toast = useToast()
 const needTimeResource = ref(0)
 const doReFetch = ref(false)
 
@@ -38,13 +37,8 @@ watch(doReFetch, async (value) => {
       headers: (useRequestHeaders(['cookie']) as any),
     })
 
-    toast(`+${resources.exp} XP`, {
-      timeout: 2000,
-    })
-
-    toast(`+${resources.gold} Linh thạch`, {
-      timeout: 3000,
-    })
+    sendMessage(`+${resources.exp} XP`, 1500)
+    sendMessage(`+${resources.gold} Linh thạch`, 2000)
 
     if (playerInfo.value) {
       playerInfo.value.exp += resources.exp

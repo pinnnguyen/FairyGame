@@ -1,18 +1,16 @@
 <script setup>
 import { onClickOutside } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { useToast } from 'vue-toastification'
 import useSocket from '~/composables/useSocket'
 import { usePlayerStore } from '~/composables/usePlayer'
+import { sendMessage } from '~~/composables/useMessage'
 
 const emits = defineEmits(['close'])
 
 const target = ref(null)
 onClickOutside(target, event => emits('close'))
 
-const toast = useToast()
-const { sid } = storeToRefs(usePlayerStore())
-
+const { sid, playerInfo } = storeToRefs(usePlayerStore())
 const { _socket } = useSocket()
 const bossDaily = ref()
 const equipSelected = ref({})
@@ -43,8 +41,11 @@ const parseEquipments = (equipments) => {
 }
 
 const startWar = (boss) => {
+  if (playerInfo.value.level < boss.level)
+    sendMessage('Chưa đạt cấp độ')
+
   if (boss.numberOfTurn <= 0) {
-    toast('Lượt khiêu chiến trong ngày đã hết')
+    sendMessage('Lượt khiêu chiến trong ngày đã hết')
     return
   }
 

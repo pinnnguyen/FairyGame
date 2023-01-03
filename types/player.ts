@@ -27,6 +27,11 @@ export interface Player {
   floor: string
   expLimited: number
   class: number
+  ofAttribute: number
+  ofPower: number
+  ofAgility: number
+  ofSkillful: number
+  ofVitality: number
 }
 
 export interface PlayerAttribute extends BaseAttributes, Slot {

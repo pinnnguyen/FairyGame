@@ -1299,6 +1299,11 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@juggle/resize-observer@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
+  integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
+
 "@mapbox/node-pre-gyp@^1.0.5":
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/@mapbox/node-pre-gyp/-/node-pre-gyp-1.0.10.tgz#8e6735ccebbb1581e5a7e652244cadc8a844d03c"
@@ -1533,6 +1538,11 @@
   version "1.0.0-next.21"
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
+
+"@popperjs/core@^2.11.6":
+  version "2.11.6"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
+  integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
 
 "@rollup/plugin-alias@^4.0.2":
   version "4.0.2"
@@ -1838,6 +1848,25 @@
     micromatch "^4.0.2"
     node-gyp-build "^4.2.2"
     resolve-from "^5.0.0"
+
+"@vexip-ui/hooks@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@vexip-ui/hooks/-/hooks-1.8.0.tgz#673e45ef2027d906415a156b5e431c05e68a3d69"
+  integrity sha512-530nBpnCS/yVQBB4D6WaMyG3qCwmDbIeDOx4wuv0iyKKeFq5pKhpnU/FB5rGYENZBHT3qS0psqPFBgdqtITgqQ==
+  dependencies:
+    "@juggle/resize-observer" "^3.4.0"
+    "@popperjs/core" "^2.11.6"
+    "@vexip-ui/utils" "^1.9.0"
+
+"@vexip-ui/icons@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@vexip-ui/icons/-/icons-1.0.3.tgz#af73cea544d114060b16a85dd01495692a7d4e2c"
+  integrity sha512-d1avcnc+yyacw7y7wBwUR04zM21EPbJjYKXzRuZAjdwNH3jRUTYRhObmnk8OZGwKjmDvRkUzn/DMYTvYSTtkOw==
+
+"@vexip-ui/utils@^1.9.0", "@vexip-ui/utils@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@vexip-ui/utils/-/utils-1.9.1.tgz#e21487abec26f3b2f46f5d4dcee3e2142efe26f7"
+  integrity sha512-a/V+pbPYbmQzY1Hql4HGLLPcddcIHTSqNf3Qujzrv5vh7n9eO91Ah1IPQ/uWg0iobE9ima81zIJ8oyyqwH24KQ==
 
 "@vitejs/plugin-vue-jsx@^2.1.1":
   version "2.1.1"
@@ -7411,6 +7440,15 @@ vary@^1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
+
+vexip-ui@^2.0.19:
+  version "2.0.19"
+  resolved "https://registry.yarnpkg.com/vexip-ui/-/vexip-ui-2.0.19.tgz#00d28884e255677451e3453e6fb8080817c7a9c7"
+  integrity sha512-kZwlEzns7fvxswNSINeqSUWRlZWTsjSmaCfIVqdeKYr5EphhqNVGKY3C6TjA7ffGOqCrvD71PLYxhkK3/E6QHA==
+  dependencies:
+    "@vexip-ui/hooks" "^1.8.0"
+    "@vexip-ui/icons" "^1.0.3"
+    "@vexip-ui/utils" "^1.9.1"
 
 vite-node@^0.25.2:
   version "0.25.8"

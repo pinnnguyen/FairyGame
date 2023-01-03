@@ -19,5 +19,5 @@ const schema = new mongoose.Schema(
 )
 schema.index({ sid: -1 })
 // export const PlayerItemSchema = mongoose.model('PlayerItemSchemas', schema, 'player_items')
-export const PlayerItemSchemas = (mongoose.models && mongoose.models.PlayerItemSchemas ? mongoose.models.PlayerItemSchemas : mongoose.model('PlayerItemSchemas', schema, 'player_items'))
+export const PlayerItemSchema = (mongoose.models && mongoose.models.PlayerItemSchemas ? mongoose.models.PlayerItemSchemas : mongoose.model('PlayerItemSchemas', schema, 'player_items'))
 

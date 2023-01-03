@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useToast } from 'vue-toastification'
-import { useBattleRoundStore, usePlayerStore } from '#imports'
+import { sendMessage, useBattleRoundStore, usePlayerStore } from '#imports'
 import { BATTLE_TURN, TARGET_TYPE } from '~/constants'
 
 const {
@@ -21,11 +20,13 @@ const {
 const { onRefreshFinished } = useBattleRoundStore()
 const { playerInfo } = storeToRefs(usePlayerStore())
 const { loadPlayer } = usePlayerStore()
-const toast = useToast()
+const route = useRoute()
 
 definePageMeta({
   middleware: ['game'],
 })
+
+const hasBossDaily = computed(() => route.query.target === 'boss-daily')
 
 const refreshFinished = () => {
   onRefreshFinished()
@@ -33,17 +34,21 @@ const refreshFinished = () => {
 
 const nextMid = async () => {
   try {
+    loading.value = true
     const player = await $fetch('/api/mid/set', {
       method: 'POST',
       headers: (useRequestHeaders(['cookie']) as any),
     })
 
     loadPlayer(player)
+    loading.value = false
   }
   catch (e) {
-    toast.info('Hãy vượt ải trước đó để tiếp tục')
+    sendMessage('Hãy vượt ải trước đó để tiếp tục')
+    loading.value = false
   }
 }
+
 const doCloseBattleR = () => {
   battleResult.value.show = false
   if (queryTarget.value === TARGET_TYPE.BOSS_DAILY)
@@ -62,8 +67,8 @@ const doCloseBattleR = () => {
     <loadingScreen v-if="loading" />
     <div v-else class="h-screen bg-white">
       <div class="h-[60%]">
-        <div class="text-center pt-2 text-base font-semibold flex items-center justify-center">
-          [{{ playerInfo.mid.current.name }}]
+        <div v-if="!hasBossDaily" class="text-center pt-2 text-base font-semibold flex items-center justify-center">
+          [{{ playerInfo?.mid?.current?.name }}]
         </div>
         <div class="flex justify-between p-2 pt-2">
           <div>
@@ -107,31 +112,31 @@ const doCloseBattleR = () => {
         </div>
         <div class="flex justify-around mt-8">
           <div
-            class="relative duration-500 transition-transform" :style="{
+            class="relative duration-700 transition-transform" :style="{
               transform: playerEffect === BATTLE_TURN.PLAYER ? 'translate(30%)' : '',
             }"
           >
-            <span class="text-10 text-2xl text-red-500 battle-damage" :class="{ show: realTime.player.trueDamage }">
+            <span class="text-10 duration-700 text-xl font-semibold text-red-500 battle-damage" :class="{ show: realTime.player.trueDamage }">
               -{{ realTime.player.dmg }}
             </span>
             <NuxtImg format="webp" class="h-[100px]" src="/pve/player.png" />
-            <BattleStatusBar :receiver-hp="receiver?.player?.hp" :hp="state.player.hp" :receiver-mp="receiver?.player?.mp" :mp="state.player.mp" />
+            <BattleStatusBar :receiver-hp="receiver?.player?.hp" :hp="state?.player?.hp" :receiver-mp="receiver?.player?.mp" :mp="state?.player?.mp" />
           </div>
           <div
-            class="relative duration-500 transition-transform" :style="{
+            class="relative duration-700 transition-transform" :style="{
               transform: playerEffect === BATTLE_TURN.ENEMY ? 'translate(-30%)' : '',
             }"
           >
-            <span class="text-10 text-2xl text-red-500 battle-damage" :class="{ show: realTime.enemy.trueDamage }">
+            <span class="text-10 text-xl duration-700 font-semibold text-red-500 battle-damage" :class="{ show: realTime.enemy.trueDamage }">
               -{{ realTime.enemy.dmg }}
             </span>
             <NuxtImg format="webp" class="h-[100px]" src="/pve/monter.png" />
-            <BattleStatusBar :receiver-hp="receiver?.enemy?.hp" :hp="state.enemy.hp" :receiver-mp="receiver?.enemy?.mp" :mp="state.enemy.mp" />
+            <BattleStatusBar :receiver-hp="receiver?.enemy?.hp" :hp="state?.enemy?.hp" :receiver-mp="receiver?.enemy?.mp" :mp="state?.enemy?.mp" />
           </div>
         </div>
       </div>
       <div class="p-4 h-[25%] overflow-scroll">
-        <BattleHisrory />
+        <BattleHistory :battle-rounds="battleRounds" />
       </div>
       <div class="flex items-center flex-col justify-center fixed w-full bottom-2">
         <LazyPopupRefreshMid
@@ -145,7 +150,7 @@ const doCloseBattleR = () => {
               Về thành
             </span>
           </ButtonCancel>
-          <ButtonConfirm class="mx-2" @click="nextMid">
+          <ButtonConfirm v-if="!hasBossDaily" class="mx-2" @click="nextMid">
             <span class="z-9 text-10">
               Ải tiếp
             </span>

@@ -1,12 +1,11 @@
 <script setup>
-import { useToast } from 'vue-toastification'
+import { sendMessage } from '~~/composables/useMessage'
 
 definePageMeta({
   layout: 'auth',
   auth: false,
 })
 
-const toast = useToast()
 const loading = ref(false)
 
 const password = ref('')
@@ -15,7 +14,7 @@ const email = ref('')
 
 const handleRegister = async () => {
   if (password.value !== rePassword.value) {
-    toast.info('Mật khẩu không trùng nhau')
+    sendMessage('Mật khẩu không trùng nhau')
     return
   }
 
@@ -29,12 +28,12 @@ const handleRegister = async () => {
     })
 
     if (user) {
-      toast.info('Đăng ký thành công!')
+      sendMessage('Đăng ký thành công!')
       return navigateTo('/login')
     }
   }
   catch (e) {
-    toast.info('Tài khoản đã tồn tại')
+    sendMessage('Tài khoản đã tồn tại')
   }
 }
 </script>

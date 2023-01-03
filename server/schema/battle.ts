@@ -24,4 +24,4 @@ const schema = new mongoose.Schema<Battle>(
 )
 schema.index({ createdAt: -1 })
 // export const BattleSchema = mongoose.model('BattleSchemas', schema, 'battles')
-export const BattleSchemas = (mongoose.models && mongoose.models.BattleSchemas ? mongoose.models.BattleSchemas : mongoose.model('BattleSchemas', schema, 'battles'))
+export const BattleSchema = (mongoose.models && mongoose.models.BattleSchemas ? mongoose.models.BattleSchemas : mongoose.model('BattleSchemas', schema, 'battles'))

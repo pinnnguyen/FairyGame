@@ -17,7 +17,7 @@ export interface Equipment extends BaseAttributes {
 }
 
 export interface PlayerEquipment extends BaseAttributes {
-  _id: string
+  _id?: string
   sid: string
   equipmentId?: number
   name?: string

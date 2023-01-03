@@ -1,6 +1,5 @@
 import { conditionForUpLevel, playerLevelUp, shouldTupo } from '~/server/common'
-import { PlayerAttributeSchema } from '~/server/schema/playerAttribute'
-import { PlayerSchema } from '~/server/schema/player'
+import { PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
 import { randomNumber } from '~/common'
 import { UPGRADE_LEVEL } from '~/server/rule'
 import { getPlayer } from '~/server/helpers'
@@ -13,9 +12,47 @@ interface Response {
   message: string
   status: boolean
 }
+
 const caseNone = (response: Response) => {
   response.status = false
   response.message = 'Chưa đủ điều kiện đột phá'
+
+  return response
+}
+
+const caseLevelUpNormal = async (response: Response, sjs: number, sid: string) => {
+  const pAttribute = await PlayerAttributeSchema.findOne({ sid })
+  if (!pAttribute) {
+    return createError({
+      statusCode: 400,
+      statusMessage: 'player attribute not found',
+    })
+  }
+
+  console.log('1', sjs)
+  if (sjs <= 3) {
+    response.status = false
+    response.message = 'Đột phá thất bại'
+
+    return response
+  }
+
+  const uhp = 2 + Math.round(pAttribute.hp / 50)
+  const udmg = 1 + Math.round(pAttribute.damage / 70)
+  const udef = 1 + Math.round(pAttribute.def / 70)
+
+  // Đại cảnh giới đc tăng thêm chỉ số
+  await PlayerAttributeSchema.updateOne({ sid }, {
+    $inc: {
+      hp: uhp,
+      damage: udmg,
+      def: udef,
+    },
+  })
+
+  await playerLevelUp(sid)
+  response.status = true
+  response.message = 'Đột phá thành công'
 
   return response
 }
@@ -48,6 +85,7 @@ const caseBigLevel = async (response: Response, sjs: number, sid: string) => {
     },
   })
 
+  await playerLevelUp(sid)
   response.status = true
   response.message = 'Đột phá thành công'
 
@@ -56,15 +94,15 @@ const caseBigLevel = async (response: Response, sjs: number, sid: string) => {
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
-  const _p = await PlayerSchema.findOne({ sid: body.sid })
-
-  if (!_p) {
+  const playerAfter = await getPlayer('', body.sid)
+  if (!playerAfter) {
     return createError({
       statusCode: 400,
       statusMessage: 'player not found',
     })
   }
 
+  const _p = playerAfter.player
   const { needGold } = conditionForUpLevel(_p)
   const sjs = randomNumber(1, 10)
   const upgrade = shouldTupo(_p)
@@ -84,11 +122,10 @@ export default defineEventHandler(async (event) => {
     return response
   }
 
-  if (_p.exp < _p.expLimited) {
-    return createError({
-      statusCode: 400,
-      statusMessage: 'Tu vi chưa đủ để đột phá',
-    })
+  if (playerAfter?.player?.exp < playerAfter?.player?.expLimited) {
+    response.status = false
+    response.message = 'Tu vi chưa đủ để đột phá'
+    return response
   }
 
   const changeResult = await (PlayerSchema as any).changeCurrency({
@@ -104,30 +141,27 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  if (sjs <= 5) {
-    response.status = false
-    response.message = 'Đột phá thất bại'
-
-    return response
-  }
+  console.log('upgrade', upgrade)
+  console.log('sjs', sjs)
 
   switch (upgrade) {
     case UPGRADE_LEVEL.NONE:
       return caseNone(response)
     case UPGRADE_LEVEL.BIG_UP_LEVEL:
+      response.status = true
+      response.message = 'Đột đại phá thành công'
       await caseBigLevel(response, sjs, _p.sid)
       break
     case UPGRADE_LEVEL.UP_LEVEL:
-      response.status = true
-      response.message = 'Đột phá thành công'
-      //  Hiện tại chưa làm gì thêm chỉ tăng chỉ số cơ bản trong playerLevelUp()
+      await caseLevelUpNormal(response, sjs, _p.sid)
       break
   }
 
-  await playerLevelUp(_p.sid)
   const playerBefore = await getPlayer('', _p.sid)
+
   return {
     ...response,
-    playerBefore,
+    playerBefore: playerBefore || {},
+    playerAfter: playerAfter || {},
   }
 })

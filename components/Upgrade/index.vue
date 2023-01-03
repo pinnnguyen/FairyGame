@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useToast } from 'vue-toastification'
-import { usePlayerSlot, usePlayerStore, useSocket } from '#imports'
+import { sendMessage, usePlayerSlot, usePlayerStore, useSocket } from '#imports'
 import type { PlayerEquipment } from '~/types'
 
 const emits = defineEmits(['close'])
@@ -13,7 +12,6 @@ const { getPlayer } = usePlayerStore()
 
 const equipSelected = ref<Partial<PlayerEquipment>>({})
 const needResource = ref()
-const toast = useToast()
 const loading = ref(false)
 
 onMounted(() => {
@@ -26,9 +24,7 @@ onMounted(() => {
     await getPlayer()
     needResource.value = require
     loading.value = false
-    toast.info('Cường hoá thành công', {
-      timeout: 1000,
-    })
+    sendMessage('Cường hoá thành công')
   })
 })
 
@@ -46,19 +42,19 @@ const upgrade = () => {
     return
 
   if (!equipSelected.value._id) {
-    toast.info('Chọn vật phẩm cần nâng cấp')
+    sendMessage('Chọn vật phẩm cần nâng cấp')
     loading.value = false
     return
   }
 
   if (needResource.value.gold > playerInfo.value?.gold) {
-    toast.info('Vàng không đủ để nâng cấp')
+    sendMessage('Vàng không đủ để nâng cấp')
     loading.value = false
     return
   }
 
   if (needResource.value.totalCuongHoaThach < needResource.value.cuongHoaThach) {
-    toast.info('Nguyên liệu nâng cấp không đủ')
+    sendMessage('Nguyên liệu nâng cấp không đủ')
     loading.value = false
     return
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useToast } from 'vue-toastification'
+import { sendMessage } from '~~/composables/useMessage'
 const { signIn } = useSession()
 
 definePageMeta({
@@ -9,17 +9,16 @@ definePageMeta({
 
 const password = ref('')
 const email = ref('')
-const toast = useToast()
 
 const handleLogin = async () => {
   const { error, url } = await signIn('credentials', { username: email.value, password: password.value, redirect: false })
   if (url) {
-    toast.info('Đăng nhập thành công!')
+    sendMessage('Đăng nhập thành công!')
     return navigateTo('/role')
   }
 
   if (error)
-    toast.info('Tài khoản mật khẩu không chính xác')
+    sendMessage('Tài khoản mật khẩu không chính xác')
 }
 </script>
 

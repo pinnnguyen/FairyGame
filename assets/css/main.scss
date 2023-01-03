@@ -214,3 +214,23 @@ body .button-cancel {
     50% { background-position: 400% 0; }
     100% { background-position: 0 0; }
 }
+
+.vxp-popup__item {
+    z-index: 2000;
+    bottom: 100px !important;
+    top: initial !important;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.vxp-message__item {
+    background-color: #1d1d1cdb !important;
+    height: 25px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none !important;
+    border-radius: 20px !important;
+    color: #fff !important;
+    font-size: 12px !important;
+}
