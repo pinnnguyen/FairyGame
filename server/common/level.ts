@@ -6,7 +6,9 @@ import {
   RANGE_PLAYER_BIG_LEVEL, UPGRADE_LEVEL,
 } from '~/server/rule/level'
 import type { Player } from '~/types'
-import { PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
+import { PlayerSchema } from '~/server/schema/player'
+import { PlayerAttributeSchema } from '~/server/schema/playerAttribute'
+
 
 export const shouldTupo = (_p: Player) => {
   const playerNextLevel = _p.level + 1

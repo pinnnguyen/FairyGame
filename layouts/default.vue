@@ -1,26 +1,25 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '~/composables/app'
+
 const { playerInfoComponent } = storeToRefs(useAppStore())
 </script>
 
 <template>
-  <div>
-    <div class="flex flex-col min-h-screen">
+  <div class="flex flex-col min-h-screen">
+    <ClientOnly>
       <PlayerInfomation :class="{ '!h-[0px] opacity-0': !playerInfoComponent }" />
-      <slot name="header">
-        <PageNavbar />
-      </slot>
-      <div class="flex-1 w-full flex flex-col bg-black">
-        <div
-          class="relative flex-1 flex flex-col mx-auto max-w-8xl w-full h-full"
-        >
-          <slot />
-        </div>
+    </ClientOnly>
+    <slot name="header">
+      <PageNavbar />
+    </slot>
+    <div class="flex-1 w-full flex flex-col bg-black">
+      <div
+        class="relative flex-1 flex flex-col mx-auto max-w-8xl w-full h-full"
+      >
+        <slot />
       </div>
     </div>
-
-
   </div>
 </template>
 

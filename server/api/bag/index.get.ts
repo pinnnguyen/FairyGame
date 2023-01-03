@@ -1,5 +1,7 @@
 import type { H3Event } from 'h3'
-import { PlayerEquipmentSchema, PlayerSchema } from '~/server/schema'
+import { PlayerEquipmentSchema } from '~/server/schema/player.equiment'
+import { PlayerSchema } from '~/server/schema/player'
+
 import { getServerSession } from '#auth'
 
 export default defineEventHandler(async (event: H3Event) => {

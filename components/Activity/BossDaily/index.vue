@@ -21,9 +21,9 @@ const close = () => {
               </div>
             </div>
             <div class="flex items-center justify-center">
-              <div class="bg-iconbg_3 h-10 w-10 bg-contain bg-no-repeat"></div>
-              <div class="bg-iconbg_3 h-10 w-10 bg-contain bg-no-repeat"></div>
-              <div class="bg-iconbg_3 h-10 w-10 bg-contain bg-no-repeat"></div>
+              <div class="bg-iconbg_3 h-10 w-10 bg-contain bg-no-repeat" />
+              <div class="bg-iconbg_3 h-10 w-10 bg-contain bg-no-repeat" />
+              <div class="bg-iconbg_3 h-10 w-10 bg-contain bg-no-repeat" />
             </div>
             <div class="flex items-center">
               <ButtonConfirm class-name="h-[25px]">
@@ -32,14 +32,14 @@ const close = () => {
             </div>
           </div>
         </div>
-<!--        <div class="flex">-->
-<!--          <button>-->
-<!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_active.png" />-->
-<!--          </button>-->
-<!--          <button>-->
-<!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_deactive.png" />-->
-<!--          </button>-->
-<!--        </div>-->
+        <!--        <div class="flex"> -->
+        <!--          <button> -->
+        <!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_active.png" /> -->
+        <!--          </button> -->
+        <!--          <button> -->
+        <!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_deactive.png" /> -->
+        <!--          </button> -->
+        <!--        </div> -->
       </div>
     </div>
     <div class="absolute bottom-0 w-full h-[65px]">

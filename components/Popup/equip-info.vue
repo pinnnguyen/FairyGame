@@ -2,7 +2,6 @@
 import { onClickOutside } from '@vueuse/core'
 import type { PlayerEquipment } from '~/types'
 import { EQUIPMENT_SLOT } from '~/constants'
-import { usePlayerSlot } from '~/composables/usePlayerSlot'
 
 interface Prop {
   item: PlayerEquipment
@@ -10,7 +9,6 @@ interface Prop {
 
 const props = defineProps<Prop>()
 const emits = defineEmits(['close'])
-const { getSlotEquipUpgrade } = usePlayerSlot()
 const loading = ref(false)
 
 const target = ref(null)
@@ -23,11 +21,13 @@ onClickOutside(target, event => emits('close'))
       <div class="p-3">
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center justify-center">
-            <ItemRank class="w-[55px] h-[55px]" :preview="item.preview" :rank="item.rank" />
+            <div class="bg-iconbg_3 w-15 bg-contain bg-no-repeat">
+              <NuxtImg format="webp" :src="item?.preview" />
+            </div>
           </div>
           <div class="mx-2">
             <div>
-              {{ item.name }} (+{{ getSlotEquipUpgrade(item.slot).upgradeLevel }})
+              {{ item.name }}
             </div>
             <div>
               Vị trí: {{ EQUIPMENT_SLOT[item.slot] }}

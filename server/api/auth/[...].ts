@@ -2,7 +2,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 // import GithubProvider from 'next-auth/providers/github'
 // import FacebookProvider from 'next-auth/providers/facebook'
 import { NuxtAuthHandler } from '#auth'
-import { UserSchema } from '~/server/schema'
+import { UserSchema } from '~/server/schema/user'
 
 export default NuxtAuthHandler({
   // secret needed to run nuxt-auth in production mode (used to encrypt data)

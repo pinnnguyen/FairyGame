@@ -4,9 +4,7 @@ import { useFetch } from '#app'
 import { usePlayerStore } from '~/composables/usePlayer'
 import type { Bag, PlayerEquipment } from '~/types'
 
-definePageMeta({
-  middleware: ['game'],
-})
+const emits = defineEmits(['close'])
 
 const toggleDetail = ref(false)
 const itemSelected = ref<PlayerEquipment>()
@@ -22,7 +20,7 @@ const pickItem = (item: PlayerEquipment) => {
 }
 
 const goToHome = () => {
-  navigateTo('/')
+  emits('close')
 }
 </script>
 
@@ -30,26 +28,25 @@ const goToHome = () => {
   <Teleport to="body">
     <BagDetail v-if="toggleDetail" :item="itemSelected" @close="toggleDetail = false" />
   </Teleport>
-  <div class="flex items-center justify-center w-full h-[calc(100vh_-_30px)]" style="background: url('/common/bg_5.jpg'); background-size: cover">
-    <!--    <NuxtImg src="/common/bg_5.jpg"></NuxtImg> -->
+  <div class="flex items-center justify-center w-full h-[calc(100vh_-_30px)] bg-bg_5 bg-cover fixed top-[28px] w-full h-full z-99">
     <div class="w-full h-[80%] absolute top-10">
       <div class="w-full h-full relative">
         <span class="font-semibold absolute w-[40px] left-[calc(50%_-_10px)] top-[-1px] text-[#656f99]">TÚI</span>
         <NuxtImg class="w-full h-full" format="webp" src="/common/bj_tongyong_1.png" />
         <div class="absolute top-[30px] flex flex-col gap-1 items-center justify-center w-full">
           <div class="grid grid-cols-5 gap-2 h-[465px] overflow-scroll">
-            <div
+            <LazyItemRank
               v-for="equipment in bagDataResponse.equipments"
               :key="equipment.id"
-              class="bg-iconbg_3 w-15 bg-contain bg-no-repeat relative"
               @click.stop="pickItem(equipment)"
+              :preview="equipment.preview"
+              :rank="equipment.rank"
+              class="w-15"
             >
-              <span v-if="hasEquip(equipment.slot, equipment._id)" class="bg-gray-100 text-gray-500 text-xxs right-0 transform rotate-45 rounded absolute top-[10px]" style="font-size: 7px">Trang bị</span>
-              <NuxtImg format="webp" src="/items/23.png" />
-              <p class="text-10 text-[#7c4ea2] font-semibold line-clamp-2">
-                {{ equipment.name }}
-              </p>
-            </div>
+                            <p class="text-10 text-[#7c4ea2] font-semibold line-clamp-2">
+                              {{ equipment?.name }}
+                            </p>
+            </LazyItemRank>
           </div>
         </div>
         <!--        <div class="flex"> -->

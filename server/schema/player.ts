@@ -1,7 +1,11 @@
 import mongoose from 'mongoose'
-import { conditionForUpLevel } from '~/server/common/level'
-import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule/level'
-import { MidSchema, PlayerAttributeSchema, PlayerEquipUpgradeSchema, PlayerEquipmentSchema } from '~/server/schema'
+import { conditionForUpLevel } from '~/server/common'
+import { equipUpgradeWithLevel, formatAttributes, useEquipment } from '~/server/helpers'
+import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule'
+import { MidSchema } from '~/server/schema/mid'
+import { PlayerAttributeSchema } from '~/server/schema/playerAttribute'
+import { PlayerEquipUpgradeSchema } from '~/server/schema/playerEquipUpgrade'
+import { PlayerEquipmentSchema } from '~/server/schema/player.equiment'
 import type { Player } from '~/types'
 const ObjectId = mongoose.Types.ObjectId
 
@@ -52,7 +56,7 @@ const schema = new mongoose.Schema<Player>(
           id: {
             $in: [player.midId, (player.midId) + 1],
           },
-        })
+        }).sort({ id: 1 })
 
         const playerNextLevel = player.level + 1
         for (let i = 0; i < RANGE_PLAYER_BIG_LEVEL.length; i++) {
@@ -118,31 +122,13 @@ const schema = new mongoose.Schema<Player>(
           _id: {
             $in: equipIds,
           },
-        }).select('damage hp speed def mp critical bloodsucking preview slot level rank').sort({ slot: -1 })
+        }).select('name damage hp speed def mp critical bloodsucking preview slot level rank').sort({ slot: -1 })
 
-        if (playerEquips.length > 0 && attribute) {
-          for (let i = 0; i < playerEquips.length; i++) {
-            attribute.damage += playerEquips[i].damage
-            attribute.hp += playerEquips[i].hp
-            attribute.speed += playerEquips[i].speed
-            attribute.def += playerEquips[i].def
-            attribute.mp += playerEquips[i].mp
-            attribute.critical += playerEquips[i].critical
-            attribute.bloodsucking += playerEquips[i].bloodsucking
-          }
-        }
-
-        // format attribute
+        equipUpgradeWithLevel(playerEquips, playerEquipUpgrade)
         if (attribute) {
-          attribute.damage = Math.round(attribute.damage)
-          attribute.hp = Math.round(attribute.hp)
-          attribute.speed = Math.round(attribute.speed)
-          attribute.def = Math.round(attribute.def)
-          attribute.mp = Math.round(attribute.mp)
-          attribute.critical = Math.round(attribute.critical)
-          attribute.bloodsucking = Math.round(attribute.bloodsucking)
+          useEquipment(playerEquips, attribute)
+          formatAttributes(attribute)
         }
-
 
         return {
           player,

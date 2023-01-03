@@ -14,6 +14,10 @@ const tabs = ref([
     key: 'attribute',
     name: 'Thuộc tính',
   },
+  {
+    key: 'tupo',
+    name: 'Đột phá',
+  },
 ])
 </script>
 
@@ -31,13 +35,14 @@ const tabs = ref([
         </div>
       </div>
       <div
-        class="m-3 rounded-md pt-2"
+        class="m-3 rounded-md pt-2 text-12"
         style="background-image: linear-gradient(to bottom right, #314b76, #455776, #4c5b74); height: calc(100% - 60px);"
       >
         <PlayerAttributeTab v-if="currentTab === 'attribute'" />
         <PlayerEquipTab v-if="currentTab === 'equipment'" />
+        <PlayerTupo v-if="currentTab === 'tupo'" />
       </div>
-      <div  class="w-full flex justify-center">
+      <div class="w-full flex justify-center">
         <ButtonConfirm @click.stop="playerInfoComponent = false">
           <span class="z-9">Đóng</span>
         </ButtonConfirm>

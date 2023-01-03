@@ -21,11 +21,19 @@ onMounted(() => {
   _socket.on('equip:preview:response', (require) => {
     needResource.value = require
   })
+
+  _socket.on('equip:upgrade:response', async (require: any) => {
+    await getPlayer()
+    needResource.value = require
+    loading.value = false
+    toast.info('Cường hoá thành công', {
+      timeout: 1000,
+    })
+  })
 })
 
 onUnmounted(() => {
   _socket.emit('equip:upgrade:leave')
-  _socket.emit('disconnect')
 })
 
 watch(equipSelected, (equip: Partial<PlayerEquipment>) => {
@@ -56,15 +64,6 @@ const upgrade = () => {
   }
 
   _socket.emit('equip:upgrade', 'upgrade', equipSelected.value?._id)
-  _socket.on('equip:upgrade:response', async (require: any) => {
-    console.log('loading.value = false')
-    await getPlayer()
-    needResource.value = require
-    loading.value = false
-    toast.info('Cường hoá thành công', {
-      timeout: 1000,
-    })
-  })
 }
 
 const goToHome = () => {
@@ -81,91 +80,84 @@ const goToHome = () => {
         <div class="absolute top-[30px] flex flex-col gap-1 items-center justify-center w-full" />
         <div class="flex justify-around w-full absolute top-10">
           <div class="flex flex-col pl-2">
-            <div class="relative bg-iconbg_1 bg-contain bg-no-repeat mb-2" @click.stop="equipSelected = slot1">
-              <div v-if="slot1?.preview">
-                <NuxtImg :src="slot1?.preview" class="w-[60px] h-[55px]" />
-                <p class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+            <div>
+              <ItemRank v-if="slot1?.preview" class="w-[55px] h-[55px]" :rank="slot1.rank" :preview="slot1?.preview" @click.stop="equipSelected = slot1">
+                <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
                   {{ getSlotEquipUpgrade(1).upgradeLevel }} cấp
-                </p>
-              </div>
-              <div v-else class="w-[60px] h-[55px]" />
+                </div>
+              </ItemRank>
+              <div v-else class="w-[55px] h-[55px]" />
             </div>
-            <div class="relative bg-iconbg_1 bg-contain bg-no-repeat mb-2" @click.stop="equipSelected = slot2">
-              <div v-if="slot2?.preview">
-                <NuxtImg :src="slot2?.preview" class="w-[60px] h-[55px]" />
-                <p class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+
+            <div>
+              <ItemRank v-if="slot2?.preview" class="w-[55px] h-[55px]" :rank="slot2.rank" :preview="slot2?.preview" @click.stop="equipSelected = slot2">
+                <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
                   {{ getSlotEquipUpgrade(2).upgradeLevel }} cấp
-                </p>
-              </div>
-              <div v-else class="w-[60px] h-[55px]" />
+                </div>
+              </ItemRank>
+              <div v-else class="w-[55px] h-[55px]" />
             </div>
-            <div class="relative bg-iconbg_1 bg-contain bg-no-repeat mb-2" @click.stop="equipSelected = slot3">
-              <div v-if="slot3?.preview">
-                <NuxtImg :src="slot3?.preview" class="w-[60px] h-[55px]" />
-                <p class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+
+            <div>
+              <ItemRank v-if="slot3?.preview" class="w-[55px] h-[55px]" :rank="slot3.rank" :preview="slot3?.preview" @click.stop="equipSelected = slot3">
+                <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
                   {{ getSlotEquipUpgrade(3).upgradeLevel }} cấp
-                </p>
-              </div>
-              <div v-else class="w-[60px] h-[55px]" />
+                </div>
+              </ItemRank>
+              <div v-else class="w-[55px] h-[55px]" />
             </div>
-            <div class="relative bg-iconbg_1 bg-contain bg-no-repeat mb-2" @click.stop="equipSelected = slot4">
-              <div v-if="slot3?.preview">
-                <NuxtImg :src="slot3?.preview" class="w-[60px] h-[55px]" />
-                <p class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(3).upgradeLevel }} cấp
-                </p>
-              </div>
-              <div v-else class="w-[60px] h-[55px]" />
+            <div>
+              <ItemRank v-if="slot4?.preview" class="w-[55px] h-[55px]" :rank="slot4.rank" :preview="slot4?.preview" @click.stop="equipSelected = slot4">
+                <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+                  {{ getSlotEquipUpgrade(4).upgradeLevel }} cấp
+                </div>
+              </ItemRank>
+              <div v-else class="w-[55px] h-[55px]" />
             </div>
           </div>
           <div class="flex justify-center items-center relative">
             <NuxtImg format="webp" class="w-[200px]" src="/upgrade/intensive.png" />
-            <div class="absolute bg-iconbg_1 bg-contain bg-no-repeat mb-2 top-[90px]">
-              <div v-if="equipSelected.preview" class="relative">
-                <NuxtImg :src="equipSelected?.preview" class="w-[44px] h-[44px]" />
-                <p class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[45px] flex justify-center">
+            <div class="absolute  mb-2 top-[73px]">
+              <ItemRank v-if="equipSelected.preview" class="relative" :rank="equipSelected.rank" :preview="equipSelected.preview">
+                <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[45px] flex justify-center">
                   {{ getSlotEquipUpgrade(equipSelected.slot).upgradeLevel }} cấp
-                </p>
-              </div>
+                </div>
+              </ItemRank>
               <div v-else class="w-[44px] h-[44px]" />
             </div>
           </div>
           <div class="flex flex-col pr-2">
-            <div class="relative bg-iconbg_1 bg-contain bg-no-repeat mb-2" @click.stop="equipSelected = slot5">
-              <div v-if="slot5?.preview">
-                <NuxtImg :src="slot5?.preview" class="w-[60px] h-[55px]" />
-                <p class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+            <div>
+              <ItemRank v-if="slot5?.preview" class="w-[55px] h-[55px]" :rank="slot5.rank" :preview="slot5?.preview" @click.stop="equipSelected = slot5">
+                <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
                   {{ getSlotEquipUpgrade(5).upgradeLevel }} cấp
-                </p>
-              </div>
-              <div v-else class="w-[60px] h-[55px]" />
+                </div>
+              </ItemRank>
+              <div v-else class="w-[55px] h-[55px]" />
             </div>
-            <div class="relative bg-iconbg_1 bg-contain bg-no-repeat mb-2" @click.stop="equipSelected = slot6">
-              <div v-if="slot6?.preview">
-                <NuxtImg :src="slot6?.preview" class="w-[60px] h-[55px]" />
-                <p class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+            <div>
+              <ItemRank v-if="slot6?.preview" class="w-[55px] h-[55px]" :rank="slot6.rank" :preview="slot6?.preview" @click.stop="equipSelected = slot6">
+                <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
                   {{ getSlotEquipUpgrade(6).upgradeLevel }} cấp
-                </p>
-              </div>
-              <div v-else class="w-[60px] h-[55px]" />
+                </div>
+              </ItemRank>
+              <div v-else class="w-[55px] h-[55px]" />
             </div>
-            <div class="relative bg-iconbg_1 bg-contain bg-no-repeat mb-2" @click.stop="equipSelected = slot7">
-              <div v-if="slot7?.preview">
-                <NuxtImg :src="slot7?.preview" class="w-[60px] h-[55px]" />
-                <p class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+            <div>
+              <ItemRank v-if="slot7?.preview" class="w-[55px] h-[55px]" :rank="slot7.rank" :preview="slot7?.preview" @click.stop="equipSelected = slot7">
+                <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
                   {{ getSlotEquipUpgrade(7).upgradeLevel }} cấp
-                </p>
-              </div>
-              <div v-else class="w-[60px] h-[55px]" />
+                </div>
+              </ItemRank>
+              <div v-else class="w-[55px] h-[55px]" />
             </div>
-            <div class="relative bg-iconbg_1 bg-contain bg-no-repeat mb-2" @click.stop="equipSelected = slot8">
-              <div v-if="slot8?.preview">
-                <NuxtImg :src="slot8?.preview" class="w-[60px] h-[55px]" />
-                <p class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+            <div>
+              <ItemRank v-if="slot8?.preview" class="w-[55px] h-[55px]" :rank="slot8.rank" :preview="slot8?.preview" @click.stop="equipSelected = slot8">
+                <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
                   {{ getSlotEquipUpgrade(8).upgradeLevel }} cấp
-                </p>
-              </div>
-              <div v-else class="w-[60px] h-[55px]" />
+                </div>
+              </ItemRank>
+              <div v-else class="w-[55px] h-[55px]" />
             </div>
           </div>
         </div>

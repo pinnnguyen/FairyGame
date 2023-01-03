@@ -1,6 +1,9 @@
 import mongoose from 'mongoose'
 import { getServerSession } from '#auth'
-import { MidSchema, PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
+import { MidSchema } from '~/server/schema/mid'
+import { PlayerAttributeSchema } from '~/server/schema/playerAttribute'
+import { PlayerSchema } from '~/server/schema/player'
+
 import { DEFAULT_ATTRIBUTE, DEFAULT_ROLE } from '~/constants'
 const ObjectId = mongoose.Types.ObjectId
 

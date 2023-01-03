@@ -1,4 +1,4 @@
-import { PlayerSchema } from '~/server/schema'
+import { PlayerSchema } from '~/server/schema/player'
 import type { PlayerServerResponse } from '~/types'
 import { getServerSession } from '#auth'
 

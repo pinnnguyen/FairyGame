@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
-const ObjectId = mongoose.Types.ObjectId
 import type { Equipment } from '~/types'
+const ObjectId = mongoose.Types.ObjectId
 
 const schema = new mongoose.Schema<Equipment>(
   {
@@ -31,4 +31,5 @@ schema.index({ id: -1 }, { unique: true })
 schema.index({ slot: -1 })
 schema.index({ level: -1 })
 schema.index({ rank: -1 })
+
 export const EquipmentSchema = mongoose.model('EquipmentSchema', schema, 'equipments')

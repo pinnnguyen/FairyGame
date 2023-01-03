@@ -69,9 +69,6 @@ const handleCreateFigure = async () => {
   navigateTo('/')
 }
 
-onUnmounted(() => {
-  _socket.emit('disconnect')
-})
 </script>
 
 <template>

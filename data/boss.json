@@ -12,17 +12,46 @@
     "mp": 0,
     "critical": 0,
     "bloodsucking": 0,
+    "numberOfTurn": 5,
     "reward": {
-        "base": {
-            "exp": 10,
-            "gold": 10
-        },
+      "base": {
+        "exp": 10,
+        "gold": 10
+      },
       "equipRates": [
-            {
-                "id": 1,
-                "rate": 20
-            }
-        ]
+        {
+          "id": 1,
+          "rate": 20
+        },
+        {
+          "id": 2,
+          "rate": 20
+        },
+        {
+          "id": 3,
+          "rate": 20
+        },
+        {
+          "id": 4,
+          "rate": 20
+        },
+        {
+          "id": 5,
+          "rate": 20
+        },
+        {
+          "id": 6,
+          "rate": 20
+        },
+        {
+          "id": 7,
+          "rate": 20
+        },
+        {
+          "id": 8,
+          "rate": 20
+        }
+      ]
     },
     "avatar": "/monster/310001.png",
     "class": 1
@@ -40,18 +69,19 @@
     "mp": 0,
     "critical": 0,
     "bloodsucking": 0,
-      "reward": {
-          "base": {
-              "exp": 10,
-              "gold": 10
-          },
-        "equipRates": [
-              {
-                  "id": 1,
-                  "rate": 20
-              }
-          ]
+    "numberOfTurn": 5,
+    "reward": {
+      "base": {
+        "exp": 10,
+        "gold": 10
       },
+      "equipRates": [
+        {
+          "id": 1,
+          "rate": 20
+        }
+      ]
+    },
     "avatar": "/monster/310002.png",
     "class": 2
   },
@@ -68,18 +98,19 @@
     "mp": 0,
     "critical": 0,
     "bloodsucking": 0,
-      "reward": {
-          "base": {
-              "exp": 10,
-              "gold": 10
-          },
-        "equipRates": [
-              {
-                  "id": 1,
-                  "rate": 20
-              }
-          ]
+    "numberOfTurn": 5,
+    "reward": {
+      "base": {
+        "exp": 10,
+        "gold": 10
       },
+      "equipRates": [
+        {
+          "id": 1,
+          "rate": 20
+        }
+      ]
+    },
     "avatar": "/monster/310003.png",
     "class": 3
   }

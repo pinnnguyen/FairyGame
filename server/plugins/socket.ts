@@ -8,12 +8,32 @@ import type { BattleRequest } from '~/types/war'
 import type { ClientToServerEvents, ServerToClientEvents } from '~/types/socket'
 import {
   BattleSchema,
+} from '~/server/schema/battle'
+
+import {
   BossSchema,
+} from '~/server/schema/boss'
+
+import {
   EquipmentSchema,
+} from '~/server/schema/equiment'
+
+import {
   PlayerEquipUpgradeSchema,
+} from '~/server/schema/playerEquipUpgrade'
+
+import {
   PlayerEquipmentSchema,
-  PlayerItemSchema, PlayerSchema,
-} from '~/server/schema'
+} from '~/server/schema/player.equiment'
+
+import {
+  PlayerItemSchema,
+} from '~/server/schema/playerItem'
+
+import {
+  PlayerSchema,
+} from '~/server/schema/player'
+
 const httpServer = createServer()
 
 const battleJoinHandler = async (params: {
@@ -48,7 +68,7 @@ const bossDailyJoinHandler = async (params: {
 
   for (let i = 0; i < bossDaily.length; i++) {
     const equipIds = bossDaily[i].reward.equipRates.map((i: { id: number }) => i.id)
-    const numberOfbattle = await BattleSchema.find({
+    const numberOfBattle = await BattleSchema.find({
       sid: params.request.sid,
       kind: BATTLE_KIND.BOSS_DAILY,
       targetId: bossDaily[i].id,
@@ -58,7 +78,7 @@ const bossDailyJoinHandler = async (params: {
       },
     }).count()
 
-    bossDaily[i].numberOfTurn -= numberOfbattle
+    bossDaily[i].numberOfTurn -= numberOfBattle
     bossDaily[i].reward.equipments = await EquipmentSchema.find({
       id: {
         $in: equipIds,
@@ -75,7 +95,6 @@ const bossDailyJoinHandler = async (params: {
   params.socket.on('channel:leave', () => {
     console.log('channel leave boss')
     // params.io.socket.socketsLeave([params.request._channel])
-    //    params.socket.disconnect()
   })
 }
 
@@ -86,6 +105,8 @@ export default function () {
     cors: config.socketIO.cors,
     // transports: ['websocket'],
   })
+
+  io.listen(config.socketIO.port)
 
   // globalThis.__io = io
   io.on('connection', async (socket) => {
@@ -189,8 +210,9 @@ export default function () {
     })
 
     socket.on('disconnect', () => {
+      console.log('disconnect')
       socket.disconnect()
     })
   })
-  io.listen(3002)
 }
+

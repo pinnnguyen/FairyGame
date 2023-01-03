@@ -1,5 +1,7 @@
 import { conditionForUpLevel, playerLevelUp, shouldTupo } from '~/server/common'
-import { PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
+import { PlayerAttributeSchema } from '~/server/schema/playerAttribute'
+import { PlayerSchema } from '~/server/schema/player'
+
 import { randomNumber } from '~/common'
 import { UPGRADE_LEVEL } from '~/server/rule'
 

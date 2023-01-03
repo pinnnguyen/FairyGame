@@ -14,7 +14,10 @@ const { changeEquip, hasEquip } = usePlayerStore()
 const loading = ref(false)
 
 const target = ref(null)
-onClickOutside(target, event => emits('close'))
+onClickOutside(target, () => {
+  console.log('click')
+  emits('close')
+})
 
 const doEquip = async () => {
   const _id = props.item._id
@@ -56,14 +59,12 @@ const doUnEquip = async () => {
 </script>
 
 <template>
-  <div class="blocker fixed z-9 w-full h-full flex items-center justify-center">
+  <Blocker class="z-99">
     <div ref="target" class="relative text-xs leading-6 text-white bg-[#31384f] p-0 border !border-[#795548] w-[320px]">
       <div class="p-3">
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center justify-center">
-            <div class="bg-iconbg_3 w-15 bg-contain bg-no-repeat">
-              <NuxtImg format="webp" :src="item?.preview" />
-            </div>
+            <ItemRank class="w-15" :rank="item.rank" :preview="item?.preview" />
           </div>
           <div class="mx-2">
             <div>
@@ -116,5 +117,5 @@ const doUnEquip = async () => {
         </div>
       </div>
     </div>
-  </div>
+  </Blocker>
 </template>

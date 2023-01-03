@@ -1,5 +1,7 @@
 import { BATTLE_KIND } from '~/constants'
-import { BattleSchema, PlayerSchema } from '~/server/schema'
+import { BattleSchema } from '~/server/schema/battle'
+import { PlayerSchema } from '~/server/schema/player'
+
 import { resourceReceived } from '~/helpers'
 import { getServerSession } from '#auth'
 

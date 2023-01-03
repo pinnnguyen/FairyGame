@@ -1,0 +1,21 @@
+<script setup lang="ts">
+defineProps<{
+  battleRounds: any
+}>()
+</script>
+
+<template>
+  <div v-for="(round, index) in battleRounds" :key="index" class="mb-2 border-b border-gray-300">
+    <h3 class="text-10">
+      [Lượt {{ round.roundNum }}]
+    </h3>
+    <strong>
+      {{ round.turn === BATTLE_TURN.PLAYER ? 'Bạn' : 'Muc Tiêu' }}
+    </strong> gây
+    <strong class="text-red-600">
+      {{ round.damage }}
+    </strong>
+    sát thương lên
+    <strong>{{ round.turn === BATTLE_TURN.PLAYER ? 'Mục tiêu' : 'Bạn' }}</strong>
+  </div>
+</template>

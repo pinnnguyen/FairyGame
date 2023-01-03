@@ -31,4 +31,5 @@ const schema = new mongoose.Schema<Boss>(
 )
 
 schema.index({ id: -1 }, { unique: true })
+
 export const BossSchema = mongoose.model('BossSchema', schema, 'boss')

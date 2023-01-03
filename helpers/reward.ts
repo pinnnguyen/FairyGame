@@ -1,6 +1,7 @@
 import { convertMillisecondsToSeconds, convertSecondsToMinutes } from '~/common'
 import { BASE_EXP, BASE_GOLD } from '~/server/rule/reward'
-import { MidSchema, PlayerSchema } from '~/server/schema'
+import { MidSchema } from '~/server/schema/mid'
+import { PlayerSchema } from '~/server/schema/player'
 
 export const resourceReceived = async (sid: string, lastTimeReceivedRss: number, midId: string) => {
   const now = new Date().getTime()

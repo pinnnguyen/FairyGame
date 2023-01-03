@@ -9,7 +9,7 @@ const classToTitle = {
   3: 'Tu ma',
   4: 'Nhân tộc',
 }
-const classTitle = computed(() => classToTitle[playerInfo.value.class])
+const classTitle = computed(() => classToTitle[playerInfo.value?.class])
 </script>
 
 <template>
@@ -39,7 +39,10 @@ const classTitle = computed(() => classToTitle[playerInfo.value.class])
         Tiên ngọc: {{ playerInfo?.coin }}
       </div>
       <div class="  my-1 px-2">
-        Linh thạch: {{ playerInfo?.gold }}
+        KNB: {{ playerInfo?.knb ?? 0 }}
+      </div>
+      <div class="  my-1 px-2">
+        Vàng: {{ playerInfo?.gold }}
       </div>
 
       <div class="   my-1 px-2">

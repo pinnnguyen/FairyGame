@@ -1,6 +1,7 @@
 import { getServerSession } from '#auth'
 import { BATTLE_KIND, WINNER } from '~/constants'
-import { BattleSchema, PlayerSchema } from '~/server/schema'
+import { BattleSchema } from '~/server/schema/battle'
+import { PlayerSchema } from '~/server/schema/player'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)

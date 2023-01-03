@@ -3,7 +3,11 @@ import { createError, sendError } from 'h3'
 import moment from 'moment'
 import { getBaseReward, receivedEquipment, setLastTimeReceivedRss } from '~/server/helpers'
 import type { BattleRequest, BattleResponse, PlayerInfo } from '~/types'
-import { BattleSchema, BossSchema, MonsterSchema, PlayerSchema } from '~/server/schema'
+import { BattleSchema } from '~/server/schema/battle'
+import { BossSchema } from '~/server/schema/boss'
+import { MonsterSchema } from '~/server/schema/monster'
+import { PlayerSchema } from '~/server/schema/player'
+
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { startWar } from '~/helpers'
 
@@ -37,6 +41,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
         player: battle.player,
         enemy: battle.enemy,
         reward: battle.reward,
+        winner: battle.winner,
       }
     }
   }

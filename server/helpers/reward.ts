@@ -1,6 +1,9 @@
 import { randomNumber } from '~/common'
 import { BASE_EXP, BASE_GOLD } from '~/server/rule/reward'
-import { EquipmentSchema, PlayerEquipmentSchema, PlayerSchema } from '~/server/schema'
+import { EquipmentSchema } from '~/server/schema/equiment'
+import { PlayerEquipmentSchema } from '~/server/schema/player.equiment'
+import { PlayerSchema } from '~/server/schema/player'
+
 import type { EnemyObject, PlayerEquipment } from '~/types'
 import { MAX_RATE_RECEIVED_RSS, MIN_RATE_RECEIVED_RSS, WINNER } from '~/constants'
 

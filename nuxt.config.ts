@@ -1,8 +1,4 @@
-import functions from './server/sockets'
 export default defineNuxtConfig({
-  socketIO: {
-    socketFunctions: functions,
-  },
   auth: {
     origin: process.env.ORIGIN,
     enableGlobalAppMiddleware: false,
@@ -10,7 +6,7 @@ export default defineNuxtConfig({
   nitro: {
     plugins: [
       '~/server/index.ts',
-      // '~/server/plugins/socket',
+      '~/server/plugins/socket',
     ],
   },
   runtimeConfig: {
@@ -31,7 +27,6 @@ export default defineNuxtConfig({
     '@nuxt/image-edge',
     'nuxt-windicss',
     '@sidebase/nuxt-auth',
-    'nuxt-internal-socket',
   ],
   experimental: {
     reactivityTransform: false,
