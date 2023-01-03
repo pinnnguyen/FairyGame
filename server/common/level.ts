@@ -6,9 +6,8 @@ import {
   RANGE_PLAYER_BIG_LEVEL, UPGRADE_LEVEL,
 } from '~/server/rule/level'
 import type { Player } from '~/types'
-import { PlayerSchema } from '~/server/schema/player'
-import { PlayerAttributeSchema } from '~/server/schema/playerAttribute'
-
+import { PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
+import { getPlayer } from '~/server/helpers'
 
 export const shouldTupo = (_p: Player) => {
   const playerNextLevel = _p.level + 1
@@ -35,7 +34,9 @@ export const shouldTupo = (_p: Player) => {
 }
 
 export const playerLevelUp = async (sid: string) => {
-  const _p = await (PlayerSchema as any).getPlayer('', sid)
+  const _p = await getPlayer('', sid)
+  if (!_p)
+    return
 
   if (_p.player.exp >= _p.player.expLimited) {
     // Giảm exp hiện tại khi tăng level & + 1 level

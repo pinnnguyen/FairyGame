@@ -13,7 +13,9 @@ const schema = new mongoose.Schema(
     name: String,
     info: String,
   },
-  { timestamps: true, strict: true, strictQuery: true },
+  { timestamps: true },
 )
 schema.index({ createdAt: -1 })
-export const ItemSchema = mongoose.model('ItemSchema', schema, 'items')
+// export const ItemSchema = mongoose.model('ItemSchemas', schema, 'items')
+export const ItemSchema = (mongoose.models && mongoose.models.ItemSchema ? mongoose.models.ItemSchema : mongoose.model('ItemSchema', schema, 'items'))
+

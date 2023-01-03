@@ -15,7 +15,9 @@ const schema = new mongoose.Schema(
     sum: Number,
     kind: Number,
   },
-  { timestamps: true, strict: true, strictQuery: true },
+  { timestamps: true },
 )
 schema.index({ sid: -1 })
-export const PlayerItemSchema = mongoose.model('PlayerItemSchema', schema, 'player_items')
+// export const PlayerItemSchema = mongoose.model('PlayerItemSchemas', schema, 'player_items')
+export const PlayerItemSchemas = (mongoose.models && mongoose.models.PlayerItemSchemas ? mongoose.models.PlayerItemSchemas : mongoose.model('PlayerItemSchemas', schema, 'player_items'))
+

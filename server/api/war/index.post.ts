@@ -1,12 +1,9 @@
 import type { H3Event } from 'h3'
 import { createError, sendError } from 'h3'
 import moment from 'moment'
-import { getBaseReward, receivedEquipment, setLastTimeReceivedRss } from '~/server/helpers'
+import { getBaseReward, getPlayer, receivedEquipment, setLastTimeReceivedRss } from '~/server/helpers'
 import type { BattleRequest, BattleResponse, PlayerInfo } from '~/types'
-import { BattleSchema } from '~/server/schema/battle'
-import { BossSchema } from '~/server/schema/boss'
-import { MonsterSchema } from '~/server/schema/monster'
-import { PlayerSchema } from '~/server/schema/player'
+import { BattleSchema, BossSchema, MonsterSchema } from '~/server/schema'
 
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { startWar } from '~/helpers'
@@ -127,7 +124,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
 }
 
 export const handleWars = async (request: BattleRequest) => {
-  const player = await (PlayerSchema as any).getPlayer(request.player.userId)
+  const player = await getPlayer(request.player.userId, '')
 
   if (!player) {
     return createError({

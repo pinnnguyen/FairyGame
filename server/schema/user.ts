@@ -12,6 +12,8 @@ const schema = new mongoose.Schema(
     email: String,
     password: String,
   },
-  { timestamps: true, strict: true, strictQuery: true },
+  { timestamps: true },
 )
-export const UserSchema = mongoose.model('UserSchema', schema, 'users')
+// export const UserSchema = mongoose.model('UserSchemas', schema, 'users')
+export const UserSchema = (mongoose.models && mongoose.models.UserSchema ? mongoose.models.UserSchema : mongoose.model('UserSchema', schema, 'users'))
+

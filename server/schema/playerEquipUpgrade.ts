@@ -20,7 +20,9 @@ const schema = new mongoose.Schema(
       default: 0,
     },
   },
-  { timestamps: true, strict: true, strictQuery: true },
+  { timestamps: true },
 )
 schema.index({ sid: -1 })
-export const PlayerEquipUpgradeSchema = mongoose.model('PlayerEquipUpgradeSchema', schema, 'player_equip_upgrade')
+// export const PlayerEquipUpgradeSchema = mongoose.model('PlayerEquipUpgradeSchemas', schema, 'player_equip_upgrade')
+export const PlayerEquipUpgradeSchema = (mongoose.models && mongoose.models.PlayerEquipUpgradeSchema ? mongoose.models.PlayerEquipUpgradeSchema : mongoose.model('PlayerEquipUpgradeSchema', schema, 'player_equip_upgrade'))
+

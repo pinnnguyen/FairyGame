@@ -1,8 +1,7 @@
 import mongoose from 'mongoose'
 import { getServerSession } from '#auth'
-import { MidSchema } from '~/server/schema/mid'
-import { PlayerAttributeSchema } from '~/server/schema/playerAttribute'
-import { PlayerSchema } from '~/server/schema/player'
+import { MidSchema, PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
+import { getPlayer } from '~/server/helpers'
 
 import { DEFAULT_ATTRIBUTE, DEFAULT_ROLE } from '~/constants'
 const ObjectId = mongoose.Types.ObjectId
@@ -25,7 +24,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const playerResource = await (PlayerSchema as any).getPlayer(session?.user?.email)
+  const playerResource = await getPlayer(session?.user?.email, '')
   if (playerResource) {
     return {
       player: playerResource.player,

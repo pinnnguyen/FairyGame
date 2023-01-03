@@ -26,9 +26,11 @@ const schema = new mongoose.Schema<PlayerEquipment>(
     slot: Number,
     preview: String,
   },
-  { timestamps: true, strict: true, strictQuery: true },
+  { timestamps: true},
 )
 schema.index({ sid: -1 })
 schema.index({ slot: -1 })
 schema.index({ rank: -1 })
-export const PlayerEquipmentSchema = mongoose.model('PlayerEquipmentSchema', schema, 'player_equipments')
+// export const PlayerEquipmentSchema = mongoose.model('PlayerEquipmentSchemas', schema, 'player_equipments')
+export const PlayerEquipmentSchema = (mongoose.models && mongoose.models.PlayerEquipmentSchemas ? mongoose.models.PlayerEquipmentSchemas : mongoose.model('PlayerEquipmentSchemas', schema, 'player_equipments'))
+

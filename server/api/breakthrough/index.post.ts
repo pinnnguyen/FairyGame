@@ -1,9 +1,9 @@
 import { conditionForUpLevel, playerLevelUp, shouldTupo } from '~/server/common'
 import { PlayerAttributeSchema } from '~/server/schema/playerAttribute'
 import { PlayerSchema } from '~/server/schema/player'
-
 import { randomNumber } from '~/common'
 import { UPGRADE_LEVEL } from '~/server/rule'
+import { getPlayer } from '~/server/helpers'
 
 interface Response {
   level: number
@@ -125,7 +125,7 @@ export default defineEventHandler(async (event) => {
   }
 
   await playerLevelUp(_p.sid)
-  const playerBefore = await (PlayerSchema as any).getPlayer('', _p.sid)
+  const playerBefore = await getPlayer('', _p.sid)
   return {
     ...response,
     playerBefore,

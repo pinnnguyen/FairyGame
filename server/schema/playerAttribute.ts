@@ -28,8 +28,9 @@ const schema = new mongoose.Schema<PlayerAttribute>(
     slot_7: String,
     slot_8: String,
   },
-  { timestamps: true, strict: true, strictQuery: true },
+  { timestamps: true },
 )
 
 schema.index({ sid: -1 }, { unique: true })
-export const PlayerAttributeSchema = mongoose.model('PlayerAttributeSchema', schema, 'player_attributes')
+// export const PlayerAttributeSchema = mongoose.model('PlayerAttributeSchemas', schema, 'player_attributes')
+export const PlayerAttributeSchema = (mongoose.models && mongoose.models.PlayerAttributeSchema ? mongoose.models.PlayerAttributeSchema : mongoose.model('PlayerAttributeSchema', schema, 'player_attributes'))

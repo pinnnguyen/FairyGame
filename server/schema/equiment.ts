@@ -25,11 +25,12 @@ const schema = new mongoose.Schema<Equipment>(
     slot: Number,
     preview: String,
   },
-  { timestamps: true, strict: true, strictQuery: true },
+  { timestamps: true },
 )
 schema.index({ id: -1 }, { unique: true })
 schema.index({ slot: -1 })
 schema.index({ level: -1 })
 schema.index({ rank: -1 })
 
-export const EquipmentSchema = mongoose.model('EquipmentSchema', schema, 'equipments')
+// export const EquipmentSchema = mongoose.model('EquipmentSchemas', schema, 'equipments')
+export const EquipmentSchema = (mongoose.models && mongoose.models.EquipmentSchemas ? mongoose.models.EquipmentSchemas : mongoose.model('EquipmentSchemas', schema, 'equipments'))

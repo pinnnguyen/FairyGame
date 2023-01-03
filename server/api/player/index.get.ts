@@ -1,6 +1,6 @@
-import { PlayerSchema } from '~/server/schema/player'
 import type { PlayerServerResponse } from '~/types'
 import { getServerSession } from '#auth'
+import { getPlayer } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const playerResource = await (PlayerSchema as any).getPlayer(session?.user?.email)
+  const playerResource = await getPlayer(session?.user?.email, '')
   if (!playerResource) {
     return createError({
       statusCode: 404,

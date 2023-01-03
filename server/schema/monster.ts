@@ -25,7 +25,9 @@ const schema = new mongoose.Schema<Monster>(
     reward: {},
     class: Number,
   },
-  { timestamps: true, strict: true, strictQuery: true },
+  { timestamps: true },
 )
 schema.index({ id: -1 }, { unique: true })
-export const MonsterSchema = mongoose.model('MonsterSchema', schema, 'monsters')
+// export const MonsterSchema = mongoose.model('MonsterSchemas', schema, 'monsters')
+export const MonsterSchema = (mongoose.models && mongoose.models.MonsterSchema ? mongoose.models.MonsterSchema : mongoose.model('MonsterSchema', schema, 'monsters'))
+

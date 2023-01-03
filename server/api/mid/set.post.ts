@@ -1,7 +1,7 @@
 import { getServerSession } from '#auth'
 import { BATTLE_KIND, WINNER } from '~/constants'
-import { BattleSchema } from '~/server/schema/battle'
-import { PlayerSchema } from '~/server/schema/player'
+import { BattleSchema, PlayerSchema } from '~/server/schema'
+import { getPlayer } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
@@ -34,5 +34,5 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  return await (PlayerSchema as any).getPlayer(session?.user?.email, '')
+  return await getPlayer(session.user?.email, '')
 })
