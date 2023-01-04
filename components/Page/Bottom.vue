@@ -57,44 +57,48 @@ const close = (key: string) => {
 </script>
 
 <template>
-  <div class="h-[calc(100vh_-_200px)] bg-white">
+  <div class="h-[calc(100vh_-_230px)] bg-white">
     <Upgrade v-if="toggle.upgrade" @close="close('upgrade')" />
     <Bag v-if="toggle.bag" @close="close('bag')" />
     <div class="flex justify-around w-full absolute top-[10px] pl-1 text-white">
       <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
         <NuxtImg class="w-[50px]" src="/index/bag.png" @click.stop="onToggle('bag')" />
+        <span class="text-black whitespace-nowrap text-12">Túi</span>
       </div>
       <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
         <NuxtImg class="w-[50px]" src="/index/info.png" @click.stop="playerInfoComponent = true" />
+        <span class="text-black whitespace-nowrap text-12">Kỹ năng</span>
       </div>
       <div class="items-center justify-center flex flex-col w-[50px] mb-3">
         <NuxtImg class="w-[50px]" src="/index/store.png" />
+        <span class="text-black whitespace-nowrap text-12">Cửa hàng</span>
       </div>
-      <div class="flex flex-col items-center justify-center w-[50px] mb-3" @click.stop="onToggle('upgrade')">
+      <NuxtLink to="/battle" class="flex flex-col items-center justify-center w-[50px] mb-3" @click.stop="onToggle('upgrade')">
         <NuxtImg class="w-[50px]" src="/index/dungeo.png" />
-      </div>
+        <span class="text-black whitespace-nowrap text-12">Vượt ải</span>
+      </NuxtLink>
     </div>
     <div class="absolute bottom-0 text-center w-full flex justify-center flex-col items-center text-white">
       <div class="flex items-center justify-around w-full mb-4">
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
-          <span class="whitespace-nowrap text-12 text-black">Công pháp</span>
+          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Công pháp</span>
         </div>
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
-          <span class="whitespace-nowrap text-12 text-black">Phi thăng</span>
+          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Phi thăng</span>
         </div>
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
-          <span class="whitespace-nowrap text-12 text-black">Tông môn</span>
+          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Tông môn</span>
         </div>
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
-          <span class="whitespace-nowrap text-12 text-black">Thành tích</span>
+          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Thành tích</span>
         </div>
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
-          <span class="whitespace-nowrap text-12 text-black">Cài đặt</span>
+          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Cài đặt</span>
         </div>
       </div>
       <div class="h-12 w-full flex justify-around items-center bg-[#1d3a62]">
