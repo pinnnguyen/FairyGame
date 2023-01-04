@@ -41,8 +41,10 @@ const parseEquipments = (equipments) => {
 }
 
 const startWar = (boss) => {
-  if (playerInfo.value.level < boss.level)
+  if (playerInfo.value.level < boss.level) {
     sendMessage('Chưa đạt cấp độ')
+    return
+  }
 
   if (boss.numberOfTurn <= 0) {
     sendMessage('Lượt khiêu chiến trong ngày đã hết')
@@ -50,7 +52,8 @@ const startWar = (boss) => {
   }
 
   navigateTo({
-    path: '/battle',
+    path: `/battle/${new Date().getTime()}`,
+    replace: true,
     query: {
       target: 'boss-daily',
       id: boss.id,

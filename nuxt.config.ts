@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+  ssr: true,
   auth: {
     origin: process.env.ORIGIN,
     enableGlobalAppMiddleware: false,
@@ -26,6 +27,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/image-edge',
     'nuxt-windicss',
+    'nuxt-icon',
     '@sidebase/nuxt-auth',
   ],
   experimental: {

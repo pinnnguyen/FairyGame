@@ -13,32 +13,35 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
   const today = moment().startOf('day')
   const now = new Date().getTime()
 
-  const battle = await BattleSchema
-    .findOne({ 'sid': _p.player.sid, 'kind': BATTLE_KIND.PVE, 'mid.id': _p.player.midId })
-    .sort({ createdAt: -1 }).select('player enemy reward createdAt')
+  if (battleRequest.target.type === TARGET_TYPE.MONSTER) {
+    const battle = await BattleSchema
+      .findOne({ 'sid': _p.player.sid, 'kind': BATTLE_KIND.PVE, 'mid.id': _p.player.midId })
+      .sort({ createdAt: -1 }).select('player enemy reward createdAt')
 
-  if (battle) {
+    if (battle) {
     // Clear pve history
-    await BattleSchema.deleteMany({
-      '_id': {
-        $nin: [battle._id],
-      },
-      'kind': BATTLE_KIND.PVE,
-      'sid': _p.player.sid,
-      'mid.id': _p.player.midId,
-    })
+      await BattleSchema.deleteMany({
+        '_id': {
+          $nin: [battle._id],
+        },
+        'mid.id': {
+          $nin: [_p.player.midId],
+        },
+        'kind': BATTLE_KIND.PVE,
+        'sid': _p.player.sid,
+      })
 
-    // validate
-    const doRefresh = new Date(battle.createdAt).getTime() + (_p as any)?.mid?.current?.ms ?? 60000
-
-    if (doRefresh > now) {
-      return {
-        inRefresh: true,
-        refreshTime: doRefresh - now,
-        player: battle.player,
-        enemy: battle.enemy,
-        reward: battle.reward,
-        winner: battle.winner,
+      // validate
+      const doRefresh = new Date(battle.createdAt).getTime() + (_p as any)?.mid?.current?.ms ?? 60000
+      if (doRefresh > now) {
+        return {
+          inRefresh: true,
+          refreshTime: doRefresh - now,
+          player: battle.player,
+          enemy: battle.enemy,
+          reward: battle.reward,
+          winner: battle.winner,
+        }
       }
     }
   }
@@ -58,7 +61,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
   }
 
   if (battleRequest.target.type === TARGET_TYPE.BOSS_DAILY) {
-    const numberOfbattle = await BattleSchema.find({
+    const numberOfBattle = await BattleSchema.find({
       sid: _p.player.sid,
       kind: BATTLE_KIND.BOSS_DAILY,
       targetId: battleRequest.target.id,
@@ -68,7 +71,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
       },
     }).count()
 
-    if (numberOfbattle > _enemyObj.numberOfTurn) {
+    if (numberOfBattle > _enemyObj.numberOfTurn) {
       return {
         inRefresh: true,
         refreshTime: new Date(moment(today).endOf('day').toDate()).getTime() - now,

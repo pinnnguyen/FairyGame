@@ -34,8 +34,7 @@ const battleJoinHandler = async (params: {
   })
 
   params.socket.on('battle:leave', () => {
-    console.log('battle:leave')
-    // params.io.socket.socketsLeave([params._channel])
+    params.socket.leave(params._channel)
   })
 }
 
@@ -75,7 +74,7 @@ const bossDailyJoinHandler = async (params: {
   })
 
   params.socket.on('channel:leave', () => {
-    console.log('channel leave boss')
+    params.socket.leave(params._channel)
     // params.io.socket.socketsLeave([params.request._channel])
   })
 }
@@ -106,6 +105,7 @@ export default function () {
     // })string
 
     socket.on('battle:join', async (_channel: string, request: BattleRequest) => {
+      console.log('_channel', _channel)
       await battleJoinHandler({
         io,
         socket,

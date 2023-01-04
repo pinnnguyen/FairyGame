@@ -12,7 +12,7 @@ const gold = computed(() => Math.round(BASE_EXP() * mids.value.current.reward.ba
 
 <template>
   <BossDaily v-if="toggle" @close="toggle = false" />
-  <div class="text-10 mb-1 flex justify-end flex-col items-end text-white p-2">
+  <div class="text-10 mb-1 flex justify-end flex-col items-end text-white p-2 fixed bg-black top-10 right-0 z-99">
     <ClientOnly>
       <div class="flex items-center justify-center my-1">
         <NuxtImg class="w-[20px] pr-1" format="webp" src="/items/4_s.png" />

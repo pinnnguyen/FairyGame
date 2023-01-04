@@ -3,7 +3,6 @@ import { PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
 import { randomNumber } from '~/common'
 import { UPGRADE_LEVEL } from '~/server/rule'
 import { getPlayer } from '~/server/helpers'
-
 interface Response {
   level: number
   nextLevel: number
@@ -29,7 +28,6 @@ const caseLevelUpNormal = async (response: Response, sjs: number, sid: string) =
     })
   }
 
-  console.log('1', sjs)
   if (sjs <= 3) {
     response.status = false
     response.message = 'Đột phá thất bại'
@@ -118,7 +116,7 @@ export default defineEventHandler(async (event) => {
 
   if (_p.gold < needGold) {
     response.status = false
-    response.message = `Bạn cần ${needGold} linh thạch để đột phá`
+    response.message = `Bạn cần ${needGold} Vàng để đột phá`
     return response
   }
 

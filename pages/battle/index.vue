@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { sendMessage, useBattleRoundStore, usePlayerStore } from '#imports'
-import { BATTLE_TURN, TARGET_TYPE } from '~/constants'
+import { sendMessage, useBattleRoundStore, usePlayerStore, useSocket } from '#imports'
+import { BATTLE_KIND, BATTLE_TURN, TARGET_TYPE } from '~/constants'
+import type { BattleResponse } from '~/types'
 
 const {
   loading,
@@ -14,22 +15,40 @@ const {
   inRefresh,
   refreshTime,
   reward,
-  queryTarget,
 } = storeToRefs(useBattleRoundStore())
 
-const { onRefreshFinished } = useBattleRoundStore()
+const { startBattle } = useBattleRoundStore()
 const { playerInfo } = storeToRefs(usePlayerStore())
 const { loadPlayer } = usePlayerStore()
-const route = useRoute()
+const { _socket } = useSocket()
+
+const showPlayerInfo = ref(false)
+const showEnemyInfo = ref(false)
 
 definePageMeta({
   middleware: ['game'],
 })
 
-const hasBossDaily = computed(() => route.query.target === 'boss-daily')
+onMounted(() => {
+  console.log('battle mounted')
+  _socket.emit('battle:join', `${playerInfo.value?._id}-battle-pve`, {
+    kind: BATTLE_KIND.PVE,
+    player: {
+      userId: playerInfo.value?.userId,
+    },
+    target: {
+      type: TARGET_TYPE.MONSTER,
+      id: playerInfo.value?.mid?.current?.monsterId,
+    },
+  })
+
+  _socket.on('battle:start', async (war: BattleResponse) => {
+    await startBattle(war)
+  })
+})
 
 const refreshFinished = () => {
-  onRefreshFinished()
+  _socket.emit('battle:refresh')
 }
 
 const nextMid = async () => {
@@ -51,8 +70,7 @@ const nextMid = async () => {
 
 const doCloseBattleR = () => {
   battleResult.value.show = false
-  if (queryTarget.value === TARGET_TYPE.BOSS_DAILY)
-    return navigateTo('/')
+  refreshFinished()
 }
 </script>
 
@@ -66,71 +84,63 @@ const doCloseBattleR = () => {
     />
     <loadingScreen v-if="loading" />
     <div v-else class="h-screen bg-white">
-      <div class="h-[60%]">
-        <div v-if="!hasBossDaily" class="text-center pt-2 text-base font-semibold flex items-center justify-center">
+      <div class="h-[40%] bg-bg_pve bg-cover">
+        <div class="text-center pt-2 text-base font-semibold flex items-center justify-center">
           [{{ playerInfo?.mid?.current?.name }}]
         </div>
         <div class="flex justify-between p-2 pt-2">
           <div>
             <div class="flex items-center justify-start">
-              <div class="flex items-center">
-                <NuxtImg format="webp" class="h-[40px]" src="/pve/player-avatar.png" />
+              <div class="flex items-center" @click="showPlayerInfo = !showPlayerInfo">
+                <NuxtImg format="webp" class="h-[35px] border border-[#d0d0d0] bg-[#d0d0d0] rounded-full" src="/pve/player-avatar.png" />
               </div>
             </div>
-            <div class="flex justify-start flex-col mt-2 text-10">
-              <span class="pb-[2px] font-medium">{{ state?.player?.name }}</span>
-              <p>
-                Sinh lực: {{ state?.player?.hp }}
-              </p>
-              <p>
-                Công kích {{ state?.player?.damage }}
-              </p>
-              <p>
-                Phòng ngự {{ state?.player?.def }}
-              </p>
-            </div>
+            <BattleInfo
+              v-if="showPlayerInfo"
+              :name="state.player.name"
+              :hp="state.player.hp"
+              :damage="state.player.damage"
+              :def="state.player.def"
+              @close="showPlayerInfo = false"
+            />
           </div>
           <div>
             <div class="flex items-center justify-end">
-              <div class="flex justify-end">
-                <NuxtImg format="webp" class="h-[40px]" src="/pve/monter-avatar.png" />
+              <div class="flex justify-end" @click="showEnemyInfo = !showEnemyInfo">
+                <NuxtImg format="webp" class="h-[35px] bg-black border border-[#d0d0d0] bg-[#d0d0d0] rounded-full" src="/pve/monter-avatar.png" />
               </div>
             </div>
-            <div class="flex justify-end mt-2 items-end flex-col text-10">
-              <span class="pb-[2px] font-medium">{{ state?.enemy?.name }}</span>
-              <p>
-                {{ state?.enemy?.hp }} Sinh lực
-              </p>
-              <p>
-                {{ state?.enemy?.damage }} Công kích
-              </p>
-              <p>
-                {{ state?.enemy?.def }} Phòng ngự
-              </p>
-            </div>
+            <BattleInfo
+              v-if="showEnemyInfo"
+              :name="state.enemy.name"
+              :hp="state.enemy.hp"
+              :damage="state.enemy.damage"
+              :def="state.enemy.def"
+              @close="showEnemyInfo = false"
+            />
           </div>
         </div>
         <div class="flex justify-around mt-8">
           <div
-            class="relative duration-700 transition-transform" :style="{
+            class="relative duration-800 transition-transform flex flex-col items-center justify-center" :style="{
               transform: playerEffect === BATTLE_TURN.PLAYER ? 'translate(30%)' : '',
             }"
           >
-            <span class="text-10 duration-700 text-xl font-semibold text-red-500 battle-damage" :class="{ show: realTime.player.trueDamage }">
+            <span class="text-10 duration-800 text-xl font-semibold text-red-500 battle-damage" :class="{ show: realTime.player.trueDamage }">
               -{{ realTime.player.dmg }}
             </span>
-            <NuxtImg format="webp" class="h-[100px]" src="/pve/player.png" />
+            <NuxtImg format="webp" class="h-[100px]" src="/pve/nv1.png" />
             <BattleStatusBar :receiver-hp="receiver?.player?.hp" :hp="state?.player?.hp" :receiver-mp="receiver?.player?.mp" :mp="state?.player?.mp" />
           </div>
           <div
-            class="relative duration-700 transition-transform" :style="{
+            class="relative duration-800 transition-transform flex flex-col items-center justify-center" :style="{
               transform: playerEffect === BATTLE_TURN.ENEMY ? 'translate(-30%)' : '',
             }"
           >
-            <span class="text-10 text-xl duration-700 font-semibold text-red-500 battle-damage" :class="{ show: realTime.enemy.trueDamage }">
+            <span class="text-10 text-xl duration-800 font-semibold text-red-500 battle-damage" :class="{ show: realTime.enemy.trueDamage }">
               -{{ realTime.enemy.dmg }}
             </span>
-            <NuxtImg format="webp" class="h-[100px]" src="/pve/monter.png" />
+            <NuxtImg format="webp" class="h-[100px]" src="/pve/nv2.png" />
             <BattleStatusBar :receiver-hp="receiver?.enemy?.hp" :hp="state?.enemy?.hp" :receiver-mp="receiver?.enemy?.mp" :mp="state?.enemy?.mp" />
           </div>
         </div>
@@ -150,7 +160,7 @@ const doCloseBattleR = () => {
               Về thành
             </span>
           </ButtonCancel>
-          <ButtonConfirm v-if="!hasBossDaily" class="mx-2" @click="nextMid">
+          <ButtonConfirm class="mx-2" @click="nextMid">
             <span class="z-9 text-10">
               Ải tiếp
             </span>

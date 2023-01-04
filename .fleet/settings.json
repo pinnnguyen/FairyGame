@@ -1,0 +1,8 @@
+{
+    "backend.maxHeapSizeMb": 4744,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": false,
+        "source.fixAll": true
+    },
+}

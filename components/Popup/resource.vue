@@ -35,7 +35,7 @@ const close = () => {
           </div>
           <div class="text-xs text-[#ffeb00] text-center font-bold flex items-center mx-2">
             <NuxtImg format="webp" class="w-[20px] pb-[2px] pr-[2px]" src="/bag/00578.png" />
-            <span>{{ formatNumber(gold) }} Linh thạch</span>
+            <span>{{ formatNumber(gold) }} Vàng</span>
           </div>
         </div>
         <div class="text-xs text-white text-center font-bold mt-2">

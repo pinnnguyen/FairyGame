@@ -37,8 +37,8 @@ watch(doReFetch, async (value) => {
       headers: (useRequestHeaders(['cookie']) as any),
     })
 
-    sendMessage(`+${resources.exp} XP`, 1500)
-    sendMessage(`+${resources.gold} Linh thạch`, 2000)
+    sendMessage(`+${resources.exp} XP`)
+    sendMessage(`+${resources.gold} VÀNG`)
 
     if (playerInfo.value) {
       playerInfo.value.exp += resources.exp
@@ -57,35 +57,51 @@ const close = (key: string) => {
 </script>
 
 <template>
-  <div>
+  <div class="h-[calc(100vh_-_200px)] bg-white">
     <Upgrade v-if="toggle.upgrade" @close="close('upgrade')" />
     <Bag v-if="toggle.bag" @close="close('bag')" />
-    <NuxtImg src="/center/bg-home.png" class="w-full h-[300px] object-cover" />
-    <div class="flex flex-col absolute top-[10px] pl-1 text-white">
+    <div class="flex justify-around w-full absolute top-[10px] pl-1 text-white">
       <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
-        <NuxtImg class="w-[35px]" src="/bottom/bottom-3.png" @click.stop="playerInfoComponent = true" />
+        <NuxtImg class="w-[50px]" src="/index/bag.png" @click.stop="onToggle('bag')" />
+      </div>
+      <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
+        <NuxtImg class="w-[50px]" src="/index/info.png" @click.stop="playerInfoComponent = true" />
       </div>
       <div class="items-center justify-center flex flex-col w-[50px] mb-3">
-        <NuxtImg class="w-[35px]" src="/bottom/bottom-2.png" />
+        <NuxtImg class="w-[50px]" src="/index/store.png" />
       </div>
       <div class="flex flex-col items-center justify-center w-[50px] mb-3" @click.stop="onToggle('upgrade')">
-        <NuxtImg class="w-[35px]" src="/bottom/bottom-4.png" />
+        <NuxtImg class="w-[50px]" src="/index/dungeo.png" />
       </div>
     </div>
-    <div class="absolute top-[10px] right-2 flex flex-col">
-      <div class="text-white flex-col flex items-center mb-3">
-        <NuxtImg class="w-[35px]" src="/bottom/bottom-6.png" @click.stop="onToggle('bag')" />
+    <div class="absolute bottom-0 text-center w-full flex justify-center flex-col items-center text-white">
+      <div class="flex items-center justify-around w-full mb-4">
+        <div class="flex items-center jsutify-center flex-col">
+          <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
+          <span class="whitespace-nowrap text-12 text-black">Công pháp</span>
+        </div>
+        <div class="flex items-center jsutify-center flex-col">
+          <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
+          <span class="whitespace-nowrap text-12 text-black">Phi thăng</span>
+        </div>
+        <div class="flex items-center jsutify-center flex-col">
+          <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
+          <span class="whitespace-nowrap text-12 text-black">Tông môn</span>
+        </div>
+        <div class="flex items-center jsutify-center flex-col">
+          <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
+          <span class="whitespace-nowrap text-12 text-black">Thành tích</span>
+        </div>
+        <div class="flex items-center jsutify-center flex-col">
+          <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
+          <span class="whitespace-nowrap text-12 text-black">Cài đặt</span>
+        </div>
       </div>
-      <div class="text-white flex-col flex items-center mb-3">
-        <NuxtImg class="w-[35px]" src="/bottom/bottom-5.png" />
-      </div>
-      <div class="text-white flex-col flex items-center mb-3">
-        <NuxtImg class="w-[35px]" src="/bottom/bottom-7.png" />
-      </div>
-    </div>
-    <div class="absolute bottom-[25px] text-center w-full flex justify-center flex-col items-center text-white">
-      <div class="w-[60%] bg-gray-200 rounded-full h-1 dark:bg-gray-700">
-        <div class="bg-blue-600 h-1 rounded-full duration-700" :style="{ width: `${needTimeResource}%` }" />
+      <div class="h-12 w-full flex justify-around items-center bg-[#1d3a62]">
+        <NuxtImg class="w-[45px]" src="/index/avatar-bottom.png" />
+        <div class="w-[60%] bg-gray-200 rounded-full h-1 dark:bg-gray-700">
+          <div class="bg-blue-600 h-1 rounded-full duration-700" :style="{ width: `${needTimeResource}%` }" />
+        </div>
       </div>
     </div>
   </div>

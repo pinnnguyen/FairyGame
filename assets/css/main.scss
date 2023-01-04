@@ -234,3 +234,12 @@ body .button-cancel {
     color: #fff !important;
     font-size: 12px !important;
 }
+
+.diamond {
+    width: 120px;
+    height: 120px;
+    background: #1eff00;
+    /* Rotate */
+    transform: rotate(-45deg);
+    /* Rotate Origin */
+}
