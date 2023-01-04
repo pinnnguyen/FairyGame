@@ -1,0 +1,81 @@
+{
+  "name": "unstorage",
+  "version": "1.0.1",
+  "description": "Universal Storage Layer",
+  "repository": "unjs/unstorage",
+  "license": "MIT",
+  "sideEffects": false,
+  "exports": {
+    "./drivers/*": {
+      "import": "./dist/drivers/*.mjs",
+      "require": "./dist/drivers/*.cjs",
+      "types": "./dist/drivers/*.d.ts"
+    },
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./server": {
+      "import": "./dist/server.mjs",
+      "require": "./dist/server.cjs",
+      "types": "./dist/server.d.ts"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "demo": "vite demo",
+    "dev": "vitest",
+    "doctoc": "doctoc README.md --notitle --maxlevel 3",
+    "lint": "eslint --ext .ts .",
+    "prepack": "pnpm build",
+    "release": "pnpm test && changelogen --release && git push --follow-tags && pnpm publish",
+    "test": "pnpm lint && vitest run --coverage",
+    "unstorage": "pnpm jiti src/cli"
+  },
+  "dependencies": {
+    "anymatch": "^3.1.2",
+    "chokidar": "^3.5.3",
+    "destr": "^1.2.1",
+    "h3": "^1.0.1",
+    "ioredis": "^5.2.4",
+    "listhen": "^1.0.0",
+    "mkdir": "^0.0.2",
+    "mri": "^1.2.0",
+    "ofetch": "^1.0.0",
+    "ufo": "^1.0.0",
+    "ws": "^8.11.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^3.18.0",
+    "@types/jsdom": "^20.0.1",
+    "@types/mri": "^1.1.1",
+    "@types/node": "^18.11.9",
+    "@types/ws": "^8.5.3",
+    "@vitejs/plugin-vue": "^3.2.0",
+    "@vitest/coverage-c8": "^0.25.2",
+    "@vue/compiler-sfc": "^3.2.45",
+    "c8": "^7.12.0",
+    "changelogen": "^0.4.0",
+    "doctoc": "^2.2.1",
+    "eslint": "^8.27.0",
+    "eslint-config-unjs": "^0.0.2",
+    "jiti": "^1.16.0",
+    "jsdom": "^20.0.2",
+    "monaco-editor": "^0.34.1",
+    "msw": "^0.48.2",
+    "types-cloudflare-worker": "^1.2.0",
+    "typescript": "^4.8.4",
+    "unbuild": "^0.9.4",
+    "vite": "^3.2.3",
+    "vitest": "^0.25.2",
+    "vue": "^3.2.45"
+  },
+  "packageManager": "pnpm@7.16.0"
+}
