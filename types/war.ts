@@ -14,9 +14,10 @@ export interface BattleRequest {
 
 export interface EmulatorBattle {
   action: string
-  critical: boolean
   state: {
     damage?: number
+    bloodsucking?: number
+    critical?: boolean
   }
   now: {
     hp: Record<string | 'player' | 'enemy', number>

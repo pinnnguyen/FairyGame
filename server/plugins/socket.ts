@@ -13,7 +13,7 @@ import {
   PlayerEquipUpgradeSchema,
   PlayerEquipmentSchema,
   PlayerItemSchema,
-  PlayerSchema
+  PlayerSchema,
 } from '~/server/schema'
 
 const httpServer = createServer()

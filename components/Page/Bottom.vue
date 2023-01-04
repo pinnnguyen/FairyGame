@@ -61,13 +61,13 @@ const close = (key: string) => {
     <Upgrade v-if="toggle.upgrade" @close="close('upgrade')" />
     <Bag v-if="toggle.bag" @close="close('bag')" />
     <div class="flex justify-around w-full absolute top-[10px] pl-1 text-white">
+     <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
+        <NuxtImg class="w-[50px]" src="/index/info.png" @click.stop="playerInfoComponent = true" />
+        <span class="text-black whitespace-nowrap text-12">Nhân vật</span>
+      </div>
       <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
         <NuxtImg class="w-[50px]" src="/index/bag.png" @click.stop="onToggle('bag')" />
         <span class="text-black whitespace-nowrap text-12">Túi</span>
-      </div>
-      <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
-        <NuxtImg class="w-[50px]" src="/index/info.png" @click.stop="playerInfoComponent = true" />
-        <span class="text-black whitespace-nowrap text-12">Kỹ năng</span>
       </div>
       <div class="items-center justify-center flex flex-col w-[50px] mb-3">
         <NuxtImg class="w-[50px]" src="/index/store.png" />

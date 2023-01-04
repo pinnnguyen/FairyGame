@@ -56,7 +56,6 @@ const nextMid = async () => {
     loading.value = true
     const player = await $fetch('/api/mid/set', {
       method: 'POST',
-      headers: (useRequestHeaders(['cookie']) as any),
     })
 
     loadPlayer(player)
@@ -112,37 +111,27 @@ const doCloseBattleR = () => {
             </div>
             <BattleInfo
               v-if="showEnemyInfo"
-              :name="state.enemy.name"
-              :hp="state.enemy.hp"
-              :damage="state.enemy.damage"
-              :def="state.enemy.def"
+              :name="state.enemy?.name"
+              :hp="state.enemy?.hp"
+              :damage="state.enemy?.damage"
+              :def="state.enemy?.def"
               @close="showEnemyInfo = false"
             />
           </div>
         </div>
         <div class="flex justify-around mt-8">
-          <div
-            class="relative duration-800 transition-transform flex flex-col items-center justify-center" :style="{
-              transform: playerEffect === BATTLE_TURN.PLAYER ? 'translate(30%)' : '',
-            }"
-          >
-            <span class="text-10 duration-800 text-xl font-semibold text-red-500 battle-damage" :class="{ show: realTime.player.trueDamage }">
-              -{{ realTime.player.dmg }}
-            </span>
-            <NuxtImg format="webp" class="h-[100px]" src="/pve/nv1.png" />
-            <BattleStatusBar :receiver-hp="receiver?.player?.hp" :hp="state?.player?.hp" :receiver-mp="receiver?.player?.mp" :mp="state?.player?.mp" />
-          </div>
-          <div
-            class="relative duration-800 transition-transform flex flex-col items-center justify-center" :style="{
-              transform: playerEffect === BATTLE_TURN.ENEMY ? 'translate(-30%)' : '',
-            }"
-          >
-            <span class="text-10 text-xl duration-800 font-semibold text-red-500 battle-damage" :class="{ show: realTime.enemy.trueDamage }">
-              -{{ realTime.enemy.dmg }}
-            </span>
-            <NuxtImg format="webp" class="h-[100px]" src="/pve/nv2.png" />
-            <BattleStatusBar :receiver-hp="receiver?.enemy?.hp" :hp="state?.enemy?.hp" :receiver-mp="receiver?.enemy?.mp" :mp="state?.enemy?.mp" />
-          </div>
+          <BattlePlayerRealtime
+            :player-effect="playerEffect"
+            :state="state"
+            :receiver="receiver"
+            :real-time="realTime"
+          />
+          <BattleEnemyRealtime
+            :player-effect="playerEffect"
+            :state="state"
+            :receiver="receiver"
+            :real-time="realTime"
+          />
         </div>
       </div>
       <div class="p-4 h-[25%] overflow-scroll">

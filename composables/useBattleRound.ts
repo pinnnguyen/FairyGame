@@ -42,15 +42,18 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     dmg?: number
     critical?: boolean
     trueDamage?: boolean
+    bloodsucking?: number
   }>>({
     player: {
       critical: false,
+      bloodsucking: 0,
       trueDamage: false,
       dmg: 0,
     },
     enemy: {
       critical: false,
       trueDamage: false,
+      bloodsucking: 0,
       dmg: 0,
     },
   })
@@ -116,6 +119,8 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
 
           realTime.value[__turn].dmg = DMG
           realTime.value[__turn].trueDamage = true
+          realTime.value[__turn].critical = emuT?.state?.critical
+          realTime.value[__turn].bloodsucking = emuT.state.bloodsucking
 
           battleRounds.value.unshift({
             turn: _turn,

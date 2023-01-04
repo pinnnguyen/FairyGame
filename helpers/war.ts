@@ -1,40 +1,63 @@
+import type { PlayerAttribute } from './../types/player'
 import type { EnemyObject, PlayerAttribute, PlayerInfo } from '~/types'
 import { BATTLE_ACTION, WINNER } from '~/constants/war'
 import type { BaseProperties, BattleResponse, Emulator } from '~/types/war'
+import { randomNumber } from '~/common'
 
 export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   let inflictDMG = 0
-  const playerCritical = false
+  let enemyBloodsucking = 0
+  let enemyCritical = false
 
   const enemyDMG = (enemy?.damage as number)
   const playerDef = (player?.attribute?.def as number)
 
   inflictDMG = Math.round(enemyDMG - playerDef * 0.75)
+  if (enemy.bloodsucking > 0)
+    enemyBloodsucking = Math.round((enemy.bloodsucking * inflictDMG) / 100)
 
-  //  if (inflictDMG < enemyDMG * 0.15)
-  //    inflictDMG = Math.round(enemyDMG * 0.15)
+  if (enemy.critical > 0) {
+    const iRan = randomNumber(1, 100)
+
+    if (enemy.critical >= iRan) {
+      enemyCritical = true
+      inflictDMG = Math.round(inflictDMG * 1.5)
+    }
+  }
 
   return {
-    receiveDMG: inflictDMG,
-    playerCritical,
+    receiveDMG: inflictDMG < 0 ? 0 : inflictDMG,
+    enemyBloodsucking: enemyBloodsucking < 0 ? 0 : enemyBloodsucking,
+    enemyCritical,
   }
 }
 
 export const inflictDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   let inflictDMG = 0
-  const enemyCritical = false
+  let playerBloodsucking = 0
+  let playerCritical = false
 
   const playerDMG = (player?.attribute?.damage as number)
   const enemyDef = (enemy?.def as number)
 
   inflictDMG = Math.round(playerDMG - enemyDef * 0.75)
 
-  //  if (inflictDMG < playerDMG * 0.15)
-  //    inflictDMG = Math.round(playerDMG * 0.15)
+  if (player.attribute.bloodsucking > 0)
+    playerBloodsucking = Math.round((player.attribute.bloodsucking * inflictDMG) / 100)
+
+  if (player.attribute.critical > 0) {
+    const iRan = randomNumber(1, 100)
+
+    if (player.attribute.critical >= iRan) {
+      playerCritical = true
+      inflictDMG = Math.round(inflictDMG * player.attribute.criticalDamage)
+    }
+  }
 
   return {
     inflictDMG,
-    enemyCritical,
+    playerBloodsucking,
+    playerCritical,
   }
 }
 
@@ -76,14 +99,17 @@ const addPlayerFirstEmulators = (options: {
   receiveDMG: number
   _enemy: EnemyObject
   playerAttribute: PlayerAttribute
+  enemyBloodsucking: number
+  playerBloodsucking: number
 }) => {
   const emulators: Emulator[] = []
   emulators.push({
     [`${1}_player`]: {
       action: BATTLE_ACTION.ATTACK,
-      critical: options.playerCritical,
       state: {
         damage: options.inflictDMG,
+        bloodsucking: options.playerBloodsucking,
+        critical: options.playerCritical,
       },
       now: {
         hp: {
@@ -96,9 +122,10 @@ const addPlayerFirstEmulators = (options: {
     },
     [`${2}_enemy`]: {
       action: BATTLE_ACTION.ATTACK,
-      critical: options.enemyCritical,
       state: {
         damage: options.receiveDMG,
+        bloodsucking: options.enemyBloodsucking,
+        critical: options.enemyCritical,
       },
       now: {
         hp: {
@@ -111,7 +138,6 @@ const addPlayerFirstEmulators = (options: {
     },
   })
 
-  console.log('emulators', emulators)
   return emulators
 }
 
@@ -122,14 +148,17 @@ const addEnemyFirstEmulators = (options: {
   inflictDMG: number
   playerAttribute: PlayerAttribute
   _enemy: EnemyObject
+  enemyBloodsucking: number
+  playerBloodsucking: number
 }) => {
   const emulators: Emulator[] = []
   emulators.push({
     [`${1}_enemy`]: {
       action: BATTLE_ACTION.ATTACK,
-      critical: options.enemyCritical,
       state: {
         damage: options.receiveDMG,
+        bloodsucking: options.enemyBloodsucking,
+        critical: options.enemyCritical,
       },
       now: {
         hp: {
@@ -142,9 +171,10 @@ const addEnemyFirstEmulators = (options: {
     },
     [`${2}_player`]: {
       action: BATTLE_ACTION.ATTACK,
-      critical: options.playerCritical,
       state: {
         damage: options.inflictDMG,
+        bloodsucking: options.playerBloodsucking,
+        critical: options.playerCritical,
       },
       now: {
         hp: {
@@ -171,11 +201,16 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
   let round = 1
 
   while (!endWar) {
-    const { receiveDMG, playerCritical } = receiveDamage(_p, _enemy) // Mục tiêu gây sát thương lên người chơi.
-    const { inflictDMG, enemyCritical } = inflictDamage(_p, _enemy) // Người chơi gây sát thương lên mục tiêu.
+    const { receiveDMG, enemyBloodsucking, enemyCritical } = receiveDamage(_p, _enemy) // Mục tiêu gây sát thương lên người chơi.
+    const { inflictDMG, playerBloodsucking, playerCritical } = inflictDamage(_p, _enemy) // Người chơi gây sát thương lên mục tiêu.
 
     playerAttribute.hp -= formatHP(playerAttribute?.hp, receiveDMG)
+    if (playerAttribute.hp > 0)
+      playerAttribute.hp += playerBloodsucking
+
     _enemy.hp -= formatHP(_enemy.hp, inflictDMG)
+    if (_enemy.hp > 0)
+      _enemy.hp += enemyBloodsucking
 
     //  Tốc độ cao hơn sẽ đánh
     if (playerAttribute?.speed < _enemy?.speed) {
@@ -186,6 +221,8 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
         inflictDMG,
         playerAttribute,
         _enemy,
+        enemyBloodsucking,
+        playerBloodsucking,
       })[0])
     }
 
@@ -197,6 +234,8 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
         receiveDMG,
         _enemy,
         playerAttribute,
+        enemyBloodsucking,
+        playerBloodsucking,
       })[0])
     }
 
@@ -209,6 +248,7 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
       endWar = true
       winner = WINNER.youwin
     }
+
     if (round >= 20) {
       endWar = true
       winner = WINNER.youlose
