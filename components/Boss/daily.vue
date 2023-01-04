@@ -72,7 +72,7 @@ const startWar = (boss) => {
         <div class="w-full h-full relative">
           <span class="font-semibold absolute w-[40px] left-[calc(50%_-_15px)] top-[-1px] text-[#656f99]">BOSS</span>
           <NuxtImg class="w-full h-full" src="/common/bj_tongyong_1.png" />
-          <div class="absolute top-[30px] flex flex-col gap-1 items-center justify-center w-full">
+          <div class="absolute top-[30px] grid grid-cols-1 gap-1 items-center justify-center w-[90%] left-[calc(10%_-_10px)] max-h-[410px] overflow-scroll">
             <section v-for="boss in bossDaily" :key="boss.id" class="w-[90%] h-[80px] bg-[#a0aac0cf] rounded flex justify-between">
               <div class="flex flex-col items-center justify-center">
                 <div class="relative mr-2">
@@ -103,6 +103,7 @@ const startWar = (boss) => {
               </div>
             </section>
           </div>
+
         <!--        <div class="flex"> -->
         <!--          <button> -->
         <!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_active.png" /> -->
