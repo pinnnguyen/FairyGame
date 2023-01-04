@@ -1,65 +1,24 @@
 <script setup>
 import { onClickOutside } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
-import useSocket from '~/composables/useSocket'
-import { usePlayerStore } from '~/composables/usePlayer'
-import { sendMessage } from '~~/composables/useMessage'
-
 const emits = defineEmits(['close'])
 
 const target = ref(null)
 onClickOutside(target, event => emits('close'))
 
-const { sid, playerInfo } = storeToRefs(usePlayerStore())
-const { _socket } = useSocket()
-const bossDaily = ref()
-const equipSelected = ref({})
+const currentTab = ref('daily')
 
-const equipShow = ref(false)
+const { data: dataResponse, refresh } = await useAsyncData('boss', () => $fetch('/api/boss', {
+  params: {
+    kind: currentTab.value,
+  },
+}))
 
-onMounted(() => {
-  _socket.emit('boss-daily:join', `boss-daily-${sid.value}`, sid.value)
-  _socket.on('boss-daily:start', (dataRes) => {
-    bossDaily.value = dataRes.bossDaily
-  })
+console.log('bossDaily', dataResponse.value)
+
+watch(currentTab, (value) => {
+  console.log('value', value)
+  refresh()
 })
-
-onUnmounted(() => {
-  _socket.emit('channel:leave')
-})
-
-const pickItem = (equipment) => {
-  equipSelected.value = equipment
-  equipShow.value = true
-}
-
-const parseEquipments = (equipments) => {
-  if (equipments.length > 3)
-    return equipments.splice(0, 1)
-
-  return equipments
-}
-
-const startWar = (boss) => {
-  if (playerInfo.value.level < boss.level) {
-    sendMessage('Chưa đạt cấp độ')
-    return
-  }
-
-  if (boss.numberOfTurn <= 0) {
-    sendMessage('Lượt khiêu chiến trong ngày đã hết')
-    return
-  }
-
-  navigateTo({
-    path: `/battle/${new Date().getTime()}`,
-    replace: true,
-    query: {
-      target: 'boss-daily',
-      id: boss.id,
-    },
-  })
-}
 </script>
 
 <template>
@@ -72,46 +31,28 @@ const startWar = (boss) => {
         <div class="w-full h-full relative">
           <span class="font-semibold absolute w-[40px] left-[calc(50%_-_15px)] top-[-1px] text-[#656f99]">BOSS</span>
           <NuxtImg class="w-full h-full" src="/common/bj_tongyong_1.png" />
-          <div class="absolute top-[30px] grid grid-cols-1 gap-1 items-center justify-center w-[90%] left-[calc(10%_-_10px)] max-h-[410px] overflow-scroll">
-            <section v-for="boss in bossDaily" :key="boss.id" class="w-[90%] h-[80px] bg-[#a0aac0cf] rounded flex justify-between">
-              <div class="flex flex-col items-center justify-center">
-                <div class="relative mr-2">
-                  <NuxtImg class="w-[55px] h-[55px] rounded-full border border-[#bbc4d2]" format="webp" :src="boss.avatar" />
-                  <NuxtImg class="w-10 h-3 object-cover absolute bottom-0 left-[calc(50%_-_20px)]" format="webp" src="/panel/common_2.png" />
-                  <p class="text-10 text-white h-3 object-cover absolute bottom-[2px] left-[calc(50%_-_20px)]">
-                    {{ boss.name }}
-                  </p>
-                </div>
-              </div>
-              <div class="flex items-center justify-center">
-                <LazyItemRank
-                  v-for="equipment in parseEquipments(boss.reward.equipments)"
-                  :key="equipment.name"
-                  class="w-[40px] h-[40px]"
-                  :rank="equipment.rank"
-                  :preview="equipment.preview"
-                  @click.stop="pickItem(equipment)"
-                />
-              </div>
-              <div class="flex items-center z-1 flex flex-col justify-center items-center">
-                <p class="text-[#439546] text-12 font-semibold mr-2">
-                  Lượt khiêu chiến {{ boss.numberOfTurn }}
-                </p>
-                <ButtonConfirm class-name="h-[25px]" @click.stop="startWar(boss)">
-                  <span class="font-semibold text-[#9d521a] z-9">Khiêu chiến</span>
-                </ButtonConfirm>
-              </div>
-            </section>
-          </div>
+          <div class="absolute top-[30px] grid grid-cols-1 gap-1 items-center justify-center w-[92%] left-[calc(10%_-_10px)] max-h-[380px] overflow-scroll">
+            <template v-if="currentTab === 'daily' ">
+              <LazyBossListDaily v-for="bossNe in dataResponse.bossNe" :key="bossNe.id" :boss="bossNe" />
+            </template>
 
-        <!--        <div class="flex"> -->
-        <!--          <button> -->
-        <!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_active.png" /> -->
-        <!--          </button> -->
-        <!--          <button> -->
-        <!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_deactive.png" /> -->
-        <!--          </button> -->
-        <!--        </div> -->
+            <template v-if="currentTab === 'frameTime' ">
+              <LazyBossListFrameTime v-for="bossNe in dataResponse.bossNe" :key="bossNe.id" :boss="bossNe" />
+            </template>
+          </div>
+          <div class="absolute bottom-[20px] left-10 text-10">
+            <button :class="{ '!opacity-100': currentTab === 'daily' }" class="opacity-50 bg-[#f8d89b] h-[30px] text-[#9d521a] px-2 rounded mx-1" @click="currentTab = 'daily'">
+              Hằng ngày
+            </button>
+            <button :class="{ '!opacity-100': currentTab === 'frameTime' }" class="opacity-50 bg-[#f8d89b] h-[30px] text-[#9d521a] px-2 rounded mx-1" @click="currentTab = 'frameTime'">
+              Khung giờ
+            </button>
+          </div>
+          <!-- <div class="flex absolute bottom-[-55px] left-[10px]">
+            <button>
+              hehe
+            </button>
+          </div> -->
         </div>
       </div>
     </div>

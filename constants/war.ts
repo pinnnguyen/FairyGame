@@ -5,6 +5,7 @@ export const KIND = {
 export const TARGET_TYPE = {
   MONSTER: 'monster',
   BOSS_DAILY: 'boss-daily',
+  BOSS_FRAME_TIME: 'boss-frame-time',
 }
 
 export const WINNER = {
@@ -20,7 +21,7 @@ export const BATTLE_TURN = {
 export const BATTLE_KIND = {
   PVE: 'pve',
   PVP: 'pvp',
-  BOSS: 'boss',
+  BOSS_FRAME_TIME: 'boss_frame_time',
   BOSS_DAILY: 'boss_daily',
   DUNGEON: 'dungeon',
 }

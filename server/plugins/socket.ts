@@ -38,46 +38,46 @@ const battleJoinHandler = async (params: {
   })
 }
 
-const bossDailyJoinHandler = async (params: {
-  io: any
-  socket: any
-  request: { _channel: string; sid: string }
-}) => {
-  params.socket.join(params.request._channel)
-  const today = moment().startOf('day')
-  const bossDaily = await BossSchema.find({ kind: 'daily' }).select('id name level reward avatar numberOfTurn')
+// const bossDailyJoinHandler = async (params: {
+//   io: any
+//   socket: any
+//   request: { _channel: string; sid: string }
+// }) => {
+//   params.socket.join(params.request._channel)
+//   const today = moment().startOf('day')
+//   const bossDaily = await BossSchema.find({ kind: 'daily' }).select('id name level reward avatar numberOfTurn')
 
-  for (let i = 0; i < bossDaily.length; i++) {
-    const equipIds = bossDaily[i].reward.equipRates.map((i: { id: number }) => i.id)
-    const numberOfBattle = await BattleSchema.find({
-      sid: params.request.sid,
-      kind: BATTLE_KIND.BOSS_DAILY,
-      targetId: bossDaily[i].id,
-      createdAt: {
-        $gte: moment().startOf('day'),
-        $lte: moment(today).endOf('day').toDate(),
-      },
-    }).count()
+//   for (let i = 0; i < bossDaily.length; i++) {
+//     const equipIds = bossDaily[i].reward.equipRates.map((i: { id: number }) => i.id)
+//     const numberOfBattle = await BattleSchema.find({
+//       sid: params.request.sid,
+//       kind: BATTLE_KIND.BOSS_DAILY,
+//       targetId: bossDaily[i].id,
+//       createdAt: {
+//         $gte: moment().startOf('day'),
+//         $lte: moment(today).endOf('day').toDate(),
+//       },
+//     }).count()
 
-    bossDaily[i].numberOfTurn -= numberOfBattle
-    bossDaily[i].reward.equipments = await EquipmentSchema.find({
-      id: {
-        $in: equipIds,
-      },
-    })
-  }
+//     bossDaily[i].numberOfTurn -= numberOfBattle
+//     bossDaily[i].reward.equipments = await EquipmentSchema.find({
+//       id: {
+//         $in: equipIds,
+//       },
+//     })
+//   }
 
-  params.io.to(params.request._channel).emit('boss-daily:start', {
-    inRefresh: false,
-    refreshTime: '',
-    bossDaily,
-  })
+//   params.io.to(params.request._channel).emit('boss-daily:start', {
+//     inRefresh: false,
+//     refreshTime: '',
+//     bossDaily,
+//   })
 
-  params.socket.on('channel:leave', () => {
-    params.socket.leave(params._channel)
-    // params.io.socket.socketsLeave([params.request._channel])
-  })
-}
+//   params.socket.on('channel:leave', () => {
+//     params.socket.leave(params._channel)
+//     // params.io.socket.socketsLeave([params.request._channel])
+//   })
+// }
 
 export default function () {
   const config = useRuntimeConfig()
@@ -114,16 +114,16 @@ export default function () {
       })
     })
 
-    socket.on('boss-daily:join', async (_channel, sid) => {
-      await bossDailyJoinHandler({
-        io,
-        socket,
-        request: {
-          _channel,
-          sid,
-        },
-      })
-    })
+    // socket.on('boss-daily:join', async (_channel, sid) => {
+    //   await bossDailyJoinHandler({
+    //     io,
+    //     socket,
+    //     request: {
+    //       _channel,
+    //       sid,
+    //     },
+    //   })
+    // })
 
     socket.on('equip:upgrade:start', (_channel) => {
       socket.join(_channel)

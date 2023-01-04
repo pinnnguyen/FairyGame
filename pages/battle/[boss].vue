@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useBattleRoundStore, usePlayerStore, useSocket } from '#imports'
 import { BATTLE_KIND, BATTLE_TURN, TARGET_TYPE } from '~/constants'
 import type { BattleResponse } from '~/types'
+import { formatCash } from '~/common'
 
 const {
   loading,
@@ -13,10 +14,11 @@ const {
   battleRounds,
   battleResult,
   reward,
+  refreshTime,
+  inRefresh,
 } = storeToRefs(useBattleRoundStore())
 
 const { playerInfo } = storeToRefs(usePlayerStore())
-
 const { _socket } = useSocket()
 const route = useRoute()
 
@@ -34,7 +36,7 @@ const showEnemyInfo = ref(false)
 
 onMounted(() => {
   _socket.emit('battle:join', `${playerInfo.value?._id}-battle-boss-daily`, {
-    kind: BATTLE_KIND.BOSS_DAILY,
+    kind: queryTarget.value ? BATTLE_KIND.BOSS_FRAME_TIME : BATTLE_KIND.BOSS_DAILY,
     player: {
       userId: playerInfo.value?.userId,
     },
@@ -45,6 +47,7 @@ onMounted(() => {
   })
 
   _socket.on('battle:start', async (war: BattleResponse) => {
+    console.log('war', war)
     await startBattle(war)
   })
 })
@@ -62,6 +65,17 @@ const doCloseBattleR = () => {
   battleResult.value.show = false
   return navigateTo('/')
 }
+
+const retry = () => {
+  console.log('retry')
+  battleResult.value.show = false
+  _socket.emit('battle:refresh')
+}
+
+const refreshFinished = () => {
+  console.log('refreshFinished')
+  _socket.emit('battle:refresh')
+}
 </script>
 
 <template>
@@ -71,12 +85,13 @@ const doCloseBattleR = () => {
       :battle-result="battleResult"
       :reward="reward"
       @close="doCloseBattleR"
+      @retry="retry"
     />
     <loadingScreen v-if="loading" />
     <div v-else class="h-screen bg-white">
       <div class="h-[60%]  bg-bg_pve bg-cover">
         <div v-if="!hasBossDaily" class="text-center pt-2 text-base font-semibold flex items-center justify-center">
-          [{{ playerInfo?.mid?.current?.name }}]
+          [{{ state.enemy?.name }}]
         </div>
         <div class="flex justify-between p-2 pt-2">
           <div>
@@ -87,10 +102,10 @@ const doCloseBattleR = () => {
             </div>
             <BattleInfo
               v-if="showPlayerInfo"
-              :name="state.player.name"
-              :hp="state.player.hp"
-              :damage="state.player.damage"
-              :def="state.player.def"
+              :name="state.player?.name"
+              :hp="state.player?.hp"
+              :damage="state.player?.damage"
+              :def="state.player?.def"
               @close="showPlayerInfo = false"
             />
           </div>
@@ -125,16 +140,46 @@ const doCloseBattleR = () => {
           />
         </div>
       </div>
-      <div class="p-4 h-[25%] overflow-scroll">
-        <BattleHistory :battle-rounds="battleRounds" />
+      <div class="flex items-end justify-end">
+        <div class="h-[170px] overflow-auto w-[48%] bg-[#6879a3] mt-2 mx-2 rounded float-left">
+          <p class="text-center text-base font-semibold">
+            Lịch sử
+          </p>
+          <BattleHistory :battle-rounds="battleRounds" />
+        </div>
+        <div class="w-[50%] h-[170px] overflow-auto float-right bg-[#6879a3] mt-2 mx-2 rounded">
+          <p class="text-center text-base font-semibold">
+            Hạng sát thương
+          </p>
+          <div class="p-2 text-white">
+            <div class="flex justify-between mx-1 my-1">
+              <span>(1) Pinn</span> <span>{{ formatCash(2222332) }}</span>
+            </div>
+            <div class="flex justify-between mx-1">
+              <span>(1) Pinn</span> <span>{{ formatCash(2222332) }}</span>
+            </div>
+            <div class="flex justify-between mx-1">
+              <span>(1) Pinn</span> <span>{{ formatCash(2222332) }}</span>
+            </div>
+            <div class="flex justify-between mx-1">
+              <span>(1) Pinn</span> <span>{{ formatCash(2222332) }}</span>
+            </div>
+            <div class="flex justify-between mx-1">
+              <span>(1) Pinn</span> <span>{{ formatCash(2222332) }}</span>
+            </div>
+            <div class="flex justify-between mx-1">
+              <span>(1) Pinn</span> <span>{{ formatCash(2222332) }}</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <!-- <div class="flex items-center flex-col justify-center fixed w-full bottom-2">
+      <div class="flex items-center flex-col justify-center fixed w-full bottom-2">
         <LazyPopupRefreshMid
           v-if="inRefresh"
           :refresh-time="refreshTime"
-          @refreshFinished="refreshFinished"
+          @refresh-finished="refreshFinished"
         />
-      </div> -->
+      </div>
     </div>
   </ClientOnly>
 </template>

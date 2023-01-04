@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { onClickOutside } from '@vueuse/core'
 import { convertMillisecondsToSeconds } from '~/common'
 import { WINNER } from '~/constants/war'
 import { ITEMS_ICON } from '~/constants/items'
 import type { BaseReward, PlayerEquipment } from '~/types'
+
 interface Props {
   battleResult: {
     show: boolean
@@ -15,8 +17,10 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emits = defineEmits(['close'])
+const emits = defineEmits(['close', 'retry'])
 const endTime = ref(6000)
+const target = ref(null)
+onClickOutside(target, () => emits('close'))
 
 const close = () => {
   emits('close')
@@ -37,7 +41,7 @@ if (youWin.value) {
 
 <template>
   <Blocker class="duration-500 transition-colors transition-opacity z-9">
-    <div class="flex flex-col items-center">
+    <div ref="target" class="flex flex-col items-center">
       <NuxtImg class="w-[300px]" format="webp" :src="battleResult.win === WINNER.youwin ? '/battle/win.png' : '/battle/lose.png' " />
       <div class="w-[250px] h-[250px] border border-[#6d6c6c] bg-black rounded-md">
         <ul v-if="youWin" class="h-full w-full p-1">
@@ -65,10 +69,10 @@ if (youWin.value) {
         </ButtonConfirm>
       </div>
       <div v-else class="flex">
-        <ButtonCancel class-name="h-[30px]" class="m-2" @close="close" @click.stop="navigateTo('/')">
+        <ButtonCancel class-name="h-[30px]" class="m-2" @click.stop="navigateTo('/')">
           <span class="font-semibold z-9">Quay về</span>
         </ButtonCancel>
-        <ButtonConfirm class-name="h-[30px]" class="m-2" @close="close">
+        <ButtonConfirm class-name="h-[30px]" class="m-2" @click="emits('retry')">
           <span class="font-semibold z-9">Thử lại</span>
         </ButtonConfirm>
       </div>

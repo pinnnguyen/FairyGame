@@ -96,10 +96,10 @@ const doCloseBattleR = () => {
             </div>
             <BattleInfo
               v-if="showPlayerInfo"
-              :name="state.player.name"
-              :hp="state.player.hp"
-              :damage="state.player.damage"
-              :def="state.player.def"
+              :name="state.player?.name"
+              :hp="state.player?.hp"
+              :damage="state.player?.damage"
+              :def="state.player?.def"
               @close="showPlayerInfo = false"
             />
           </div>
@@ -141,7 +141,7 @@ const doCloseBattleR = () => {
         <LazyPopupRefreshMid
           v-if="inRefresh"
           :refresh-time="refreshTime"
-          @refreshFinished="refreshFinished"
+          @refresh-finished="refreshFinished"
         />
         <div class="flex items-center">
           <ButtonCancel class="mx-2" class-name="h-[23px]" @click.stop="navigateTo('/')">

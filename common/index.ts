@@ -53,3 +53,18 @@ export const formatCash = (n: number) => {
   //   return `${+(n / 1e12).toFixed(1)}T`
   return `${+(n / 1e3).toFixed(1)} Vạn`
 }
+
+export const timeOffset = (time: number) => {
+  return {
+    seconds: time % 60,
+    minutes: Math.floor(time / 60) % 60,
+    hours: Math.floor(time / 60 / 60) % 24,
+    days: Math.floor(time / 60 / 60 / 24) % 7,
+    weeks: Math.floor(time / 60 / 60 / 24 / 7),
+    months: Math.floor(time / 60 / 60 / 24 / 30.4368),
+    totalDays: Math.floor(time / 60 / 60 / 24),
+    totalHours: Math.floor(time / 60 / 60),
+    totalMinutes: Math.floor(time / 60),
+    totalSeconds: time,
+  }
+}

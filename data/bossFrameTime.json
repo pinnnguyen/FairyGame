@@ -1,0 +1,60 @@
+[
+    {
+        "id": 99980,
+        "name": "100 Cấp",
+        "kind": "frameTime",
+        "level": 100,
+        "info": "",
+        "sex": "",
+        "damage": 2500,
+        "def": 200,
+        "hp": 9999999,
+        "mp": 1000,
+        "critical": 35,
+        "bloodsucking": 0,
+        "numberOfTurn": 5,
+        "startHours": 12,
+        "reward": {
+          "base": {
+            "exp": 10,
+            "gold": 10
+          },
+          "equipRates": [
+            {
+              "id": 1,
+              "rate": 20
+            },
+            {
+              "id": 2,
+              "rate": 20
+            },
+            {
+              "id": 3,
+              "rate": 20
+            },
+            {
+              "id": 4,
+              "rate": 20
+            },
+            {
+              "id": 5,
+              "rate": 20
+            },
+            {
+              "id": 6,
+              "rate": 20
+            },
+            {
+              "id": 7,
+              "rate": 20
+            },
+            {
+              "id": 8,
+              "rate": 20
+            }
+          ]
+        },
+        "avatar": "/monster/310001.png",
+        "class": 1
+      }
+]

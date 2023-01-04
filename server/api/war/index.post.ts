@@ -46,11 +46,47 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     }
   }
 
+  if (battleRequest.target.type === TARGET_TYPE.BOSS_FRAME_TIME) {
+    const battle = await BattleSchema
+      .findOne({ 'sid': _p.player.sid, 'kind': BATTLE_KIND.BOSS_FRAME_TIME, 'mid.id': _p.player.midId })
+      .sort({ createdAt: -1 }).select('player enemy reward createdAt')
+
+    if (battle) {
+    // Clear pve history
+      // await BattleSchema.deleteMany({
+      //   '_id': {
+      //     $nin: [battle._id],
+      //   },
+      //   'mid.id': {
+      //     $nin: [_p.player.midId],
+      //   },
+      //   'kind': BATTLE_KIND.PVE,
+      //   'sid': _p.player.sid,
+      // })
+
+      // validate
+      const doRefresh = new Date(battle.createdAt).getTime() + (_p as any)?.mid?.current?.ms ?? 60000
+      if (doRefresh > now) {
+        return {
+          inRefresh: true,
+          refreshTime: doRefresh - now,
+          player: battle.player,
+          enemy: battle.enemy,
+          reward: battle.reward,
+          winner: battle.winner,
+        }
+      }
+    }
+  }
+
   let _enemyObj: any = {}
   if (battleRequest.target.type === TARGET_TYPE.MONSTER)
     _enemyObj = await MonsterSchema.findOne({ id: battleRequest.target.id })
 
   if (battleRequest.target.type === TARGET_TYPE.BOSS_DAILY)
+    _enemyObj = await BossSchema.findOne({ id: battleRequest.target.id })
+
+  if (battleRequest.target.type === TARGET_TYPE.BOSS_FRAME_TIME)
     _enemyObj = await BossSchema.findOne({ id: battleRequest.target.id })
 
   if (!_enemyObj) {
@@ -90,6 +126,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
   const { equipments } = await receivedEquipment(_p.player.sid, _enemyObj, winner)
   await setLastTimeReceivedRss(_p.player.sid)
 
+  // console.log('battleRequest.kind', battleRequest.kind)
   // Lưu lịch sử trận đánh
   await new BattleSchema({
     sid: _p.player.sid,

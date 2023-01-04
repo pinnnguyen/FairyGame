@@ -30,6 +30,8 @@ export interface Boss extends BaseAttributes {
   }
   numberOfTurn: number
   class: number
+  startHours: number
+  endHours: number
 }
 
 export type EnemyObject = Monster | Boss

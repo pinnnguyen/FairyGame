@@ -26,6 +26,8 @@ const schema = new mongoose.Schema<Boss>(
     reward: {},
     numberOfTurn: Number,
     class: Number,
+    startHours: Number,
+    endHours: Number,
   },
   { timestamps: true },
 )
