@@ -1,0 +1,64 @@
+{
+  "name": "unctx",
+  "version": "2.1.1",
+  "description": "Composition-api in Vanilla js",
+  "repository": "unjs/unctx",
+  "license": "MIT",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./transform": {
+      "import": "./dist/transform.mjs",
+      "types": "./dist/transform.d.ts"
+    },
+    "./plugin": {
+      "import": "./dist/plugin.mjs",
+      "types": "./dist/plugin.d.ts"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./dist/index.d.ts"
+      ]
+    }
+  },
+  "dependencies": {
+    "acorn": "^8.8.1",
+    "estree-walker": "^3.0.1",
+    "magic-string": "^0.26.7",
+    "unplugin": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/estree": "^1.0.0",
+    "@types/jest": "^29.2.3",
+    "@types/node": "^18.11.9",
+    "@vitest/coverage-c8": "^0.25.3",
+    "eslint": "^8.28.0",
+    "eslint-config-unjs": "^0.0.2",
+    "jiti": "^1.16.0",
+    "standard-version": "^9.5.0",
+    "typescript": "^4.9.3",
+    "unbuild": "^1.0.1",
+    "vitest": "^0.25.3"
+  },
+  "packageManager": "pnpm@7.17.1",
+  "scripts": {
+    "build": "unbuild",
+    "dev": "vitest",
+    "lint": "eslint --ext .ts,.js .",
+    "release": "pnpm test && standard-version && git push --follow-tags && pnpm publish",
+    "test": "pnpm lint && vitest run --coverage"
+  }
+}

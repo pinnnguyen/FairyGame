@@ -1,0 +1,1 @@
+import{a9 as u,a7 as i,s as l,D as c,aa as f}from"./entry.e04b7afd.js";import{u as s}from"./usePlayer.703c932a.js";const p=u(async()=>{var t;let e,a;const{status:o}=i(),{getPlayer:r}=s(),{playerInfo:n}=l(s());if(o.value!=="authenticated")return c("/login");(t=n.value)!=null&&t.name||([e,a]=f(()=>r()),await e,a())});export{p as default};
