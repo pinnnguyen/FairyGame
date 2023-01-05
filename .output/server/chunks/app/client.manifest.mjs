@@ -1,27 +1,27 @@
 const client_manifest = {
-  "assets/fonts/Montserrat-Regular.woff2": {
-    "resourceType": "font",
-    "mimeType": "font/woff2",
-    "file": "Montserrat-Regular.d43f2a74.woff2",
-    "src": "assets/fonts/Montserrat-Regular.woff2"
-  },
   "assets/fonts/Montserrat-Medium.woff2": {
     "resourceType": "font",
     "mimeType": "font/woff2",
     "file": "Montserrat-Medium.e076f5e4.woff2",
     "src": "assets/fonts/Montserrat-Medium.woff2"
   },
-  "assets/fonts/Montserrat-SemiBold.woff2": {
+  "assets/fonts/Montserrat-Regular.woff2": {
     "resourceType": "font",
     "mimeType": "font/woff2",
-    "file": "Montserrat-SemiBold.983f44f9.woff2",
-    "src": "assets/fonts/Montserrat-SemiBold.woff2"
+    "file": "Montserrat-Regular.d43f2a74.woff2",
+    "src": "assets/fonts/Montserrat-Regular.woff2"
   },
   "assets/fonts/Montserrat-Bold.woff2": {
     "resourceType": "font",
     "mimeType": "font/woff2",
     "file": "Montserrat-Bold.d4191f93.woff2",
     "src": "assets/fonts/Montserrat-Bold.woff2"
+  },
+  "assets/fonts/Montserrat-SemiBold.woff2": {
+    "resourceType": "font",
+    "mimeType": "font/woff2",
+    "file": "Montserrat-SemiBold.983f44f9.woff2",
+    "src": "assets/fonts/Montserrat-SemiBold.woff2"
   },
   "assets/fonts/Montserrat-Regular.woff": {
     "resourceType": "font",
@@ -35,17 +35,17 @@ const client_manifest = {
     "file": "Montserrat-Medium.fbb50db1.woff",
     "src": "assets/fonts/Montserrat-Medium.woff"
   },
-  "assets/fonts/Montserrat-SemiBold.woff": {
-    "resourceType": "font",
-    "mimeType": "font/woff",
-    "file": "Montserrat-SemiBold.b14431fe.woff",
-    "src": "assets/fonts/Montserrat-SemiBold.woff"
-  },
   "assets/fonts/Montserrat-Bold.woff": {
     "resourceType": "font",
     "mimeType": "font/woff",
     "file": "Montserrat-Bold.78638b40.woff",
     "src": "assets/fonts/Montserrat-Bold.woff"
+  },
+  "assets/fonts/Montserrat-SemiBold.woff": {
+    "resourceType": "font",
+    "mimeType": "font/woff",
+    "file": "Montserrat-SemiBold.b14431fe.woff",
+    "src": "assets/fonts/Montserrat-SemiBold.woff"
   },
   "node_modules/nuxt/dist/app/entry.mjs": {
     "resourceType": "script",
@@ -475,11 +475,6 @@ const client_manifest = {
       "_usePlayer.c8e019ab.js"
     ]
   },
-  "node_modules/nuxt-icon/dist/runtime/Icon.css": {
-    "resourceType": "style",
-    "file": "Icon.294af607.css",
-    "src": "node_modules/nuxt-icon/dist/runtime/Icon.css"
-  },
   "node_modules/@nuxt/ui-templates/dist/templates/error-404.css": {
     "resourceType": "style",
     "file": "error-404.23f2309d.css",
@@ -489,6 +484,11 @@ const client_manifest = {
     "resourceType": "style",
     "file": "default.2ef39047.css",
     "src": "layouts/default.css"
+  },
+  "node_modules/nuxt-icon/dist/runtime/Icon.css": {
+    "resourceType": "style",
+    "file": "Icon.294af607.css",
+    "src": "node_modules/nuxt-icon/dist/runtime/Icon.css"
   },
   "node_modules/@nuxt/ui-templates/dist/templates/error-500.css": {
     "resourceType": "style",

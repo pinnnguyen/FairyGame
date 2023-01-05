@@ -12,10 +12,10 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     mongoUrl: process.env.MONGO_URL,
-    socketClientURL: 'http://localhost:3005',
+    socketClientURL: process.env.NODE_ENV === 'development' ? 'http://localhost:3005' : 'http://103.82.22.99:3005',
     socketIO: {
       cors: {
-        origin: process.env.ORIGIN,
+        origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://103.82.22.99:3000',
         allowedHeaders: ['gl'],
         credentials: true,
       },
