@@ -13,6 +13,7 @@ export interface Monster extends BaseAttributes {
     equipments?: PlayerEquipment[]
   }
   class: number
+  numberOfTurn: number
 }
 
 export interface Boss extends BaseAttributes {
@@ -23,6 +24,7 @@ export interface Boss extends BaseAttributes {
   level: number
   info: any // type unknown;
   sex: any // type unknown;
+  mhp?: number
   reward: {
     base: BaseReward
     equipRates: RateReward[]
@@ -32,6 +34,7 @@ export interface Boss extends BaseAttributes {
   class: number
   startHours: number
   endHours: number
+  isStart: boolean
 }
 
 export type EnemyObject = Monster | Boss

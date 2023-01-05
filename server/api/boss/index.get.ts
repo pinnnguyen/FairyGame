@@ -2,6 +2,7 @@ import moment from 'moment'
 import { getServerSession } from '#auth'
 import { BattleSchema, BossSchema, EquipmentSchema, PlayerSchema } from '~/server/schema'
 import { BATTLE_KIND } from '~/constants'
+import { frameTimeBossEnded, startEndHoursBossFrameTime } from '~/common'
 
 export default defineEventHandler(async (event) => {
   const uServer = await getServerSession(event)
@@ -14,9 +15,9 @@ export default defineEventHandler(async (event) => {
 
   const query = getQuery(event)
   const today = moment().startOf('day')
-  const bossNe = await BossSchema.find({ kind: query.kind })
+  const bossNe = await (BossSchema as any).find({ kind: query.kind })
 
-  const player = await PlayerSchema.findOne({ userId: uServer?.user?.email }).select('sid')
+  const player = await (PlayerSchema as any).findOne({ userId: uServer?.user?.email }).select('sid')
   if (!player?.sid) {
     return createError({
       statusCode: 404,
@@ -26,7 +27,7 @@ export default defineEventHandler(async (event) => {
 
   for (let i = 0; i < bossNe.length; i++) {
     const equipIds = bossNe[i].reward.equipRates.map((i: { id: number }) => i.id)
-    const numberOfBattle = await BattleSchema.find({
+    const numberOfBattle = await (BattleSchema as any).find({
       sid: player.sid,
       kind: BATTLE_KIND.BOSS_DAILY,
       targetId: bossNe[i].id,
@@ -37,27 +38,19 @@ export default defineEventHandler(async (event) => {
     }).count()
 
     bossNe[i].numberOfTurn -= numberOfBattle
-    bossNe[i].reward.equipments = await EquipmentSchema.find({
+    bossNe[i].reward.equipments = await (EquipmentSchema as any).find({
       id: {
         $in: equipIds,
       },
     })
 
-    let startHours = 0
+    bossNe[i].isStart = false
     if (query.kind === 'frameTime') {
-      console.log('bossNe.startTime', bossNe)
-      const date = new Date()
-      const now = new Date().getTime()
-      date.setHours(bossNe[i].startHours)
-      date.setMinutes(0)
+      const { start, end } = startEndHoursBossFrameTime(13)
+      bossNe[i].isStart = frameTimeBossEnded(start, end)
 
-      if (date.getTime() > now)
-        date.setDate(date.getDate() + 1)
-
-      startHours = date.getTime()
-      bossNe[i].startHours = startHours
-      bossNe[i].endHours = startHours + 1800000
-      console.log('bossNe[i].endHours', bossNe[i].endHours)
+      bossNe[i].startHours = start
+      bossNe[i].endHours = end
     }
   }
 

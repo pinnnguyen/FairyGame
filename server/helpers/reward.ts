@@ -1,6 +1,6 @@
 import { randomNumber } from '~/common'
 import { BASE_EXP, BASE_GOLD } from '~/server/rule/reward'
-import { EquipmentSchema } from '~/server/schema/equiment'
+import { EquipmentSchema } from '~~/server/schema/equipment'
 import { PlayerEquipmentSchema } from '~/server/schema/player.equiment'
 import { PlayerSchema } from '~/server/schema/player'
 

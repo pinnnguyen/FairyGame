@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useBattleRoundStore, usePlayerStore, useSocket } from '#imports'
-import { BATTLE_KIND, BATTLE_TURN, TARGET_TYPE } from '~/constants'
+import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import type { BattleResponse } from '~/types'
 import { formatCash } from '~/common'
 
@@ -16,6 +16,7 @@ const {
   reward,
   refreshTime,
   inRefresh,
+  rankDMG,
 } = storeToRefs(useBattleRoundStore())
 
 const { playerInfo } = storeToRefs(usePlayerStore())
@@ -147,28 +148,13 @@ const refreshFinished = () => {
           </p>
           <BattleHistory :battle-rounds="battleRounds" />
         </div>
-        <div class="w-[50%] h-[170px] overflow-auto float-right bg-[#6879a3] mt-2 mx-2 rounded">
+        <div class="w-[80%] h-[170px] overflow-auto float-right bg-[#6879a3] mt-2 mx-2 rounded">
           <p class="text-center text-base font-semibold">
             Hạng sát thương
           </p>
           <div class="p-2 text-white">
-            <div class="flex justify-between mx-1 my-1">
-              <span>(1) Pinn</span> <span>{{ formatCash(2222332) }}</span>
-            </div>
-            <div class="flex justify-between mx-1">
-              <span>(1) Pinn</span> <span>{{ formatCash(2222332) }}</span>
-            </div>
-            <div class="flex justify-between mx-1">
-              <span>(1) Pinn</span> <span>{{ formatCash(2222332) }}</span>
-            </div>
-            <div class="flex justify-between mx-1">
-              <span>(1) Pinn</span> <span>{{ formatCash(2222332) }}</span>
-            </div>
-            <div class="flex justify-between mx-1">
-              <span>(1) Pinn</span> <span>{{ formatCash(2222332) }}</span>
-            </div>
-            <div class="flex justify-between mx-1">
-              <span>(1) Pinn</span> <span>{{ formatCash(2222332) }}</span>
+            <div v-for="rank in rankDMG" :key="rank._id" class="flex justify-between mx-1 my-1">
+              <span>(1) {{ rank._id }}</span> <span>{{ formatCash(rank.totalDamage) }}</span>
             </div>
           </div>
         </div>
@@ -179,6 +165,13 @@ const refreshFinished = () => {
           :refresh-time="refreshTime"
           @refresh-finished="refreshFinished"
         />
+        <div class="flex items-center">
+          <ButtonCancel class="mx-2" class-name="h-[23px]" @click.stop="navigateTo('/')">
+            <span class="z-9 text-10">
+              Về thành
+            </span>
+          </ButtonCancel>
+        </div>
       </div>
     </div>
   </ClientOnly>

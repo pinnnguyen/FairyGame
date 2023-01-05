@@ -19,6 +19,7 @@ const schema = new mongoose.Schema<Boss>(
     damage: Number,
     def: Number,
     hp: Number,
+    mhp: Number,
     mp: Number,
     critical: Number,
     bloodsucking: Number,
@@ -28,11 +29,13 @@ const schema = new mongoose.Schema<Boss>(
     class: Number,
     startHours: Number,
     endHours: Number,
+    isStart: Boolean,
   },
   { timestamps: true },
 )
 
 schema.index({ id: -1 }, { unique: true })
 
-// export const BossSchema = mongoose.model('BossSchemas', schema, 'boss')
-export const BossSchema = (mongoose.models && mongoose.models.BossSchema ? mongoose.models.BossSchema : mongoose.model('BossSchema', schema, 'boss'))
+export const BossSchema = (mongoose.models && mongoose.models.BossSchema
+  ? mongoose.models.BossSchema
+  : mongoose.model('BossSchema', schema, 'boss'))

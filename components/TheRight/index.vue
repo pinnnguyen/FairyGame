@@ -6,8 +6,8 @@ import { BASE_EXP } from '~/server/rule'
 const { mids } = storeToRefs(usePlayerStore())
 const toggle = ref(false)
 
-const exp = computed(() => Math.round(BASE_EXP() * mids.value.current.reward.base.exp))
-const gold = computed(() => Math.round(BASE_EXP() * mids.value.current.reward.base.gold))
+const exp = computed(() => Math.round(BASE_EXP() * mids.value.current?.reward?.base?.exp))
+const gold = computed(() => Math.round(BASE_EXP() * mids.value.current?.reward?.base?.gold))
 </script>
 
 <template>

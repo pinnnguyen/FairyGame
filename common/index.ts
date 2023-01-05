@@ -55,16 +55,42 @@ export const formatCash = (n: number) => {
 }
 
 export const timeOffset = (time: number) => {
+  // return {
+  //   seconds: time % 60,
+  //   minutes: Math.floor(time / 60) % 60,
+  //   hours: Math.floor(time / 60 / 60) % 24,
+  //   days: Math.floor(time / 60 / 60 / 24) % 7,
+  //   weeks: Math.floor(time / 60 / 60 / 24 / 7),
+  //   months: Math.floor(time / 60 / 60 / 24 / 30.4368),
+  //   totalDays: Math.floor(time / 60 / 60 / 24),
+  //   totalHours: Math.floor(time / 60 / 60),
+  //   totalMinutes: Math.floor(time / 60),
+  //   totalSeconds: time,
+  // }
   return {
-    seconds: time % 60,
+    hours: Math.round(time / 60 / 60),
     minutes: Math.floor(time / 60) % 60,
-    hours: Math.floor(time / 60 / 60) % 24,
-    days: Math.floor(time / 60 / 60 / 24) % 7,
-    weeks: Math.floor(time / 60 / 60 / 24 / 7),
-    months: Math.floor(time / 60 / 60 / 24 / 30.4368),
-    totalDays: Math.floor(time / 60 / 60 / 24),
-    totalHours: Math.floor(time / 60 / 60),
-    totalMinutes: Math.floor(time / 60),
-    totalSeconds: time,
+    seconds: Math.round(time % 60),
   }
+}
+
+export const startEndHoursBossFrameTime = (hours: number) => {
+  const date = new Date()
+  const now = new Date().getTime()
+  date.setHours(hours)
+  date.setMinutes(0)
+
+  if (date.getTime() + 1800000 + 1800000 + 1800000 + 1800000 + 1800000 < now)
+    date.setDate(date.getDate() + 1)
+
+  return {
+    start: date.getTime(),
+    end: date.getTime() + 1800000 + 1800000 + 1800000 + 1800000 + 1800000, // + them 30 phut
+  }
+}
+
+export const frameTimeBossEnded = (startTime: number, endTime: number) => {
+  const now = new Date().getTime()
+
+  return now < endTime && now > startTime
 }

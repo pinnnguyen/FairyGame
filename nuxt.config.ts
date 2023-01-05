@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   ssr: true,
   auth: {
-    origin: process.env.ORIGIN,
+    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://103.82.22.99:3000',
     enableGlobalAppMiddleware: false,
   },
   nitro: {

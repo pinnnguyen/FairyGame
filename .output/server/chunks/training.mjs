@@ -15,6 +15,7 @@ import 'unstorage';
 import 'defu';
 import 'radix3';
 import 'mongoose';
+import 'node-cron';
 import 'socket.io';
 import 'moment';
 import 'node:fs';

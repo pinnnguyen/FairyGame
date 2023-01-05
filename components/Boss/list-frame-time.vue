@@ -1,24 +1,34 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '~/composables/usePlayer'
+import type { Boss, Equipment } from '~/types'
 import { sendMessage } from '~~/composables/useMessage'
 import { timeOffset } from '~/common'
 
-defineProps<{
+const props = defineProps<{
   boss: any
 }>()
 
 const { playerInfo } = storeToRefs(usePlayerStore())
 const equipSelected = ref({})
 const equipShow = ref(false)
+const now = new Date().getTime()
 
-const pickItem = (equipment) => {
+const startTime = computed(() => (props.boss.startHours - new Date().getTime()) / 1000)
+const endTime = computed(() => (props.boss.endHours - now) / 1000)
+
+const pickItem = (equipment: Equipment) => {
   equipSelected.value = equipment
   equipShow.value = true
 }
 
-const startWar = (boss) => {
-  if (playerInfo.value.level < 10) {
+const startWar = (boss: Boss) => {
+  if (!props.boss.isStart) {
+    sendMessage('Thời gian hoạt động đã kết thúc')
+    return
+  }
+
+  if (playerInfo.value && playerInfo.value.level < 10) {
     sendMessage('Chưa đạt cấp độ 10')
     return
   }
@@ -33,7 +43,7 @@ const startWar = (boss) => {
   })
 }
 
-const parseEquipments = (equipments) => {
+const parseEquipments = (equipments: Equipment[]) => {
   if (equipments.length > 3)
     return equipments.splice(0, 1)
 
@@ -43,7 +53,12 @@ const parseEquipments = (equipments) => {
 
 <template>
   <p class="text-[#439546] text-12 font-semibold mr-2">
-    Làm mới: {{ timeOffset(boss.startHours).hours }}h {{ timeOffset(boss.startHours).minutes }}phút
+    <span v-if="!boss.isStart">
+      Boss hồi sinh sau: {{ timeOffset(startTime).hours }}h {{ timeOffset(startTime).minutes }}phút
+    </span>
+    <span v-else>
+      Boss kết thúc sau: {{ timeOffset(endTime).hours }}h {{ timeOffset(endTime).minutes }}phút
+    </span>
   </p>
   <section class="w-[90%] h-[80px] bg-[#a0aac0cf] rounded flex justify-between">
     <div class="flex flex-col items-center justify-center">

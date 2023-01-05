@@ -21,6 +21,7 @@ import 'ohash';
 import 'unstorage';
 import 'radix3';
 import 'mongoose';
+import 'node-cron';
 import 'socket.io';
 import 'moment';
 import 'node:fs';
@@ -414,7 +415,7 @@ function defineNuxtLink(options) {
     }
   });
 }
-const __nuxt_component_0 = defineNuxtLink({ componentName: "NuxtLink" });
+const __nuxt_component_0$1 = defineNuxtLink({ componentName: "NuxtLink" });
 function isObject(value) {
   return value !== null && typeof value === "object";
 }
@@ -814,7 +815,7 @@ const node_modules__64pinia_nuxt_dist_runtime_plugin_vue3_mjs_A0OWXRrUgq = defin
 const components = {
   Icon: defineAsyncComponent(() => import(
     /* webpackChunkName: "components/icon" */
-    './_nuxt/Icon.323b2cb5.mjs'
+    './_nuxt/Icon.0acb4d43.mjs'
   ).then((c) => c.default || c))
 };
 const _nuxt_components_plugin_mjs_KR1HBZs4kY = defineNuxtPlugin((nuxtApp) => {
@@ -942,7 +943,7 @@ const _routes = [
     meta: __nuxt_page_meta$6,
     alias: (__nuxt_page_meta$6 == null ? void 0 : __nuxt_page_meta$6.alias) || [],
     redirect: (__nuxt_page_meta$6 == null ? void 0 : __nuxt_page_meta$6.redirect) || void 0,
-    component: () => import('./_nuxt/_boss_.bc476887.mjs').then((m) => m.default || m)
+    component: () => import('./_nuxt/_boss_.18fadbd8.mjs').then((n) => n.a).then((m) => m.default || m)
   },
   {
     name: (_c = __nuxt_page_meta$5 == null ? void 0 : __nuxt_page_meta$5.name) != null ? _c : "battle",
@@ -952,7 +953,7 @@ const _routes = [
     meta: __nuxt_page_meta$5,
     alias: (__nuxt_page_meta$5 == null ? void 0 : __nuxt_page_meta$5.alias) || [],
     redirect: (__nuxt_page_meta$5 == null ? void 0 : __nuxt_page_meta$5.redirect) || void 0,
-    component: () => import('./_nuxt/index.f1519a6d.mjs').then((m) => m.default || m)
+    component: () => import('./_nuxt/index.b3a73007.mjs').then((m) => m.default || m)
   },
   {
     name: (_e = __nuxt_page_meta$4 == null ? void 0 : __nuxt_page_meta$4.name) != null ? _e : "index",
@@ -962,7 +963,7 @@ const _routes = [
     meta: __nuxt_page_meta$4,
     alias: (__nuxt_page_meta$4 == null ? void 0 : __nuxt_page_meta$4.alias) || [],
     redirect: (__nuxt_page_meta$4 == null ? void 0 : __nuxt_page_meta$4.redirect) || void 0,
-    component: () => import('./_nuxt/index.8c7e6ad8.mjs').then((m) => m.default || m)
+    component: () => import('./_nuxt/index.5e160408.mjs').then((n) => n.i).then((m) => m.default || m)
   },
   {
     name: (_g = __nuxt_page_meta$3 == null ? void 0 : __nuxt_page_meta$3.name) != null ? _g : "login",
@@ -972,7 +973,7 @@ const _routes = [
     meta: __nuxt_page_meta$3,
     alias: (__nuxt_page_meta$3 == null ? void 0 : __nuxt_page_meta$3.alias) || [],
     redirect: (__nuxt_page_meta$3 == null ? void 0 : __nuxt_page_meta$3.redirect) || void 0,
-    component: () => import('./_nuxt/login.899e5fbf.mjs').then((m) => m.default || m)
+    component: () => import('./_nuxt/login.ad525b44.mjs').then((m) => m.default || m)
   },
   {
     name: (_i = __nuxt_page_meta$2 == null ? void 0 : __nuxt_page_meta$2.name) != null ? _i : "logout",
@@ -982,7 +983,7 @@ const _routes = [
     meta: __nuxt_page_meta$2,
     alias: (__nuxt_page_meta$2 == null ? void 0 : __nuxt_page_meta$2.alias) || [],
     redirect: (__nuxt_page_meta$2 == null ? void 0 : __nuxt_page_meta$2.redirect) || void 0,
-    component: () => import('./_nuxt/logout.9b4b8cf1.mjs').then((m) => m.default || m)
+    component: () => import('./_nuxt/logout.85132934.mjs').then((m) => m.default || m)
   },
   {
     name: (_k = __nuxt_page_meta$1 == null ? void 0 : __nuxt_page_meta$1.name) != null ? _k : "register",
@@ -992,7 +993,7 @@ const _routes = [
     meta: __nuxt_page_meta$1,
     alias: (__nuxt_page_meta$1 == null ? void 0 : __nuxt_page_meta$1.alias) || [],
     redirect: (__nuxt_page_meta$1 == null ? void 0 : __nuxt_page_meta$1.redirect) || void 0,
-    component: () => import('./_nuxt/register.3c27a314.mjs').then((m) => m.default || m)
+    component: () => import('./_nuxt/register.9a9edc0b.mjs').then((m) => m.default || m)
   },
   {
     name: (_m = __nuxt_page_meta == null ? void 0 : __nuxt_page_meta.name) != null ? _m : "role",
@@ -1002,7 +1003,7 @@ const _routes = [
     meta: __nuxt_page_meta,
     alias: (__nuxt_page_meta == null ? void 0 : __nuxt_page_meta.alias) || [],
     redirect: (__nuxt_page_meta == null ? void 0 : __nuxt_page_meta.redirect) || void 0,
-    component: () => import('./_nuxt/role.c28b5705.mjs').then((m) => m.default || m)
+    component: () => import('./_nuxt/role.8542e437.mjs').then((m) => m.default || m)
   }
 ];
 const routerOptions0 = {
@@ -1077,8 +1078,8 @@ const globalMiddleware = [
   validate
 ];
 const namedMiddleware = {
-  game: () => import('./_nuxt/game.f885e014.mjs'),
-  role: () => import('./_nuxt/role.324bd2c6.mjs')
+  game: () => import('./_nuxt/game.9c970266.mjs'),
+  role: () => import('./_nuxt/role.a926736e.mjs')
 };
 const node_modules_nuxt_dist_pages_runtime_router_mjs_qNv5Ky2ZmB = defineNuxtPlugin(async (nuxtApp) => {
   var _a2, _b2, _c2, _d2;
@@ -1965,8 +1966,8 @@ const _wrapIf = (component, props, slots) => {
   return { default: () => props ? h(component, props === true ? {} : props, slots) : h(Fragment, {}, slots) };
 };
 const layouts = {
-  auth: () => import('./_nuxt/auth.985a698c.mjs').then((m) => m.default || m),
-  default: () => import('./_nuxt/default.caf1c574.mjs').then((m) => m.default || m)
+  auth: () => import('./_nuxt/auth.ddce482e.mjs').then((m) => m.default || m),
+  default: () => import('./_nuxt/default.2894ae5f.mjs').then((m) => m.default || m)
 };
 const LayoutLoader = defineComponent({
   props: {
@@ -1980,7 +1981,7 @@ const LayoutLoader = defineComponent({
     };
   }
 });
-const __nuxt_component_1$1 = defineComponent({
+const __nuxt_component_1 = defineComponent({
   props: {
     name: {
       type: [String, Boolean, Object],
@@ -2079,7 +2080,7 @@ const imgProps = {
   ...baseImageProps,
   placeholder: { type: [Boolean, String, Number, Array], default: void 0 }
 };
-const __nuxt_component_1 = defineComponent({
+const __nuxt_component_0 = defineComponent({
   name: "NuxtImg",
   props: imgProps,
   setup: (props, ctx) => {
@@ -2159,7 +2160,7 @@ const _export_sfc = (sfc, props) => {
 };
 const _sfc_main$2 = {};
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
-  const _component_NuxtImg = __nuxt_component_1;
+  const _component_NuxtImg = __nuxt_component_0;
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "fixed w-full h-full left-0 top-0 bg-[#ffffff57] flex items-center justify-center z-99" }, _attrs))}>`);
   _push(ssrRenderComponent(_component_NuxtImg, {
     class: "w-[120px] h-[70px]",
@@ -2385,7 +2386,7 @@ const _sfc_main$1 = {
     ref("");
     return (_ctx, _push, _parent, _attrs) => {
       const _component_Body = Body;
-      const _component_NuxtLayout = __nuxt_component_1$1;
+      const _component_NuxtLayout = __nuxt_component_1;
       const _component_LoadingScreen = __nuxt_component_2;
       const _component_PageLoadingIndicator = __nuxt_component_3;
       const _component_NuxtPage = __nuxt_component_4;
@@ -2457,7 +2458,7 @@ const _sfc_main = {
   __name: "nuxt-root",
   __ssrInlineRender: true,
   setup(__props) {
-    const ErrorComponent = defineAsyncComponent(() => import('./_nuxt/error-component.4c79ce95.mjs').then((r) => r.default || r));
+    const ErrorComponent = defineAsyncComponent(() => import('./_nuxt/error-component.2c5331c6.mjs').then((r) => r.default || r));
     const nuxtApp = useNuxtApp();
     nuxtApp.deferHydration();
     provide("_route", useRoute());
@@ -2512,5 +2513,5 @@ const plugins = normalizePlugins(_plugins);
 }
 const entry$1 = (ctx) => entry(ctx);
 
-export { __appConfig as _, useState as a, _export_sfc as b, __nuxt_component_1 as c, useRoute as d, entry$1 as default, __nuxt_component_2 as e, defineStore as f, useRequestHeaders as g, createError as h, useAppStore as i, __nuxt_component_0 as j, useSession as k, defineNuxtRouteMiddleware as l, useHead as m, navigateTo$1 as n, storeToRefs as s, useNuxtApp as u };
+export { __appConfig as _, useState as a, _export_sfc as b, __nuxt_component_0 as c, useRoute as d, entry$1 as default, __nuxt_component_2 as e, defineStore as f, useRequestHeaders as g, createError as h, useAppStore as i, __nuxt_component_0$1 as j, useSession as k, defineNuxtRouteMiddleware as l, useHead as m, navigateTo$1 as n, storeToRefs as s, useNuxtApp as u };
 //# sourceMappingURL=server.mjs.map

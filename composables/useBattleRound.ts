@@ -10,6 +10,10 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   const playerEffect = ref('')
 
   const battleRounds: any = ref([])
+  const rankDMG = ref<{
+    _id: string
+    totalDamage: number
+  }[]>([])
   const inRefresh = ref(false)
 
   const refreshTime = ref(0)
@@ -75,6 +79,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     set(loading, false)
     set(battleRounds, [])
     set(reward, null)
+    set(rankDMG, war.rankDMG)
 
     if (!war)
       return
@@ -165,6 +170,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     playerEffect,
     battleRounds,
     battleResult,
+    rankDMG,
   }
 })
 

@@ -9,5 +9,7 @@ export * from './user'
 export * from './playerEquipUpgrade'
 export * from './item'
 export * from './playerItem'
-export * from './equiment'
+export * from './equipment'
+export * from './bossRank'
+export * from './auction'
 

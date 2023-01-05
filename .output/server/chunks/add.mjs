@@ -17,6 +17,7 @@ import 'ufo';
 import 'unstorage';
 import 'radix3';
 import 'mongoose';
+import 'node-cron';
 import 'socket.io';
 import 'moment';
 import 'node:fs';

@@ -14,11 +14,13 @@
     "@nuxt/image-edge": "^1.0.0-27840416.dc1ed65",
     "@pinia/nuxt": "^0.4.3",
     "@sidebase/nuxt-auth": "^0.3.2",
+    "@types/node-cron": "^3.0.7",
     "@vueuse/core": "^9.9.0",
     "@vueuse/nuxt": "^9.5.0",
     "eslint": "^8.27.0",
     "moment": "^2.29.4",
     "mongoose": "^6.8.1",
+    "node-cron": "^3.0.2",
     "nuxt": "^3.0.0",
     "nuxt-full-static": "^0.2.1",
     "nuxt-icon": "^0.1.8",
@@ -28,7 +30,7 @@
     "socket.io": "^4.5.4",
     "socket.io-client": "^4.5.4",
     "typescript": "^4.9.3",
-    "vue-marquee-text-component": "^2.0.1",
-    "vexip-ui": "^2.0.19"
+    "vexip-ui": "^2.0.19",
+    "vue-marquee-text-component": "^2.0.1"
   }
 }

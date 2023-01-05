@@ -1,1 +1,0 @@
-import{a9 as o,aa as i,P as u,D as d}from"./entry.e04b7afd.js";import{u as l}from"./usePlayer.703c932a.js";const p=o(async()=>{var s;let e,t;const{loadPlayer:r}=l(),a=([e,t]=i(()=>$fetch("/api/player",{headers:u()})),e=await e,t(),e);if((s=a==null?void 0:a.player)!=null&&s.sid)return r(a),d("/")});export{p as default};

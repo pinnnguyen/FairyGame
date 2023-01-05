@@ -45,6 +45,7 @@ export interface BattleResponse extends BattleInRefresh {
     base: BaseReward
     equipments?: PlayerEquipment[]
   }
+  rankDMG: any
 }
 
 export interface BattleInRefresh {

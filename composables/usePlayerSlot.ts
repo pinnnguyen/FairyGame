@@ -4,6 +4,7 @@ import { usePlayerStore } from '~/composables/usePlayer'
 export const usePlayerSlot = defineStore('playerSlot', () => {
   const { playerEquipUpgrade, attribute, equipments } = storeToRefs(usePlayerStore())
 
+  console.log('equipments', equipments.value)
   const slot1 = computed(() => equipments.value.find((e: { _id: string }) => e._id === attribute.value?.slot_1))
   const slot2 = computed(() => equipments.value.find((e: { _id: string }) => e._id === attribute.value?.slot_2))
 

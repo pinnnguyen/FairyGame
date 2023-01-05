@@ -61,7 +61,7 @@ const close = (key: string) => {
     <Upgrade v-if="toggle.upgrade" @close="close('upgrade')" />
     <Bag v-if="toggle.bag" @close="close('bag')" />
     <div class="flex justify-around w-full absolute top-[10px] pl-1 text-white">
-     <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
+      <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
         <NuxtImg class="w-[50px]" src="/index/info.png" @click.stop="playerInfoComponent = true" />
         <span class="text-black whitespace-nowrap text-12">Nhân vật</span>
       </div>
@@ -86,7 +86,7 @@ const close = (key: string) => {
         </div>
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
-          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Phi thăng</span>
+          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Đấu giá</span>
         </div>
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
@@ -94,7 +94,7 @@ const close = (key: string) => {
         </div>
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
-          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Thành tích</span>
+          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Chợ</span>
         </div>
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />

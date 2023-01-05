@@ -1,4 +1,4 @@
-import type { PlayerAttribute } from './../types/player'
+import { BossSchema } from '~/server/schema'
 import type { EnemyObject, PlayerAttribute, PlayerInfo } from '~/types'
 import { BATTLE_ACTION, WINNER } from '~/constants/war'
 import type { BaseProperties, BattleResponse, Emulator } from '~/types/war'

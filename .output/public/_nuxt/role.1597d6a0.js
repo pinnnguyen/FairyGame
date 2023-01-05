@@ -1,0 +1,1 @@
+import{a9 as s,aa as c,Q as i,H as l}from"./entry.e4ed885a.js";import{u as n}from"./usePlayer.c8e019ab.js";const p=s(async()=>{var t;let a,r;const{loadPlayer:o}=n();try{const e=([a,r]=c(()=>$fetch("/api/player",{headers:i(["cookie"])})),a=await a,r(),a);if((t=e==null?void 0:e.player)!=null&&t.sid)return o(e),l("/")}catch(e){console.error(e)}});export{p as default};

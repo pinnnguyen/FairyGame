@@ -6,6 +6,7 @@ const target = ref(null)
 onClickOutside(target, event => emits('close'))
 
 const currentTab = ref('daily')
+const equipShow = ref(false)
 
 const { data: dataResponse, refresh } = await useAsyncData('boss', () => $fetch('/api/boss', {
   params: {
