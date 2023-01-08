@@ -11,6 +11,7 @@ export interface ServerToClientEvents {
 export interface ClientToServerEvents {
   'boss-daily:join': (_channel: string, sid: string) => void
   'equip:upgrade:start': (_channel: string) => void
+  'auction': (auctionId: string) => void
   'equip:upgrade:preview': (_equipId?: string) => void
   'equip:upgrade:leave': () => void
   'battle:join': (_channel: string, request: BattleRequest) => void

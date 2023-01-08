@@ -1,22 +1,17 @@
 import { createServer } from 'http'
 import { Server } from 'socket.io'
-import moment from 'moment'
-import { BATTLE_KIND } from '~/constants'
+import { getServerSession } from '#auth'
 import { handleWars } from '~/server/api/war/index.post'
 import { needResourceUpgrade } from '~/server/helpers'
 import type { BattleRequest } from '~/types/war'
 import type { ClientToServerEvents, ServerToClientEvents } from '~/types/socket'
 import {
-  BattleSchema,
-  BossSchema,
-  EquipmentSchema,
+  AuctionItemSchema,
   PlayerEquipUpgradeSchema,
   PlayerEquipmentSchema,
   PlayerItemSchema,
   PlayerSchema,
 } from '~/server/schema'
-
-const httpServer = createServer()
 
 const battleJoinHandler = async (params: {
   io: any
@@ -38,48 +33,9 @@ const battleJoinHandler = async (params: {
   })
 }
 
-// const bossDailyJoinHandler = async (params: {
-//   io: any
-//   socket: any
-//   request: { _channel: string; sid: string }
-// }) => {
-//   params.socket.join(params.request._channel)
-//   const today = moment().startOf('day')
-//   const bossDaily = await BossSchema.find({ kind: 'daily' }).select('id name level reward avatar numberOfTurn')
-
-//   for (let i = 0; i < bossDaily.length; i++) {
-//     const equipIds = bossDaily[i].reward.equipRates.map((i: { id: number }) => i.id)
-//     const numberOfBattle = await BattleSchema.find({
-//       sid: params.request.sid,
-//       kind: BATTLE_KIND.BOSS_DAILY,
-//       targetId: bossDaily[i].id,
-//       createdAt: {
-//         $gte: moment().startOf('day'),
-//         $lte: moment(today).endOf('day').toDate(),
-//       },
-//     }).count()
-
-//     bossDaily[i].numberOfTurn -= numberOfBattle
-//     bossDaily[i].reward.equipments = await EquipmentSchema.find({
-//       id: {
-//         $in: equipIds,
-//       },
-//     })
-//   }
-
-//   params.io.to(params.request._channel).emit('boss-daily:start', {
-//     inRefresh: false,
-//     refreshTime: '',
-//     bossDaily,
-//   })
-
-//   params.socket.on('channel:leave', () => {
-//     params.socket.leave(params._channel)
-//     // params.io.socket.socketsLeave([params.request._channel])
-//   })
-// }
-
 export default function () {
+  const section = await getServerSession()
+  const httpServer = createServer()
   const config = useRuntimeConfig()
 
   const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
@@ -104,6 +60,13 @@ export default function () {
     //   }
     // })string
 
+    socket.on('auction', async (params: any) => {
+      console.log('params._auctionItemId', params._auctionItemId)
+      const auctionItem = await AuctionItemSchema.findById(params._auctionItemId)
+      console.log('auctionItem', auctionItem)
+      // console.log('section', section)
+    })
+
     socket.on('battle:join', async (_channel: string, request: BattleRequest) => {
       console.log('_channel', _channel)
       await battleJoinHandler({
@@ -113,17 +76,6 @@ export default function () {
         request,
       })
     })
-
-    // socket.on('boss-daily:join', async (_channel, sid) => {
-    //   await bossDailyJoinHandler({
-    //     io,
-    //     socket,
-    //     request: {
-    //       _channel,
-    //       sid,
-    //     },
-    //   })
-    // })
 
     socket.on('equip:upgrade:start', (_channel) => {
       socket.join(_channel)

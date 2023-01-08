@@ -7,6 +7,7 @@ import { sendMessage } from '~/composables/useMessage'
 const { playerInfoComponent } = storeToRefs(useAppStore())
 const { playerInfo } = storeToRefs(usePlayerStore())
 
+const toggleAuction = useState('toggleAuction')
 const toggle = reactive<Record<string, boolean>>({
   bag: false,
   tienDe: false,
@@ -84,7 +85,7 @@ const close = (key: string) => {
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
           <span class="whitespace-nowrap text-12 text-black/70 mt-1">Công pháp</span>
         </div>
-        <div class="flex items-center jsutify-center flex-col">
+        <div class="flex items-center jsutify-center flex-col" @click="toggleAuction = true">
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
           <span class="whitespace-nowrap text-12 text-black/70 mt-1">Đấu giá</span>
         </div>

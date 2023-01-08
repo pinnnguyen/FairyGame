@@ -80,6 +80,7 @@ export default defineConfig({
       12: '12px',
     },
     backgroundImage: {
+      bg_aution: 'url("/common/bg-aution.png")',
       bg_bottom: 'url("/index/bg_bottom.png")',
       bg_index: 'url("/index/bg.png")',
       bg_5: 'url("/common/bg_5.jpg")',

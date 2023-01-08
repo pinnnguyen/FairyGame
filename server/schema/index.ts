@@ -12,4 +12,5 @@ export * from './playerItem'
 export * from './equipment'
 export * from './bossRank'
 export * from './auction'
+export * from './auctionItem'
 

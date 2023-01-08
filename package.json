@@ -17,6 +17,7 @@
     "@types/node-cron": "^3.0.7",
     "@vueuse/core": "^9.9.0",
     "@vueuse/nuxt": "^9.5.0",
+    "@vueuse/sound": "^2.0.0",
     "eslint": "^8.27.0",
     "moment": "^2.29.4",
     "mongoose": "^6.8.1",

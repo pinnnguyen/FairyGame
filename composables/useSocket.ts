@@ -3,8 +3,9 @@ import { io } from 'socket.io-client'
 import type { ClientToServerEvents, ServerToClientEvents } from '~/types/socket'
 
 const socketClient = () => {
-  // const config = useRuntimeConfig()
-  const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('http://103.82.22.99:3005', {
+  const config = useRuntimeConfig()
+  console.log('config', config)
+  const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('http://localhost:3005', {
     withCredentials: true,
   })
 

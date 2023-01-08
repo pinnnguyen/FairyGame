@@ -12,10 +12,10 @@ const schema = new mongoose.Schema<Auction>(
     },
     name: String,
     info: String,
-    kind: String,
-    auctionItems: [],
+    kind: Number,
     startTime: Number,
     endTime: Number,
+    open: Boolean,
   },
   { timestamps: true },
 )
