@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   nitro: {
     plugins: [
       '~/server/index.ts',
-      '~/server/plugins/socket',
+      // '~/server/plugins/socket',
     ],
   },
   runtimeConfig: {

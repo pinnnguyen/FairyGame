@@ -1,12 +1,10 @@
 <script setup lang='ts'>
-import { useSocket } from '#imports'
-
 definePageMeta({
   middleware: ['role'],
   layout: 'auth',
 })
 
-const { _socket } = useSocket()
+const { $io } = useNuxtApp()
 const name = ref('')
 const classList = [
   {
@@ -64,11 +62,10 @@ const handleCreateFigure = async () => {
     },
   })
 
-  _socket.emit('send-notify', `Chào mừng người chơi ${role.player.name} bước vào tu tiên giới`)
+  $io.emit('send-notify', `Chào mừng người chơi ${role.player.name} bước vào tu tiên giới`)
   loadPlayer(role)
   navigateTo('/')
 }
-
 </script>
 
 <template>

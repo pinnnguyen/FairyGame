@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { sendMessage, usePlayerSlot, usePlayerStore, useSocket } from '#imports'
+import { sendMessage, usePlayerSlot, usePlayerStore } from '#imports'
 import type { PlayerEquipment } from '~/types'
 
 const emits = defineEmits(['close'])
-const { _socket } = useSocket()
+const { $io } = useNuxtApp()
 const { playerInfo, attribute, equipments } = storeToRefs(usePlayerStore())
 const { slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8 } = storeToRefs(usePlayerSlot())
 
@@ -16,13 +16,14 @@ const needResource = ref()
 const loading = ref(false)
 
 onMounted(() => {
-  _socket.emit('equip:upgrade:start', `equip:upgrade:${playerInfo.value?.sid}`)
-  _socket.on('equip:preview:response', (require) => {
+  $io.emit('equip:upgrade:start', `equip:upgrade:${playerInfo.value?.sid}`)
+  $io.on('equip:preview:response', (require) => {
     needResource.value = require
   })
 
-  _socket.on('equip:upgrade:response', async (require: any) => {
+  $io.on('equip:upgrade:response', async (require: any) => {
     await getPlayer()
+    console.log('require', require)
     needResource.value = require
     loading.value = false
     sendMessage('Cường hoá thành công')
@@ -30,12 +31,12 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  _socket.emit('equip:upgrade:leave')
+  $io.emit('equip:upgrade:leave')
 })
 
 watch(equipSelected, (equip: Partial<PlayerEquipment>) => {
   console.log('equip', equip)
-  _socket.emit('equip:upgrade:preview', equip._id)
+  $io.emit('equip:upgrade:preview', equip._id)
 })
 
 const upgrade = () => {
@@ -61,7 +62,7 @@ const upgrade = () => {
     return
   }
 
-  _socket.emit('equip:upgrade', 'upgrade', equipSelected.value?._id)
+  $io.emit('equip:upgrade', 'upgrade', equipSelected.value?._id)
 }
 
 const goToHome = () => {
@@ -81,7 +82,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot1?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot1.rank" :preview="slot1?.preview" @click.stop="equipSelected = slot1">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(1).upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(1)?.upgradeLevel }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px]" />
@@ -90,7 +91,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot2?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot2.rank" :preview="slot2?.preview" @click.stop="equipSelected = slot2">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(2).upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(2)?.upgradeLevel }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px]" />
@@ -99,7 +100,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot3?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot3.rank" :preview="slot3?.preview" @click.stop="equipSelected = slot3">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(3).upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(3)?.upgradeLevel }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px]" />
@@ -107,7 +108,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot4?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot4.rank" :preview="slot4?.preview" @click.stop="equipSelected = slot4">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(4).upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(4)?.upgradeLevel }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px]" />
@@ -118,7 +119,7 @@ const goToHome = () => {
             <div class="absolute  mb-2 top-[73px]">
               <ItemRank v-if="equipSelected.preview" class="relative" :quantity="0" :rank="equipSelected.rank" :preview="equipSelected.preview">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[45px] flex justify-center">
-                  {{ getSlotEquipUpgrade(equipSelected.slot).upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(equipSelected.slot)?.upgradeLevel }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[44px] h-[44px]" />
@@ -128,7 +129,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot5?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot5.rank" :preview="slot5?.preview" @click.stop="equipSelected = slot5">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(5).upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(5)?.upgradeLevel }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px]" />
@@ -136,7 +137,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot6?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot6.rank" :preview="slot6?.preview" @click.stop="equipSelected = slot6">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(6).upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(6)?.upgradeLevel }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px]" />
@@ -144,7 +145,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot7?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot7.rank" :preview="slot7?.preview" @click.stop="equipSelected = slot7">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(7).upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(7)?.upgradeLevel }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px]" />
@@ -152,7 +153,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot8?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot8.rank" :preview="slot8?.preview" @click.stop="equipSelected = slot8">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(8).upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(8)?.upgradeLevel }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px]" />

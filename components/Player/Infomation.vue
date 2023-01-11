@@ -25,8 +25,8 @@ const tabs = ref([
 </script>
 
 <template>
-  <Blocker class="duration-500 transition-colors transition-opacity z-99">
-    <div ref="target" class="bg-black/70 text-white w-full h-[70%]">
+  <Blocker class="duration-500 transition-colors transition-opacity z-999">
+    <div ref="target" class="bg-black/80 text-white w-full h-[80%]">
       <div class="h-full">
         <div class="flex items-center justify-center w-full">
           <div
@@ -39,7 +39,7 @@ const tabs = ref([
           </div>
         </div>
         <div
-          class="m-3 rounded-md pt-2 text-12 font-semibold h-[calc(100%_-_60px)]"
+          class="m-1 rounded-md pt-2 text-12 font-semibold h-[calc(100%_-_60px)]"
         >
           <PlayerAttributeTab v-if="currentTab === 'attribute'" />
           <PlayerEquipTab v-if="currentTab === 'equipment'" />

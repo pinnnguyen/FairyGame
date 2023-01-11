@@ -23,6 +23,7 @@ specifiers:
   typescript: ^4.9.3
   vexip-ui: ^2.0.19
   vue-marquee-text-component: ^2.0.1
+  ws: ^8.12.0
 
 devDependencies:
   '@antfu/eslint-config': 0.34.0_iukboom6ndih5an6iafl45j2fe
@@ -47,6 +48,7 @@ devDependencies:
   typescript: 4.9.4
   vexip-ui: 2.0.20
   vue-marquee-text-component: 2.0.1
+  ws: 8.12.0
 
 packages:
 

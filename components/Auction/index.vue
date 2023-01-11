@@ -3,14 +3,14 @@ import { onClickOutside } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { startTimeEvent, timeOffset } from '~/common'
 import type { AuctionItem } from '~/types'
-import { sendMessage, usePlayerStore, useSocket } from '#imports'
+import { sendMessage, usePlayerStore } from '#imports'
 
 const emits = defineEmits(['close'])
 const { sid } = storeToRefs(usePlayerStore())
 
 const now = new Date().getTime()
+const { $io } = useNuxtApp()
 
-const { _socket } = useSocket()
 const { data: auction } = await useFetch('/api/auction')
 
 const target = ref(null)
@@ -25,7 +25,7 @@ onMounted(() => {
   setInterval(() => {
     endTime.value -= 1
   }, 1000)
-  _socket.on('auction-response', (response: any) => {
+  $io.on('auction-response', (response: any) => {
     sendMessage(response.statusMessage)
 
     if (response.auctionItem) {
@@ -38,7 +38,7 @@ onMounted(() => {
 })
 
 const doAuction = (auctionItem: AuctionItem) => {
-  _socket.emit('auction', {
+  $io.emit('auction', {
     _auctionItemId: auctionItem._id,
     sid: sid.value,
   })

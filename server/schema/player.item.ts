@@ -17,6 +17,8 @@ const schema = new mongoose.Schema<Item>(
     sum: Number,
     kind: Number,
     itemId: Number,
+    preview: String,
+    rank: Number,
   },
   { timestamps: true },
 )
@@ -31,6 +33,7 @@ export const addPlayerItem = async (sid: string, quantity: number, itemId: numbe
   const playerItem = await PlayerItemSchema.findOne({
     kind: 2,
     itemId,
+    sid,
   })
 
   if (!playerItem) {
@@ -41,10 +44,12 @@ export const addPlayerItem = async (sid: string, quantity: number, itemId: numbe
       sum: quantity,
       kind: 2,
       itemId,
+      preview: item.preview,
+      rank: item.rank,
     }).save()
   }
 
-  return PlayerItemSchema.updateOne({ itemId }, {
+  return PlayerItemSchema.updateOne({ sid, itemId }, {
     $inc: {
       sum: quantity,
     },

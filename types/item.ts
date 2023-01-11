@@ -6,4 +6,6 @@ export interface Item {
   sum?: number
   kind?: number
   itemId?: number
+  rank: number
+  preview: string
 }

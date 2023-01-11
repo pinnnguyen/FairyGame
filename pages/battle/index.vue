@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { sendMessage, useBattleRoundStore, usePlayerStore, useSocket } from '#imports'
+import { sendMessage, useBattleRoundStore, usePlayerStore } from '#imports'
 import { BATTLE_KIND, BATTLE_TURN, TARGET_TYPE } from '~/constants'
 import type { BattleResponse } from '~/types'
 
@@ -20,7 +20,7 @@ const {
 const { startBattle } = useBattleRoundStore()
 const { playerInfo } = storeToRefs(usePlayerStore())
 const { loadPlayer } = usePlayerStore()
-const { _socket } = useSocket()
+const { $io } = useNuxtApp()
 
 const showPlayerInfo = ref(false)
 const showEnemyInfo = ref(false)
@@ -31,7 +31,7 @@ definePageMeta({
 
 onMounted(() => {
   console.log('battle mounted')
-  _socket.emit('battle:join', `${playerInfo.value?._id}-battle-pve`, {
+  $io.emit('battle:join', `${playerInfo.value?._id}-battle-pve`, {
     kind: BATTLE_KIND.PVE,
     player: {
       userId: playerInfo.value?.userId,
@@ -42,13 +42,13 @@ onMounted(() => {
     },
   })
 
-  _socket.on('battle:start', async (war: BattleResponse) => {
+  $io.on('battle:start', async (war: BattleResponse) => {
     await startBattle(war)
   })
 })
 
 const refreshFinished = () => {
-  _socket.emit('battle:refresh')
+  $io.emit('battle:refresh')
 }
 
 const nextMid = async () => {

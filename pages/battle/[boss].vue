@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useBattleRoundStore, usePlayerStore, useSocket } from '#imports'
+import { useBattleRoundStore, usePlayerStore } from '#imports'
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import type { BattleResponse } from '~/types'
 import { formatCash } from '~/common'
@@ -20,7 +20,7 @@ const {
 } = storeToRefs(useBattleRoundStore())
 
 const { playerInfo } = storeToRefs(usePlayerStore())
-const { _socket } = useSocket()
+const { $io } = useNuxtApp()
 const route = useRoute()
 
 definePageMeta({
@@ -36,7 +36,7 @@ const showPlayerInfo = ref(false)
 const showEnemyInfo = ref(false)
 
 onMounted(() => {
-  _socket.emit('battle:join', `${playerInfo.value?._id}-battle-boss-daily`, {
+  $io.emit('battle:join', `${playerInfo.value?._id}-battle-boss-daily`, {
     kind: hasBossDaily.value ? BATTLE_KIND.BOSS_DAILY : BATTLE_KIND.BOSS_FRAME_TIME,
     player: {
       userId: playerInfo.value?.userId,
@@ -47,7 +47,7 @@ onMounted(() => {
     },
   })
 
-  _socket.on('battle:start', async (war: BattleResponse) => {
+  $io.on('battle:start', async (war: BattleResponse) => {
     console.log('war', war)
     await startBattle(war)
   })
@@ -55,7 +55,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   console.log('battle:leave')
-  _socket.emit('battle:leave')
+  $io.emit('battle:leave')
 })
 
 // const refreshFinished = () => {
@@ -70,12 +70,12 @@ const doCloseBattleR = () => {
 const retry = () => {
   console.log('retry')
   battleResult.value.show = false
-  _socket.emit('battle:refresh')
+  $io.emit('battle:refresh')
 }
 
 const refreshFinished = () => {
   console.log('refreshFinished')
-  _socket.emit('battle:refresh')
+  $io.emit('battle:refresh')
 }
 </script>
 

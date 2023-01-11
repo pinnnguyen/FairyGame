@@ -50,20 +50,20 @@ const close = () => {
       </div>
     </div>
     <div class="flex justify-between">
-      <div class="w-[45%]">
-        <div class="bg-[#2d251d] rounded h-[35px] leading-[35px] text-center">
+      <div class="w-[48%]">
+        <div class="bg-[#2d251d] rounded h-[35px] leading-[35px] text-center text-10">
           {{ playerInfo.levelTitle }} {{ playerInfo.floor }}
         </div>
       </div>
-      <div class="w-[45%]">
-        <div class="bg-[#2d251d] rounded h-[35px] leading-[35px] text-center flex items-center justify-center">
+      <div class="w-[48%]">
+        <div class="bg-[#2d251d] rounded h-[35px] leading-[35px] text-center flex items-center justify-center text-10">
           <img class="w-[22px] pb-[2px] pr-[2px]" src="/items/3_s.png" alt=""> {{ upgrade?.condition?.needGold }} / {{ playerInfo.gold }}
         </div>
       </div>
     </div>
     <div class="mt-4" />
     <div class="text-center">
-      <div class="bg-[#2d251d] rounded flex justify-between p-4 leading-6">
+      <div class="bg-[#2d251d] rounded flex justify-between p-4 leading-6 text-10">
         <div class="flex flex-col items-start">
           <template v-if="playerAfter">
             <span>
@@ -102,11 +102,13 @@ const close = () => {
           </template>
         </div>
       </div>
-      <ButtonConfirm class-name=" m-auto" :loading="loading" @click.stop="doUpgrade">
-        <span class="z-9">
-          Đột phá
-        </span>
-      </ButtonConfirm>
+      <div class="mt-2">
+        <ButtonConfirm class-name="m-auto" :loading="loading" @click.stop="doUpgrade">
+          <span class="z-9">
+            Đột phá
+          </span>
+        </ButtonConfirm>
+      </div>
     </div>
   </div>
 </template>

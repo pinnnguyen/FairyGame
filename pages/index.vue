@@ -4,6 +4,8 @@ import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '~/composables/usePlayer'
 // import { shouldTupo } from '~/server/common'
 
+const { $io } = useNuxtApp()
+
 const { playerInfo } = storeToRefs(usePlayerStore())
 const toggleAuction = useState('toggleAuction')
 const toggleStore = useState('toggleStore')
@@ -21,11 +23,8 @@ definePageMeta({
   auth: false,
 })
 
-const onAttach = async () => {
-  return navigateTo('/battle')
-}
-
 onMounted(async () => {
+  console.log('$io', $io)
   // shouldTupo({
   //   level: playerInfo.value?.level,
   //   floor: playerInfo.value?.floor,

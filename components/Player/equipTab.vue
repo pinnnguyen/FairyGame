@@ -18,8 +18,8 @@ const openDetail = (slot: PlayerEquipment) => {
   <Teleport to="#app-before">
     <PopupEquipDetail v-if="equipShow" :item="equipSelected" @close="equipShow = false" />
   </Teleport>
-  <div class="h-full flex items-end justify-center">
-    <div class="grid grid-cols-4 gap-2 mb-2">
+  <div class="h-full flex items-center justify-center">
+    <div class="grid grid-cols-2 gap-4 mb-2">
       <div class="relative" :class="{ 'bg-iconbg_3 bg-contain bg-no-repeat': slot1?.preview }">
         <NuxtImg v-if="!slot1" format="webp" class="w-[60px] h-[55px]" src="/equipment/vukhi.png" />
         <ItemRank v-else format="webp" class="w-[55px] h-[55px]" :quantity="0" :rank="slot1.rank" :preview="slot1?.preview" @click="openDetail(slot1)" />
