@@ -30,8 +30,6 @@
     "socket.io": "^4.5.4",
     "socket.io-client": "^4.5.4",
     "typescript": "^4.9.3",
-    "vexip-ui": "^2.0.19",
-    "vue-marquee-text-component": "^2.0.1",
-    "ws": "^8.12.0"
+    "vue-marquee-text-component": "^2.0.1"
   }
 }
