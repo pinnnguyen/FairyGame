@@ -1,5 +1,5 @@
 import { h } from 'vue'
-import { Icon, Message } from 'vexip-ui'
+import { Message } from 'vexip-ui'
 
 export const sendMessage = (message: string, duration?: number) => {
   Message.open({
@@ -8,7 +8,7 @@ export const sendMessage = (message: string, duration?: number) => {
     closable: false,
     renderer: () => {
       return h('span', [
-        h(Icon, {
+        h({
           name: 'bell-slash',
           style: {
             marginRight: '5px',

@@ -2,6 +2,7 @@
 import { useAppStore } from '~/composables/app'
 import 'vexip-ui/css/index.css'
 import 'vexip-ui/css/button.css'
+
 const { loading } = useAppStore()
 useHead({
   title: 'Tu Tiên giới',

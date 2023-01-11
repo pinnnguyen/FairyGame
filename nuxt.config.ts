@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   ssr: true,
   auth: {
-    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://103.82.22.99:3000',
+    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tienhoi.vercel.app',
     enableGlobalAppMiddleware: false,
   },
   nitro: {
@@ -13,15 +13,15 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     mongoUrl: process.env.MONGO_URL,
-    socketClientURL: process.env.NODE_ENV === 'development' ? 'http://localhost:3005' : 'http://103.82.22.99:3005',
-    socketIO: {
-      cors: {
-        origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://103.82.22.99:3000',
-        allowedHeaders: ['gl'],
-        credentials: true,
-      },
-      port: 3005,
-    },
+    // socketClientURL: process.env.NODE_ENV === 'development' ? 'http://localhost:3005' : 'http://103.82.22.99:3005',
+    // socketIO: {
+    //   cors: {
+    //     origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://103.82.22.99:3000',
+    //     allowedHeaders: ['gl'],
+    //     credentials: true,
+    //   },
+    //   port: 3005,
+    // },
   },
   modules: [
     '@vueuse/nuxt',
