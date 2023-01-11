@@ -1,21 +1,15 @@
 <script lang="ts" setup>
 import { useIntervalFn } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { useAppStore, usePlayerStore } from '#imports'
-import { sendMessage } from '~/composables/useMessage'
+import { sendMessage, useAppStore, usePlayerStore } from '#imports'
 
 const { playerInfoComponent } = storeToRefs(useAppStore())
 const { playerInfo } = storeToRefs(usePlayerStore())
 
 const toggleAuction = useState('toggleAuction')
-const toggle = reactive<Record<string, boolean>>({
-  bag: false,
-  tienDe: false,
-  figure: false,
-  tienPhap: false,
-  ren: false,
-  tienLinh: false,
-})
+const toggleStore = useState('toggleStore')
+const toggleBag = useState('toggleBag')
+const toggleUpgrade = useState('toggleUpgrade')
 
 const needTimeResource = ref(0)
 const doReFetch = ref(false)
@@ -34,47 +28,43 @@ onMounted(() => {
 
 watch(doReFetch, async (value) => {
   if (value) {
-    const resources = await $fetch('/api/reward/training', {
-      headers: (useRequestHeaders(['cookie']) as any),
-    })
+    try {
+      const resources = await $fetch('/api/reward/training', {
+        headers: (useRequestHeaders(['cookie']) as any),
+      })
 
-    sendMessage(`+${resources.exp} XP`)
-    sendMessage(`+${resources.gold} VÀNG`)
+      sendMessage(`+${resources.exp} XP`)
+      sendMessage(`+${resources.gold} VÀNG`)
 
-    if (playerInfo.value) {
-      playerInfo.value.exp += resources.exp
-      playerInfo.value.gold += resources.gold
+      if (playerInfo.value) {
+        playerInfo.value.exp += resources.exp
+        playerInfo.value.gold += resources.gold
+      }
+    }
+    catch (e: any) {
+      sendMessage(e.statusMessage)
     }
   }
 })
-
-const onToggle = (key: string) => {
-  toggle[key] = true
-}
-
-const close = (key: string) => {
-  toggle[key] = false
-}
 </script>
 
 <template>
-  <div class="h-[calc(100vh_-_230px)] bg-white">
-    <Upgrade v-if="toggle.upgrade" @close="close('upgrade')" />
-    <Bag v-if="toggle.bag" @close="close('bag')" />
+  <div class="h-[calc(100vh_-_230px)]">
+    <NuxtImg class="h-full object-cover" format="webp" src="/index/bg_bottom.png" />
     <div class="flex justify-around w-full absolute top-[10px] pl-1 text-white">
       <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
         <NuxtImg class="w-[50px]" src="/index/info.png" @click.stop="playerInfoComponent = true" />
         <span class="text-black whitespace-nowrap text-12">Nhân vật</span>
       </div>
       <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
-        <NuxtImg class="w-[50px]" src="/index/bag.png" @click.stop="onToggle('bag')" />
+        <NuxtImg class="w-[50px]" src="/index/bag.png" @click.stop="toggleBag = true" />
         <span class="text-black whitespace-nowrap text-12">Túi</span>
       </div>
       <div class="items-center justify-center flex flex-col w-[50px] mb-3">
-        <NuxtImg class="w-[50px]" src="/index/store.png" />
+        <NuxtImg class="w-[50px]" src="/index/store.png" @click.stop="toggleStore = true" />
         <span class="text-black whitespace-nowrap text-12">Cửa hàng</span>
       </div>
-      <NuxtLink to="/battle" class="flex flex-col items-center justify-center w-[50px] mb-3" @click.stop="onToggle('upgrade')">
+      <NuxtLink to="/battle" class="flex flex-col items-center justify-center w-[50px] mb-3">
         <NuxtImg class="w-[50px]" src="/index/dungeo.png" />
         <span class="text-black whitespace-nowrap text-12">Vượt ải</span>
       </NuxtLink>
@@ -93,9 +83,9 @@ const close = (key: string) => {
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
           <span class="whitespace-nowrap text-12 text-black/70 mt-1">Tông môn</span>
         </div>
-        <div class="flex items-center jsutify-center flex-col">
+        <div class="flex items-center jsutify-center flex-col" @click.stop="toggleUpgrade = true">
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />
-          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Chợ</span>
+          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Nâng cấp</span>
         </div>
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond bg-[#4881bf] w-[30px] h-[30px]" />

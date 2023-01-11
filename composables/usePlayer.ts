@@ -18,7 +18,7 @@ export const usePlayerStore = defineStore('player', () => {
     return attribute.value[(`slot_${pos}`)] === _equipId
   }
 
-  const changeEquip = (pos: number, _equipId: string) => {
+  const changeEquip = (pos: number, _equipId?: string) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     return attribute.value[`slot_${pos}`] = _equipId

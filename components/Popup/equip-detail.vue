@@ -23,7 +23,7 @@ onClickOutside(target, event => emits('close'))
       <div class="p-3">
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center justify-center">
-            <ItemRank class="w-[55px] h-[55px]" :preview="item.preview" :rank="item.rank" />
+            <ItemRank class="w-[55px] h-[55px]" :quantity="0" :preview="item.preview" :rank="item.rank" />
           </div>
           <div class="mx-2">
             <div>

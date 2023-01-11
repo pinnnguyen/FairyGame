@@ -64,7 +64,7 @@ const doUnEquip = async () => {
       <div class="p-3">
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center justify-center">
-            <ItemRank class="w-15" :rank="item.rank" :preview="item?.preview" />
+            <ItemRank class="w-15" :quantity="0" :rank="item.rank" :preview="item?.preview" />
           </div>
           <div class="mx-2">
             <div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { sendMessage } from '~~/composables/useMessage'
+import { sendMessage } from '~/composables/useMessage'
 const { signIn } = useSession()
 
 definePageMeta({

@@ -8,7 +8,7 @@ const { playerInfoComponent } = storeToRefs(useAppStore())
 <template>
   <div class="flex flex-col min-h-screen">
     <ClientOnly>
-      <PlayerInfomation :class="{ '!h-[0px] opacity-0': !playerInfoComponent }" />
+      <PlayerInfomation v-if="playerInfoComponent" :class="{ '!h-[0px] opacity-0': !playerInfoComponent }" />
     </ClientOnly>
     <slot name="header">
       <PageNavbar />

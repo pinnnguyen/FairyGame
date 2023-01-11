@@ -6,6 +6,9 @@ import { usePlayerStore } from '~/composables/usePlayer'
 
 const { playerInfo } = storeToRefs(usePlayerStore())
 const toggleAuction = useState('toggleAuction')
+const toggleStore = useState('toggleStore')
+const toggleBag = useState('toggleBag')
+const toggleUpgrade = useState('toggleUpgrade')
 
 // console.log('bg_mu', bg_mu)
 // const activeSound = useSound(bg_mu, {
@@ -34,6 +37,10 @@ onMounted(async () => {
 <template>
   <TheRight />
   <Auction v-if="toggleAuction" @close="toggleAuction = false" />
+  <Store v-if="toggleStore" @close="toggleStore = false" />
+  <Upgrade v-if="toggleUpgrade" @close="toggleUpgrade = false" />
+  <Bag v-if="toggleBag" @close="toggleBag = false" />
+
   <PageSection class="flex-1 flex items-center relative justify-center z-9">
     <div class="w-full absolute top-0">
       <div class="relative">

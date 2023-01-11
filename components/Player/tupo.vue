@@ -1,7 +1,6 @@
 <script setup>
 import { set } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { Button } from 'vexip-ui'
 import { usePlayerStore } from '~/composables/usePlayer'
 import { sendMessage } from '~/composables/useMessage'
 
@@ -103,9 +102,11 @@ const close = () => {
           </template>
         </div>
       </div>
-      <Button :ghost="true" color="orange" class="mt-4" :loading="loading" @click.stop="doUpgrade">
-        Đột phá
-      </Button>
+      <ButtonConfirm class-name=" m-auto" :loading="loading" @click.stop="doUpgrade">
+        <span class="z-9">
+          Đột phá
+        </span>
+      </ButtonConfirm>
     </div>
   </div>
 </template>

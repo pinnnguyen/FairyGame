@@ -5,10 +5,8 @@ import { usePlayerStore } from '~/composables/usePlayer'
 import type { Bag, PlayerEquipment } from '~/types'
 
 const emits = defineEmits(['close'])
-
 const toggleDetail = ref(false)
 const itemSelected = ref<PlayerEquipment>()
-const { hasEquip } = usePlayerStore()
 
 const { data: bagDataResponse } = await useFetch<Bag>('/api/bag', {
   headers: (useRequestHeaders(['cookie']) as any),
@@ -33,30 +31,22 @@ const goToHome = () => {
       <div class="w-full h-full relative">
         <span class="font-semibold absolute w-[40px] left-[calc(50%_-_10px)] top-[-1px] text-[#656f99]">TÚI</span>
         <NuxtImg class="w-full h-full" format="webp" src="/common/bj_tongyong_1.png" />
-        <div class="absolute top-[30px] flex flex-col gap-1 items-center justify-center w-full">
-          <div class="grid grid-cols-5 gap-2 h-[465px] overflow-scroll">
+        <div class="absolute top-[30px] h-[465px] flex flex-col items-center w-full">
+          <div v-if="bagDataResponse.equipments.length > 0" class="grid-cols-5 grid gap-2 overflow-scroll">
             <LazyItemRank
-              v-for="equipment in bagDataResponse.equipments"
-              :key="equipment.id"
-              @click.stop="pickItem(equipment)"
+              v-for="equipment in bagDataResponse.equipments" :key="equipment.id"
               :preview="equipment.preview"
               :rank="equipment.rank"
+              :quantity="0"
               class="w-15"
+              @click.stop="pickItem(equipment)"
             >
-                            <p class="text-10 text-[#7c4ea2] font-semibold line-clamp-2">
-                              {{ equipment?.name }}
-                            </p>
+              <p class="text-10 text-[#7c4ea2] font-semibold line-clamp-2">
+                {{ equipment?.name }}
+              </p>
             </LazyItemRank>
           </div>
         </div>
-        <!--        <div class="flex"> -->
-        <!--          <button> -->
-        <!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_active.png" /> -->
-        <!--          </button> -->
-        <!--          <button> -->
-        <!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_deactive.png" /> -->
-        <!--          </button> -->
-        <!--        </div> -->
       </div>
     </div>
     <div class="absolute bottom-0 w-full h-[65px]">

@@ -10,15 +10,14 @@
     "generate": "nuxi generate"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.30.1",
+    "@antfu/eslint-config": "0.34.0",
     "@nuxt/image-edge": "^1.0.0-27840416.dc1ed65",
     "@pinia/nuxt": "^0.4.3",
     "@sidebase/nuxt-auth": "^0.3.2",
     "@types/node-cron": "^3.0.7",
     "@vueuse/core": "^9.9.0",
     "@vueuse/nuxt": "^9.5.0",
-    "@vueuse/sound": "^2.0.0",
-    "eslint": "^8.27.0",
+    "eslint": "^8.31.0",
     "moment": "^2.29.4",
     "mongoose": "^6.8.1",
     "node-cron": "^3.0.2",

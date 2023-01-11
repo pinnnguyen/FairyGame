@@ -1,4 +1,3 @@
-import type { PlayerAttribute } from './../../types/player'
 // import type { EnemyObject, PlayerInfo } from '~/types'
 //
 // export const classPlayerCounter = (_p: PlayerInfo, _enemyObject: EnemyObject) => {
@@ -46,7 +45,7 @@ import { conditionForUpLevel } from '~/server/common'
 import { equipUpgradeWithLevel, formatAttributes, useEquipment } from '~/server/helpers/equipment'
 import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule'
 import { MidSchema, PlayerAttributeSchema, PlayerEquipUpgradeSchema, PlayerEquipmentSchema, PlayerSchema } from '~/server/schema'
-import type { Player, PlayerServerResponse } from '~/types'
+import type { Player, PlayerAttribute, PlayerServerResponse } from '~/types'
 
 const useClass = (ofClass: number, attribute: PlayerAttribute) => {
   attribute.criticalDamage = 1.5 // 150% sat thuong bao kich
@@ -99,18 +98,38 @@ const useAttribute = (_p: Player, attribute: PlayerAttribute) => {
 }
 
 export const getPlayer = async (userId: string | null | undefined, sid: string) => {
-  const player = await PlayerSchema.findOne({
-    $or: [
-      { userId },
-      { sid },
-    ],
-  })
+  const players = await PlayerSchema.aggregate([
+    {
+      $match: {
+        $or: [
+          { userId },
+          { sid },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: 'player_attributes',
+        localField: 'sid',
+        foreignField: 'sid',
+        as: 'attribute',
+      },
+    },
+    {
+      $unwind: '$attribute',
+    },
+    {
+      $limit: 1,
+    },
+  ])
 
-  if (!player)
-    return null
+  if (players.length === 0)
+    return
+
+  const player = players[0]
+  const attribute = player.attribute
 
   const { needGold } = conditionForUpLevel(player)
-  const attribute = await PlayerAttributeSchema.findOne({ sid: player.sid })
   const mid = await MidSchema.find({
     id: {
       $in: [player.midId, (player.midId) + 1],
@@ -131,7 +150,9 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
     }
   }
 
-  useAttribute(player, attribute)
+  if (attribute)
+    useAttribute(player, attribute)
+
   if (player.class > 0 && attribute)
     useClass(player.class, attribute)
 

@@ -2,7 +2,7 @@ import moment from 'moment'
 import { getServerSession } from '#auth'
 import { BattleSchema, BossSchema, EquipmentSchema, PlayerSchema } from '~/server/schema'
 import { BATTLE_KIND } from '~/constants'
-import { frameTimeBossEnded, startEndHoursBossFrameTime } from '~/common'
+import { startEndHoursBossFrameTime, startTimeEvent } from '~/common'
 
 export default defineEventHandler(async (event) => {
   const uServer = await getServerSession(event)
@@ -46,8 +46,8 @@ export default defineEventHandler(async (event) => {
 
     bossNe[i].isStart = false
     if (query.kind === 'frameTime') {
-      const { start, end } = startEndHoursBossFrameTime(13)
-      bossNe[i].isStart = frameTimeBossEnded(start, end)
+      const { start, end } = startEndHoursBossFrameTime(bossNe[i].startHours)
+      bossNe[i].isStart = startTimeEvent(start, end)
 
       bossNe[i].startHours = start
       bossNe[i].endHours = end

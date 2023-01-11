@@ -4,6 +4,6 @@
     "types": [
       "nuxt-windicss"
     ],
-    "strict": true
+//    "strict": true
   }
 }

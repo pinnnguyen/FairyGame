@@ -52,6 +52,7 @@ const refreshFinished = () => {
 }
 
 const nextMid = async () => {
+  console.log('next mid')
   try {
     loading.value = true
     const player = await $fetch('/api/mid/set', {
@@ -134,26 +135,29 @@ const doCloseBattleR = () => {
           />
         </div>
       </div>
-      <div class="p-4 h-[25%] overflow-scroll">
-        <BattleHistory :battle-rounds="battleRounds" />
-      </div>
-      <div class="flex items-center flex-col justify-center fixed w-full bottom-2">
-        <LazyPopupRefreshMid
-          v-if="inRefresh"
-          :refresh-time="refreshTime"
-          @refresh-finished="refreshFinished"
-        />
-        <div class="flex items-center">
-          <ButtonCancel class="mx-2" class-name="h-[23px]" @click.stop="navigateTo('/')">
-            <span class="z-9 text-10">
-              Về thành
-            </span>
-          </ButtonCancel>
-          <ButtonConfirm class="mx-2" @click="nextMid">
-            <span class="z-9 text-10">
-              Ải tiếp
-            </span>
-          </ButtonConfirm>
+      <div class="relative h-full">
+        <NuxtImg class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" />
+        <div class="p-4 h-[25%] overflow-scroll">
+          <BattleHistory :battle-rounds="battleRounds" />
+        </div>
+        <div class="flex items-center flex-col justify-center w-full fixed bottom-2">
+          <LazyPopupRefreshMid
+            v-if="inRefresh"
+            :refresh-time="refreshTime"
+            @refresh-finished="refreshFinished"
+          />
+          <div class="flex items-center">
+            <ButtonCancel class="mx-2" class-name="h-[23px]" @click.stop="navigateTo('/')">
+              <span class="z-9 text-10">
+                Về thành
+              </span>
+            </ButtonCancel>
+            <ButtonConfirm class="mx-2" @click="nextMid">
+              <span class="z-9 text-10">
+                Ải tiếp
+              </span>
+            </ButtonConfirm>
+          </div>
         </div>
       </div>
     </div>

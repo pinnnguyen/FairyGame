@@ -28,7 +28,7 @@ definePageMeta({
 })
 
 const { startBattle } = useBattleRoundStore()
-const hasBossDaily = computed(() => route.query.target === 'boss-daily')
+const hasBossDaily = computed(() => route.query.target === TARGET_TYPE.BOSS_DAILY)
 const queryTarget = computed(() => (route.query.target as string))
 const queryTargetId = computed(() => (route.query.id as string))
 
@@ -37,7 +37,7 @@ const showEnemyInfo = ref(false)
 
 onMounted(() => {
   _socket.emit('battle:join', `${playerInfo.value?._id}-battle-boss-daily`, {
-    kind: queryTarget.value ? BATTLE_KIND.BOSS_FRAME_TIME : BATTLE_KIND.BOSS_DAILY,
+    kind: hasBossDaily.value ? BATTLE_KIND.BOSS_DAILY : BATTLE_KIND.BOSS_FRAME_TIME,
     player: {
       userId: playerInfo.value?.userId,
     },

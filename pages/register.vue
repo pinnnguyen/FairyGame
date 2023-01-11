@@ -1,5 +1,5 @@
 <script setup>
-import { sendMessage } from '~~/composables/useMessage'
+import { sendMessage } from '~/composables/useMessage'
 
 definePageMeta({
   layout: 'auth',

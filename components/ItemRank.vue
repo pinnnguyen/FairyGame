@@ -2,6 +2,7 @@
 const props = defineProps<{
   preview: string
   rank: number
+  quantity: number
 }>()
 
 const bgRank = computed(() => {
@@ -36,6 +37,9 @@ const bgRank = computed(() => {
     class="w-12 bg-contain bg-no-repeat relative"
   >
     <NuxtImg :src="preview" />
+    <div v-if="quantity > 0" class="absolute text-12 font-bold text-white bottom-0 right-0">
+      {{ quantity }}
+    </div>
     <slot />
   </div>
 </template>

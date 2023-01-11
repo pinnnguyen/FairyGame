@@ -20,4 +20,5 @@ const schema = new mongoose.Schema<Auction>(
   { timestamps: true },
 )
 
-export const AuctionSchema = (mongoose.models && mongoose.models.AuctionSchema ? mongoose.models.AuctionSchema : mongoose.model('AuctionSchema', schema, 'gl_auction'))
+// export const AuctionSchema = (mongoose.models && mongoose.models.AuctionSchema ? mongoose.models.AuctionSchema : mongoose.model('AuctionSchema', schema, 'gl_auction'))
+export const AuctionSchema = mongoose.model('AuctionSchema', schema, 'gl_auction')

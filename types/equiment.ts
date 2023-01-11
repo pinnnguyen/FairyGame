@@ -3,11 +3,14 @@ import type { BaseAttributes } from '~/types/player'
 export interface RateReward {
   id: number
   rate: number
+  kind: number
+  quantity: number
 }
 
 export interface Equipment extends BaseAttributes {
-  _id: string
-  id: number
+  sid?: string
+  _id?: string
+  id?: number
   name: string
   info?: string
   rank?: number

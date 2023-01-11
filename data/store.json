@@ -1,0 +1,23 @@
+[
+  {
+    "itemId": 1,
+    "price": 100,
+    "quantity": 100,
+    "kind": 2,
+    "currency": "KNB"
+  },
+  {
+    "itemId": 2,
+    "price": 100,
+    "quantity": 100,
+    "kind": 2,
+    "currency": "KNB"
+  },
+  {
+    "itemId": 3,
+    "price": 100,
+    "quantity": 100,
+    "kind": 2,
+    "currency": "KNB"
+  }
+]

@@ -16,9 +16,8 @@ const { data: dataResponse, refresh } = await useAsyncData('boss', () => $fetch(
 
 console.log('bossDaily', dataResponse.value)
 
-watch(currentTab, (value) => {
-  console.log('value', value)
-  refresh()
+watch(currentTab, async (value) => {
+  await refresh()
 })
 </script>
 
@@ -46,7 +45,7 @@ watch(currentTab, (value) => {
               Hằng ngày
             </button>
             <button :class="{ '!opacity-100': currentTab === 'frameTime' }" class="opacity-50 bg-[#f8d89b] h-[30px] text-[#9d521a] px-2 rounded mx-1" @click="currentTab = 'frameTime'">
-              Khung giờ
+              Thế giới
             </button>
           </div>
           <!-- <div class="flex absolute bottom-[-55px] left-[10px]">

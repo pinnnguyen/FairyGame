@@ -6,6 +6,7 @@ export const DEFAULT_ROLE = {
   level: 0,
   midId: 1,
   exp: 0,
+  knb: 0,
 }
 
 export const DEFAULT_ATTRIBUTE = {

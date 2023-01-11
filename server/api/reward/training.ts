@@ -22,7 +22,19 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const battle = await BattleSchema.findOne({ 'sid': _p.sid, 'mid.id': _p.midId, 'kind': BATTLE_KIND.PVE })
+  const battle = await BattleSchema.findOne({
+    sid: _p.sid,
+    kind: BATTLE_KIND.PVE,
+    $or: [
+      {
+        'mid.id': _p.midId,
+      },
+      {
+        'mid.id': _p.midId - 1,
+      },
+    ],
+  })
+
   if (!battle) {
     return createError({
       statusCode: 400,

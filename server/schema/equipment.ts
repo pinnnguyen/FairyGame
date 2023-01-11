@@ -32,5 +32,5 @@ schema.index({ slot: -1 })
 schema.index({ level: -1 })
 schema.index({ rank: -1 })
 
-// export const EquipmentSchema = mongoose.model('EquipmentSchemas', schema, 'equipments')
-export const EquipmentSchema = (mongoose.models && mongoose.models.EquipmentSchemas ? mongoose.models.EquipmentSchemas : mongoose.model('EquipmentSchemas', schema, 'equipments'))
+export const EquipmentSchema = mongoose.model('EquipmentSchemas', schema, 'equipments')
+// export const EquipmentSchema = (mongoose.models && mongoose.models.EquipmentSchemas ? mongoose.models.EquipmentSchemas : mongoose.model('EquipmentSchemas', schema, 'equipments'))

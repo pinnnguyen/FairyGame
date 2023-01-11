@@ -24,7 +24,7 @@ const gold = computed(() => Math.round(BASE_EXP() * mids.value.current?.reward?.
       </div>
     </ClientOnly>
   </div>
-  <div class="fixed z-10 top-[30%] right-0 flex flex-col justify-end items-end">
+  <div class="fixed z-10 top-[25%] right-0 flex flex-col justify-end items-end">
     <button class="w-[55px] relative" @click="toggle = true">
       <NuxtImg format="webp" src="/button/right_bottom.png" />
       <NuxtImg class="w-[20px] absolute top-0" format="webp" src="/activity_icon/icon_61.png" />

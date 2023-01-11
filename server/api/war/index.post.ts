@@ -2,7 +2,7 @@ import type { H3Event } from 'h3'
 import { createError, sendError } from 'h3'
 import moment from 'moment'
 import { getBaseReward, getPlayer, receivedEquipment, setLastTimeReceivedRss } from '~/server/helpers'
-import type { BattleRequest, BattleResponse, EnemyObject, PlayerInfo } from '~/types'
+import type { BattleRequest, BattleResponse, PlayerInfo } from '~/types'
 import { BattleSchema, BossRankSchema, BossSchema, MonsterSchema } from '~/server/schema'
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { startWar } from '~/helpers'
@@ -88,6 +88,9 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     }
   }
 
+  if (!_enemyObj)
+    return
+
   if (isBossFrameTime) {
     const battle = await (BattleSchema as any)
       .findOne({ 'sid': _p.player.sid, 'kind': BATTLE_KIND.BOSS_FRAME_TIME, 'mid.id': _p.player.midId })
@@ -111,10 +114,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
   }
 
   if (isBossDaily) {
-    if (!_enemyObj)
-      return
-
-    const numberOfBattle = await (BattleSchema as any).find({
+    const numberOfBattle = await BattleSchema.find({
       sid: _p.player.sid,
       kind: BATTLE_KIND.BOSS_DAILY,
       targetId: battleRequest.target.id,

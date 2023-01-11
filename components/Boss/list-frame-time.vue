@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '~/composables/usePlayer'
 import type { Boss, Equipment } from '~/types'
-import { sendMessage } from '~~/composables/useMessage'
+import { sendMessage } from '~/composables/useMessage'
 import { timeOffset } from '~/common'
 
 const props = defineProps<{
@@ -14,14 +14,20 @@ const equipSelected = ref({})
 const equipShow = ref(false)
 const now = new Date().getTime()
 
-const startTime = computed(() => (props.boss.startHours - new Date().getTime()) / 1000)
-const endTime = computed(() => (props.boss.endHours - now) / 1000)
+const startTime = ref((props.boss.startHours - new Date().getTime()) / 1000)
+const endTime = ref((props.boss.endHours - now) / 1000)
 
 const pickItem = (equipment: Equipment) => {
   equipSelected.value = equipment
   equipShow.value = true
 }
 
+onMounted(() => {
+  setInterval(() => {
+    startTime.value -= 1
+    endTime.value -= 1
+  }, 1000)
+})
 const startWar = (boss: Boss) => {
   if (!props.boss.isStart) {
     sendMessage('Thời gian hoạt động đã kết thúc')
@@ -54,10 +60,10 @@ const parseEquipments = (equipments: Equipment[]) => {
 <template>
   <p class="text-[#439546] text-12 font-semibold mr-2">
     <span v-if="!boss.isStart">
-      Boss hồi sinh sau: {{ timeOffset(startTime).hours }}h {{ timeOffset(startTime).minutes }}phút
+      Boss hồi: {{ timeOffset(startTime).hours ? timeOffset(startTime).hours : 0 }}h {{ timeOffset(startTime).minutes ? timeOffset(startTime).minutes : 0 }}phút {{ timeOffset(startTime).seconds ? timeOffset(startTime).seconds : 0 }}s
     </span>
     <span v-else>
-      Boss kết thúc sau: {{ timeOffset(endTime).hours }}h {{ timeOffset(endTime).minutes }}phút
+      Boss kết: {{ timeOffset(endTime).hours ? timeOffset(endTime).hours : 0 }}h {{ timeOffset(endTime).minutes ? timeOffset(endTime).minutes : 0 }}phút {{ timeOffset(endTime).seconds ? timeOffset(endTime).seconds : 0 }}s
     </span>
   </p>
   <section class="w-[90%] h-[80px] bg-[#a0aac0cf] rounded flex justify-between">
@@ -77,6 +83,7 @@ const parseEquipments = (equipments: Equipment[]) => {
         class="w-[40px] h-[40px]"
         :rank="equipment.rank"
         :preview="equipment.preview"
+        :quantity="0"
         @click.stop="pickItem(equipment)"
       />
     </div>

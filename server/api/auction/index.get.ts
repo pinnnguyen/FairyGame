@@ -1,6 +1,6 @@
 import { AuctionSchema } from '~/server/schema'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async () => {
   const auction = await AuctionSchema.aggregate(
     [
       {
@@ -12,6 +12,14 @@ export default defineEventHandler(async (event) => {
           localField: '_id',
           foreignField: 'auctionId',
           pipeline: [
+            {
+              $lookup: {
+                from: 'players',
+                localField: 'sid',
+                foreignField: 'sid',
+                as: 'player',
+              },
+            },
             {
               $lookup: {
                 from: 'equipments',

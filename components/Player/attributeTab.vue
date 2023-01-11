@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '~/composables/usePlayer'
-import { sendMessage } from '~~/composables/useMessage'
+import { sendMessage } from '~/composables/useMessage'
 
 const { playerInfo, attribute } = storeToRefs(usePlayerStore())
 const { loadPlayer } = usePlayerStore()
@@ -12,7 +12,7 @@ const classToTitle: Record<number, string> = {
   4: 'Nhân tộc',
 }
 
-const classTitle = computed(() => classToTitle[playerInfo.value?.class])
+const classTitle = computed(() => classToTitle[playerInfo.value!.class])
 const addAttribute = async (target: string) => {
   try {
     const response = await $fetch('/api/attribute/add', {
@@ -34,10 +34,10 @@ const addAttribute = async (target: string) => {
 
 <template>
   <div>
-    <div class="h-[60px] justify-between flex items-center mx-3">
+    <div class="h-[60px] justify-between flex items-center mx-3 border-b">
       <div class="flex items-center">
         <NuxtImg class="h-[50px] mr-2" format="webp" src="/pve/player-avatar.png" />
-        <div>
+        <div class="flex flex-col items-start">
           <div>
             Tên: {{ playerInfo?.name }}
           </div>
@@ -52,7 +52,7 @@ const addAttribute = async (target: string) => {
       <!--          <a style="background: radial-gradient(black, transparent);" class="text-white giftcode" href="?cmd=Yc2x1pkhPpWR1aWh1YW4mc2lkPTQ3MTRjMmE2NDNmOTQwMTY3NWE5YjY0OTFhZDJiOGQ4">Giftcode</a> -->
     </div>
     <div class="m-3 flex justify-between">
-      <div class="leading-6">
+      <div class="leading-6 flex flex-col items-start">
         <div class="px-2">
           Hệ: {{ classTitle }}
         </div>

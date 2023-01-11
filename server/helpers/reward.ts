@@ -12,7 +12,7 @@ export const setLastTimeReceivedRss = async (sid: string) => {
 }
 
 export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject, winner: string) => {
-  if (winner === WINNER.youwin) {
+  if (winner === WINNER.youlose) {
     return {
       equipments: [],
     }
@@ -68,7 +68,7 @@ export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject, win
   }
 }
 export const getBaseReward = async (sid: string, _enemyObj: EnemyObject, winner: string) => {
-  if (winner !== WINNER.youwin) {
+  if (winner === WINNER.youlose) {
     return {
       exp: 0,
       gold: 0,

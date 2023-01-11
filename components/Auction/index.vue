@@ -1,41 +1,54 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
-import { timeOffset } from '~/common'
-import useSocket from '~/composables/useSocket'
+import { storeToRefs } from 'pinia'
+import { startTimeEvent, timeOffset } from '~/common'
 import type { AuctionItem } from '~/types'
-import { usePlayerStore } from '~~/composables/usePlayer'
+import { sendMessage, usePlayerStore, useSocket } from '#imports'
 
 const emits = defineEmits(['close'])
-const { sid } = usePlayerStore()
+const { sid } = storeToRefs(usePlayerStore())
+
 const now = new Date().getTime()
+
 const { _socket } = useSocket()
 const { data: auction } = await useFetch('/api/auction')
 
 const target = ref(null)
 onClickOutside(target, () => emits('close'))
-const endTime = computed(() => now - auction.value.endTime)
+
+const endTime = ref((auction.value?.endTime - now) / 1000)
+const auctionItems = ref(auction.value?.auctionItems)
+const startEvent = computed(() => startTimeEvent(auction.value?.startTime, auction.value?.endTime))
 
 console.log('auction', auction.value)
-console.log('endTime', endTime.value)
 onMounted(() => {
-  // _socket.emit('auction:join', {
-  //   _auctionId: auction.value._id,
-  // })
+  setInterval(() => {
+    endTime.value -= 1
+  }, 1000)
+  _socket.on('auction-response', (response: any) => {
+    sendMessage(response.statusMessage)
+
+    if (response.auctionItem) {
+      for (const i in auctionItems.value) {
+        if (auctionItems.value[i]._id === response.auctionItem._id)
+          auctionItems.value[i] = response.auctionItem
+      }
+    }
+  })
 })
 
 const doAuction = (auctionItem: AuctionItem) => {
-  console.log('auctionItem', auctionItem)
   _socket.emit('auction', {
     _auctionItemId: auctionItem._id,
-    sid,
+    sid: sid.value,
   })
 }
 </script>
 
 <template>
   <Blocker class="z-99">
-    <p class="text-white">
-      Kết thúc sau {{ timeOffset(endTime).hours }}
+    <p v-if="auction" class="text-white">
+      Kết thúc sau {{ timeOffset(endTime).minutes }}p {{ timeOffset(endTime).seconds }}s
     </p>
     <div ref="target" class="relative w-[95%] h-[80%]">
       <NuxtImg format="webp" class="absolute" src="/common/panel_common_bg1.png" />
@@ -43,14 +56,14 @@ const doAuction = (auctionItem: AuctionItem) => {
         Đấu giá
       </p>
       <div class="absolute w-full h-full">
-        <div class="grid grid-cols-2 m-auto w-[84%] h-[87%] overflow-auto mt-10 gap-2">
-          <div v-for="auctionItem in auction.auctionItems" :key="auctionItem._id" class="relative h-[75px]">
+        <div v-if="!startEvent" class="h-full flex items-center justify-center text-white">
+          Đấu giá chưa được mở
+        </div>
+        <div v-else class="grid grid-cols-2 m-auto w-[84%] h-[87%] overflow-auto mt-10 gap-2">
+          <div v-for="auctionItem in auctionItems" :key="auctionItem._id" class="relative h-[75px]">
             <NuxtImg format="webp" src="/common/bg-aution.png" />
             <div class="absolute top-0">
-              <ItemRank class="m-2" :rank="auctionItem?.detail.rank" :preview="auctionItem?.detail.preview" />
-              <!-- <p class="text-10">
-                {{ item.name }}
-              </p> -->
+              <ItemRank class="m-2" :quantity="0" :rank="auctionItem?.detail.rank" :preview="auctionItem?.detail.preview" />
             </div>
             <div class="absolute top-0 right-0 flex mt-2 mr-2 flex-col ">
               <div class="flex">
@@ -62,7 +75,7 @@ const doAuction = (auctionItem: AuctionItem) => {
               </button>
             </div>
             <p class="text-10 absolute bottom-1 left-2 line-clamp-1">
-              Sở hữu: {{ auctionItem.own ? auctionItem.own : 'Trống' }}
+              Sở hữu: {{ auctionItem.player.length > 0 ? auctionItem.player[0].name : 'Trống' }}
             </p>
           </div>
         </div>

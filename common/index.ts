@@ -80,16 +80,16 @@ export const startEndHoursBossFrameTime = (hours: number) => {
   date.setHours(hours)
   date.setMinutes(0)
 
-  if (date.getTime() + 1800000 + 1800000 + 1800000 + 1800000 + 1800000 < now)
+  if (date.getTime() + 1800000 < now)
     date.setDate(date.getDate() + 1)
 
   return {
     start: date.getTime(),
-    end: date.getTime() + 1800000 + 1800000 + 1800000 + 1800000 + 1800000, // + them 30 phut
+    end: date.getTime() + 1800000, // + them 30 phut
   }
 }
 
-export const frameTimeBossEnded = (startTime: number, endTime: number) => {
+export const startTimeEvent = (startTime: number, endTime: number) => {
   const now = new Date().getTime()
 
   return now < endTime && now > startTime

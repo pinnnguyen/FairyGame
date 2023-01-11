@@ -1,7 +1,26 @@
 [
   {
+    "id": 1,
     "name": "Đá cường hoá",
     "info": "Đạo cụ dùng để cường hoá trang bị",
-    "kind": 1
+    "kind": 1,
+    "preview": "/items/11.png",
+    "rank": 2
+  },
+  {
+    "id": 2,
+    "name": "Đá nâng sao",
+    "info": "Đạo cụ dùng để nâng sao trang bị",
+    "kind": 1,
+    "preview": "/items/17.png",
+    "rank": 2
+  },
+  {
+    "id": 3,
+    "name": "Đá tẩy luyện",
+    "info": "Đạo cụ dùng để tẩy luyện trang bị",
+    "kind": 1,
+    "preview": "/items/18.png",
+    "rank": 2
   }
 ]

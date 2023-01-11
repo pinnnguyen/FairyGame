@@ -36,6 +36,7 @@ const schema = new mongoose.Schema<Boss>(
 
 schema.index({ id: -1 }, { unique: true })
 
-export const BossSchema = (mongoose.models && mongoose.models.BossSchema
-  ? mongoose.models.BossSchema
-  : mongoose.model('BossSchema', schema, 'boss'))
+// export const BossSchema = (mongoose.models && mongoose.models.BossSchema
+//   ? mongoose.models.BossSchema
+//   : mongoose.model('BossSchema', schema, 'boss'))
+export const BossSchema = mongoose.model('BossSchema', schema, 'boss')

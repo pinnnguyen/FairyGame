@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '~/composables/usePlayer'
-import { sendMessage } from '~~/composables/useMessage'
+import { sendMessage } from '~/composables/useMessage'
+import type { Boss, Equipment } from '~/types'
 
 defineProps<{
   boss: any
@@ -11,13 +12,13 @@ const { playerInfo } = storeToRefs(usePlayerStore())
 const equipSelected = ref({})
 const equipShow = ref(false)
 
-const pickItem = (equipment) => {
+const pickItem = (equipment: Equipment) => {
   equipSelected.value = equipment
   equipShow.value = true
 }
 
-const startWar = (boss) => {
-  if (playerInfo.value.level < boss.level) {
+const startWar = (boss: Boss) => {
+  if (playerInfo.value!.level < boss.level) {
     sendMessage('Chưa đạt cấp độ')
     return
   }
@@ -37,7 +38,7 @@ const startWar = (boss) => {
   })
 }
 
-const parseEquipments = (equipments) => {
+const parseEquipments = (equipments: Equipment[]) => {
   if (equipments.length > 3)
     return equipments.splice(0, 1)
 
@@ -63,6 +64,7 @@ const parseEquipments = (equipments) => {
         class="w-[40px] h-[40px]"
         :rank="equipment.rank"
         :preview="equipment.preview"
+        :quantity="0"
         @click.stop="pickItem(equipment)"
       />
     </div>
