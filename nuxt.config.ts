@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     enableGlobalAppMiddleware: false,
   },
   nitro: {
+    preset: 'vercel',
     plugins: [
       '~/server/index.ts',
       // '~/server/plugins/socket',
