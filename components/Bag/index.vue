@@ -23,6 +23,7 @@ const pickEquipItem = (item: PlayerEquipment) => {
 const pickItem = (item: Item) => {
   set(selectedItem, item)
   set(toggleDetail, true)
+  console.log('item', item)
 }
 
 const goToHome = () => {
@@ -35,6 +36,8 @@ const goToHome = () => {
     <BagEquipDetail v-if="toggleDetail && isEquipTab" :item="equipItemSelected" @close="toggleDetail = false" />
     <BagItemDetail
       v-if="toggleDetail && !isEquipTab"
+      :item-id="selectedItem.itemId"
+      :kind="selectedItem.kind"
       :rank="selectedItem.rank"
       :preview="selectedItem.preview"
       :name="selectedItem.name"

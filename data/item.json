@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Đá cường hoá",
     "info": "Đạo cụ dùng để cường hoá trang bị",
-    "kind": 1,
+    "kind": 2,
     "preview": "/items/11.png",
     "rank": 2
   },
@@ -11,7 +11,7 @@
     "id": 2,
     "name": "Đá nâng sao",
     "info": "Đạo cụ dùng để nâng sao trang bị",
-    "kind": 1,
+    "kind": 2,
     "preview": "/items/17.png",
     "rank": 2
   },
@@ -19,8 +19,40 @@
     "id": 3,
     "name": "Đá tẩy luyện",
     "info": "Đạo cụ dùng để tẩy luyện trang bị",
-    "kind": 1,
+    "kind": 2,
     "preview": "/items/18.png",
     "rank": 2
+  },
+  {
+    "id": 4,
+    "name": "Giảm thời gian làm mới quái (Thường)",
+    "info": "Đạo cụ dùng để làm giảm 5% thời gian làm mới quái vật khi treo tại vượt ải",
+    "kind": 3,
+    "preview": "/items/10043.png",
+    "rank": 2
+  },
+  {
+    "id": 5,
+    "name": "Giảm thời gian làm mới quái (Trung)",
+    "info": "Đạo cụ dùng để làm giảm 10% thời gian làm mới quái vật khi treo tại vượt ải",
+    "kind": 3,
+    "preview": "/items/10044.png",
+    "rank": 3
+  },
+  {
+    "id": 6,
+    "name": "Giảm thời gian làm mới quái (Cao)",
+    "info": "Đạo cụ dùng để làm giảm 15% thời gian làm mới quái vật khi treo tại vượt ải",
+    "kind": 3,
+    "preview": "/items/10045.png",
+    "rank": 4
+  },
+  {
+    "id": 7,
+    "name": "Giảm thời gian làm mới quái (Hoàn mỹ)",
+    "info": "Đạo cụ dùng để làm giảm 20% thời gian làm mới quái vật khi treo tại vượt ải",
+    "kind": 3,
+    "preview": "/items/10046.png",
+    "rank": 5
   }
 ]

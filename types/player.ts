@@ -92,3 +92,12 @@ export interface Upgrade {
     beUpgrade?: boolean
   }
 }
+
+export type PlayerStatusType = 'reduce_waiting_time_training'
+export interface PlayerStatus {
+  _id?: string
+  sid: string
+  type?: PlayerStatusType
+  value?: number
+  timeLeft?: number
+}

@@ -23,6 +23,9 @@ export default defineNuxtConfig({
     //   port: 3005,
     // },
   },
+  build: {
+    transpile: ['@varlet/ui'],
+  },
   modules: [
     '@vueuse/nuxt',
     '@pinia/nuxt',

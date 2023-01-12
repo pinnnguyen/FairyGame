@@ -13,6 +13,7 @@ export default defineEventHandler((event) => {
   const io = new Server<ClientToServerEvents, ServerToClientEvents>(server)
   // cors: {origin: '*'}
 
+  console.log('Start websocket...')
   io.on('connection', async (socket) => {
     console.log(`Socket connected: ${socket.id}`)
     // socket.on('send-notify', (message) => {

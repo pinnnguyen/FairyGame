@@ -26,14 +26,14 @@ const tabs = ref([
 
 <template>
   <Blocker class="duration-500 transition-colors transition-opacity z-999">
-    <div ref="target" class="bg-black/80 text-white w-full h-[80%]">
+    <div ref="target" class="bg-[#1d160e] border border-[#926633] rounded shadow-md text-white w-full h-[80%]">
       <div class="h-full">
         <div class="flex items-center justify-center w-full">
           <div
             v-for="t in tabs"
             :key="t.key"
-            class="bg-[#455875] font-semibold rounded m-2 p-1"
-            :class="{ 'bg-[#375c99]': currentTab === t.key }" @click="currentTab = t.key"
+            class="transition transition-opacity bg-[#8c6333] opacity-40 rounded m-2 p-1"
+            :class="{ '!opacity-100': currentTab === t.key }" @click="currentTab = t.key"
           >
             {{ t.name }}
           </div>

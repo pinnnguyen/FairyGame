@@ -1,7 +1,6 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '~/composables/app'
-
 const { playerInfoComponent } = storeToRefs(useAppStore())
 </script>
 

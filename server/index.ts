@@ -9,7 +9,7 @@ export default async () => {
   try {
     mongoose.set('strictQuery', false)
     await mongoose.connect(config.mongoUrl)
-    console.log('DB connection established.')
+    console.log('Start mongoose...')
   }
   catch (err) {
     console.error('DB connection failed.', err)

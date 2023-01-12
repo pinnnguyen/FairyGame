@@ -12,7 +12,16 @@ const classToTitle: Record<number, string> = {
   4: 'Nhân tộc',
 }
 
+const classListColor: Record<number, string> = {
+  1: '#75cd52',
+  2: '#b257a0',
+  3: '#2f94fa',
+  4: '#7788e8',
+}
+
 const classTitle = computed(() => classToTitle[playerInfo.value!.class])
+const classColor = computed(() => classListColor[playerInfo.value!.class])
+
 const addAttribute = async (target: string) => {
   try {
     const response = await $fetch('/api/attribute/add', {
@@ -53,7 +62,7 @@ const addAttribute = async (target: string) => {
     </div>
     <div class="m-3 flex justify-between">
       <div class="leading-[22px] flex flex-col items-start w-[70%]">
-        <div class="px-2">
+        <div class="px-2" :class="`bg-[${classColor}]`">
           Hệ: {{ classTitle }}
         </div>
         <div class="px-2">

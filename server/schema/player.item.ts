@@ -23,7 +23,7 @@ const schema = new mongoose.Schema<Item>(
   { timestamps: true },
 )
 schema.index({ sid: -1 })
-export const PlayerItemSchema = mongoose.model('PlayerItemSchemas', schema, 'player_items')
+export const PlayerItemSchema = mongoose.model('PlayerItemSchemas', schema, 'gl_player_items')
 
 export const addPlayerItem = async (sid: string, quantity: number, itemId: number) => {
   const item = await ItemSchema.findOne({ id: itemId })
@@ -42,7 +42,7 @@ export const addPlayerItem = async (sid: string, quantity: number, itemId: numbe
       name: item.name,
       info: item.info,
       sum: quantity,
-      kind: 2,
+      kind: item.kind,
       itemId,
       preview: item.preview,
       rank: item.rank,
