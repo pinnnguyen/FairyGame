@@ -14,6 +14,7 @@ const schema = new mongoose.Schema(
     info: String,
     preview: String,
     rank: Number,
+    value: Number,
   },
   { timestamps: true },
 )

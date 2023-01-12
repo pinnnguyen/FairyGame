@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
+import { sendMessage, usePlayerStore } from '#imports'
 interface Prop {
   itemId: number
   kind: number
@@ -9,15 +10,34 @@ interface Prop {
   preview: string
 }
 
-defineProps<Prop>()
-const emits = defineEmits(['close'])
+const props = defineProps<Prop>()
+const emits = defineEmits(['close', 'useItem'])
 const target = ref(null)
+const { sid } = usePlayerStore()
+
 onClickOutside(target, () => {
   emits('close')
 })
 
-const useItem = () => {
+const useItem = async () => {
+  try {
+    const res = await $fetch('/api/bag/use', {
+      method: 'POST',
+      body: {
+        sid,
+        itemId: props.itemId,
+        kind: props.kind,
+        quantity: 1,
+      },
+    })
 
+    console.log('res', res)
+    sendMessage(res.statusMessage, 1500)
+    emits('useItem')
+  }
+  catch (e: any) {
+    sendMessage(e.statusMessage)
+  }
 }
 </script>
 
@@ -39,7 +59,7 @@ const useItem = () => {
           </div>
         </div>
       </div>
-      <var-button v-if="kind === 3" class="mb-2" type="warning" size="small" @click.stop="useItem">
+      <var-button v-if="kind === 3" class="mb-2" type="default !text-[#333] font-medium" size="small" @click.stop="useItem">
         Sử dụng
       </var-button>
     </div>

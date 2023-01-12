@@ -19,8 +19,8 @@ onClickOutside(target, event => emits('close'))
 
 <template>
   <Blocker class="z-9999">
-    <div ref="target" class="relative text-xs leading-6 text-white bg-[#31384f] p-0 border !border-[#795548] w-[320px]">
-      <div class="p-3">
+    <div ref="target" class="relative text-xs leading-6 text-white bg-[#1d160e] rounded shadow-md p-0 border !border-[#795548] w-[320px]">
+      <div class="p-3 text-12">
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center justify-center">
             <ItemRank class="w-[55px] h-[55px]" :quantity="0" :preview="item.preview" :rank="item.rank" />

@@ -93,10 +93,15 @@ export interface Upgrade {
   }
 }
 
+export const PlayerStatusTypeCon = {
+  reduce_waiting_time_training: 'reduce_waiting_time_training',
+}
+
 export type PlayerStatusType = 'reduce_waiting_time_training'
 export interface PlayerStatus {
   _id?: string
   sid: string
+  itemId: string
   type?: PlayerStatusType
   value?: number
   timeLeft?: number

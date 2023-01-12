@@ -6,12 +6,17 @@ import type { PlayerEquipment } from '~/types'
 
 const { playerInfo, attribute, equipments } = storeToRefs(usePlayerStore())
 const { slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8 } = storeToRefs(usePlayerSlot())
+
 const equipShow = ref(false)
 const equipSelected = ref({})
+
 const openDetail = (slot: PlayerEquipment) => {
   equipSelected.value = slot
   equipShow.value = true
 }
+
+console.log('slot2', slot2.value)
+console.log('slot1', slot1.value)
 </script>
 
 <template>
@@ -19,18 +24,18 @@ const openDetail = (slot: PlayerEquipment) => {
     <PopupEquipDetail v-if="equipShow" :item="equipSelected" @close="equipShow = false" />
   </Teleport>
   <div class="h-full flex items-center justify-center">
-    <div class="grid grid-cols-2 gap-4 mb-2">
+    <div class="grid grid-cols-2 gap-10 mb-2">
       <div class="relative" :class="{ 'bg-iconbg_3 bg-contain bg-no-repeat': slot1?.preview }">
         <NuxtImg v-if="!slot1" format="webp" class="w-[60px] h-[55px]" src="/equipment/vukhi.png" />
         <ItemRank v-else format="webp" class="w-[55px] h-[55px]" :quantity="0" :rank="slot1.rank" :preview="slot1?.preview" @click="openDetail(slot1)" />
       </div>
       <div class="relative" :class="{ 'bg-iconbg_3 bg-contain bg-no-repeat': slot2?.preview }">
         <NuxtImg v-if="!slot2" format="webp" class="w-[60px] h-[55px]" src="/equipment/ngocboi.png" />
-        <ItemRank v-else format="webp" class="w-[55px] h-[55px]" :quantity="0" :rank="slot2.rank" :preview="slot2?.preview" @click="openDetail(slot2)" />
+        <ItemRank v-else format="webp" class="w-[55px] h-[55px]" :quantity="0" :rank="slot2?.rank" :preview="slot2?.preview" @click="openDetail(slot2)" />
       </div>
       <div class="relative" :class="{ 'bg-iconbg_3 bg-contain bg-no-repeat': slot3?.preview }">
         <NuxtImg v-if="!slot3" format="webp" class="w-[60px] h-[55px]" src="/equipment/giap.png" />
-        <ItemRank v-else format="webp" class="w-[55px] h-[55px]" :quantity="0" :rank="slot2.rank" :preview="slot2?.preview" @click="openDetail(slot2)" />
+        <ItemRank v-else format="webp" class="w-[55px] h-[55px]" :quantity="0" :rank="slot3?.rank" :preview="slot3?.preview" @click="openDetail(slot3)" />
       </div>
       <div class="relative" :class="{ 'bg-iconbg_3 bg-contain bg-no-repeat': slot4?.preview }">
         <NuxtImg v-if="!slot4" format="webp" class="w-[60px] h-[55px]" src="/equipment/baotay.png" />

@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { set } from '@vueuse/core'
+import { set, useStorage } from '@vueuse/core'
 import { sleep } from '~/common'
 import { BATTLE_TURN } from '~/constants/war'
 import type { PlayerEquipment } from '~/types'
@@ -62,7 +62,8 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     },
   })
 
-  const TURN_DELAY = 2000
+  const speed = useStorage('speed', 1)
+  const TURN_DELAY = computed(() => 2000 / speed.value)
   const REAL_TIME_DELAY = 700
   const DAMAGE_DELAY = 700
   const SHOULD_WIN_DELAY = 1000
@@ -116,7 +117,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
         const DMG = emuT?.state?.damage
 
         if (emuT.action) {
-          await sleep(TURN_DELAY)
+          await sleep(TURN_DELAY.value)
           set(playerEffect, _turn)
 
           receiver.value[__turn].hp = emuT.now.hp[__turn]
@@ -171,6 +172,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     battleRounds,
     battleResult,
     rankDMG,
+    speed,
   }
 })
 

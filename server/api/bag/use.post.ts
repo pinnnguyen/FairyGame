@@ -1,4 +1,5 @@
-import { PlayerItemSchema, PlayerStatusSchema } from '~/server/schema'
+import { PlayerItemSchema, PlayerStatusSchema, getPlayerItem } from '~/server/schema'
+import { PlayerStatusTypeCon } from '~/types'
 
 interface Body {
   sid: string
@@ -9,15 +10,15 @@ interface Body {
 export default defineEventHandler(async (event) => {
   const body = await readBody<Body>(event)
 
-  const playerItem = await PlayerItemSchema.findOne({ sid: body.sid, itemId: body.itemId })
-  if (!playerItem) {
+  const playerItems = await getPlayerItem(body.sid, body.itemId)
+  if (playerItems.length === 0) {
     return {
       statusCode: 400,
       statusMessage: 'Vật phẩm không tồn tại',
     }
   }
-
-  if (playerItem?.kind !== body.kind) {
+  const playerItem = playerItems[0]
+  if (playerItem?.info?.kind !== body.kind) {
     return {
       statusCode: 400,
       statusMessage: 'Loại trang bị không thể sử dụng',
@@ -37,7 +38,24 @@ export default defineEventHandler(async (event) => {
     },
   })
 
-  const playerStatus = await PlayerStatusSchema.findOne({ sid: body.sid, type: '' })
+  const playerStatus = await PlayerStatusSchema.findOne({ sid: body.sid, type: PlayerStatusTypeCon.reduce_waiting_time_training })
+  if (!playerStatus) {
+    await new PlayerStatusSchema({
+      sid: body.sid,
+      type: PlayerStatusTypeCon.reduce_waiting_time_training,
+      value: playerItem.info.value,
+      timeLeft: new Date().getTime() + 86400000,
+    })
+  }
+  else {
+    await PlayerStatusSchema.updateOne({ sid: body.sid, type: PlayerStatusTypeCon.reduce_waiting_time_training }, {
+      value: playerItem.info.value,
+      $inc: {
+        timeLeft: +86400000, // 1 Day
+      },
+    })
+  }
+
   return {
     statusCode: 200,
     statusMessage: 'Sử dụng vật phẩm thành công',

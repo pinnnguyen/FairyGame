@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import type { Item } from '~/types'
 import { ItemSchema } from '~/server/schema/item'
+
 const ObjectId = mongoose.Types.ObjectId
 
 const schema = new mongoose.Schema<Item>(
@@ -12,13 +13,14 @@ const schema = new mongoose.Schema<Item>(
       },
     },
     sid: String,
-    name: String,
-    info: String,
+    // name: String,
+    // info: String,
     sum: Number,
-    kind: Number,
+    // kind: Number,
     itemId: Number,
-    preview: String,
-    rank: Number,
+    // preview: String,
+    // rank: Number,
+    // value: Number,
   },
   { timestamps: true },
 )
@@ -31,7 +33,9 @@ export const addPlayerItem = async (sid: string, quantity: number, itemId: numbe
     return
 
   const playerItem = await PlayerItemSchema.findOne({
-    kind: 2,
+    kind: {
+      $in: [2, 3],
+    },
     itemId,
     sid,
   })
@@ -39,13 +43,14 @@ export const addPlayerItem = async (sid: string, quantity: number, itemId: numbe
   if (!playerItem) {
     return new PlayerItemSchema({
       sid,
-      name: item.name,
-      info: item.info,
+      // name: item.name,
+      // info: item.info,
       sum: quantity,
-      kind: item.kind,
+      // kind: item.kind,
       itemId,
-      preview: item.preview,
-      rank: item.rank,
+      // preview: item.preview,
+      // value: item.value,
+      // rank: item.rank,
     }).save()
   }
 
@@ -59,4 +64,71 @@ export const addPlayerItem = async (sid: string, quantity: number, itemId: numbe
 export const addPlayerItems = async (items: Item[]) => {
   await PlayerItemSchema.insertMany(items)
 }
-// export const PlayerItemSchema = (mongoose.models && mongoose.models.PlayerItemSchemas ? mongoose.models.PlayerItemSchemas : mongoose.model('PlayerItemSchemas', schema, 'player_items'))
+
+export const getPlayerItems = (sid: string) => {
+  return PlayerItemSchema.aggregate<Item[]>([
+    {
+      $match: {
+        sid,
+        sum: {
+          $gte: 1,
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: 'gl_items',
+        foreignField: 'id',
+        localField: 'itemId',
+        as: 'info',
+      },
+    },
+    {
+      $unwind: '$info',
+    },
+  ])
+}
+
+export const getPlayerItem = (sid: string, itemId: number) => {
+  return PlayerItemSchema.aggregate<Item>([
+    {
+      $match: {
+        sid,
+        itemId,
+        sum: {
+          $gte: 1,
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: 'gl_items',
+        foreignField: 'id',
+        localField: 'itemId',
+        as: 'info',
+      },
+    },
+    {
+      $unwind: '$info',
+    },
+  ])
+}
+
+export const getPlayerItemCondition = (condition: any) => {
+  return PlayerItemSchema.aggregate<Item>([
+    {
+      $match: condition,
+    },
+    {
+      $lookup: {
+        from: 'gl_items',
+        foreignField: 'id',
+        localField: 'itemId',
+        as: 'info',
+      },
+    },
+    {
+      $unwind: '$info',
+    },
+  ])
+}

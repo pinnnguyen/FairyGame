@@ -17,7 +17,7 @@ onClickOutside(target, event => emits('close'))
 
 <template>
   <Blocker class="z-9999">
-    <div ref="target" class="relative text-xs leading-6 text-white bg-[#31384f] p-0 border !border-[#795548] w-[320px]">
+    <div ref="target" class="relative text-xs leading-6 text-white bg-[#1d160e] p-0 border !border-[#795548] w-[320px]">
       <div class="p-3">
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center justify-center">

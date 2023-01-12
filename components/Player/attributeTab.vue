@@ -61,43 +61,43 @@ const addAttribute = async (target: string) => {
       <!--          <a style="background: radial-gradient(black, transparent);" class="text-white giftcode" href="?cmd=Yc2x1pkhPpWR1aWh1YW4mc2lkPTQ3MTRjMmE2NDNmOTQwMTY3NWE5YjY0OTFhZDJiOGQ4">Giftcode</a> -->
     </div>
     <div class="m-3 flex justify-between">
-      <div class="leading-[22px] flex flex-col items-start w-[70%]">
-        <div class="px-2" :class="`bg-[${classColor}]`">
-          Hệ: {{ classTitle }}
-        </div>
-        <div class="px-2">
+      <div class="leading-[23px] flex flex-col items-start w-[70%]">
+        <span class="px-2">
+          Hệ: <span :class="`bg-[${classColor}]`">{{ classTitle }}</span>
+        </span>
+        <span class="px-2">
           Tiên ngọc: {{ playerInfo?.coin }}
-        </div>
-        <div class="px-2">
+        </span>
+        <span class="px-2">
           KNB: {{ playerInfo?.knb ?? 0 }}
-        </div>
-        <div class="px-2">
+        </span>
+        <span class="px-2">
           Vàng: {{ playerInfo?.gold }}
-        </div>
-        <div class=" px-2">
+        </span>
+        <span class=" px-2">
           Tu vị: {{ playerInfo?.exp }}/{{ playerInfo?.expLimited }}
-        </div>
-        <div class=" px-2">
+        </span>
+        <span class=" px-2">
           Tốc độ: {{ attribute?.speed ?? 0 }}
-        </div>
-        <div class=" px-2">
+        </span>
+        <span class=" px-2">
           Khí huyết: {{ attribute?.hp ?? 0 }}
-        </div>
-        <div class=" px-2">
+        </span>
+        <span class=" px-2">
           Công Kích: {{ attribute?.damage ?? 0 }}
-        </div>
-        <div class=" px-2">
+        </span>
+        <span class=" px-2">
           Phòng Ngự: {{ attribute?.def ?? 0 }}
-        </div>
-        <div class=" px-2">
+        </span>
+        <span class=" px-2">
           Bạo kích: {{ attribute?.critical ?? 0 }}%
-        </div>
-        <div class=" px-2">
+        </span>
+        <span class=" px-2">
           Sát thương bạo kích: 150%
-        </div>
-        <div class=" px-2">
+        </span>
+        <span class=" px-2">
           Hút máu: {{ attribute?.bloodsucking ?? 0 }}%
-        </div>
+        </span>
       </div>
       <div class="flex flex-col w-[150px] leading-5">
         <span>

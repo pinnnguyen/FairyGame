@@ -25,6 +25,7 @@
   },
   {
     "id": 4,
+    "value": 5,
     "name": "Giảm thời gian làm mới quái (Thường)",
     "info": "Đạo cụ dùng để làm giảm 5% thời gian làm mới quái vật khi treo tại vượt ải",
     "kind": 3,
@@ -33,6 +34,7 @@
   },
   {
     "id": 5,
+    "value": 10,
     "name": "Giảm thời gian làm mới quái (Trung)",
     "info": "Đạo cụ dùng để làm giảm 10% thời gian làm mới quái vật khi treo tại vượt ải",
     "kind": 3,
@@ -41,6 +43,7 @@
   },
   {
     "id": 6,
+    "value": 15,
     "name": "Giảm thời gian làm mới quái (Cao)",
     "info": "Đạo cụ dùng để làm giảm 15% thời gian làm mới quái vật khi treo tại vượt ải",
     "kind": 3,
@@ -49,6 +52,7 @@
   },
   {
     "id": 7,
+    "value": 20,
     "name": "Giảm thời gian làm mới quái (Hoàn mỹ)",
     "info": "Đạo cụ dùng để làm giảm 20% thời gian làm mới quái vật khi treo tại vượt ải",
     "kind": 3,

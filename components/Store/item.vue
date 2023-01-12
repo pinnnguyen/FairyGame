@@ -4,7 +4,7 @@ import { sendMessage, usePlayerStore } from '#imports'
 import type { StoreItem } from '~/types'
 
 defineProps<{
-  storeItem: {}
+  storeItem: StoreItem
 }>()
 
 const { playerInfo } = storeToRefs(usePlayerStore())
@@ -49,7 +49,7 @@ const buy = async (storeItem: StoreItem) => {
           {{ storeItem.price ?? 0 }}
         </span>
       </div>
-      <var-button :loading="loading" loading-size="12" type="warning" size="mini" @click="buy(storeItem)">
+      <var-button :loading="loading" type="warning" size="mini" @click="buy(storeItem)">
         Mua
       </var-button>
     </div>

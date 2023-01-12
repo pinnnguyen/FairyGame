@@ -3,9 +3,10 @@ import { createError, sendError } from 'h3'
 import moment from 'moment'
 import { getBaseReward, getPlayer, receivedEquipment, setLastTimeReceivedRss } from '~/server/helpers'
 import type { BattleRequest, BattleResponse, PlayerInfo } from '~/types'
-import { BattleSchema, BossRankSchema, BossSchema, MonsterSchema } from '~/server/schema'
+import { BattleSchema, BossRankSchema, BossSchema, MonsterSchema, PlayerStatusSchema } from '~/server/schema'
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { startWar } from '~/helpers'
+import { PlayerStatusTypeCon } from '~/types'
 
 // const handleAfterBattle = () => {
 
@@ -56,25 +57,36 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
   const today = moment().startOf('day')
 
   if (isMonster) {
-    const battle = await (BattleSchema as any)
-      .findOne({ 'sid': _p.player.sid, 'kind': BATTLE_KIND.PVE, 'mid.id': _p.player.midId })
+    const battle = await BattleSchema
+      .findOne({ sid: _p.player.sid, kind: BATTLE_KIND.PVE })
       .sort({ createdAt: -1 }).select('player enemy reward createdAt')
 
     if (battle) {
       // Clear pve history
       await BattleSchema.deleteMany({
-        '_id': {
+        _id: {
           $nin: [battle._id],
         },
-        'mid.id': {
-          $nin: [_p.player.midId],
-        },
-        'kind': BATTLE_KIND.PVE,
-        'sid': _p.player.sid,
+        kind: BATTLE_KIND.PVE,
+        sid: _p.player.sid,
       })
 
+      const playerStatus = await PlayerStatusSchema.findOne({
+        sid: _p.player.sid,
+        type: PlayerStatusTypeCon.reduce_waiting_time_training,
+        timeLeft: {
+          $gte: new Date().getTime(),
+        },
+      }).select('value')
+
       // validate
-      const doRefresh = new Date(battle.createdAt).getTime() + (_p as any)?.mid?.current?.ms ?? 60000
+      let ms = (_p as any)?.mid?.current?.ms ?? 60000
+      if (playerStatus && playerStatus.value)
+        ms -= (ms / 100) * playerStatus.value
+
+      console.log('ms', ms)
+      const doRefresh = new Date(battle.createdAt).getTime() + ms
+      console.log('doRefresh > now', doRefresh > now)
       if (doRefresh > now) {
         return {
           inRefresh: true,

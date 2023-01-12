@@ -15,7 +15,7 @@ const { data: storeItems } = await useFetch('/api/store')
         Cửa hàng
       </p>
       <div class="absolute w-full h-full flex justify-center">
-        <div class="w-[84%] h-[70%] overflow-auto">
+        <div class="w-[84%] h-[95%] overflow-auto">
           <div class="grid grid-cols-2 m-auto mt-10 gap-2">
             <StoreItem
               v-for="(storeItem, index) in storeItems"

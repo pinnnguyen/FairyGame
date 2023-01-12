@@ -35,6 +35,7 @@ const { playerInfoComponent } = storeToRefs(useAppStore())
   background: white;
   font-size: 14px;
   user-select: none;
+  font-weight: 500;
 }
 
 .footer {

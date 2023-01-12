@@ -8,8 +8,12 @@ const { playerInfo } = storeToRefs(usePlayerStore())
 
 const toggleAuction = useState('toggleAuction')
 const toggleStore = useState('toggleStore')
+
 const toggleBag = useState('toggleBag')
 const toggleUpgrade = useState('toggleUpgrade')
+
+const active = ref(0)
+const isEven = ref(true)
 
 const needTimeResource = ref(0)
 const doReFetch = ref(false)
@@ -97,6 +101,18 @@ watch(doReFetch, async (value) => {
         <div class="w-[60%] bg-gray-200 rounded-full h-1 dark:bg-gray-700">
           <div class="bg-blue-600 h-1 rounded-full duration-700" :style="{ width: `${needTimeResource}%` }" />
         </div>
+        <!--        <var-bottom-navigation -->
+        <!--          v-model:active="active" -->
+        <!--          class="bottom-navigation-example" -->
+        <!--          @fab-click="isEven = !isEven" -->
+        <!--        > -->
+        <!--          <template #fab> -->
+        <!--            <var-icon name="/index/dungeo.png" /> -->
+        <!--          </template> -->
+        <!--          <var-bottom-navigation-item label="label" icon="home" /> -->
+        <!--          <var-bottom-navigation-item v-if="!isEven" label="Vượt ải" icon="account-circle" /> -->
+        <!--          <var-bottom-navigation-item label="label" icon="bell" /> -->
+        <!--        </var-bottom-navigation> -->
       </div>
     </div>
   </div>

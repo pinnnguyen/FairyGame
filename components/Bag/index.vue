@@ -29,6 +29,10 @@ const pickItem = (item: Item) => {
 const goToHome = () => {
   emits('close')
 }
+
+const callBackUseItem = () => {
+
+}
 </script>
 
 <template>
@@ -37,12 +41,13 @@ const goToHome = () => {
     <BagItemDetail
       v-if="toggleDetail && !isEquipTab"
       :item-id="selectedItem.itemId"
-      :kind="selectedItem.kind"
-      :rank="selectedItem.rank"
-      :preview="selectedItem.preview"
-      :name="selectedItem.name"
-      :info="selectedItem.info"
+      :kind="selectedItem.info.kind"
+      :rank="selectedItem.info.rank"
+      :preview="selectedItem.info.preview"
+      :name="selectedItem.info.name"
+      :info="selectedItem.info.info"
       @close="toggleDetail = false"
+      @useItem="callBackUseItem"
     />
   </Teleport>
   <div class="flex items-center justify-center w-full h-[calc(100vh_-_30px)] bg-bg_5 bg-cover fixed top-[28px] w-full h-full z-99">
@@ -68,8 +73,8 @@ const goToHome = () => {
           <div v-if="bagDataResponse.items.length > 0 && !isEquipTab" class="grid-cols-5 grid gap-2 overflow-scroll">
             <LazyItemRank
               v-for="item in bagDataResponse.items" :key="item.id"
-              :preview="item.preview"
-              :rank="item.rank"
+              :preview="item.info.preview"
+              :rank="item.info.rank"
               :quantity="item.sum"
               class="w-15"
               @click.stop="pickItem(item)"

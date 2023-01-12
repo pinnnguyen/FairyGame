@@ -32,7 +32,7 @@ const tabs = ref([
           <div
             v-for="t in tabs"
             :key="t.key"
-            class="transition transition-opacity bg-[#8c6333] opacity-40 rounded m-2 p-1"
+            class="transition transition-opacity bg-[#8c6333] opacity-40 rounded m-2 p-1 text-12"
             :class="{ '!opacity-100': currentTab === t.key }" @click="currentTab = t.key"
           >
             {{ t.name }}

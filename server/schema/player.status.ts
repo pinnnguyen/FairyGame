@@ -11,11 +11,11 @@ const schema = new mongoose.Schema<PlayerStatus>(
       },
     },
     sid: String,
+    itemId: String,
     type: String,
     value: Number,
     timeLeft: Number,
   },
-  { timestamps: true },
 )
 schema.index({ sid: -1 })
 export const PlayerStatusSchema = mongoose.model('PlayerStatusSchema', schema, 'gl_player_status')

@@ -35,9 +35,9 @@ const caseLevelUpNormal = async (response: Response, sjs: number, sid: string) =
     return response
   }
 
-  const uhp = 2 + Math.round(pAttribute.hp / 50)
-  const udmg = 1 + Math.round(pAttribute.damage / 70)
-  const udef = 1 + Math.round(pAttribute.def / 70)
+  const uhp = 5 + Math.round(pAttribute.hp / 50)
+  const udmg = 3 + Math.round(pAttribute.damage / 70)
+  const udef = 3 + Math.round(pAttribute.def / 70)
 
   // Đại cảnh giới đc tăng thêm chỉ số
   await PlayerAttributeSchema.updateOne({ sid }, {
@@ -114,6 +114,12 @@ export default defineEventHandler(async (event) => {
     status: true,
   }
 
+  if (playerAfter.player.exp <= 0) {
+    response.status = false
+    response.message = 'Không đủ tu vi để đột phá'
+    return response
+  }
+
   if (_p.gold < needGold) {
     response.status = false
     response.message = `Bạn cần ${needGold} Vàng để đột phá`
@@ -138,9 +144,6 @@ export default defineEventHandler(async (event) => {
       statusMessage: 'changeCurrency error',
     })
   }
-
-  console.log('upgrade', upgrade)
-  console.log('sjs', sjs)
 
   switch (upgrade) {
     case UPGRADE_LEVEL.NONE:

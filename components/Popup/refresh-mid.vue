@@ -18,7 +18,7 @@ const time = setInterval(() => {
 
 <template>
   <div class="text-white flex flex-col items-center justify-center">
-    <div class="text-base text-black">
+    <div class="text-base bg-[#009688] text-white font-medium p-1 mb-2 rounded">
       Đang hồi sinh {{ Math.round(convertMillisecondsToSeconds(endTime)) }}s
     </div>
     <!--      <NuxtLink to="/"> -->
