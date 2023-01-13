@@ -11,8 +11,9 @@ defineProps<{
 
 <template>
   <div
-    class="relative duration-800 transition-transform flex flex-col items-center justify-center" :style="{
-      transform: playerEffect === BATTLE_TURN.ENEMY ? 'translate(-30%)' : '',
+    class="relative duration-800 transition-transform flex flex-col items-center justify-center"
+    :style="{
+      transform: realTime.player.trueDamage ? 'translate(-15%)' : '',
     }"
   >
     <span class="text-[#22ae28] font-semibold battle-damage whitespace-nowrap" :class="{ show: realTime.player?.bloodsucking > 0 && realTime.enemy.trueDamage }">
@@ -24,7 +25,12 @@ defineProps<{
       </span>
       <span v-else>-{{ realTime.enemy.dmg }}</span>
     </span>
-    <NuxtImg format="webp" class="h-[100px]" src="/pve/nv2.png" />
+    <NuxtImg
+      format="webp" class="h-[100px]" :class="{
+        'filter grayscale': realTime.enemy.trueDamage,
+      }" src="/pve/nv2.png"
+    />
+    <img v-if="realTime.enemy.trueDamage" class="w-[105px] h-[105px] absolute" src="/battle/player_gif.gif">
     <BattleStatusBar :receiver-hp="receiver?.enemy?.hp" :hp="state?.enemy?.hp" :receiver-mp="receiver?.enemy?.mp" :mp="state?.enemy?.mp" />
   </div>
 </template>

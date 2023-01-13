@@ -6,9 +6,11 @@ const { playerInfoComponent } = storeToRefs(useAppStore())
 
 <template>
   <div class="flex flex-col min-h-screen">
-    <ClientOnly>
-      <PlayerInfomation v-if="playerInfoComponent" :class="{ '!h-[0px] opacity-0': !playerInfoComponent }" />
-    </ClientOnly>
+    <div>
+      <var-popup v-model:show="playerInfoComponent" position="center">
+        <PlayerInfomation />
+      </var-popup>
+    </div>
     <slot name="header">
       <PageNavbar />
     </slot>

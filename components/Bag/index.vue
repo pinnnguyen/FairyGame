@@ -50,7 +50,7 @@ const callBackUseItem = () => {
       @useItem="callBackUseItem"
     />
   </Teleport>
-  <div class="flex items-center justify-center w-full h-[calc(100vh_-_30px)] bg-bg_5 bg-cover fixed top-[28px] w-full h-full z-99">
+  <div class="flex items-center justify-center w-full h-[calc(100vh_-_30px)] bg-bg_5 bg-cover top-[28px] w-full h-full z-99">
     <div class="w-full h-[80%] absolute top-10">
       <div class="w-full h-full relative">
         <span class="font-semibold absolute w-[40px] left-[calc(50%_-_10px)] top-[-1px] text-[#656f99]">TÚI</span>

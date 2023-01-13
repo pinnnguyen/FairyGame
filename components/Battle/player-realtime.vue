@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { BATTLE_TURN } from '~/constants'
-
 defineProps<{
   playerEffect: string
   realTime: any
@@ -11,8 +9,9 @@ defineProps<{
 
 <template>
   <div
-    class="relative duration-800 transition-transform flex flex-col items-center justify-center" :style="{
-      transform: playerEffect === BATTLE_TURN.PLAYER ? 'translate(30%)' : '',
+    class="relative duration-800 transition-transform flex flex-col items-center justify-center"
+    :style="{
+      transform: realTime.enemy.trueDamage ? 'translate(15%)' : '',
     }"
   >
     <span class="text-[#22ae28] font-semibold battle-damage whitespace-nowrap" :class="{ show: realTime.enemy?.bloodsucking > 0 && realTime.enemy.trueDamage }">
@@ -24,7 +23,12 @@ defineProps<{
       </span>
       <span v-else>-{{ realTime.player.dmg }}</span>
     </span>
-    <NuxtImg format="webp" class="h-[100px]" src="/pve/nv1.png" />
+    <NuxtImg
+      :class="{
+        'filter grayscale': realTime.player.trueDamage,
+      }" format="webp" class="h-[100px]" src="/pve/nv1.png"
+    />
+    <img v-if="realTime.player.trueDamage" class="w-[105px] h-[105px] absolute" src="/battle/enemy_gif.gif">
     <BattleStatusBar :receiver-hp="receiver?.player?.hp" :hp="state?.player?.hp" :receiver-mp="receiver?.player?.mp" :mp="state?.player?.mp" />
   </div>
 </template>

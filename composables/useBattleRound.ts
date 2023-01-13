@@ -64,7 +64,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
 
   const speed = useStorage('speed', 1)
   const TURN_DELAY = computed(() => 2000 / speed.value)
-  const REAL_TIME_DELAY = 700
+  // const REAL_TIME_DELAY = 700
   const DAMAGE_DELAY = 700
   const SHOULD_WIN_DELAY = 1000
 
@@ -134,9 +134,9 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
             roundNum,
           })
 
-          setTimeout(() => {
-            set(playerEffect, '')
-          }, REAL_TIME_DELAY)
+          // setTimeout(() => {
+          //   // set(playerEffect, '')
+          // }, REAL_TIME_DELAY)
 
           setTimeout(() => {
             realTime.value[__turn].trueDamage = false
