@@ -1,8 +1,6 @@
 import { randomNumber } from '~/common'
 import { BASE_EXP, BASE_GOLD } from '~/server/rule/reward'
-import { EquipmentSchema } from '~~/server/schema/equipment'
-import { PlayerEquipmentSchema } from '~/server/schema/player.equiment'
-import { PlayerSchema } from '~/server/schema/player'
+import { EquipmentSchema, PlayerEquipmentSchema, PlayerSchema, addPlayerEquipments } from '~/server/schema'
 
 import type { EnemyObject, PlayerEquipment } from '~/types'
 import { MAX_RATE_RECEIVED_RSS, MIN_RATE_RECEIVED_RSS, WINNER } from '~/constants'
@@ -19,7 +17,7 @@ export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject, win
   }
 
   const equipmentIds = []
-  const playerEquipments: PlayerEquipment[] = []
+  let playerEquipments: PlayerEquipment[] = []
 
   const equipRate = _enemyObj.reward.equipRates
   for (let i = 0; i < equipRate.length; i++) {
@@ -29,39 +27,8 @@ export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject, win
       equipmentIds.push(currentRate.id)
   }
 
-  if (equipmentIds.length > 0) {
-    const equipments = await EquipmentSchema.find({
-      id: {
-        $in: equipmentIds,
-      },
-    })
-
-    for (let i = 0; i < equipments.length; i++) {
-      if (!equipments[i])
-        continue
-
-      playerEquipments.push({
-        sid,
-        equipmentId: equipments[i].id,
-        name: equipments[i].name ?? '',
-        info: equipments[i].info ?? '',
-        damage: equipments[i].damage ?? 0,
-        speed: equipments[i].speed ?? 0,
-        def: equipments[i].def ?? 0,
-        hp: equipments[i].hp ?? 0,
-        mp: equipments[i].mp ?? 0,
-        critical: equipments[i].critical ?? 0,
-        bloodsucking: equipments[i].bloodsucking ?? 0,
-        criticalDamage: 0,
-        rank: equipments[i].rank,
-        level: equipments[i].level,
-        slot: equipments[i].slot,
-        preview: equipments[i].preview,
-      })
-    }
-
-    await PlayerEquipmentSchema.insertMany(playerEquipments)
-  }
+  if (equipmentIds.length > 0)
+    playerEquipments = await addPlayerEquipments(sid, equipmentIds)
 
   return {
     equipments: playerEquipments,

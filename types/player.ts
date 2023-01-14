@@ -1,4 +1,5 @@
 import type { Mid } from '~/types/mid'
+import {PlayerEquipment} from "~/types/equiment";
 export interface BaseAttributes {
   speed: number
   damage: number
@@ -34,7 +35,7 @@ export interface Player {
   ofVitality: number
 }
 
-export interface PlayerAttribute extends BaseAttributes, Slot {
+export interface PlayerAttribute extends BaseAttributes {
   _id?: string
   sid: string
 }
@@ -72,8 +73,7 @@ export interface PlayerServerResponse {
     next?: Mid
   }
   upgrade: Upgrade
-  equipments: any
-  playerEquipUpgrade: any
+  equipments: PlayerEquipment[]
 }
 export interface PlayerDataResponse extends Player {
   attribute: PlayerAttribute
@@ -83,7 +83,6 @@ export interface PlayerDataResponse extends Player {
   }
   upgrade: Upgrade
   equipments: any
-  playerEquipUpgrade: any
 }
 
 export interface Upgrade {

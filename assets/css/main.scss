@@ -85,7 +85,7 @@
     }
     99% {
         opacity: 1;
-        bottom: 140px;
+        bottom: 130px;
     }
     100% {
         opacity: 0;
@@ -244,4 +244,8 @@ body .button-cancel {
     /* Rotate */
     transform: rotate(-45deg);
     /* Rotate Origin */
+}
+
+.var-popup__content {
+    border-radius: 3px;
 }

@@ -65,7 +65,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   const speed = useStorage('speed', 1)
   const TURN_DELAY = computed(() => 2000 / speed.value)
   // const REAL_TIME_DELAY = 700
-  const DAMAGE_DELAY = 700
+  const DAMAGE_DELAY = 1200
   const SHOULD_WIN_DELAY = 1000
 
   const battleResult = ref({

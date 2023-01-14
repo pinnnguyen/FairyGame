@@ -105,15 +105,15 @@ export const prepareSlots = (pos: number | undefined, _equipId: string) => {
   return slots[pos || 1]
 }
 
-export const needResourceUpgrade = (type: string, level: number) => {
+export const needResourceUpgrade = (type: string, enhance?: number) => {
   const BASE_GOLD = 1500
   const BASE_CHT = 2 // CUONG HOA THACH
-  const reLevel = level === 0 ? 1 : level
-  console.log('BASE_GOLD * reLevel', BASE_GOLD * reLevel)
+  const reLevel = enhance === 0 ? 1 : enhance
+  console.log('BASE_GOLD * reLevel', BASE_GOLD * reLevel!)
   if (type === 'upgrade') {
     return {
-      gold: BASE_GOLD * reLevel,
-      cuongHoaThach: BASE_CHT * reLevel,
+      gold: BASE_GOLD * reLevel!,
+      cuongHoaThach: BASE_CHT * reLevel!,
     }
   }
 
@@ -123,66 +123,34 @@ export const needResourceUpgrade = (type: string, level: number) => {
   }
 }
 
-export const equipUpgradeWithLevel = (playerEquips: PlayerEquipment[], playerEquipUpgrade: any) => {
-  for (let i = 0; i < playerEquips.length; i++) {
-    for (let j = 0; j < playerEquipUpgrade.length; j++) {
-      if (playerEquips[i].slot === playerEquipUpgrade[j].slot) {
-        const upgradeLevel = playerEquipUpgrade[j].upgradeLevel
-        if (upgradeLevel <= 0)
-          continue
-
-        let extraDamage = 0
-        let extraHp = 0
-        let extraMp = 0
-        let extraCritical = 0
-        let extraBloodsucking = 0
-        let extraSpeed = 0
-        let extraDef = 0
-
-        const extraAttribute = ATTRIBUTE_SLOT[playerEquips[i].slot]
-        if (extraAttribute.damage > 1)
-          extraDamage = extraAttribute.damage * upgradeLevel
-
-        if (extraAttribute.hp > 1)
-          extraHp = extraAttribute.hp * upgradeLevel
-
-        if (extraAttribute.mp > 1)
-          extraMp = extraAttribute.mp * upgradeLevel
-
-        if (extraAttribute.critical > 1)
-          extraCritical = extraAttribute.critical * upgradeLevel
-
-        if (extraAttribute.bloodsucking > 1)
-          extraBloodsucking = extraAttribute.bloodsucking * upgradeLevel
-
-        if (extraAttribute.speed > 1)
-          extraSpeed = extraAttribute.speed * upgradeLevel
-
-        if (extraAttribute.def > 1)
-          extraDef = extraAttribute.def * upgradeLevel
-
-        playerEquips[i].damage += (extraDamage * playerEquips[i].damage) / 100
-        playerEquips[i].hp += (extraHp * playerEquips[i].hp) / 100
-        playerEquips[i].mp += (extraMp * playerEquips[i].mp) / 100
-        playerEquips[i].bloodsucking += (extraBloodsucking * playerEquips[i].bloodsucking) / 100
-        playerEquips[i].critical += (extraCritical * playerEquips[i].critical) / 100
-        playerEquips[i].speed += (extraSpeed * playerEquips[i].speed) / 100
-        playerEquips[i].def += (extraDef * playerEquips[i].def) / 100
-      }
-    }
-  }
-}
-
 export const useEquipment = (playerEquips: PlayerEquipment[], attribute: PlayerAttribute) => {
-  if (playerEquips.length > 0 && attribute) {
-    for (let i = 0; i < playerEquips.length; i++) {
-      attribute.damage += playerEquips[i].damage
-      attribute.hp += playerEquips[i].hp
-      attribute.speed += playerEquips[i].speed
-      attribute.def += playerEquips[i].def
-      attribute.mp += playerEquips[i].mp
-      attribute.critical += playerEquips[i].critical
-      attribute.bloodsucking += playerEquips[i].bloodsucking
+  for (let i = 0; i < playerEquips.length; i++) {
+    const playerEquip = playerEquips[i]
+    if (playerEquip && playerEquip.stats) {
+      for (let j = 0; j < playerEquip.stats.length; j++) {
+        const stat = playerEquip.stats[j]
+
+        if (stat?.damage)
+          attribute.damage += stat?.damage.enhance
+
+        if (stat?.hp)
+          attribute.hp += stat?.hp.enhance
+
+        if (stat?.speed)
+          attribute.speed += stat?.speed.enhance
+
+        if (stat?.def)
+          attribute.def += stat?.def.enhance
+
+        if (stat?.critical)
+          attribute.critical += stat?.critical.enhance
+
+        if (stat?.bloodsucking)
+          attribute.bloodsucking += stat?.bloodsucking.enhance
+
+        if (stat?.mp)
+          attribute.mp += stat?.mp.enhance
+      }
     }
   }
 }

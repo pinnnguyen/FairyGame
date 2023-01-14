@@ -1,0 +1,434 @@
+[
+  {
+    "id": 1,
+    "name": "[Tân thủ] Mộc Kiếm",
+    "info": "[Tân thủ] Mộc Kiếm",
+    "rank": 1,
+    "level": 1,
+    "slot": 1,
+    "preview": "/items/50001.png",
+    "enhance": 0,
+    "stats": [
+      {
+        "damage": {
+          "enhance": 0,
+          "main": 35
+        }
+      },
+      {
+        "speed": {
+          "enhance": 0,
+          "main": 1
+        }
+      },
+      {
+        "def": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "hp": {
+          "enhance": 0,
+          "main": 50
+        }
+      },
+      {
+        "mp": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "critical": {
+          "enhance": 0,
+          "main": 1
+        }
+      },
+      {
+        "bloodsucking": {
+          "enhance": 0,
+          "main": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "[Tân thủ] Mộc Giáp",
+    "info": "[Tân thủ] Mộc Giáp",
+    "rank": 1,
+    "level": 1,
+    "slot": 2,
+    "preview": "/items/50003.png",
+    "enhance": 0,
+    "stats": [
+      {
+        "damage": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "speed": {
+          "enhance": 0,
+          "main": 1
+        }
+      },
+      {
+        "def": {
+          "enhance": 0,
+          "main": 35
+        }
+      },
+      {
+        "hp": {
+          "enhance": 0,
+          "main": 100
+        }
+      },
+      {
+        "mp": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "critical": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "bloodsucking": {
+          "enhance": 0,
+          "main": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "[Tân thủ] Mộc Khôi",
+    "info": "",
+    "rank": 1,
+    "level": 1,
+    "slot": 3,
+    "preview": "/items/50002.png",
+    "enhance": 0,
+    "stats": [
+      {
+        "damage": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "speed": {
+          "enhance": 0,
+          "main": 1
+        }
+      },
+      {
+        "def": {
+          "enhance": 0,
+          "main": 5
+        }
+      },
+      {
+        "hp": {
+          "enhance": 0,
+          "main": 100
+        }
+      },
+      {
+        "mp": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "critical": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "bloodsucking": {
+          "enhance": 0,
+          "main": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "[Tân thủ] Mộc Nhẫn",
+    "info": "[Tân thủ] Mộc Nhẫn",
+    "rank": 1,
+    "level": 1,
+    "slot": 4,
+    "preview": "/items/50009.png",
+    "enhance": 0,
+    "stats": [
+      {
+        "damage": {
+          "enhance": 0,
+          "main": 20
+        }
+      },
+      {
+        "speed": {
+          "enhance": 0,
+          "main": 1
+        }
+      },
+      {
+        "def": {
+          "enhance": 0,
+          "main": 1
+        }
+      },
+      {
+        "hp": {
+          "enhance": 0,
+          "main": 100
+        }
+      },
+      {
+        "mp": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "critical": {
+          "enhance": 0,
+          "main": 1
+        }
+      },
+      {
+        "bloodsucking": {
+          "enhance": 0,
+          "main": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "[Tân thủ] Mộc Ngọc",
+    "info": "[Tân thủ] Mộc Ngọc",
+    "rank": 1,
+    "level": 1,
+    "slot": 5,
+    "preview": "/items/50007.png",
+    "enhance": 0,
+    "stats": [
+      {
+        "damage": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "speed": {
+          "enhance": 0,
+          "main": 5
+        }
+      },
+      {
+        "def": {
+          "enhance": 0,
+          "main": 1
+        }
+      },
+      {
+        "hp": {
+          "enhance": 0,
+          "main": 100
+        }
+      },
+      {
+        "mp": {
+          "enhance": 0,
+          "main": 1
+        }
+      },
+      {
+        "critical": {
+          "enhance": 0,
+          "main": 1
+        }
+      },
+      {
+        "bloodsucking": {
+          "enhance": 0,
+          "main": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "[Tân thủ] Thủ Hộ",
+    "info": "[Tân thủ] Thủ Hộ",
+    "rank": 1,
+    "level": 1,
+    "slot": 6,
+    "preview": "/items/50004.png",
+    "enhance": 0,
+    "stats": [
+      {
+        "damage": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "speed": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "def": {
+          "enhance": 0,
+          "main": 25
+        }
+      },
+      {
+        "hp": {
+          "enhance": 0,
+          "main": 100
+        }
+      },
+      {
+        "mp": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "critical": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "bloodsucking": {
+          "enhance": 0,
+          "main": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "[Tân thủ] Mộc Hài",
+    "info": "[Tân thủ] Mộc Hài",
+    "rank": 1,
+    "level": 1,
+    "slot": 7,
+    "preview": "/items/50005.png",
+    "enhance": 0,
+    "stats": [
+      {
+        "damage": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "speed": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "def": {
+          "enhance": 0,
+          "main": 25
+        }
+      },
+      {
+        "hp": {
+          "enhance": 0,
+          "main": 100
+        }
+      },
+      {
+        "mp": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "critical": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "bloodsucking": {
+          "enhance": 0,
+          "main": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "[Tân thủ] Mộc Đai",
+    "info": "[Tân thủ] Mộc Đai",
+    "rank": 1,
+    "level": 1,
+    "slot": 7,
+    "preview": "/items/50006.png",
+    "enhance": 0,
+    "stats": [
+      {
+        "damage": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "speed": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "def": {
+          "enhance": 0,
+          "main": 25
+        }
+      },
+      {
+        "hp": {
+          "enhance": 0,
+          "main": 100
+        }
+      },
+      {
+        "mp": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "critical": {
+          "enhance": 0,
+          "main": 0
+        }
+      },
+      {
+        "bloodsucking": {
+          "enhance": 0,
+          "main": 0
+        }
+      }
+    ]
+  }
+]

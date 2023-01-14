@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { randomNumber } from '~/common'
+
 defineProps<{
   playerEffect: string
   realTime: any
@@ -28,7 +30,7 @@ defineProps<{
         'filter grayscale': realTime.player.trueDamage,
       }" format="webp" class="h-[100px]" src="/pve/nv1.png"
     />
-    <img v-if="realTime.player.trueDamage" class="w-[105px] h-[105px] absolute" src="/battle/enemy_gif.gif">
+    <img v-if="realTime.player.trueDamage" class="w-[105px] h-[105px] absolute" :src="`/battle/enemy_gif.gif?v=${randomNumber(1, 100)}`">
     <BattleStatusBar :receiver-hp="receiver?.player?.hp" :hp="state?.player?.hp" :receiver-mp="receiver?.player?.mp" :mp="state?.player?.mp" />
   </div>
 </template>

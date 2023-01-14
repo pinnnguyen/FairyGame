@@ -21,10 +21,8 @@ export default defineEventHandler(async (event: H3Event) => {
     })
   }
 
-  console.log('player', player)
   const equipments = await PlayerEquipmentSchema.find({ sid: player?.sid }).limit(25)
   const playerItems = await getPlayerItems(player.sid)
-  console.log('playerItems', playerItems)
 
   return {
     equipments,

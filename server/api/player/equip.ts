@@ -1,7 +1,5 @@
-import { PlayerSchema, PlayerEquipmentSchema, PlayerAttributeSchema } from '~/server/schema'
-
+import { PlayerEquipmentSchema, PlayerSchema } from '~/server/schema'
 import { getServerSession } from '#auth'
-import { prepareSlots } from '~/server/helpers'
 interface Equip {
   action: 'equip' | 'unequip'
   _equipId: string
@@ -36,7 +34,14 @@ export default defineEventHandler(async (event) => {
   }
 
   if (body.action === 'equip') {
-    await PlayerAttributeSchema.updateOne({ sid: player?.sid }, prepareSlots(playerEquipment.slot, playerEquipment._id))
+    console.log('playerEquipment.slot', playerEquipment.slot)
+    await PlayerEquipmentSchema.updateMany({ sid: player?.sid, slot: playerEquipment.slot }, {
+      used: false,
+    })
+
+    await PlayerEquipmentSchema.updateOne({ sid: player?.sid, slot: playerEquipment.slot }, {
+      used: true,
+    })
 
     return {
       statusCode: 200,
@@ -45,7 +50,10 @@ export default defineEventHandler(async (event) => {
   }
 
   if (body.action === 'unequip') {
-    await PlayerAttributeSchema.updateOne({ sid: player?.sid }, prepareSlots(playerEquipment.slot, ''))
+    await PlayerEquipmentSchema.updateOne({ sid: player?.sid, slot: playerEquipment.slot }, {
+      used: false,
+    })
+
     return {
       statusCode: 200,
       statusMessage: 'Tháo bị thành công',

@@ -19,3 +19,13 @@ export const DEFAULT_ATTRIBUTE = {
   exp: 0,
   speed: 1,
 }
+
+export const ATTRIBUTE_TITLE_STATS = {
+  damage: 'Công kích',
+  def: 'Phòng ngự',
+  hp: 'Sinh lực',
+  mp: 'Ma lực',
+  bloodsucking: 'Hút máu',
+  critical: 'Bạo kích',
+  speed: 'Tốc độ',
+}

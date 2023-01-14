@@ -12,8 +12,7 @@ const toggleStore = useState('toggleStore')
 const toggleBag = useState('toggleBag')
 const toggleUpgrade = useState('toggleUpgrade')
 
-const active = ref(0)
-const isEven = ref(true)
+const startBattle = useState('startBattle')
 
 const needTimeResource = ref(0)
 const doReFetch = ref(false)
@@ -68,7 +67,7 @@ watch(doReFetch, async (value) => {
         <NuxtImg class="w-[50px]" src="/index/store.png" @click.stop="toggleStore = true" />
         <span class="text-black whitespace-nowrap text-12">Cửa hàng</span>
       </div>
-      <NuxtLink to="/battle" class="flex flex-col items-center justify-center w-[50px] mb-3">
+      <NuxtLink class="flex flex-col items-center justify-center w-[50px] mb-3" @click="startBattle = true">
         <NuxtImg class="w-[50px]" src="/index/dungeo.png" />
         <span class="text-black whitespace-nowrap text-12">Vượt ải</span>
       </NuxtLink>

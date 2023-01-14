@@ -9,12 +9,8 @@ export const handleEquipUpgrade = (io: any, socket: any) => {
       if (!equip)
         return
 
-      const equipUpgrade = await PlayerEquipUpgradeSchema.findOneAndUpdate({ sid: equip.sid, slot: equip.slot }, {}, { upsert: true })
-      if (!equipUpgrade)
-        return
-
-      const { gold, cuongHoaThach } = needResourceUpgrade('upgrade', equipUpgrade.upgradeLevel)
-      const totalCuongHoaThach = await PlayerItemSchema.findOne({ itemId: 1, kind: 2, sid: equip.sid })
+      const { gold, cuongHoaThach } = needResourceUpgrade('upgrade', equip?.enhance)
+      const totalCuongHoaThach = await PlayerItemSchema.findOne({ itemId: 1, sid: equip.sid })
 
       const require = {
         gold,
@@ -30,15 +26,13 @@ export const handleEquipUpgrade = (io: any, socket: any) => {
       if (!equip)
         return
 
-      const equipUpgrade = await PlayerEquipUpgradeSchema.findOne({ sid: equip.sid, slot: equip.slot })
-      if (!equipUpgrade)
-        return
-
-      const reedRss = needResourceUpgrade('upgrade', equipUpgrade.upgradeLevel)
-      await PlayerItemSchema.findOneAndUpdate({ itemId: 1, kind: 2, sid: equip.sid }, {
+      const reedRss = needResourceUpgrade('upgrade', equip.enhance)
+      const playerItem = await PlayerItemSchema.findOneAndUpdate({ itemId: 1, sid: equip.sid }, {
         $inc: {
           sum: -reedRss.cuongHoaThach,
         },
+      }, {
+        new: true,
       })
 
       await PlayerSchema.findOneAndUpdate({ sid: equip.sid }, {
@@ -47,14 +41,46 @@ export const handleEquipUpgrade = (io: any, socket: any) => {
         },
       })
 
-      const equipUpgradeUpdated = await PlayerEquipUpgradeSchema.findOneAndUpdate({ sid: equip.sid }, {
+      const equipEnhanceUpdated = await PlayerEquipmentSchema.findOneAndUpdate({ _id: equip._id }, {
         $inc: {
-          upgradeLevel: 1,
+          enhance: 1,
         },
+      }, {
+        new: true,
       })
 
-      const playerItem = await PlayerItemSchema.findOne({ itemId: 1, kind: 2, sid: equip.sid })
-      const { gold, cuongHoaThach } = needResourceUpgrade('upgrade', equipUpgradeUpdated ? equipUpgradeUpdated.upgradeLevel : equipUpgrade.upgradeLevel)
+      const stats = equip.stats
+      const extentAttributeEnhanceLevel = 3
+      for (let i = 0; i < stats!.length; i++) {
+        const stat = stats![i]
+
+        if (stat.damage)
+          stat.damage.enhance = (stat.damage.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
+
+        if (stat.def)
+          stat.def.enhance = (stat.def.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
+
+        if (stat.speed)
+          stat.speed.enhance = (stat.speed.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
+
+        if (stat.hp)
+          stat.hp.enhance = (stat.hp.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
+
+        if (stat.mp)
+          stat.mp.enhance = (stat.mp.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
+
+        if (stat.critical)
+          stat.critical.enhance = (stat.critical.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
+
+        if (stat.bloodsucking)
+          stat.bloodsucking.enhance = (stat.bloodsucking.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
+      }
+
+      await PlayerEquipmentSchema.findOneAndUpdate({ _id: equip._id }, {
+        stats,
+      })
+
+      const { gold, cuongHoaThach } = needResourceUpgrade('upgrade', equipEnhanceUpdated ? equipEnhanceUpdated?.enhance : equip?.enhance)
 
       io.to(_channel).emit('equip:upgrade:response', {
         gold,

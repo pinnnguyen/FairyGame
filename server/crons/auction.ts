@@ -4,9 +4,10 @@ import {
   BossSchema,
   EquipmentSchema,
   ItemSchema,
-  addPlayerEquipments, addPlayerItems,
+  PlayerEquipmentSchema,
+  addPlayerItems,
 } from '~/server/schema'
-import type { Equipment, Item } from '~/types'
+import type { Equipment, Item, PlayerEquipment } from '~/types'
 
 export const handleStartBoss12h = async () => {
   const boss = await BossSchema.findOne({ kind: 'frameTime', startHours: 12 })
@@ -51,7 +52,7 @@ export const handleRewardBoss12h = async () => {
   if (!auctionItems)
     return
 
-  const playerEquipItems: Equipment[] = []
+  const playerEquipItems: PlayerEquipment[] = []
   const playerItems: Item[] = []
 
   for (let i = 0; i < auctionItems.length; i++) {
@@ -70,18 +71,13 @@ export const handleRewardBoss12h = async () => {
           sid: _sid,
           name: equipment?.name,
           info: equipment?.info,
-          damage: equipment?.damage,
-          speed: equipment?.speed,
-          def: equipment?.def,
-          hp: equipment?.hp,
-          mp: equipment?.mp,
-          critical: equipment?.critical,
-          bloodsucking: equipment?.bloodsucking,
-          criticalDamage: 0,
           rank: equipment?.rank,
           level: equipment?.level,
           slot: equipment?.slot,
           preview: equipment?.preview,
+          enhance: equipment.enhance,
+          stats: equipment.stats,
+          used: false,
         })
       }
     }
@@ -94,15 +90,13 @@ export const handleRewardBoss12h = async () => {
 
         playerItems.push({
           sid: _sid,
-          name: item.name,
-          info: item.info,
-          kind: item.kind,
+          itemId: item.id,
           sum: _quantity,
         })
       }
     }
   }
 
-  await addPlayerEquipments(playerEquipItems)
+  await PlayerEquipmentSchema.insertMany(playerEquipItems)
   await addPlayerItems(playerItems)
 }

@@ -42,9 +42,9 @@
 //   }
 // }
 import { conditionForUpLevel } from '~/server/common'
-import { equipUpgradeWithLevel, formatAttributes, useEquipment } from '~/server/helpers/equipment'
+import { formatAttributes, useEquipment } from '~/server/helpers/equipment'
 import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule'
-import { MidSchema, PlayerAttributeSchema, PlayerEquipUpgradeSchema, PlayerEquipmentSchema, PlayerSchema } from '~/server/schema'
+import { MidSchema, PlayerSchema } from '~/server/schema'
 import type { Player, PlayerAttribute, PlayerServerResponse } from '~/types'
 
 const useClass = (ofClass: number, attribute: PlayerAttribute) => {
@@ -76,24 +76,24 @@ const useClass = (ofClass: number, attribute: PlayerAttribute) => {
 
 const useAttribute = (_p: Player, attribute: PlayerAttribute) => {
   if (_p.ofPower > 0) {
-    attribute.hp += 10 * _p.ofPower
+    attribute.hp += 30 * _p.ofPower
     attribute.damage += (0.2 * _p.ofPower) * attribute.damage / 100
   }
 
   if (_p.ofAgility) {
-    attribute.speed += 0.5 * _p.ofAgility
+    attribute.speed += 1 * _p.ofAgility
     attribute.critical += (0.2 * _p.ofAgility) * attribute.critical / 100
   }
 
   if (_p.ofVitality) {
-    attribute.def += 2 + 0.5 * _p.ofVitality
-    attribute.hp += 10 + (0.2 * _p.ofVitality) * attribute.hp / 100
-  }
+    attribute.def += (0.2 * _p.ofVitality) * attribute.def / 100
+    attribute.hp += (0.2 * _p.ofVitality) * attribute.hp / 100
+    attribute.hp += 20
 
   if (_p.ofSkillful) {
     attribute.speed += 0.5 * _p.ofSkillful
-    attribute.def += 2 + 0.5 * _p.ofSkillful
-    attribute.critical += (0.1 * _p.ofSkillful) * attribute.critical / 100
+    attribute.def += 10 * _p.ofSkillful
+    attribute.critical += (0.2 * _p.ofSkillful) * attribute.critical / 100
   }
 }
 
@@ -119,6 +119,26 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
       $unwind: '$attribute',
     },
     {
+      $lookup: {
+        from: 'gl_player_equipments',
+        localField: 'sid',
+        foreignField: 'sid',
+        as: 'equipments',
+        pipeline: [
+          {
+            $match: {
+              used: true,
+            },
+          },
+          {
+            $sort: {
+              slot: -1,
+            },
+          },
+        ],
+      },
+    },
+    {
       $limit: 1,
     },
   ])
@@ -128,6 +148,7 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
 
   const player = players[0]
   const attribute = player.attribute
+  const playerEquips = player.equipments
 
   const { needGold } = conditionForUpLevel(player)
   const mid = await MidSchema.find({
@@ -156,33 +177,7 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
   if (player.class > 0 && attribute)
     useClass(player.class, attribute)
 
-  const equipIds = []
-  if (attribute?.slot_1)
-    equipIds.push(attribute?.slot_1)
-  if (attribute?.slot_2)
-    equipIds.push(attribute?.slot_2)
-  if (attribute?.slot_3)
-    equipIds.push(attribute?.slot_3)
-  if (attribute?.slot_4)
-    equipIds.push(attribute?.slot_4)
-  if (attribute?.slot_5)
-    equipIds.push(attribute?.slot_5)
-  if (attribute?.slot_6)
-    equipIds.push(attribute?.slot_6)
-  if (attribute?.slot_7)
-    equipIds.push(attribute?.slot_7)
-  if (attribute?.slot_8)
-    equipIds.push(attribute?.slot_8)
-
-  const playerEquipUpgrade = await PlayerEquipUpgradeSchema.find({ sid: player.sid })
-  const playerEquips = await PlayerEquipmentSchema.find({
-    _id: {
-      $in: equipIds,
-    },
-  }).select('name damage hp speed def mp critical bloodsucking preview slot level rank').sort({ slot: -1 })
-
-  equipUpgradeWithLevel(playerEquips, playerEquipUpgrade)
-  if (attribute) {
+  if (playerEquips.length > 0) {
     useEquipment(playerEquips, attribute)
     formatAttributes(attribute)
   }
@@ -201,6 +196,5 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
       },
     },
     equipments: playerEquips,
-    playerEquipUpgrade,
   } as PlayerServerResponse
 }

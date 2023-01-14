@@ -2,15 +2,23 @@
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '~/composables/app'
 const { playerInfoComponent } = storeToRefs(useAppStore())
+
+const startBattle = useState('startBattle', () => false)
 </script>
 
 <template>
   <div class="flex flex-col min-h-screen">
-    <div>
-      <var-popup v-model:show="playerInfoComponent" position="center">
-        <PlayerInfomation />
-      </var-popup>
-    </div>
+    <ClientOnly>
+      <div>
+        <var-popup v-model:show="playerInfoComponent" position="center">
+          <PlayerInfomation />
+        </var-popup>
+
+        <var-popup v-model:show="startBattle" position="center">
+          <Battle />
+        </var-popup>
+      </div>
+    </ClientOnly>
     <slot name="header">
       <PageNavbar />
     </slot>

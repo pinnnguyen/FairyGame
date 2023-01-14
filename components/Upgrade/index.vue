@@ -14,6 +14,8 @@ const { getPlayer } = usePlayerStore()
 const equipSelected = ref<Partial<PlayerEquipment>>({})
 const needResource = ref()
 const loading = ref(false)
+const tooltip = ref(false)
+const showEquipInfo = ref(false)
 
 onMounted(() => {
   $io.emit('equip:upgrade:start', `equip:upgrade:${playerInfo.value?.sid}`)
@@ -71,6 +73,16 @@ const goToHome = () => {
 </script>
 
 <template>
+  <var-popup v-model:show="tooltip" position="center">
+    <div class="w-60 p-4 bg-white text-12">
+      <p>Mỗi cấp sẽ tăng 3% hiệu quả thuộc tính trang bị</p>
+      <br>
+      <p>Thất bại sẽ giảm 1 cấp cường hóa.</p>
+    </div>
+  </var-popup>
+  <var-popup v-model:show="showEquipInfo" position="center">
+    <PopupEquipInfo :item="equipSelected" />
+  </var-popup>
   <div class="flex items-center justify-center w-full h-[calc(100vh_-_30px)] bg-bg_5 bg-cover fixed top-[28px] w-full h-full z-99">
     <div class="w-full h-[80%] absolute top-10">
       <div class="w-full h-full relative">
@@ -82,7 +94,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot1?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot1.rank" :preview="slot1?.preview" @click.stop="equipSelected = slot1">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(1)?.upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(1)?.enhance }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
@@ -90,7 +102,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot2?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot2.rank" :preview="slot2?.preview" @click.stop="equipSelected = slot2">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(2)?.upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(2)?.enhance }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
@@ -98,7 +110,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot3?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot3.rank" :preview="slot3?.preview" @click.stop="equipSelected = slot3">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(3)?.upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(3)?.enhance }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
@@ -106,7 +118,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot4?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot4.rank" :preview="slot4?.preview" @click.stop="equipSelected = slot4">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(4)?.upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(4)?.enhance }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
@@ -114,10 +126,10 @@ const goToHome = () => {
           </div>
           <div class="flex justify-center items-center relative">
             <NuxtImg format="webp" class="w-[200px]" src="/upgrade/intensive.png" />
-            <div class="absolute top-[84px] rounded">
+            <div class="absolute top-[84px] rounded" @click="showEquipInfo = true">
               <ItemRank v-if="equipSelected.preview" class="relative" :quantity="0" :rank="equipSelected.rank" :preview="equipSelected.preview">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[45px] flex justify-center">
-                  {{ getSlotEquipUpgrade(equipSelected.slot)?.upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(equipSelected?.slot)?.enhance }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[44px] h-[44px] bg-[#659e58]" />
@@ -127,7 +139,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot5?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot5.rank" :preview="slot5?.preview" @click.stop="equipSelected = slot5">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(5)?.upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(5)?.enhance }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
@@ -135,7 +147,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot6?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot6.rank" :preview="slot6?.preview" @click.stop="equipSelected = slot6">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(6)?.upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(6)?.enhance }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
@@ -143,7 +155,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot7?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot7.rank" :preview="slot7?.preview" @click.stop="equipSelected = slot7">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(7)?.upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(7)?.enhance }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
@@ -151,7 +163,7 @@ const goToHome = () => {
             <div>
               <ItemRank v-if="slot8?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot8.rank" :preview="slot8?.preview" @click.stop="equipSelected = slot8">
                 <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                  {{ getSlotEquipUpgrade(8)?.upgradeLevel }} cấp
+                  {{ getSlotEquipUpgrade(8)?.enhance }} cấp
                 </div>
               </ItemRank>
               <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
@@ -181,14 +193,9 @@ const goToHome = () => {
             </button>
           </div>
         </div>
-        <!--        <div class="flex"> -->
-        <!--          <button> -->
-        <!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_active.png" /> -->
-        <!--          </button> -->
-        <!--          <button> -->
-        <!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_deactive.png" /> -->
-        <!--          </button> -->
-        <!--        </div> -->
+        <p class="absolute bottom-5 right-4" @click="tooltip = true">
+          <Icon name="ri:question-fill" size="20" />
+        </p>
       </div>
     </div>
     <div class="absolute bottom-0 w-full h-[65px]">

@@ -83,11 +83,11 @@ const doCloseBattleR = () => {
       :reward="reward"
       @close="doCloseBattleR"
     />
-    <var-loading description="LOADING" type="circle" :loading="loading">
-      <div class="h-screen bg-white">
-        <div class="h-[54%] bg-bg_pve bg-cover relative">
+    <var-loading class="w-[calc(100vw_-_20px)]" description="Đang tải" type="circle" :loading="loading">
+      <div class="h-[85vh] bg-white overflow-hidden">
+        <div class="bg-bg_pve bg-cover relative h-full">
           <div class="text-center pt-2 text-base font-semibold flex items-center justify-center">
-            <span class="bg-[#009688] text-white p-1 rounded">
+            <span class="bg-[#009688] text-white p-1 rounded text-12">
               [{{ playerInfo?.mid?.current?.name }}]
             </span>
           </div>
@@ -133,34 +133,40 @@ const doCloseBattleR = () => {
               :real-time="realTime"
             />
           </div>
-
-          <div class="absolute bottom-0 right-0 py-2">
-            <var-button v-show="speed === 1" outline size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 2">
-              X1
-            </var-button>
-            <var-button v-show="speed === 2" outline size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 1">
-              X2
-            </var-button>
-          </div>
+          <!--
+          <LazyPopupRefreshMid
+            v-if="inRefresh"
+            :refresh-time="refreshTime"
+            @refresh-finished="refreshFinished"
+          /> -->
         </div>
-        <div class="relative h-full">
-          <NuxtImg class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" />
-          <div class="p-4 h-[25%] overflow-scroll">
+        <div class="relative">
+          <!-- <NuxtImg class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" /> -->
+          <!-- <div class="p-4 h-[25%] overflow-scroll">
             <BattleHistory :battle-rounds="battleRounds" />
-          </div>
-          <div class="flex items-center flex-col justify-center w-full fixed bottom-2">
+          </div> -->
+          <div class="flex items-center flex-col justify-center w-full absolute bottom-0">
             <LazyPopupRefreshMid
               v-if="inRefresh"
               :refresh-time="refreshTime"
               @refresh-finished="refreshFinished"
             />
             <div class="flex items-center gap-2">
-              <var-button class="w-[80px] uppercase font-medium" size="small" type="default" @click="nextMid" @click.stop="navigateTo('/')">
+              <!-- <var-button class="w-[80px] uppercase font-medium" size="small" type="default" @click="nextMid" @click.stop="navigateTo('/')">
                 Về thành
-              </var-button>
+              </var-button> -->
               <var-button class="w-[80px] uppercase font-medium" size="small" type="default" @click="nextMid">
                 Ải tiếp
               </var-button>
+
+              <div class="py-2">
+                <var-button v-show="speed === 1" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 2">
+                  X1
+                </var-button>
+                <var-button v-show="speed === 2" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 1">
+                  X2
+                </var-button>
+              </div>
             </div>
           </div>
         </div>

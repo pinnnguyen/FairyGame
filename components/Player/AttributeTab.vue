@@ -21,6 +21,7 @@ const classListColor: Record<number, string> = {
 
 const classTitle = computed(() => classToTitle[playerInfo.value!.class])
 const classColor = computed(() => classListColor[playerInfo.value!.class])
+const tooltip = ref(false)
 
 const addAttribute = async (target: string) => {
   try {
@@ -42,6 +43,75 @@ const addAttribute = async (target: string) => {
 </script>
 
 <template>
+  <var-popup v-model:show="tooltip" position="center">
+    <div class="w-80 p-4 bg-white text-black rounded">
+      Lên 1 level sẽ được thêm 2 điểm thuộc tính
+      <p class="border-t my-2" />
+      <p class="flex flex-col">
+        <span>
+          1 Sức mạnh
+        </span>
+        <span class="pl-3">
+          <Icon name="mdi:cards-heart" size="16" class="text-red-500" />
+          30 Sinh lực
+        </span>
+        <span class="pl-3">
+          <Icon name="material-symbols:swords" size="16" class="text-rose-600" />
+          0.2% Tấn công cơ bản
+        </span>
+      </p>
+      <p class="border-t my-2" />
+      <p class="flex flex-col">
+        <span>
+          1 Nhanh nhẹn
+        </span>
+        <span class="pl-3">
+          <Icon name="mdi:bow-arrow" size="16" class="text-[#a855f7]" />
+          1 Tốc độ
+        </span>
+        <span class="pl-3">
+          <Icon name="game-icons:pointy-sword" size="16" class="text-yellow-300" />
+          0.2% Bạo kích cơ bản
+        </span>
+      </p>
+      <p class="border-t my-2" />
+      <p class="flex flex-col">
+        <span>
+          1 Sức khoẻ
+        </span>
+        <span class="pl-3">
+          <Icon name="mdi:cards-heart" size="16" class="text-red-500" />
+          20 Sinh lực
+        </span>
+        <span class="pl-3">
+          <Icon name="mdi:heart-plus" size="16" class="text-red-500" />
+          0.2% Sinh lực cơ bản
+        </span>
+        <span class="pl-3">
+          <Icon name="material-symbols:shield" size="16" class="text-green-500" />
+          0.2% Phòng thủ cơ bản
+        </span>
+      </p>
+      <p class="border-t my-2" />
+      <p class="flex flex-col">
+        <span>
+          1 Khéo léo
+        </span>
+        <span class="pl-3">
+          <Icon name="mdi:bow-arrow" size="16" class="text-[#a855f7]" />
+          0.5 Tốc độ
+        </span>
+        <span class="pl-3">
+          <Icon name="mdi:shield-plus" size="16" class="text-green-500" />
+          10 Phòng ngự
+        </span>
+        <span class="pl-3">
+          <Icon name="game-icons:pointy-sword" size="16" class="text-yellow-300" />
+          0.2% Bạo kích cơ bản
+        </span>
+      </p>
+    </div>
+  </var-popup>
   <div>
     <div class="h-[60px] justify-between flex items-center mx-3">
       <div class="flex items-center">
@@ -81,7 +151,7 @@ const addAttribute = async (target: string) => {
           Tốc độ: {{ attribute?.speed ?? 0 }}
         </span>
         <span class=" px-2">
-          Khí huyết: {{ attribute?.hp ?? 0 }}
+          Sinh lực: {{ attribute?.hp ?? 0 }}
         </span>
         <span class=" px-2">
           Công Kích: {{ attribute?.damage ?? 0 }}
@@ -130,5 +200,8 @@ const addAttribute = async (target: string) => {
       </div>
       <div />
     </div>
+    <p class="absolute bottom-2 right-2" @click="tooltip = true">
+      <Icon name="ri:question-fill" size="20" />
+    </p>
   </div>
 </template>
