@@ -90,10 +90,11 @@ const useAttribute = (_p: Player, attribute: PlayerAttribute) => {
     attribute.hp += (0.2 * _p.ofVitality) * attribute.hp / 100
     attribute.hp += 20
 
-  if (_p.ofSkillful) {
-    attribute.speed += 0.5 * _p.ofSkillful
-    attribute.def += 10 * _p.ofSkillful
-    attribute.critical += (0.2 * _p.ofSkillful) * attribute.critical / 100
+    if (_p.ofSkillful) {
+      attribute.speed += 0.5 * _p.ofSkillful
+      attribute.def += 10 * _p.ofSkillful
+      attribute.critical += (0.2 * _p.ofSkillful) * attribute.critical / 100
+    }
   }
 }
 

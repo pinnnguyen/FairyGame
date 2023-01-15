@@ -1,7 +1,7 @@
 import {
   AuctionItemSchema,
   AuctionSchema,
-  BossSchema,
+  BossDataSchema,
   EquipmentSchema,
   ItemSchema,
   PlayerEquipmentSchema,
@@ -10,7 +10,7 @@ import {
 import type { Equipment, Item, PlayerEquipment } from '~/types'
 
 export const handleStartBoss12h = async () => {
-  const boss = await BossSchema.findOne({ kind: 'frameTime', startHours: 12 })
+  const boss = await BossDataSchema.findOne({ kind: 'frameTime', startHours: 12 })
   console.log('--START BOSS--', boss)
 
   const auction = await new AuctionSchema({

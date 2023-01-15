@@ -1,0 +1,28 @@
+[
+    {
+        "id": 7,
+        "name": "Ma hóa chi linh hầu",
+        "kind": "elite",
+        "level": 1,
+        "info": "",
+        "sex": "",
+        "attribute": {
+          "damage": 250,
+          "def": 100,
+          "hp": 1000000,
+          "mp": 0,
+          "critical": 20,
+          "bloodsucking": 10
+        },
+        "numberOfTurn": 5,
+        "reward": {
+          "base": {
+            "exp": 10,
+            "gold": 10
+          },
+          "equipRates": []
+        },
+        "avatar": "/monster/310007.png",
+        "class": 3
+      }
+]

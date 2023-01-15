@@ -1,5 +1,5 @@
 import type { Mid } from '~/types/mid'
-import {PlayerEquipment} from "~/types/equiment";
+import type { PlayerEquipment } from '~/types/equiment'
 export interface BaseAttributes {
   speed: number
   damage: number

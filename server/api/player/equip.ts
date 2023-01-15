@@ -35,11 +35,12 @@ export default defineEventHandler(async (event) => {
 
   if (body.action === 'equip') {
     console.log('playerEquipment.slot', playerEquipment.slot)
+    console.log('player?.sid', player?.sid)
     await PlayerEquipmentSchema.updateMany({ sid: player?.sid, slot: playerEquipment.slot }, {
       used: false,
     })
 
-    await PlayerEquipmentSchema.updateOne({ sid: player?.sid, slot: playerEquipment.slot }, {
+    await PlayerEquipmentSchema.updateOne({ _id: playerEquipment._id, slot: playerEquipment.slot }, {
       used: true,
     })
 

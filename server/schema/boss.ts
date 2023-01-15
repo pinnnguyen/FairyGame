@@ -16,14 +16,8 @@ const schema = new mongoose.Schema<Boss>(
     level: Number,
     info: String,
     sex: String,
-    damage: Number,
-    def: Number,
-    hp: Number,
-    mhp: Number,
-    mp: Number,
-    critical: Number,
-    bloodsucking: Number,
-    speed: Number,
+    attribute: {},
+    avatar: String,
     reward: {},
     numberOfTurn: Number,
     class: Number,
@@ -35,8 +29,4 @@ const schema = new mongoose.Schema<Boss>(
 )
 
 schema.index({ id: -1 }, { unique: true })
-
-// export const BossSchema = (mongoose.models && mongoose.models.BossSchema
-//   ? mongoose.models.BossSchema
-//   : mongoose.model('BossSchema', schema, 'boss'))
-export const BossSchema = mongoose.model('BossSchema', schema, 'boss')
+export const BossDataSchema = mongoose.model('BossDataSchema', schema, 'boss')

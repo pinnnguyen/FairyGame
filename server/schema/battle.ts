@@ -18,10 +18,11 @@ const schema = new mongoose.Schema<Battle>(
     enemy: {},
     player: {},
     winner: String,
+    damage: Number,
     reward: {},
   },
   { timestamps: true },
 )
+
 schema.index({ createdAt: -1 })
 export const BattleSchema = mongoose.model('BattleSchemas', schema, 'gl_battles')
-// export const BattleSchema = (mongoose.models && mongoose.models.BattleSchemas ? mongoose.models.BattleSchemas : mongoose.model('BattleSchemas', schema, 'battles'))

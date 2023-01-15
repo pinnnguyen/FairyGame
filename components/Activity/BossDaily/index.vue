@@ -7,7 +7,6 @@ const close = () => {
 
 <template>
   <div class="flex items-center justify-center h-full w-full fixed z-99" style="background: url('/common/bg_5.jpg'); background-size: cover">
-    <!--    <NuxtImg src="/common/bg_5.jpg"></NuxtImg> -->
     <div class="w-[90%] h-[70%] absolute top-10">
       <div class="w-full h-full relative">
         <span class="font-semibold absolute w-[40px] left-[calc(50%_-_15px)] top-[-1px] text-[#656f99]">BOSS</span>
@@ -32,14 +31,6 @@ const close = () => {
             </div>
           </div>
         </div>
-        <!--        <div class="flex"> -->
-        <!--          <button> -->
-        <!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_active.png" /> -->
-        <!--          </button> -->
-        <!--          <button> -->
-        <!--            <NuxtImg class="w-[60px] h-[70px]" src="/bottom/bottom_tab_deactive.png" /> -->
-        <!--          </button> -->
-        <!--        </div> -->
       </div>
     </div>
     <div class="absolute bottom-0 w-full h-[65px]">

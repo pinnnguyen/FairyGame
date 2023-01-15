@@ -1,4 +1,3 @@
-import { BossSchema } from '~/server/schema'
 import type { EnemyObject, PlayerAttribute, PlayerInfo } from '~/types'
 import { BATTLE_ACTION, WINNER } from '~/constants/war'
 import type { BaseProperties, BattleResponse, Emulator } from '~/types/war'
@@ -9,17 +8,17 @@ export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   let enemyBloodsucking = 0
   let enemyCritical = false
 
-  const enemyDMG = (enemy?.damage as number)
+  const enemyDMG = (enemy?.attribute.damage as number)
   const playerDef = (player?.attribute?.def as number)
 
   inflictDMG = Math.round(enemyDMG - playerDef * 0.75)
-  if (enemy.bloodsucking > 0)
-    enemyBloodsucking = Math.round((enemy.bloodsucking * inflictDMG) / 100)
+  if (enemy.attribute.bloodsucking > 0)
+    enemyBloodsucking = Math.round((enemy.attribute.bloodsucking * inflictDMG) / 100)
 
-  if (enemy.critical > 0) {
+  if (enemy.attribute.critical > 0) {
     const iRan = randomNumber(1, 100)
 
-    if (enemy.critical >= iRan) {
+    if (enemy.attribute.critical >= iRan) {
       enemyCritical = true
       inflictDMG = Math.round(inflictDMG * 1.5)
     }
@@ -38,7 +37,7 @@ export const inflictDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   let playerCritical = false
 
   const playerDMG = (player?.attribute?.damage as number)
-  const enemyDef = (enemy?.def as number)
+  const enemyDef = (enemy?.attribute.def as number)
 
   inflictDMG = Math.round(playerDMG - enemyDef * 0.75)
 
@@ -71,11 +70,11 @@ export const formatHP = (hp: number, limit: number) => {
 export const enemyDeep = (enemy: EnemyObject) => {
   return {
     level: enemy?.level,
-    damage: enemy?.damage,
-    def: enemy?.def,
-    hp: enemy?.hp,
-    critical: enemy?.critical,
-    speed: enemy?.speed,
+    damage: enemy?.attribute.damage,
+    def: enemy?.attribute.def,
+    hp: enemy?.attribute.hp,
+    critical: enemy?.attribute.critical,
+    speed: enemy?.attribute.speed,
     name: enemy?.name,
   } as BaseProperties
 }
@@ -113,7 +112,7 @@ const addPlayerFirstEmulators = (options: {
       },
       now: {
         hp: {
-          enemy: options._enemy?.hp,
+          enemy: options._enemy?.attribute?.hp,
         },
         mp: {
           player: options.playerAttribute?.mp,
@@ -132,7 +131,7 @@ const addPlayerFirstEmulators = (options: {
           player: options.playerAttribute?.hp,
         },
         mp: {
-          enemy: options._enemy?.mp,
+          enemy: options._enemy?.attribute.mp,
         },
       },
     },
@@ -165,7 +164,7 @@ const addEnemyFirstEmulators = (options: {
           player: options.playerAttribute?.hp,
         },
         mp: {
-          enemy: options._enemy?.mp,
+          enemy: options._enemy?.attribute.mp,
         },
       },
     },
@@ -178,7 +177,7 @@ const addEnemyFirstEmulators = (options: {
       },
       now: {
         hp: {
-          enemy: options._enemy?.hp,
+          enemy: options._enemy?.attribute.hp,
         },
         mp: {
           player: options.playerAttribute?.mp,
@@ -199,6 +198,7 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
   let endWar = false
   let winner = ''
   let round = 1
+  let totalDamage = 0
 
   while (!endWar) {
     const { receiveDMG, enemyBloodsucking, enemyCritical } = receiveDamage(_p, _enemy) // Mục tiêu gây sát thương lên người chơi.
@@ -208,12 +208,13 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
     if (playerAttribute.hp > 0)
       playerAttribute.hp += playerBloodsucking
 
-    _enemy.hp -= formatHP(_enemy.hp, inflictDMG)
-    if (_enemy.hp > 0)
-      _enemy.hp += enemyBloodsucking
+    totalDamage += inflictDMG
+    _enemy.attribute.hp -= formatHP(_enemy.attribute.hp, inflictDMG)
+    if (_enemy.attribute.hp > 0)
+      _enemy.attribute.hp += enemyBloodsucking
 
     //  Tốc độ cao hơn sẽ đánh
-    if (playerAttribute?.speed < _enemy?.speed) {
+    if (playerAttribute?.speed < _enemy.attribute?.speed) {
       emulators.push(addEnemyFirstEmulators({
         enemyCritical,
         playerCritical,
@@ -244,7 +245,7 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
       winner = WINNER.youlose
     }
 
-    if (_enemy?.hp <= 0) {
+    if (_enemy?.attribute.hp <= 0) {
       endWar = true
       winner = WINNER.youwin
     }
@@ -261,5 +262,6 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
     enemy: enemyClone,
     emulators,
     winner,
+    totalDamage,
   } as BattleResponse
 }

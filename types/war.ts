@@ -46,6 +46,7 @@ export interface BattleResponse extends BattleInRefresh {
     equipments?: PlayerEquipment[]
   }
   rankDMG: any
+  totalDamage?: number
 }
 
 export interface BattleInRefresh {

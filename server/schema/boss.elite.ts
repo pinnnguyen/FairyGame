@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
+import type { BossElite } from '~/types'
 const ObjectId = mongoose.Types.ObjectId
 
-const schema = new mongoose.Schema(
+const schema = new mongoose.Schema<BossElite>(
   {
     _id: {
       type: String,
@@ -15,17 +16,17 @@ const schema = new mongoose.Schema(
     level: Number,
     info: String,
     sex: String,
-    damage: Number,
-    def: Number,
-    hp: Number,
-    mp: Number,
-    critical: Number,
-    bloodsucking: Number,
-    speed: Number,
+    attribute: {},
+    reward: {},
+    avatar: String,
+    refreshTime: Number,
+    refresh: Boolean,
+    // topDamage: [],
+    // topPoint: [],
+    killer: String,
   },
   { timestamps: true },
 )
 
 schema.index({ id: -1 }, { unique: true })
-
-export const MidBossDataSchema = (mongoose.models && mongoose.models.MidBossDataSchema ? mongoose.models.MidBossDataSchema : mongoose.model('MidBossDataSchema', schema, 'gl_mid_boss'))
+export const BossEliteSchema = mongoose.model('BossEliteSchema', schema, 'gl_boss_elites')

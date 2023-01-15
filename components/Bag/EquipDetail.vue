@@ -10,8 +10,11 @@ interface Prop {
 
 const props = defineProps<Prop>()
 const emits = defineEmits(['close', 'changeEquip'])
+
 const { changeEquip, hasEquip, getPlayer } = usePlayerStore()
 const loading = ref(false)
+const target = ref(null)
+onClickOutside(target, () => emits('close'))
 
 const doEquip = async () => {
   const _id = props.item._id
@@ -55,7 +58,7 @@ const doUnEquip = async () => {
 </script>
 
 <template>
-  <div class="relative text-xs leading-6 text-white bg-[#1d160e] rounded p-0 border !border-[#795548] w-[320px]">
+  <div ref="target" class="relative text-xs leading-6 text-white bg-[#1d160e] rounded p-0 border !border-[#795548] w-[320px]">
     <div class="p-3 text-12 font-medium">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center justify-center">

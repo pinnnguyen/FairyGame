@@ -1,8 +1,9 @@
 import moment from 'moment'
 import { getServerSession } from '#auth'
-import { BattleSchema, BossSchema, EquipmentSchema, PlayerSchema } from '~/server/schema'
+import { BattleSchema, BossDataSchema, BossEliteSchema, EquipmentSchema, PlayerSchema } from '~/server/schema'
 import { BATTLE_KIND } from '~/constants'
 import { startEndHoursBossFrameTime, startTimeEvent } from '~/common'
+import { cloneDeep } from '~/helpers'
 
 export default defineEventHandler(async (event) => {
   const uServer = await getServerSession(event)
@@ -15,9 +16,33 @@ export default defineEventHandler(async (event) => {
 
   const query = getQuery(event)
   const today = moment().startOf('day')
-  const bossNe = await (BossSchema as any).find({ kind: query.kind })
 
-  const player = await (PlayerSchema as any).findOne({ userId: uServer?.user?.email }).select('sid')
+  if (query.kind === 'elite') {
+    const bossEliteData = await BossEliteSchema.find({ refresh: false })
+    if (bossEliteData.length !== 0) {
+      return {
+        bossNe: bossEliteData,
+      }
+    }
+
+    const bossData = await BossDataSchema.find({ kind: 'elite' })
+    const bossClone = cloneDeep(bossData)
+    const bossElite = await BossEliteSchema.insertMany(bossClone.map(b => ({
+      ...b,
+      bossId: b.id,
+      killer: '',
+      refreshTime: 0,
+      refresh: false,
+    })))
+
+    return {
+      bossNe: bossElite,
+    }
+  }
+
+  const bossNe = await BossDataSchema.find({ kind: query.kind })
+  const player = await PlayerSchema.findOne({ userId: uServer?.user?.email }).select('sid')
+
   if (!player?.sid) {
     return createError({
       statusCode: 404,
@@ -27,7 +52,7 @@ export default defineEventHandler(async (event) => {
 
   for (let i = 0; i < bossNe.length; i++) {
     const equipIds = bossNe[i].reward.equipRates.map((i: { id: number }) => i.id)
-    const numberOfBattle = await (BattleSchema as any).find({
+    const numberOfBattle = await BattleSchema.find({
       sid: player.sid,
       kind: BATTLE_KIND.BOSS_DAILY,
       targetId: bossNe[i].id,
@@ -38,7 +63,7 @@ export default defineEventHandler(async (event) => {
     }).count()
 
     bossNe[i].numberOfTurn -= numberOfBattle
-    bossNe[i].reward.equipments = await (EquipmentSchema as any).find({
+    bossNe[i].reward.equipments = await EquipmentSchema.find({
       id: {
         $in: equipIds,
       },

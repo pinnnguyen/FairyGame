@@ -6,12 +6,14 @@
     "level": 10,
     "info": "",
     "sex": "",
-    "damage": 150,
-    "def": 20,
-    "hp": 5500,
-    "mp": 0,
-    "critical": 0,
-    "bloodsucking": 0,
+    "attribute": {
+      "damage": 150,
+      "def": 20,
+      "hp": 5500,
+      "mp": 0,
+      "critical": 0,
+      "bloodsucking": 0
+    },
     "numberOfTurn": 5,
     "reward": {
       "base": {
@@ -63,12 +65,14 @@
     "level": 20,
     "info": "",
     "sex": "",
-    "damage": 300,
-    "def": 20,
-    "hp": 10000,
-    "mp": 0,
-    "critical": 10,
-    "bloodsucking": 10,
+    "attribute": {
+      "damage": 300,
+      "def": 20,
+      "hp": 10000,
+      "mp": 0,
+      "critical": 10,
+      "bloodsucking": 10
+    },
     "numberOfTurn": 5,
     "reward": {
       "base": {
@@ -120,12 +124,14 @@
     "level": 30,
     "info": "",
     "sex": "",
-    "damage": 600,
-    "def": 50,
-    "hp": 15000,
-    "mp": 0,
-    "critical": 10,
-    "bloodsucking": 10,
+    "attribute": {
+      "damage": 600,
+      "def": 50,
+      "hp": 15000,
+      "mp": 0,
+      "critical": 10,
+      "bloodsucking": 10
+    },
     "numberOfTurn": 5,
     "reward": {
       "base": {
@@ -149,12 +155,14 @@
     "level": 40,
     "info": "",
     "sex": "",
-    "damage": 1000,
-    "def": 50,
-    "hp": 20000,
-    "mp": 0,
-    "critical": 10,
-    "bloodsucking": 10,
+    "attribute": {
+      "damage": 1000,
+      "def": 50,
+      "hp": 20000,
+      "mp": 0,
+      "critical": 10,
+      "bloodsucking": 10
+    },
     "numberOfTurn": 5,
     "reward": {
       "base": {
@@ -178,12 +186,14 @@
     "level": 50,
     "info": "",
     "sex": "",
-    "damage": 1800,
-    "def": 100,
-    "hp": 30000,
-    "mp": 0,
-    "critical": 10,
-    "bloodsucking": 10,
+    "attribute": {
+      "damage": 1800,
+      "def": 100,
+      "hp": 30000,
+      "mp": 0,
+      "critical": 10,
+      "bloodsucking": 10
+    },
     "numberOfTurn": 5,
     "reward": {
       "base": {
@@ -207,12 +217,14 @@
     "level": 60,
     "info": "",
     "sex": "",
-    "damage": 3000,
-    "def": 100,
-    "hp": 40000,
-    "mp": 0,
-    "critical": 20,
-    "bloodsucking": 10,
+    "attribute": {
+      "damage": 3000,
+      "def": 100,
+      "hp": 40000,
+      "mp": 0,
+      "critical": 20,
+      "bloodsucking": 10
+    },
     "numberOfTurn": 5,
     "reward": {
       "base": {

@@ -1,5 +1,5 @@
 import type { H3Event } from 'h3'
-import { PlayerEquipmentSchema } from '~/server/schema/player.equiment'
+import { PlayerEquipmentSchema } from '~~/server/schema/player.equipment'
 import { PlayerSchema } from '~/server/schema/player'
 import { getServerSession } from '#auth'
 import { PlayerItemSchema, getPlayerItems } from '~/server/schema'

@@ -2,10 +2,16 @@ export const KIND = {
   SOLO: 'solo',
 }
 
+export const TARGET_MONSTER = 'monster'
+export const TARGET_BOSS_DAILY = 'boss-daily'
+export const TARGET_BOSS_FRAME = 'boss-frame-time'
+export const TARGET_BOSS_ELITE = 'elite'
+
 export const TARGET_TYPE = {
   MONSTER: 'monster',
   BOSS_DAILY: 'boss-daily',
   BOSS_FRAME_TIME: 'boss-frame-time',
+  BOSS_ELITE: 'elite',
 }
 
 export const WINNER = {
@@ -23,6 +29,7 @@ export const BATTLE_KIND = {
   PVP: 'pvp',
   BOSS_FRAME_TIME: 'boss_frame_time',
   BOSS_DAILY: 'boss_daily',
+  BOSS_ELITE: 'boss_elite',
   DUNGEON: 'dungeon',
 }
 
