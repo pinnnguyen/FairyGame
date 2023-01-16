@@ -27,5 +27,4 @@ const schema = new mongoose.Schema<Mid>(
 )
 
 schema.index({ id: -1 }, { unique: true })
-export const MidSchema = mongoose.model('MidSchemas', schema, 'mids')
-// export const MidSchema = (mongoose.models && mongoose.models.MidSchema ? mongoose.models.MidSchema : mongoose.model('MidSchema', schema, 'mids'))
+export const MidSchema = mongoose.model('MidSchemas', schema, 'gl_mids')

@@ -47,6 +47,30 @@ import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG
 import { MidSchema, PlayerSchema } from '~/server/schema'
 import type { Player, PlayerAttribute, PlayerServerResponse } from '~/types'
 
+export const playerTitle = (level: number, playerNextLevel: number) => {
+  let levelTitle = ''
+  let floor = ''
+  let expLimited = 0
+
+  for (let i = 0; i < RANGE_PLAYER_BIG_LEVEL.length; i++) {
+    if (level >= RANGE_PLAYER_BIG_LEVEL[i] && level < RANGE_PLAYER_BIG_LEVEL[i + 1]) {
+      const djc = level - RANGE_PLAYER_BIG_LEVEL[i]
+      const jds = (RANGE_PLAYER_BIG_LEVEL[i + 1] - RANGE_PLAYER_BIG_LEVEL[i]) / 10
+      const dd = Math.floor(djc / jds)
+      const jd = RANGE_LEVEL_ID[dd]
+
+      levelTitle = PLAYER_LEVEL_TITLE[i]
+      floor = `Tầng ${jd}`
+      expLimited = playerNextLevel * (playerNextLevel + Math.round(playerNextLevel / 5)) * 12 * RANGE_EXP_A_LEVEL[i] + playerNextLevel
+    }
+  }
+
+  return {
+    levelTitle,
+    floor,
+    expLimited,
+  }
+}
 const useClass = (ofClass: number, attribute: PlayerAttribute) => {
   attribute.criticalDamage = 1.5 // 150% sat thuong bao kich
   switch (ofClass) {
@@ -159,18 +183,28 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
   }).sort({ id: 1 })
 
   const playerNextLevel = player.level + 1
-  for (let i = 0; i < RANGE_PLAYER_BIG_LEVEL.length; i++) {
-    if (player.level >= RANGE_PLAYER_BIG_LEVEL[i] && player.level < RANGE_PLAYER_BIG_LEVEL[i + 1]) {
-      const djc = player.level - RANGE_PLAYER_BIG_LEVEL[i]
-      const jds = (RANGE_PLAYER_BIG_LEVEL[i + 1] - RANGE_PLAYER_BIG_LEVEL[i]) / 10
-      const dd = Math.floor(djc / jds)
-      const jd = RANGE_LEVEL_ID[dd]
+  const {
+    levelTitle,
+    floor,
+    expLimited,
+  } = playerTitle(player.level, playerNextLevel)
 
-      player.levelTitle = PLAYER_LEVEL_TITLE[i]
-      player.floor = `Tầng ${jd}`
-      player.expLimited = playerNextLevel * (playerNextLevel + Math.round(playerNextLevel / 5)) * 12 * RANGE_EXP_A_LEVEL[i] + playerNextLevel
-    }
-  }
+  player.levelTitle = levelTitle
+  player.floor = floor
+  player.expLimited = expLimited
+
+  // for (let i = 0; i < RANGE_PLAYER_BIG_LEVEL.length; i++) {
+  //   if (player.level >= RANGE_PLAYER_BIG_LEVEL[i] && player.level < RANGE_PLAYER_BIG_LEVEL[i + 1]) {
+  //     const djc = player.level - RANGE_PLAYER_BIG_LEVEL[i]
+  //     const jds = (RANGE_PLAYER_BIG_LEVEL[i + 1] - RANGE_PLAYER_BIG_LEVEL[i]) / 10
+  //     const dd = Math.floor(djc / jds)
+  //     const jd = RANGE_LEVEL_ID[dd]
+  //
+  //     player.levelTitle = PLAYER_LEVEL_TITLE[i]
+  //     player.floor = `Tầng ${jd}`
+  //     player.expLimited = playerNextLevel * (playerNextLevel + Math.round(playerNextLevel / 5)) * 12 * RANGE_EXP_A_LEVEL[i] + playerNextLevel
+  //   }
+  // }
 
   if (attribute)
     useAttribute(player, attribute)

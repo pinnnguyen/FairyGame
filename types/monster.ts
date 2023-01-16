@@ -55,13 +55,18 @@ export interface BossElite {
     equipRates: RateReward[]
     equipments: PlayerEquipment[]
   }
+  hp: number
   attribute: BaseAttributes
   class: number
-  refreshTime: number
-  refresh: boolean
+  revive: number
+  death: boolean
   topDamage: []
   topPoint: []
-  killer: string
+  killer: {
+    avatar: string
+    name: string
+    sid: string
+  }
 }
 
 export type EnemyObject = Monster | Boss | BossElite

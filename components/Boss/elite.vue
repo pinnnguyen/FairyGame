@@ -2,24 +2,35 @@
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '~/composables/usePlayer'
 import { sendMessage } from '~/composables/useMessage'
-import type { Boss, Equipment } from '~/types'
-import { formatCash } from '~~/common'
-import { TARGET_TYPE } from '~~/constants'
+import type { BossElite } from '~/types'
+import { formatCash, timeOffset } from '~/common'
+import { TARGET_TYPE } from '~/constants'
 
-defineProps<{
-  boss: Boss
+const props = defineProps<{
+  boss: BossElite
 }>()
 
-const startWar = (boss: Boss) => {
-//   if (playerInfo.value!.level < boss.level) {
-//     sendMessage('Chưa đạt cấp độ')
-//     return
-//   }
+const { playerInfo } = storeToRefs(usePlayerStore())
+const now = new Date().getTime()
+const tooltip = ref(false)
 
-  //   if (boss.numberOfTurn <= 0) {
-  //     sendMessage('Lượt khiêu chiến trong ngày đã hết')
-  //     return
-  //   }
+const revive = ref((props.boss.revive - now) / 1000)
+onMounted(() => {
+  setInterval(() => {
+    revive.value -= 1
+  }, 1000)
+})
+
+const startWar = (boss: BossElite) => {
+  if (playerInfo.value!.level < boss.level) {
+    sendMessage('Chưa đạt cấp độ')
+    return
+  }
+
+  // if (revive.value > 0) {
+  //   sendMessage('Boss đang hồi sinh')
+  //   return
+  // }
 
   navigateTo({
     path: `/battle/${new Date().getTime()}`,
@@ -33,56 +44,105 @@ const startWar = (boss: Boss) => {
 </script>
 
 <template>
-  <section class="w-[90%] bg-[#a0aac0cf] rounded flex justify-between p-4">
-    <div class="flex flex-col justify-between">
-      <div class="relative mr-2 flex flex-col items-center justify-center">
-        <NuxtImg class="w-[55px] h-[55px] rounded-full border border-[#bbc4d2]" format="webp" :src="boss.avatar" />
-        <div class="text-10 text-white h-3 object-cover bottom-[2px] left-[calc(50%_-_20px)]">
-          {{ boss.name }}
+  <var-popup v-model:show="tooltip" position="center">
+    <div class="w-70 p-4 bg-white text-black text-12 rounded leading-6">
+      <p class="flex text-left">
+        <Icon class="mr-1 mt-1" name="fa6-solid:sack-dollar" size="16" />
+        Phần thưởng chia đều theo sát thương gây ra
+      </p>
+      <p class="flex text-left">
+        <Icon class="mr-1" name="noto:trophy" size="20" />
+        Phần thưởng dành cho người có lượng sát thương cao nhất.
+      </p>
+      <p class="flex text-left">
+        <Icon class="mr-1" name="game-icons:ancient-sword" size="18" />
+        Phần thưởng dành cho người kết liễu boss.
+      </p>
+    </div>
+  </var-popup>
+  <section class="w-[95%] bg-[#a0aac0cf] relative rounded flex flex-col justify-around p-2">
+    <Icon class="absolute right-1 top-1 text-white" name="ri:question-fill" size="18" @click="tooltip = true" />
+    <div v-if="revive > 0" class="text-10 text-white mb-2">
+      Hồi sinh: {{ timeOffset(revive).minutes }}p {{ timeOffset(revive).seconds }}s
+    </div>
+    <div v-else class="text-12 text-white mb-2">
+      <Icon name="material-symbols:swords" size="16" />
+      Sẵn sàng
+    </div>
+    <div class="flex justify-between mt-2">
+      <div class="flex flex-col justify-between">
+        <div class="relative mr-2 flex flex-col items-center justify-center">
+          <NuxtImg class="w-[55px] h-[55px] rounded-full border border-[#bbc4d2]" format="webp" :src="boss.avatar" />
+          <div class="text-10 text-white h-3 object-cover bottom-[2px] left-[calc(50%_-_20px)]">
+            {{ boss.name }}
+          </div>
+          <div class="mt-2 flex gap-2">
+            <div class="flex items-center justify-center">
+              <Icon name="fa6-solid:sack-dollar" size="12" />
+              <span class="flex items-center justify-center ml-1">
+                <span class="text-10 text-gray-200">{{ boss.reward?.base?.bag }}</span>
+                <NuxtImg format="webp" class="w-3 h-3 ml-[1px]" src="/items/1_s.png" />
+              </span>
+            </div>
+            <div class="flex items-center justify-center">
+              <Icon name="noto:trophy" size="12" />
+              <span class="flex items-center justify-center ml-1">
+                <span class="text-10 text-gray-200">{{ boss.reward?.base?.top }}</span>
+                <NuxtImg format="webp" class="w-3 h-3 ml-[1px]" src="/items/1_s.png" />
+              </span>
+            </div>
+            <div class="flex items-center justify-center">
+              <Icon name="game-icons:ancient-sword" size="12" />
+              <span class="flex items-center justify-center ml-1">
+                <span class="text-10 text-gray-200">{{ boss.reward?.base?.kill }}</span>
+                <NuxtImg format="webp" class="w-3 h-3 ml-[1px]" src="/items/1_s.png" />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="m-auto mt-1">
+          <ButtonConfirm class-name="h-[25px] text-10" @click.stop="startWar(boss)">
+            <span class="font-semibold text-[#9d521a] z-9">Khiêu chiến</span>
+          </ButtonConfirm>
         </div>
       </div>
-      <div>
-        <ButtonConfirm class-name="h-[25px] text-10" @click.stop="startWar(boss)">
-          <span class="font-semibold text-[#9d521a] z-9">Khiêu chiến</span>
-        </ButtonConfirm>
-      </div>
-    </div>
-    <div class="text-12 flex flex-col items-start text-white font-semibold gap-1">
-      <div>
-        <Icon name="mdi:cards-heart" size="16" class="text-red-500" />
-        <span>
-          Sinh lực: {{ formatCash(boss.attribute.hp) }}
-        </span>
-      </div>
-      <div>
-        <Icon name="material-symbols:swords" size="16" class="text-rose-600" />
-        <span>
-          Công kích: {{ boss.attribute.damage }}
-        </span>
-      </div>
-      <div>
-        <Icon name="material-symbols:shield" size="16" class="text-green-500" />
-        <span>
-          Phòng ngự: {{ boss.attribute.def }}
-        </span>
-      </div>
-      <div>
-        <Icon name="mdi:bow-arrow" size="16" class="text-[#a855f7]" />
-        <span>
-          Tốc độ: {{ boss.attribute.speed ?? 0 }}%
-        </span>
-      </div>
-      <div>
-        <Icon name="game-icons:pointy-sword" size="16" class="text-yellow-300" />
-        <span>
-          Bạo kích: {{ boss.attribute.critical }}%
-        </span>
-      </div>
-      <div>
-        <Icon name="game-icons:bloody-sword" size="16" class="text-[#ec4899]" />
-        <span>
-          Hút máu: {{ boss.attribute.bloodsucking }}%
-        </span>
+      <div class="text-10 flex flex-col items-start text-white font-semibold gap-1">
+        <div>
+          <Icon name="mdi:cards-heart" size="16" class="text-red-500" />
+          <span>
+            Sinh lực: {{ formatCash(boss.attribute.hp) }}
+          </span>
+        </div>
+        <div>
+          <Icon name="material-symbols:swords" size="16" class="text-rose-600" />
+          <span>
+            Công kích: {{ boss.attribute.damage }}
+          </span>
+        </div>
+        <div>
+          <Icon name="material-symbols:shield" size="16" class="text-green-500" />
+          <span>
+            Phòng ngự: {{ boss.attribute.def }}
+          </span>
+        </div>
+        <div>
+          <Icon name="mdi:bow-arrow" size="16" class="text-[#a855f7]" />
+          <span>
+            Tốc độ: {{ boss.attribute.speed ?? 0 }}
+          </span>
+        </div>
+        <div>
+          <Icon name="game-icons:pointy-sword" size="16" class="text-yellow-300" />
+          <span>
+            Bạo kích: {{ boss.attribute.critical }}%
+          </span>
+        </div>
+        <div>
+          <Icon name="game-icons:bloody-sword" size="16" class="text-[#ec4899]" />
+          <span>
+            Hút máu: {{ boss.attribute.bloodsucking }}%
+          </span>
+        </div>
       </div>
     </div>
   </section>

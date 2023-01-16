@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
   const today = moment().startOf('day')
 
   if (query.kind === 'elite') {
-    const bossEliteData = await BossEliteSchema.find({ refresh: false })
+    const bossEliteData = await BossEliteSchema.find({ death: false })
     if (bossEliteData.length !== 0) {
       return {
         bossNe: bossEliteData,
@@ -30,9 +30,10 @@ export default defineEventHandler(async (event) => {
     const bossElite = await BossEliteSchema.insertMany(bossClone.map(b => ({
       ...b,
       bossId: b.id,
-      killer: '',
-      refreshTime: 0,
-      refresh: false,
+      hp: b.attribute.hp,
+      death: false,
+      killer: null,
+      revive: 0,
     })))
 
     return {

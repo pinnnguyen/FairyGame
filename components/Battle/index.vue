@@ -23,9 +23,6 @@ const { playerInfo } = storeToRefs(usePlayerStore())
 const { loadPlayer } = usePlayerStore()
 const { $io } = useNuxtApp()
 
-const showPlayerInfo = ref(false)
-const showEnemyInfo = ref(false)
-
 definePageMeta({
   middleware: ['game'],
 })
@@ -76,101 +73,62 @@ const doCloseBattleR = () => {
 </script>
 
 <template>
+  <PopupBattleResult
+    v-if="battleResult.show"
+    :battle-result="battleResult"
+    :reward="reward"
+    @close="doCloseBattleR"
+  />
   <ClientOnly>
-    <LazyPopupBattleResult
-      v-if="battleResult.show"
-      :battle-result="battleResult"
-      :reward="reward"
-      @close="doCloseBattleR"
-    />
-    <var-loading class="w-[calc(100vw_-_20px)]" description="Đang tải" type="circle" :loading="loading">
-      <div class="h-[85vh] bg-white overflow-hidden">
-        <div class="bg-bg_pve bg-cover relative h-full">
-          <div class="text-center pt-2 text-base font-semibold flex items-center justify-center">
-            <span class="bg-[#009688] text-white p-1 rounded text-12">
-              [{{ playerInfo?.mid?.current?.name }}]
-            </span>
-          </div>
-          <div class="flex justify-between p-2 pt-2">
-            <div>
-              <div class="flex items-center justify-start">
-                <div class="flex items-center" @click="showPlayerInfo = !showPlayerInfo">
-                  <NuxtImg format="webp" class="h-[35px] border border-[#d0d0d0] bg-[#d0d0d0] rounded-full" src="/pve/player-avatar.png" />
-                </div>
-              </div>
-              <BattleInfo
-                :name="state.player?.name"
-                :hp="state.player?.hp"
-                :damage="state.player?.damage"
-                :def="state.player?.def"
-              />
-            </div>
-            <div>
-              <div class="flex items-center justify-end">
-                <div class="flex justify-end" @click="showEnemyInfo = !showEnemyInfo">
-                  <NuxtImg format="webp" class="h-[35px] bg-black border border-[#d0d0d0] bg-[#d0d0d0] rounded-full" src="/pve/monter-avatar.png" />
-                </div>
-              </div>
-              <BattleInfo
-                :name="state.enemy?.name"
-                :hp="state.enemy?.hp"
-                :damage="state.enemy?.damage"
-                :def="state.enemy?.def"
-              />
-            </div>
-          </div>
-          <div class="flex justify-around mt-8">
-            <BattlePlayerRealtime
-              :player-effect="playerEffect"
-              :state="state"
-              :receiver="receiver"
-              :real-time="realTime"
-            />
-            <BattleEnemyRealtime
-              :player-effect="playerEffect"
-              :state="state"
-              :receiver="receiver"
-              :real-time="realTime"
-            />
-          </div>
-          <!--
-          <LazyPopupRefreshMid
+    <div class="h-[85vh] bg-white overflow-hidden w-[calc(100vw_-_10px)]">
+      <div class="bg-bg_pve bg-cover relative h-full">
+        <div class="text-center pt-2 text-base font-semibold flex items-center justify-center">
+          <span class="bg-[#009688] text-white p-1 rounded text-12">
+            [{{ state?.enemy?.name }} Map {{ playerInfo?.midId }}]
+          </span>
+        </div>
+        <BattleAttributeInfo :state="state" />
+        <div class="flex justify-around mt-8">
+          <BattlePlayerRealtime
+            :player-effect="playerEffect"
+            :state="state"
+            :receiver="receiver"
+            :real-time="realTime"
+          />
+          <BattleEnemyRealtime
+            :player-effect="playerEffect"
+            :state="state"
+            :receiver="receiver"
+            :real-time="realTime"
+          />
+        </div>
+      </div>
+      <div class="relative">
+        <!-- <NuxtImg class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" /> -->
+        <!-- <div class="p-4 h-[25%] overflow-scroll">
+            <BattleHistory :battle-rounds="battleRounds" />
+          </div> -->
+        <div class="flex items-center flex-col justify-center w-full absolute bottom-0">
+          <BattleRevice
             v-if="inRefresh"
             :refresh-time="refreshTime"
             @refresh-finished="refreshFinished"
-          /> -->
-        </div>
-        <div class="relative">
-          <!-- <NuxtImg class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" /> -->
-          <!-- <div class="p-4 h-[25%] overflow-scroll">
-            <BattleHistory :battle-rounds="battleRounds" />
-          </div> -->
-          <div class="flex items-center flex-col justify-center w-full absolute bottom-0">
-            <LazyPopupRefreshMid
-              v-if="inRefresh"
-              :refresh-time="refreshTime"
-              @refresh-finished="refreshFinished"
-            />
-            <div class="flex items-center gap-2">
-              <!-- <var-button class="w-[80px] uppercase font-medium" size="small" type="default" @click="nextMid" @click.stop="navigateTo('/')">
-                Về thành
-              </var-button> -->
-              <var-button class="w-[80px] uppercase font-medium" size="small" type="default" @click="nextMid">
-                Ải tiếp
-              </var-button>
-
-              <div class="py-2">
-                <var-button v-show="speed === 1" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 2">
-                  X1
-                </var-button>
-                <var-button v-show="speed === 2" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 1">
-                  X2
-                </var-button>
-              </div>
+          />
+          <div class="flex items-center gap-2">
+            <VarButton class="w-[80px] uppercase font-medium" size="small" type="default" @click="nextMid">
+              Ải tiếp
+            </VarButton>
+            <div class="py-2">
+              <VarButton v-show="speed === 1" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 2">
+                X1
+              </VarButton>
+              <VarButton v-show="speed === 2" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 1">
+                X2
+              </VarButton>
             </div>
           </div>
         </div>
       </div>
-    </var-loading>
+    </div>
   </ClientOnly>
 </template>

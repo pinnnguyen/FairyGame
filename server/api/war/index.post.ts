@@ -3,41 +3,18 @@ import { createError, sendError } from 'h3'
 import {
   getBaseReward,
   getPlayer,
+  handleAfterEndWar,
   handleBeforeStartWar,
   receivedEquipment,
   setLastTimeReceivedRss,
 } from '~/server/helpers'
 import {
   BattleSchema,
-  BossDataSchema,
-  BossEliteSchema,
-  BossRankSchema,
 } from '~/server/schema'
 import { startWar } from '~/helpers'
 import type { BattleRequest, BattleResponse, PlayerInfo } from '~/types'
-import { TARGET_TYPE } from '~/constants'
 
 export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: BattleRequest) => {
-  // const rankDMG: any = await BossRankSchema.aggregate(
-  //   [
-  //     {
-  //       $group:
-  //         {
-  //           _id: '$name',
-  //           totalDamage: { $sum: { $multiply: ['$damage'] } },
-  //         },
-  //     },
-  //     {
-  //       $sort: {
-  //         totalDamage: -1,
-  //       },
-  //     },
-  //   ],
-  // )
-
-  const bossFrameTime = battleRequest.target.type === TARGET_TYPE.BOSS_FRAME_TIME
-  const elite = battleRequest.target.type === TARGET_TYPE.BOSS_ELITE
-
   const {
     _enemyObj,
     inRefresh,
@@ -46,7 +23,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     enemyBefore,
     reward,
     winnerBefore,
-  } = await handleBeforeStartWar(battleRequest, _p)
+  } = await (handleBeforeStartWar(battleRequest, _p) as any)
 
   if (inRefresh) {
     return {
@@ -70,40 +47,16 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
   const { exp, gold } = await getBaseReward(_p.player.sid, _enemyObj, winner)
   const { equipments } = await receivedEquipment(_p.player.sid, _enemyObj, winner)
   await setLastTimeReceivedRss(_p.player.sid)
+  await handleAfterEndWar({ battleRequest, _p, winner, totalDamage })
 
-  if (bossFrameTime) {
-    await new BossRankSchema({
-      sid: _p.player.sid,
-      bossId: battleRequest.target.id,
-      startHours: _enemyObj.startHours,
-      damage: totalDamage,
-      name: _p.player.name,
-    }).save()
-
-    await BossDataSchema.findOneAndUpdate({ id: battleRequest.target.id }, {
-      $inc: {
-        hp: -totalDamage!,
-      },
-    })
-  }
-
-  if (elite) {
-    await BossEliteSchema.findOneAndUpdate({ _id: battleRequest.target.id }, {
-      $inc: {
-        'attribute.hp': -totalDamage!,
-      },
-    })
-  }
-
-  console.log('_damage', totalDamage)
-  // Lưu lịch sử trận đánh
+  // Log battle
   await new BattleSchema({
     sid: _p.player.sid,
     mid: {
       id: _p.player.midId,
     },
     kind: battleRequest.kind,
-    targetId: _enemyObj.id,
+    targetId: _enemyObj._id,
     player,
     enemy,
     emulators,

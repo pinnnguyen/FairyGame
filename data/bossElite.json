@@ -18,7 +18,10 @@
         "reward": {
           "base": {
             "exp": 10,
-            "gold": 10
+            "gold": 10,
+            "bag": 100,
+            "kill": 50,
+            "top": 50
           },
           "equipRates": []
         },

@@ -8,7 +8,7 @@ export interface Battle {
   mid?: {
     id: number
   }
-  targetId?: number
+  targetId?: string
   kind?: 'pve' | 'pvp' | 'boss' | 'boss-daily' | 'dungeon' | 'boss_elite'
   emulators?: Emulator[]
   enemy?: EnemyObject
@@ -47,4 +47,11 @@ export interface BattleEventBeforeWar {
     equipments: PlayerEquipment[]
   }
   winner?: 'youwin' | 'youlost'
+}
+
+export interface TopDMG {
+  _id: string
+  totalDamage: number
+  sid: string
+  name: string
 }

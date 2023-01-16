@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { set, useStorage } from '@vueuse/core'
+import { set, useLocalStorage } from '@vueuse/core'
 import { sleep } from '~/common'
 import { BATTLE_TURN } from '~/constants/war'
 import type { PlayerEquipment } from '~/types'
@@ -14,8 +14,8 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     _id: string
     totalDamage: number
   }[]>([])
-  const inRefresh = ref(false)
 
+  const inRefresh = ref(false)
   const refreshTime = ref(0)
   const reward = ref<{
     base: BaseReward
@@ -62,7 +62,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     },
   })
 
-  const speed = useStorage('speed', 1)
+  const speed = useLocalStorage('speed', 1)
   const TURN_DELAY = computed(() => 2000 / speed.value)
   // const REAL_TIME_DELAY = 700
   const DAMAGE_DELAY = 1200
@@ -117,6 +117,8 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
         const DMG = emuT?.state?.damage
 
         if (emuT.action) {
+          console.log('__turn', __turn)
+          console.log('emuT', emuT)
           await sleep(TURN_DELAY.value)
           set(playerEffect, _turn)
 
@@ -134,10 +136,6 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
             roundNum,
           })
 
-          // setTimeout(() => {
-          //   // set(playerEffect, '')
-          // }, REAL_TIME_DELAY)
-
           setTimeout(() => {
             realTime.value[__turn].trueDamage = false
           }, DAMAGE_DELAY)
@@ -149,8 +147,6 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
                 win: war.winner,
               }
             }, SHOULD_WIN_DELAY)
-
-            // if (war.winner === WINNER.youwin)
 
             return
           }

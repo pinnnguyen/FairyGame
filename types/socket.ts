@@ -6,6 +6,12 @@ export interface ServerToClientEvents {
   'equip:preview:response': (require: any) => void
   'equip:upgrade:response': (require: any) => void
   'auction-response': (response: {}) => void
+  'send-battle:log': (topDMG: {
+    _id: string
+    totalDamage: number
+    sid: string
+    name: string
+  }[]) => void
 }
 
 export interface ClientToServerEvents {
@@ -20,5 +26,6 @@ export interface ClientToServerEvents {
   'channel:leave': () => void
   'send-notify': (message: string) => void
   'equip:upgrade': (type: string, _equipId: string) => void
+  'battle:log': (_bossId: string) => void
   'disconnect': () => void
 }

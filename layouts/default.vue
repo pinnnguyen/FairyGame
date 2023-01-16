@@ -1,9 +1,10 @@
 <script setup>
 import { storeToRefs } from 'pinia'
+import { useLocalStorage } from '@vueuse/core'
 import { useAppStore } from '~/composables/app'
 const { playerInfoComponent } = storeToRefs(useAppStore())
 
-const startBattle = useState('startBattle', () => false)
+const startBattle = useLocalStorage('startBattle', false)
 </script>
 
 <template>

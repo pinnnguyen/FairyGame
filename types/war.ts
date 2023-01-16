@@ -29,11 +29,16 @@ export type Emulator = Record<string | 'player' | 'enemy', EmulatorBattle>
 export interface BaseProperties extends BaseAttributes {
   name: string
   level: number
+  levelTitle?: string
+  floor?: string
 }
 
 export interface BaseReward {
   exp: number
   gold: number
+  kill: number
+  bag: number
+  top: number
 }
 
 export interface BattleResponse extends BattleInRefresh {

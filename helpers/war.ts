@@ -2,6 +2,7 @@ import type { EnemyObject, PlayerAttribute, PlayerInfo } from '~/types'
 import { BATTLE_ACTION, WINNER } from '~/constants/war'
 import type { BaseProperties, BattleResponse, Emulator } from '~/types/war'
 import { randomNumber } from '~/common'
+import { playerTitle } from '~/server/helpers'
 
 export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   let inflictDMG = 0
@@ -68,7 +69,11 @@ export const formatHP = (hp: number, limit: number) => {
 }
 
 export const enemyDeep = (enemy: EnemyObject) => {
+  const { levelTitle, floor } = playerTitle(enemy.level, enemy.level + 1)
+
   return {
+    levelTitle,
+    floor,
     level: enemy?.level,
     damage: enemy?.attribute.damage,
     def: enemy?.attribute.def,
@@ -81,6 +86,8 @@ export const enemyDeep = (enemy: EnemyObject) => {
 
 export const playerDeep = (params: PlayerInfo) => {
   return {
+    levelTitle: params.player.levelTitle,
+    floor: params.player.floor,
     level: params?.player?.level,
     damage: params?.attribute?.damage,
     def: params?.attribute?.def,

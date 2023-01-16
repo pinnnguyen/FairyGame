@@ -26,11 +26,11 @@ watch(currentTab, async (value) => {
   <var-loading description="LOADING" type="circle" :loading="loading">
     <Blocker class="z-99">
       <div ref="target" class="flex items-center justify-center w-full h-[calc(100vh_-_30px)]">
-        <div class="w-[90%] h-[70%] absolute top-[calc(50%_-_35vh)]">
+        <div class="w-[95%] h-[70%] absolute top-[calc(50%_-_35vh)]">
           <div class="w-full h-full relative">
             <span class="font-semibold absolute w-[40px] left-[calc(50%_-_15px)] top-[-1px] text-[#656f99]">BOSS</span>
             <NuxtImg class="w-full h-full" src="/common/bj_tongyong_1.png" />
-            <div class="absolute top-[30px] grid grid-cols-1 gap-1 items-center justify-center w-[92%] left-[calc(10%_-_10px)] max-h-[380px] overflow-scroll">
+            <div class="absolute top-[30px] grid grid-cols-1 gap-1 items-center justify-center w-[95%] left-[calc(10%_-_18px)] max-h-[380px] overflow-scroll">
               <template v-if="currentTab === 'elite' ">
                 <LazyBossElite v-for="bossNe in dataResponse.bossNe" :key="bossNe.id" :boss="bossNe" />
               </template>
@@ -42,13 +42,13 @@ watch(currentTab, async (value) => {
               </template>
             </div>
             <div class="absolute bottom-[20px] left-10 text-10">
-              <button :class="{ '!opacity-100': currentTab === 'elite' }" class="opacity-50 bg-[#f8d89b] h-[30px] text-[#9d521a] px-2 rounded mx-1" @click="currentTab = 'daily'">
+              <button :class="{ '!opacity-100': currentTab === 'elite' }" class="transition transition-opacity opacity-50 bg-[#f8d89b] h-[30px] text-[#9d521a] px-2 rounded mx-1 uppercase font-semibold" @click="currentTab = 'daily'">
                 Tam giới
               </button>
-              <button :class="{ '!opacity-100': currentTab === 'daily' }" class="opacity-50 bg-[#f8d89b] h-[30px] text-[#9d521a] px-2 rounded mx-1" @click="currentTab = 'daily'">
+              <button :class="{ '!opacity-100': currentTab === 'daily' }" class="transition transition-opacity opacity-50 bg-[#f8d89b] h-[30px] text-[#9d521a] px-2 rounded mx-1 uppercase font-semibold" @click="currentTab = 'daily'">
                 Hằng ngày
               </button>
-              <button :class="{ '!opacity-100': currentTab === 'frameTime' }" class="opacity-50 bg-[#f8d89b] h-[30px] text-[#9d521a] px-2 rounded mx-1" @click="currentTab = 'frameTime'">
+              <button :class="{ '!opacity-100': currentTab === 'frameTime' }" class="transition transition-opacity opacity-50 bg-[#f8d89b] h-[30px] text-[#9d521a] px-2 rounded mx-1 uppercase font-semibold" @click="currentTab = 'frameTime'">
                 Thế giới
               </button>
             </div>

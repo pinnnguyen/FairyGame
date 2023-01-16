@@ -11,7 +11,7 @@ const schema = new mongoose.Schema<Battle>(
       },
     },
     sid: String,
-    targetId: Number,
+    targetId: String,
     mid: {},
     kind: String,
     emulators: [],
@@ -25,4 +25,8 @@ const schema = new mongoose.Schema<Battle>(
 )
 
 schema.index({ createdAt: -1 })
+schema.index({ targetId: -1 })
+schema.index({ sid: -1 })
+schema.index({ kind: -1 })
+
 export const BattleSchema = mongoose.model('BattleSchemas', schema, 'gl_battles')

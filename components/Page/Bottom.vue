@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useIntervalFn } from '@vueuse/core'
+import { useIntervalFn, useLocalStorage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { sendMessage, useAppStore, usePlayerStore } from '#imports'
 
@@ -12,7 +12,7 @@ const toggleStore = useState('toggleStore')
 const toggleBag = useState('toggleBag')
 const toggleUpgrade = useState('toggleUpgrade')
 
-const startBattle = useState('startBattle')
+const startBattle = useLocalStorage('startBattle', false)
 
 const needTimeResource = ref(0)
 const doReFetch = ref(false)
