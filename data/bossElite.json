@@ -7,6 +7,7 @@
         "info": "",
         "sex": "",
         "attribute": {
+          "speed": 10,
           "damage": 250,
           "def": 100,
           "hp": 1000000,
@@ -14,12 +15,11 @@
           "critical": 20,
           "bloodsucking": 10
         },
-        "numberOfTurn": 5,
         "reward": {
           "base": {
             "exp": 10,
             "gold": 10,
-            "bag": 100,
+            "bag": 300,
             "kill": 50,
             "top": 50
           },

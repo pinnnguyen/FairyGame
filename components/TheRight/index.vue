@@ -11,7 +11,7 @@ const gold = computed(() => Math.round(BASE_EXP() * mids.value.current?.reward?.
 </script>
 
 <template>
-  <BossDaily v-if="toggle" @close="toggle = false" />
+  <Boss v-if="toggle" @close="toggle = false" />
   <div class="text-10 mb-1 flex justify-end flex-col items-end text-white p-2 fixed bg-black top-10 right-0 z-99">
     <ClientOnly>
       <div class="flex items-center justify-center my-1">

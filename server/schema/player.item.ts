@@ -13,14 +13,8 @@ const schema = new mongoose.Schema<Item>(
       },
     },
     sid: String,
-    // name: String,
-    // info: String,
     sum: Number,
-    // kind: Number,
     itemId: Number,
-    // preview: String,
-    // rank: Number,
-    // value: Number,
   },
   { timestamps: true },
 )
@@ -43,14 +37,8 @@ export const addPlayerItem = async (sid: string, quantity: number, itemId: numbe
   if (!playerItem) {
     return new PlayerItemSchema({
       sid,
-      // name: item.name,
-      // info: item.info,
       sum: quantity,
-      // kind: item.kind,
       itemId,
-      // preview: item.preview,
-      // value: item.value,
-      // rank: item.rank,
     }).save()
   }
 

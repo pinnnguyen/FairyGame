@@ -1,4 +1,5 @@
 import { Server } from 'socket.io'
+import { BATTLE_KIND } from './../../constants/war'
 import { BattleSchema } from '~/server/schema'
 import type { ClientToServerEvents, ServerToClientEvents } from '~/types'
 import { battleJoinHandler, handleAuction, handleEquipUpgrade } from '~/server/sockets'
@@ -24,7 +25,11 @@ export default defineEventHandler((event) => {
     changeStreamBattle.on('change', async (next) => {
       if (next?.operationType === 'insert') {
         const targetId = next.fullDocument.targetId
-        const topDMG: any = await BattleSchema.aggregate(
+        const kind = next.fullDocument.kind === BATTLE_KIND.BOSS_ELITE
+        if (!kind)
+          return
+
+        const topDMG = await BattleSchema.aggregate(
           [
             {
               $match: {
@@ -52,7 +57,7 @@ export default defineEventHandler((event) => {
           ],
         )
 
-        socket.emit('send-battle:log', topDMG)
+        // socket.emit('send-battle:log', topDMG)
         socket.broadcast.emit('send-battle:log', topDMG)
       }
     })

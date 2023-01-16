@@ -80,7 +80,7 @@ const doCloseBattleR = () => {
     @close="doCloseBattleR"
   />
   <ClientOnly>
-    <div class="h-[85vh] bg-white overflow-hidden w-[calc(100vw_-_10px)]">
+    <div class="h-[85vh] bg-white overflow-hidden w-[calc(100vw_-_40px)]">
       <div class="bg-bg_pve bg-cover relative h-full">
         <div class="text-center pt-2 text-base font-semibold flex items-center justify-center">
           <span class="bg-[#009688] text-white p-1 rounded text-12">

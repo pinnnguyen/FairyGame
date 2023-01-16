@@ -1,4 +1,4 @@
-import type { BaseAttributes, BaseReward, PlayerEquipment, RateReward } from '~/types'
+import type { BaseAttributes, BaseReward, EquipRateReward, ItemRateReward, PlayerEquipment } from '~/types'
 
 export interface Monster {
   _id: string /* primary key */
@@ -9,7 +9,8 @@ export interface Monster {
   sex: any // type unknown;
   reward: {
     base: BaseReward
-    equipRates: RateReward[]
+    equipRates: EquipRateReward[]
+    itemRates: ItemRateReward[]
     equipments?: PlayerEquipment[]
   }
   attribute: BaseAttributes
@@ -29,7 +30,8 @@ export interface Boss {
   mhp?: number
   reward: {
     base: BaseReward
-    equipRates: RateReward[]
+    equipRates: EquipRateReward[]
+    itemRates: ItemRateReward[]
     equipments: PlayerEquipment[]
   }
   attribute: BaseAttributes
@@ -52,7 +54,8 @@ export interface BossElite {
   mhp?: number
   reward: {
     base: BaseReward
-    equipRates: RateReward[]
+    equipRates: EquipRateReward[]
+    itemRates: ItemRateReward[]
     equipments: PlayerEquipment[]
   }
   hp: number

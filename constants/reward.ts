@@ -1,3 +1,2 @@
-export const MIN_RATE_RECEIVED_RSS = 1
-export const MAX_RATE_RECEIVED_RSS = 100
-
+export const DEFAULT_MIN_RATE_RECEIVED = 1
+export const DEFAULT_MAX_RATE_RECEIVED = 100

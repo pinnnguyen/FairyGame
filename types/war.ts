@@ -1,3 +1,4 @@
+import type { Item } from './item'
 import type { PlayerEquipment } from '~/types/equiment'
 import type { BaseAttributes } from '~/types/player'
 
@@ -48,6 +49,7 @@ export interface BattleResponse extends BattleInRefresh {
   emulators: Emulator[]
   reward: {
     base: BaseReward
+    items: Item[]
     equipments?: PlayerEquipment[]
   }
   rankDMG: any

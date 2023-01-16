@@ -6,6 +6,7 @@ import {
   handleAfterEndWar,
   handleBeforeStartWar,
   receivedEquipment,
+  receivedItems,
   setLastTimeReceivedRss,
 } from '~/server/helpers'
 import {
@@ -46,6 +47,8 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
 
   const { exp, gold } = await getBaseReward(_p.player.sid, _enemyObj, winner)
   const { equipments } = await receivedEquipment(_p.player.sid, _enemyObj, winner)
+  const { itemDrafts } = await receivedItems(_p.player.sid, _enemyObj, winner)
+
   await setLastTimeReceivedRss(_p.player.sid)
   await handleAfterEndWar({ battleRequest, _p, winner, totalDamage })
 
@@ -67,6 +70,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
         exp,
         gold,
       },
+      items: itemDrafts,
       equipments,
     },
   }).save()
@@ -81,6 +85,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
         exp,
         gold,
       },
+      items: itemDrafts,
       equipments,
     },
     // rankDMG,

@@ -50,6 +50,9 @@ const startWar = (boss: Boss) => {
 }
 
 const parseEquipments = (equipments: Equipment[]) => {
+  if (!equipments)
+    return []
+
   if (equipments.length > 3)
     return equipments.splice(0, 1)
 
@@ -60,10 +63,10 @@ const parseEquipments = (equipments: Equipment[]) => {
 <template>
   <p class="text-[#439546] text-12 font-semibold mr-2">
     <span v-if="!boss.isStart">
-      Boss hồi: {{ timeOffset(startTime).hours ? timeOffset(startTime).hours : 0 }}h {{ timeOffset(startTime).minutes ? timeOffset(startTime).minutes : 0 }}phút {{ timeOffset(startTime).seconds ? timeOffset(startTime).seconds : 0 }}s
+      Boss bắt đầu: {{ timeOffset(startTime).hours ? timeOffset(startTime).hours : 0 }}h {{ timeOffset(startTime).minutes ? timeOffset(startTime).minutes : 0 }}phút {{ timeOffset(startTime).seconds ? timeOffset(startTime).seconds : 0 }}s
     </span>
     <span v-else>
-      Boss kết: {{ timeOffset(endTime).hours ? timeOffset(endTime).hours : 0 }}h {{ timeOffset(endTime).minutes ? timeOffset(endTime).minutes : 0 }}phút {{ timeOffset(endTime).seconds ? timeOffset(endTime).seconds : 0 }}s
+      Boss kết thúc: {{ timeOffset(endTime).hours ? timeOffset(endTime).hours : 0 }}h {{ timeOffset(endTime).minutes ? timeOffset(endTime).minutes : 0 }}phút {{ timeOffset(endTime).seconds ? timeOffset(endTime).seconds : 0 }}s
     </span>
   </p>
   <section class="w-[90%] h-[80px] bg-[#a0aac0cf] rounded flex justify-between">

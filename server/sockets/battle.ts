@@ -33,7 +33,7 @@ export const battleJoinHandler = async (io: any, socket: any) => {
     )
 
     socket.emit('send-battle:log', topDMG)
-    socket.broadcast.emit('send-battle:log', topDMG)
+    // socket.broadcast.emit('send-battle:log', topDMG)
   })
 
   socket.on('battle:join', async (_channel: string, request: BattleRequest) => {

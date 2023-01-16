@@ -1,8 +1,14 @@
-export interface RateReward {
+export interface EquipRateReward {
   id: number
   rate: number
   kind: number
   quantity: number
+}
+
+export interface ItemRateReward {
+  id: number
+  rate: number
+  quantityRate: string
 }
 
 export interface Equipment {

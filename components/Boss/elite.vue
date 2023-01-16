@@ -27,10 +27,10 @@ const startWar = (boss: BossElite) => {
     return
   }
 
-  // if (revive.value > 0) {
-  //   sendMessage('Boss đang hồi sinh')
-  //   return
-  // }
+  if (revive.value > 0) {
+    sendMessage('Boss đang hồi sinh')
+    return
+  }
 
   navigateTo({
     path: `/battle/${new Date().getTime()}`,
@@ -46,6 +46,9 @@ const startWar = (boss: BossElite) => {
 <template>
   <var-popup v-model:show="tooltip" position="center">
     <div class="w-70 p-4 bg-white text-black text-12 rounded leading-6">
+      <p class="text-left">
+        Gây ít nhất 2% sát thương lên boss mới được nhận thưởng
+      </p>
       <p class="flex text-left">
         <Icon class="mr-1 mt-1" name="fa6-solid:sack-dollar" size="16" />
         Phần thưởng chia đều theo sát thương gây ra
