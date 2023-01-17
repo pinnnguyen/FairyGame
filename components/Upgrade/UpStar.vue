@@ -85,43 +85,35 @@ const goToHome = () => {
   </var-popup>
   <div class="flex items-center justify-center w-[calc(100vw_-_30px)] h-[70vh]">
     <div class="w-full h-full relative">
-      <span class="font-semibold absolute left-[calc(50%_-_28px)] top-[1px] text-[#656f99] text-12">Cường hoá</span>
+      <span class="font-bold absolute left-[calc(50%_-_28px)] top-0 text-[#656f99] text-12">Nâng sao</span>
       <nuxt-img class="w-full h-full" format="webp" src="/common/bj_tongyong_1.png" />
       <div class="absolute top-[30px] flex flex-col gap-1 items-center justify-center w-full" />
       <div class="flex justify-around w-full absolute top-10 px-2">
         <div class="flex flex-col pl-2 gap-2">
-          <div>
-            <item-rank v-if="slot1?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot1.rank" :preview="slot1?.preview" @click.stop="equipSelected = slot1">
-              <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                {{ getSlotEquipUpgrade(1)?.enhance }} cấp
-              </div>
-            </item-rank>
-            <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
-          </div>
-          <div>
-            <item-rank v-if="slot2?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot2.rank" :preview="slot2?.preview" @click.stop="equipSelected = slot2">
-              <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                {{ getSlotEquipUpgrade(2)?.enhance }} cấp
-              </div>
-            </item-rank>
-            <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
-          </div>
-          <div>
-            <item-rank v-if="slot3?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot3.rank" :preview="slot3?.preview" @click.stop="equipSelected = slot3">
-              <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                {{ getSlotEquipUpgrade(3)?.enhance }} cấp
-              </div>
-            </item-rank>
-            <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
-          </div>
-          <div>
-            <item-rank v-if="slot4?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot4.rank" :preview="slot4?.preview" @click.stop="equipSelected = slot4">
-              <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                {{ getSlotEquipUpgrade(4)?.enhance }} cấp
-              </div>
-            </item-rank>
-            <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
-          </div>
+          <item-rank v-if="slot1?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot1.rank" :preview="slot1?.preview" @click.stop="equipSelected = slot1">
+            <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+              {{ getSlotEquipUpgrade(1)?.enhance }} cấp
+            </div>
+          </item-rank>
+          <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
+          <item-rank v-if="slot2?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot2.rank" :preview="slot2?.preview" @click.stop="equipSelected = slot2">
+            <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+              {{ getSlotEquipUpgrade(2)?.enhance }} cấp
+            </div>
+          </item-rank>
+          <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
+          <item-rank v-if="slot3?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot3.rank" :preview="slot3?.preview" @click.stop="equipSelected = slot3">
+            <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+              {{ getSlotEquipUpgrade(3)?.enhance }} cấp
+            </div>
+          </item-rank>
+          <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
+          <item-rank v-if="slot4?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot4.rank" :preview="slot4?.preview" @click.stop="equipSelected = slot4">
+            <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+              {{ getSlotEquipUpgrade(4)?.enhance }} cấp
+            </div>
+          </item-rank>
+          <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
         </div>
         <div class="flex justify-center items-center relative">
           <nuxt-img format="webp" class="w-[200px]" src="/upgrade/intensive.png" />
@@ -134,38 +126,30 @@ const goToHome = () => {
           </div>
         </div>
         <div class="flex flex-col pr-2 gap-2">
-          <div>
-            <item-rank v-if="slot5?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot5.rank" :preview="slot5?.preview" @click.stop="equipSelected = slot5">
-              <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                {{ getSlotEquipUpgrade(5)?.enhance }} cấp
-              </div>
-            </item-rank>
-            <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
-          </div>
-          <div>
-            <item-rank v-if="slot6?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot6.rank" :preview="slot6?.preview" @click.stop="equipSelected = slot6">
-              <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                {{ getSlotEquipUpgrade(6)?.enhance }} cấp
-              </div>
-            </item-rank>
-            <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
-          </div>
-          <div>
-            <item-rank v-if="slot7?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot7.rank" :preview="slot7?.preview" @click.stop="equipSelected = slot7">
-              <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                {{ getSlotEquipUpgrade(7)?.enhance }} cấp
-              </div>
-            </item-rank>
-            <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
-          </div>
-          <div>
-            <item-rank v-if="slot8?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot8.rank" :preview="slot8?.preview" @click.stop="equipSelected = slot8">
-              <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
-                {{ getSlotEquipUpgrade(8)?.enhance }} cấp
-              </div>
-            </item-rank>
-            <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
-          </div>
+          <item-rank v-if="slot5?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot5.rank" :preview="slot5?.preview" @click.stop="equipSelected = slot5">
+            <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+              {{ getSlotEquipUpgrade(5)?.enhance }} cấp
+            </div>
+          </item-rank>
+          <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
+          <item-rank v-if="slot6?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot6.rank" :preview="slot6?.preview" @click.stop="equipSelected = slot6">
+            <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+              {{ getSlotEquipUpgrade(6)?.enhance }} cấp
+            </div>
+          </item-rank>
+          <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
+          <item-rank v-if="slot7?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot7.rank" :preview="slot7?.preview" @click.stop="equipSelected = slot7">
+            <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+              {{ getSlotEquipUpgrade(7)?.enhance }} cấp
+            </div>
+          </item-rank>
+          <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
+          <item-rank v-if="slot8?.preview" class="w-[55px] h-[55px]" :quantity="0" :rank="slot8.rank" :preview="slot8?.preview" @click.stop="equipSelected = slot8">
+            <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[50px] flex justify-center">
+              {{ getSlotEquipUpgrade(8)?.enhance }} cấp
+            </div>
+          </item-rank>
+          <div v-else class="w-[55px] h-[55px] bg-[#659e58] rounded" />
         </div>
       </div>
       <div v-if="needResource" class="absolute bottom-0 w-full duration-500">

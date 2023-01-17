@@ -3,10 +3,10 @@ import { storeToRefs } from 'pinia'
 import { onClickOutside } from '@vueuse/core'
 import { useAppStore } from '~/composables/app'
 
-const { playerInfoComponent } = storeToRefs(useAppStore())
+const togglePlayerInfo = useState('togglePlayerInfo')
 const currentTab = ref('attribute')
 const target = ref(null)
-onClickOutside(target, () => playerInfoComponent.value = false)
+onClickOutside(target, () => togglePlayerInfo.value = false)
 
 const tabs = ref([
   {

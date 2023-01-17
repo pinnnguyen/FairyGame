@@ -7,12 +7,12 @@ import { usePlayerStore } from '~/composables/usePlayer'
 
 const { $io } = useNuxtApp()
 
-const { playerInfo } = storeToRefs(usePlayerStore())
 const toggleAuction = useState('toggleAuction')
 const toggleStore = useState('toggleStore')
 const toggleBag = useState('toggleBag')
 const toggleUpgrade = useState('toggleUpgrade')
-const { playerInfoComponent } = storeToRefs(useAppStore())
+const toggleUpStar = useState('toggleUpStar')
+const togglePlayerInfo = useState('togglePlayerInfo')
 const startBattle = useLocalStorage('startBattle', false)
 // console.log('bg_mu', bg_mu)
 // const activeSound = useSound(bg_mu, {
@@ -25,27 +25,23 @@ definePageMeta({
   auth: false,
 })
 
-onMounted(async () => {
-  console.log('$io', $io)
-  // shouldTupo({
-  //   level: playerInfo.value?.level,
-  //   floor: playerInfo.value?.floor,
-  //   levelTitle: playerInfo.value?.levelTitle,
-  // })
-})
+// onMounted(async () => {
+//   // shouldTupo({
+//   //   level: playerInfo.value?.level,
+//   //   floor: playerInfo.value?.floor,
+//   //   levelTitle: playerInfo.value?.levelTitle,
+//   // })
+// })
 </script>
 
 <template>
   <TheRight />
-
-  <var-popup v-model:show="playerInfoComponent" position="center">
+  <var-popup v-model:show="togglePlayerInfo" position="center">
     <PlayerInfomation />
   </var-popup>
-
   <var-popup v-model:show="startBattle" position="center">
     <Battle />
   </var-popup>
-
   <var-popup v-model:show="toggleUpgrade" position="center">
     <Upgrade v-if="toggleUpgrade" />
   </var-popup>
@@ -58,16 +54,19 @@ onMounted(async () => {
   <var-popup v-model:show="toggleStore" position="center">
     <Store />
   </var-popup>
+  <var-popup v-model:show="toggleUpStar" position="center">
+    <UpgradeUpStar />
+  </var-popup>
 
   <PageSection class="flex-1 flex items-center relative justify-center z-9">
-    <div class="w-full absolute top-0">
-      <div class="relative">
-        <nuxt-img format="webp" src="/index/bg.png" />
-        <nuxt-img class="absolute bottom-4 left-[calc(50%_-_50px)] w-[100px]" format="webp" src="/pve/nv1.png" />
+    <div class="w-full absolute top-0 h-[40%]">
+      <div class="relative h-full">
+        <nuxt-img format="webp" class="h-full object-cover" src="/index/bg.png" />
+        <nuxt-img class="absolute bottom-5 left-[calc(50%_-_65px)] w-[135px]" format="webp" src="/pve/nv1.png" />
       </div>
     </div>
-    <div class="absolute bottom-0 w-full">
-      <div class="relative">
+    <div class="absolute bottom-0 w-full h-[60%]">
+      <div class="relative h-full">
         <PageBottom />
       </div>
     </div>
