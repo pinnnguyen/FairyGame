@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useLocalStorage } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
+import { useSoundHomeEvent } from '#imports'
 // import { useSound } from '@vueuse/sound'
 import { usePlayerStore } from '~/composables/usePlayer'
 // import { shouldTupo } from '~/server/common'
@@ -25,13 +25,16 @@ definePageMeta({
   auth: false,
 })
 
-// onMounted(async () => {
-//   // shouldTupo({
-//   //   level: playerInfo.value?.level,
-//   //   floor: playerInfo.value?.floor,
-//   //   levelTitle: playerInfo.value?.levelTitle,
-//   // })
-// })
+onMounted(async () => {
+  setTimeout(async () => {
+    await useSoundHomeEvent().play()
+  }, 10000)
+  // shouldTupo({
+  //   level: playerInfo.value?.level,
+  //   floor: playerInfo.value?.floor,
+  //   levelTitle: playerInfo.value?.levelTitle,
+  // })
+})
 </script>
 
 <template>

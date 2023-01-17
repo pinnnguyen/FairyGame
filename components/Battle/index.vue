@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { sendMessage, useBattleRoundStore, usePlayerStore } from '#imports'
+import { sendMessage, useBattleRoundStore, usePlayerStore, useSoundBattleEvent } from '#imports'
 import { BATTLE_KIND, BATTLE_TURN, TARGET_TYPE } from '~/constants'
 import type { BattleResponse } from '~/types'
 
@@ -24,7 +24,8 @@ const { loadPlayer } = usePlayerStore()
 const { $io } = useNuxtApp()
 
 onMounted(() => {
-  console.log('battle mounted')
+  // useSoundBattleEvent().play()
+  // useSoundBattleEvent().loop = true
   $io.emit('battle:join', `${playerInfo.value?._id}-battle-pve`, {
     kind: BATTLE_KIND.PVE,
     player: {
@@ -39,6 +40,11 @@ onMounted(() => {
   $io.on('battle:start', async (war: BattleResponse) => {
     await startBattle(war)
   })
+})
+
+onUnmounted(() => {
+  // console.log('pause')
+  // useSoundBattleEvent().pause()
 })
 
 const refreshFinished = () => {

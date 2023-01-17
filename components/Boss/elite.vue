@@ -68,7 +68,7 @@ const startWar = (boss: BossElite) => {
     <div v-if="revive > 0" class="text-10 text-white mb-2">
       Hồi sinh: {{ timeOffset(revive).minutes }}p {{ timeOffset(revive).seconds }}s
     </div>
-    <div v-else class="text-12 text-white mb-2">
+    <div v-else class="text-12 text-white mb-2 text-center">
       <Icon name="material-symbols:swords" size="16" />
       Sẵn sàng
     </div>

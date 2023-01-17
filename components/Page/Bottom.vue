@@ -136,31 +136,31 @@ const onPlayerInfo = () => {
           <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
             <nuxt-img src="/bottom/menu/XJHomescreenButton_23.png" format="webp" class="transform rotate-45" />
           </div>
-          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Công pháp</span>
+          <span class="whitespace-nowrap text-12 text-black/60 mt-2">Công pháp</span>
         </div>
         <div class="flex items-center jsutify-center flex-col" @click="onToggleAuction">
           <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
             <nuxt-img src="/bottom/menu/XJHomescreenButton_27.png" format="webp" class="transform rotate-45" />
           </div>
-          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Đấu giá</span>
+          <span class="whitespace-nowrap text-12 text-black/60 mt-2">Đấu giá</span>
         </div>
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
             <nuxt-img src="/bottom/menu/XJHomescreenButton_10.png" format="webp" class="transform rotate-45" />
           </div>
-          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Tông môn</span>
+          <span class="whitespace-nowrap text-12 text-black/60 mt-2">Tông môn</span>
         </div>
         <div class="flex items-center jsutify-center flex-col" @click.stop="onUpgradeOptions">
           <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
             <nuxt-img src="/bottom/menu/XJHomescreenButton_04.png" format="webp" class="transform rotate-45" />
           </div>
-          <span class="whitespace-nowrap text-12 text-black/70 mt-1">Nâng cấp</span>
+          <span class="whitespace-nowrap text-12 text-black/60 mt-2">Nâng cấp</span>
         </div>
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
             <icon name="material-symbols:settings-outline" size="20" class="transform rotate-45" />
           </div>
-          <span class="whitespace-nowrap text-12 text-black/70 mt-1">
+          <span class="whitespace-nowrap text-12 text-black/60 mt-2">
             Cài đặt
           </span>
         </div>

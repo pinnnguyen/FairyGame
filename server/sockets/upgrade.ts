@@ -1,4 +1,4 @@
-import { PlayerEquipUpgradeSchema, PlayerEquipmentSchema, PlayerItemSchema, PlayerSchema } from '~/server/schema'
+import { PlayerEquipmentSchema, PlayerItemSchema, PlayerSchema } from '~/server/schema'
 import { needResourceUpgrade } from '~/server/helpers'
 
 export const handleEquipUpgrade = (io: any, socket: any) => {

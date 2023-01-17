@@ -25,7 +25,7 @@ const tabs = ref([
 </script>
 
 <template>
-  <div ref="target" class="bg-[#252c47] rounded shadow-md text-white w-full h-[80%] w-[calc(100vw_-_30px)]">
+  <div ref="target" class="bg-[#252c47] rounded shadow-md text-white w-full h-[80%] w-[calc(100vw_-_30px)] h-[500px]">
     <div class="h-full">
       <div class="flex items-center justify-center w-full">
         <div
