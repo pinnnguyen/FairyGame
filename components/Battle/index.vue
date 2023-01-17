@@ -23,10 +23,6 @@ const { playerInfo } = storeToRefs(usePlayerStore())
 const { loadPlayer } = usePlayerStore()
 const { $io } = useNuxtApp()
 
-definePageMeta({
-  middleware: ['game'],
-})
-
 onMounted(() => {
   console.log('battle mounted')
   $io.emit('battle:join', `${playerInfo.value?._id}-battle-pve`, {
@@ -50,7 +46,6 @@ const refreshFinished = () => {
 }
 
 const nextMid = async () => {
-  console.log('next mid')
   try {
     loading.value = true
     const player = await $fetch('/api/mid/set', {
@@ -59,6 +54,7 @@ const nextMid = async () => {
 
     loadPlayer(player)
     loading.value = false
+    sendMessage('Qua ải thành công')
   }
   catch (e) {
     sendMessage('Hãy vượt ải trước đó để tiếp tục')
@@ -79,8 +75,8 @@ const doCloseBattleR = () => {
     :reward="reward"
     @close="doCloseBattleR"
   />
-  <ClientOnly>
-    <div class="h-[85vh] bg-white overflow-hidden w-[calc(100vw_-_40px)]">
+  <var-loading :loading="loading" description="Đang tải trận chiến" color="#333">
+    <div class="h-[75vh] bg-white overflow-hidden w-[calc(100vw_-_20px)]">
       <div class="bg-bg_pve bg-cover relative h-full">
         <div class="text-center pt-2 text-base font-semibold flex items-center justify-center">
           <span class="bg-[#009688] text-white p-1 rounded text-12">
@@ -104,7 +100,7 @@ const doCloseBattleR = () => {
         </div>
       </div>
       <div class="relative">
-        <!-- <NuxtImg class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" /> -->
+        <!-- <nuxt-img class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" /> -->
         <!-- <div class="p-4 h-[25%] overflow-scroll">
             <BattleHistory :battle-rounds="battleRounds" />
           </div> -->
@@ -115,20 +111,20 @@ const doCloseBattleR = () => {
             @refresh-finished="refreshFinished"
           />
           <div class="flex items-center gap-2">
-            <VarButton class="w-[80px] uppercase font-medium" size="small" type="default" @click="nextMid">
-              Ải tiếp
-            </VarButton>
+            <var-button class="w-[80px] uppercase font-medium" size="small" type="default" @click="nextMid">
+              QUA ẢI
+            </var-button>
             <div class="py-2">
-              <VarButton v-show="speed === 1" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 2">
+              <var-button v-show="speed === 1" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 2">
                 X1
-              </VarButton>
-              <VarButton v-show="speed === 2" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 1">
+              </var-button>
+              <var-button v-show="speed === 2" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 1">
                 X2
-              </VarButton>
+              </var-button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </ClientOnly>
+  </var-loading>
 </template>

@@ -37,6 +37,8 @@ export const resourceReceived = async (sid: string, lastTimeReceivedRss: number,
     gold += goldInMinute
   }
 
+  console.log('exp', exp)
+  console.log('gold', gold)
   await PlayerSchema.updateOne({ sid }, {
     lastTimeReceivedRss: new Date().getTime(),
     $inc: {

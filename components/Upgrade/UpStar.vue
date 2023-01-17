@@ -85,7 +85,7 @@ const goToHome = () => {
   </var-popup>
   <div class="flex items-center justify-center w-[calc(100vw_-_30px)] h-[70vh]">
     <div class="w-full h-full relative">
-      <span class="font-bold absolute left-[calc(50%_-_28px)] top-[2px] text-[#656f99] text-12">Cường hoá</span>
+      <span class="font-semibold absolute left-[calc(50%_-_28px)] top-[1px] text-[#656f99] text-12">Cường hoá</span>
       <nuxt-img class="w-full h-full" format="webp" src="/common/bj_tongyong_1.png" />
       <div class="absolute top-[30px] flex flex-col gap-1 items-center justify-center w-full" />
       <div class="flex justify-around w-full absolute top-10 px-2">

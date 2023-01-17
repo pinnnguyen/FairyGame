@@ -23,12 +23,10 @@ const message = ref('')
 </script>
 
 <template>
-  <Body class="overflow-hidden duration-300 transition-colors game-center font-sans">
-    <div id="app-before" />
+  <Body class="overflow-hidden duration-300 transition-colors">
     <NuxtLayout>
       <LoadingScreen v-if="loading" />
       <PageLoadingIndicator :height="5" :duration="3000" :throttle="400" />
-      <div id="page-before" />
       <NuxtPage />
       <!--      <ClientOnly> -->
       <!--        <marquee-text :repeat="1" class="w-[0px] fixed top-25 bg-red-500 z-99 w-[90%] left-5 text-white text-xs rounded" :duration="10"> -->

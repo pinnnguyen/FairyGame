@@ -2,7 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { set, useLocalStorage } from '@vueuse/core'
 import { sleep } from '~/common'
 import { BATTLE_TURN } from '~/constants/war'
-import type { PlayerEquipment } from '~/types'
+import type { BasicItem, PlayerEquipment } from '~/types'
 import type { BaseProperties, BaseReward, BattleResponse } from '~/types/war'
 
 export const useBattleRoundStore = defineStore('battleRound', () => {
@@ -19,6 +19,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   const refreshTime = ref(0)
   const reward = ref<{
     base: BaseReward
+    items: BasicItem[]
     equipments: PlayerEquipment[]
   }>()
 
@@ -63,6 +64,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   })
 
   const speed = useLocalStorage('speed', 1)
+  const skip = ref(false)
   const TURN_DELAY = computed(() => 2000 / speed.value)
   // const REAL_TIME_DELAY = 700
   const DAMAGE_DELAY = 1200
@@ -73,6 +75,9 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     win: '',
   })
 
+  const setSkip = (boo: boolean) => {
+    set(skip, boo)
+  }
   const startBattle = async (war: BattleResponse) => {
     console.log('war', war)
     set(inRefresh, false)
@@ -85,7 +90,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     if (!war)
       return
 
-    set(reward, war.reward)
+    set(reward, war?.reward)
     state.value.player = war.player
     state.value.enemy = war.enemy
 
@@ -109,6 +114,9 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     let roundNum = 0
     for (const emulator of war.emulators) {
       for (const turn in emulator) {
+        if (skip.value)
+          return
+
         roundNum++
         const _turn = turn.replace(/1_|2_/g, '') // replace '1_player' -> player
         const __turn: string = _turn === BATTLE_TURN.PLAYER ? BATTLE_TURN.ENEMY : BATTLE_TURN.PLAYER // Đảo ngược key
@@ -140,7 +148,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
             realTime.value[__turn].trueDamage = false
           }, DAMAGE_DELAY)
 
-          if ((receiver.value[__turn].hp as number) <= 0) {
+          if (roundNum === war.emulators.length - 1 || (receiver.value[__turn].hp as number) <= 0) {
             setTimeout(() => {
               battleResult.value = {
                 show: true,
@@ -169,6 +177,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     battleResult,
     rankDMG,
     speed,
+    setSkip,
   }
 })
 

@@ -33,9 +33,9 @@ const buy = async (storeItem: StoreItem) => {
 
 <template>
   <div class="relative">
-    <NuxtImg format="webp" src="/common/bg-aution.png" />
+    <nuxt-img format="webp" src="/common/bg-aution.png" />
     <div class="absolute top-0">
-      <ItemRank
+      <item-rank
         class="m-2"
         :quantity="storeItem.quantity"
         :rank="storeItem.info.rank"
@@ -44,14 +44,14 @@ const buy = async (storeItem: StoreItem) => {
     </div>
     <div class="absolute top-0 right-0 flex mt-2 mr-2 flex-col ">
       <div class="flex">
-        <NuxtImg class="w-4 object-cover" format="webp" src="/items/1_s.png" />
+        <nuxt-img class="w-4 object-cover" format="webp" src="/items/1_s.png" />
         <span class="text-12 ml-1 font-semibold">
           {{ storeItem.price ?? 0 }}
         </span>
       </div>
-      <var-button :loading="loading" type="warning" size="mini" @click="buy(storeItem)">
+      <Button :loading="loading" type="warning" size="mini" @click="buy(storeItem)">
         Mua
-      </var-button>
+      </Button>
     </div>
     <p class="text-10 absolute bottom-1 font-semibold left-2 line-clamp-1">
       {{ storeItem.info.name }}

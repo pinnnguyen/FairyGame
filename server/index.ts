@@ -29,6 +29,11 @@ export default async () => {
 
         console.log('end job send reward auction')
       }),
+
+      // “At every 2nd minute
+      cron.schedule('*/2 * * * *', async () => {
+        console.log('run run..')
+      }),
     )
 
     tasks.forEach(task => task.start())

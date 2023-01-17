@@ -75,7 +75,7 @@ const startWar = (boss: BossElite) => {
     <div class="flex justify-between mt-2">
       <div class="flex flex-col justify-between">
         <div class="relative mr-2 flex flex-col items-center justify-center">
-          <NuxtImg class="w-[55px] h-[55px] rounded-full border border-[#bbc4d2]" format="webp" :src="boss.avatar" />
+          <nuxt-img class="w-[55px] h-[55px] rounded-full border border-[#bbc4d2]" format="webp" :src="boss.avatar" />
           <div class="text-10 text-white h-3 object-cover bottom-[2px] left-[calc(50%_-_20px)]">
             {{ boss.name }}
           </div>
@@ -84,21 +84,21 @@ const startWar = (boss: BossElite) => {
               <Icon name="fa6-solid:sack-dollar" size="12" />
               <span class="flex items-center justify-center ml-1">
                 <span class="text-10 text-gray-200">{{ boss.reward?.base?.bag }}</span>
-                <NuxtImg format="webp" class="w-3 h-3 ml-[1px]" src="/items/1_s.png" />
+                <nuxt-img format="webp" class="w-3 h-3 ml-[1px]" src="/items/1_s.png" />
               </span>
             </div>
             <div class="flex items-center justify-center">
               <Icon name="noto:trophy" size="12" />
               <span class="flex items-center justify-center ml-1">
                 <span class="text-10 text-gray-200">{{ boss.reward?.base?.top }}</span>
-                <NuxtImg format="webp" class="w-3 h-3 ml-[1px]" src="/items/1_s.png" />
+                <nuxt-img format="webp" class="w-3 h-3 ml-[1px]" src="/items/1_s.png" />
               </span>
             </div>
             <div class="flex items-center justify-center">
               <Icon name="game-icons:ancient-sword" size="12" />
               <span class="flex items-center justify-center ml-1">
                 <span class="text-10 text-gray-200">{{ boss.reward?.base?.kill }}</span>
-                <NuxtImg format="webp" class="w-3 h-3 ml-[1px]" src="/items/1_s.png" />
+                <nuxt-img format="webp" class="w-3 h-3 ml-[1px]" src="/items/1_s.png" />
               </span>
             </div>
           </div>

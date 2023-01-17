@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onClickOutside } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { startTimeEvent, timeOffset } from '~/common'
 import type { AuctionItem } from '~/types'
@@ -13,14 +12,10 @@ const { $io } = useNuxtApp()
 
 const { data: auction } = await useFetch('/api/auction')
 
-const target = ref(null)
-onClickOutside(target, () => emits('close'))
-
 const endTime = ref((auction.value?.endTime - now) / 1000)
 const auctionItems = ref(auction.value?.auctionItems)
 const startEvent = computed(() => startTimeEvent(auction.value?.startTime, auction.value?.endTime))
 
-console.log('auction', auction.value)
 onMounted(() => {
   setInterval(() => {
     endTime.value -= 1
@@ -46,40 +41,38 @@ const doAuction = (auctionItem: AuctionItem) => {
 </script>
 
 <template>
-  <Blocker class="z-99">
-    <p v-if="auction" class="text-white">
-      Kết thúc sau {{ timeOffset(endTime).minutes }}p {{ timeOffset(endTime).seconds }}s
+  <p v-if="auction" class="text-white">
+    Kết thúc sau {{ timeOffset(endTime).minutes }}p {{ timeOffset(endTime).seconds }}s
+  </p>
+  <div class="relative w-[calc(100vw_-_30px)] h-[75vh]">
+    <nuxt-img format="webp" class="absolute w-full h-full" src="/common/panel_common_bg1.png" />
+    <p class="absolute top-0 left-[calc(50%_-_50px)] flex justify-center w-[100px] text-[#ad3a36] font-semibold">
+      Đấu giá
     </p>
-    <div ref="target" class="relative w-[95%] h-[80%]">
-      <NuxtImg format="webp" class="absolute" src="/common/panel_common_bg1.png" />
-      <p class="absolute top-0 left-[calc(50%_-_50px)] w-[100px] text-[#ad3a36] font-semibold">
-        Đấu giá
-      </p>
-      <div class="absolute w-full h-full">
-        <div v-if="!startEvent" class="h-full flex items-center justify-center text-white">
-          Đấu giá chưa được mở
-        </div>
-        <div v-else class="grid grid-cols-2 m-auto w-[84%] h-[87%] overflow-auto mt-10 gap-2">
-          <div v-for="auctionItem in auctionItems" :key="auctionItem._id" class="relative h-[75px]">
-            <NuxtImg format="webp" src="/common/bg-aution.png" />
-            <div class="absolute top-0">
-              <ItemRank class="m-2" :quantity="0" :rank="auctionItem?.detail.rank" :preview="auctionItem?.detail.preview" />
-            </div>
-            <div class="absolute top-0 right-0 flex mt-2 mr-2 flex-col ">
-              <div class="flex">
-                <NuxtImg class="w-4 object-cover" format="webp" src="/items/1_s.png" />
-                <span class="text-12 ml-1 font-semibold">{{ auctionItem.price }}</span>
-              </div>
-              <button class="bg-[#8e5b4c] mt-2 w-[55px] text-white text-10 px-1 font-semibold rounded" @click="doAuction(auctionItem)">
-                Đấu giá
-              </button>
-            </div>
-            <p class="text-10 absolute bottom-1 left-2 line-clamp-1">
-              Sở hữu: {{ auctionItem.player.length > 0 ? auctionItem.player[0].name : 'Trống' }}
-            </p>
+    <div class="absolute w-full h-full">
+      <div v-if="!startEvent" class="h-full flex items-center justify-center text-white">
+        Đấu giá chưa được mở
+      </div>
+      <div v-else class="grid grid-cols-2 m-auto w-[84%] h-[87%] overflow-auto mt-10 gap-2">
+        <div v-for="auctionItem in auctionItems" :key="auctionItem._id" class="relative h-[75px]">
+          <nuxt-img format="webp" src="/common/bg-aution.png" />
+          <div class="absolute top-0">
+            <Lazyitem-rank class="m-2" :quantity="0" :rank="auctionItem?.detail.rank" :preview="auctionItem?.detail.preview" />
           </div>
+          <div class="absolute top-0 right-0 flex mt-2 mr-2 flex-col ">
+            <div class="flex">
+              <nuxt-img class="w-4 object-cover" format="webp" src="/items/1_s.png" />
+              <span class="text-12 ml-1 font-semibold">{{ auctionItem.price }}</span>
+            </div>
+            <button class="bg-[#8e5b4c] mt-2 w-[55px] text-white text-10 px-1 font-semibold rounded" @click="doAuction(auctionItem)">
+              Đấu giá
+            </button>
+          </div>
+          <p class="text-10 absolute bottom-1 left-2 line-clamp-1">
+            Sở hữu: {{ auctionItem.player.length > 0 ? auctionItem.player[0].name : 'Trống' }}
+          </p>
         </div>
       </div>
     </div>
-  </Blocker>
+  </div>
 </template>

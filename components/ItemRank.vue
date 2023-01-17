@@ -37,7 +37,7 @@ const bgRank = computed(() => {
     class="w-12 bg-contain bg-no-repeat relative"
   >
     <div class="relative">
-      <NuxtImg format="webp" :src="preview" />
+      <nuxt-img format="webp" :src="preview" />
       <div v-if="quantity > 0" class="absolute text-12 font-bold text-white bottom-0 right-0 pr-1">
         {{ quantity }}
       </div>

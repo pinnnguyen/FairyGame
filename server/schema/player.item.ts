@@ -22,30 +22,16 @@ schema.index({ sid: -1 })
 export const PlayerItemSchema = mongoose.model('PlayerItemSchemas', schema, 'gl_player_items')
 
 export const addPlayerItem = async (sid: string, quantity: number, itemId: number) => {
-  const item = await ItemSchema.findOne({ id: itemId })
-  if (!item)
-    return
-
-  const playerItem = await PlayerItemSchema.findOne({
-    kind: {
-      $in: [2, 3],
-    },
+  await PlayerItemSchema.findOneAndUpdate({
     itemId,
     sid,
-  })
-
-  if (!playerItem) {
-    return new PlayerItemSchema({
-      sid,
-      sum: quantity,
-      itemId,
-    }).save()
-  }
-
-  return PlayerItemSchema.updateOne({ sid, itemId }, {
+  }, {
     $inc: {
       sum: quantity,
     },
+  }, {
+    new: true,
+    upsert: true,
   })
 }
 

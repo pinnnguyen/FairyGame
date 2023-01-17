@@ -53,15 +53,15 @@ const parseEquipments = (equipments: PlayerEquipment[]) => {
   <section class="w-[90%] h-[80px] bg-[#a0aac0cf] rounded flex justify-between">
     <div class="flex flex-col items-center justify-center">
       <div class="relative mr-2">
-        <NuxtImg class="w-[55px] h-[55px] rounded-full border border-[#bbc4d2]" format="webp" :src="boss.avatar" />
-        <NuxtImg class="w-10 h-3 object-cover absolute bottom-0 left-[calc(50%_-_20px)]" format="webp" src="/panel/common_2.png" />
+        <nuxt-img class="w-[55px] h-[55px] rounded-full border border-[#bbc4d2]" format="webp" :src="boss.avatar" />
+        <nuxt-img class="w-10 h-3 object-cover absolute bottom-0 left-[calc(50%_-_20px)]" format="webp" src="/panel/common_2.png" />
         <p class="text-10 text-white h-3 object-cover absolute bottom-[2px] left-[calc(50%_-_20px)]">
           {{ boss.name }}
         </p>
       </div>
     </div>
     <div class="flex items-center justify-center">
-      <LazyItemRank
+      <Lazyitem-rank
         v-for="equipment in parseEquipments(boss?.reward?.equipments)"
         :key="equipment.name"
         class="w-[40px] h-[40px]"

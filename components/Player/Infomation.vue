@@ -25,7 +25,7 @@ const tabs = ref([
 </script>
 
 <template>
-  <div ref="target" class="bg-[#1d160e] border border-[#926633] rounded shadow-md text-white w-full h-[80%] w-[calc(100vw_-_30px)]">
+  <div ref="target" class="bg-[#252c47] rounded shadow-md text-white w-full h-[80%] w-[calc(100vw_-_30px)]">
     <div class="h-full">
       <div class="flex items-center justify-center w-full">
         <div
@@ -38,7 +38,7 @@ const tabs = ref([
         </div>
       </div>
       <div
-        class="m-1 rounded-md pt-2 text-12 font-semibold h-[calc(100%_-_60px)]"
+        class="m-1 rounded-md pt-2 text-10 font-semibold h-[calc(100%_-_60px)]"
       >
         <PlayerAttributeTab v-if="currentTab === 'attribute'" />
         <PlayerEquipTab v-if="currentTab === 'equipment'" />

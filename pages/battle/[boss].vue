@@ -55,6 +55,7 @@ onMounted(() => {
   })
 
   $io.on('battle:start', async (war: BattleResponse) => {
+    console.log('war', war)
     await startBattle(war)
   })
 
@@ -96,53 +97,51 @@ const refreshFinished = () => {
     @close="doCloseBattleR"
   />
   <LoadingScreen v-if="loading" />
-  <ClientOnly>
-    <div class="h-screen bg-white">
-      <div class="h-[54%] bg-bg_pve bg-cover relative">
-        <div class="text-center pt-2 text-base font-semibold flex items-center justify-center">
-          <span class="bg-[#009688] text-white p-1 rounded">
-            [{{ state.enemy?.name }}]
-          </span>
-        </div>
-        <BattleAttributeInfo :state="state" />
-        <div class="flex justify-around mt-8">
-          <BattlePlayerRealtime
-            :state="state"
-            :receiver="receiver"
-            :real-time="realTime"
-          />
-          <BattleEnemyRealtime
-            :state="state"
-            :receiver="receiver"
-            :real-time="realTime"
-          />
-        </div>
-        <div class="absolute bottom-0 right-0 py-2">
-          <var-button v-show="speed === 1" outline size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 2">
-            X1
-          </var-button>
-          <var-button v-show="speed === 2" outline size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 1">
-            X2
-          </var-button>
-        </div>
+  <div class="h-screen bg-white">
+    <div class="h-[54%] bg-bg_pve bg-cover relative">
+      <div class="text-center pt-2 text-base font-semibold flex items-center justify-center">
+        <span class="bg-[#009688] text-white p-1 rounded">
+          [{{ state.enemy?.name }}]
+        </span>
       </div>
-      <div class="relative h-full">
-        <NuxtImg class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" />
-        <BattleHistory :battle-rounds="battleRounds" />
-        <BattleTopDMG :top-d-m-g="topDMG" />
-        <div class="flex items-center flex-col justify-center w-full fixed bottom-2">
-          <BattleRevice
-            v-if="inRefresh"
-            :refresh-time="refreshTime"
-            @refresh-finished="refreshFinished"
-          />
-          <div class="flex items-center gap-2">
-            <VarButton class="w-[80px] uppercase font-medium" size="small" type="default" @click.stop="navigateTo('/')">
-              Về thành
-            </VarButton>
-          </div>
+      <BattleAttributeInfo :state="state" />
+      <div class="flex justify-around mt-8">
+        <BattlePlayerRealtime
+          :state="state"
+          :receiver="receiver"
+          :real-time="realTime"
+        />
+        <BattleEnemyRealtime
+          :state="state"
+          :receiver="receiver"
+          :real-time="realTime"
+        />
+      </div>
+      <div class="absolute bottom-0 right-0 py-2">
+        <var-button v-show="speed === 1" outline size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 2">
+          X1
+        </var-button>
+        <var-button v-show="speed === 2" outline size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 1">
+          X2
+        </var-button>
+      </div>
+    </div>
+    <div class="relative h-full">
+      <nuxt-img class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" />
+      <BattleHistory :battle-rounds="battleRounds" />
+      <BattleTopDMG :top-d-m-g="topDMG" />
+      <div class="flex items-center flex-col justify-center w-full fixed bottom-2">
+        <BattleRevice
+          v-if="inRefresh"
+          :refresh-time="refreshTime"
+          @refresh-finished="refreshFinished"
+        />
+        <div class="flex items-center gap-2">
+          <Button class="w-[80px] uppercase font-medium" size="small" type="default" @click.stop="navigateTo('/')">
+            Về thành
+          </Button>
         </div>
       </div>
     </div>
-  </ClientOnly>
+  </div>
 </template>

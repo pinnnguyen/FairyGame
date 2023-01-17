@@ -43,6 +43,7 @@ html.dark {
 
 .game-center {
   width: calc(100vh * 0.7);
+  min-height: -webkit-fill-available;
   position: relative;
   overflow: hidden;
 }

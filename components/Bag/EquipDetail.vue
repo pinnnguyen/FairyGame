@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onClickOutside } from '@vueuse/core'
 import type { PlayerEquipment } from '~/types'
 import { EQUIPMENT_SLOT } from '~/constants'
 import { usePlayerStore } from '~/composables/usePlayer'
@@ -11,15 +10,14 @@ interface Prop {
 const props = defineProps<Prop>()
 const emits = defineEmits(['close', 'changeEquip'])
 
-const { changeEquip, hasEquip, getPlayer } = usePlayerStore()
+const { getPlayer } = usePlayerStore()
 const loading = ref(false)
-const target = ref(null)
-onClickOutside(target, () => emits('close'))
+const propItem = ref(props.item)
 
 const doEquip = async () => {
   const _id = props.item._id
   loading.value = true
-  const equipDataRes = await $fetch('/api/player/equip', {
+  await $fetch('/api/player/equip', {
     headers: (useRequestHeaders(['cookie']) as any),
     method: 'POST',
     body: {
@@ -28,18 +26,15 @@ const doEquip = async () => {
     },
   })
 
-  if (equipDataRes.statusCode === 200)
-    changeEquip(props.item?.slot, props.item?._id)
-
   loading.value = false
-  getPlayer()
-  emits('changeEquip', 'equip')
+  propItem.value.used = true
+  await getPlayer()
 }
 
 const doUnEquip = async () => {
   const _id = props.item._id
   loading.value = true
-  const equipDataRes = await $fetch('/api/player/equip', {
+  await $fetch('/api/player/equip', {
     headers: (useRequestHeaders(['cookie']) as any),
     method: 'POST',
     body: {
@@ -48,30 +43,27 @@ const doUnEquip = async () => {
     },
   })
 
-  if (equipDataRes.statusCode === 200)
-    changeEquip(props.item?.slot, '')
-
+  propItem.value.used = false
   loading.value = false
-  getPlayer()
-  emits('changeEquip', 'unequip')
+  await getPlayer()
 }
 </script>
 
 <template>
-  <div ref="target" class="relative text-xs leading-6 text-white bg-[#1d160e] rounded p-0 border !border-[#795548] w-[320px]">
-    <div class="p-3 text-12 font-medium">
+  <div class="relative text-xs leading-6 text-white bg-[#1d160e] rounded p-0 border !border-[#795548] w-[320px]">
+    <div class="p-3 text-10 font-medium">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center justify-center">
-          <ItemRank class="w-15" :quantity="0" :rank="item.rank" :preview="item?.preview" />
+          <item-rank class="w-15" :quantity="0" :rank="item.rank" :preview="item?.preview" />
         </div>
         <div class="mx-2">
           <div class="text-14">
-            {{ item.name }}
+            {{ item.name }} + {{ item.enhance }}
           </div>
-          <div>Cường hoá + {{ item.enhance }}</div>
           <div>
             Vị trí: {{ EQUIPMENT_SLOT[item.slot] }}
           </div>
+          <div>Bậc {{ item.rank }}</div>
         </div>
       </div>
       <div class="flex flex-col items-start justify-start">
@@ -136,12 +128,12 @@ const doUnEquip = async () => {
       </div>
       <div class="flex justify-center mb-2">
         <div class="mt-4">
-          <var-button v-if="!item.used" class="!text-[#333] font-medium" type="default" size="small" @click.stop="doEquip">
+          <var-button v-if="!propItem.used" class="!text-[#333] font-medium font-semibold uppercase" color="#ffd400" size="small" @click.stop="doEquip">
             Trang bị
           </var-button>
-          <var-button v-else class="!text-[#333] font-medium" type="warning" size="small" @click.stop="doUnEquip">
+          <Button v-else class="!text-[#333] font-medium uppercase" size="small" @click.stop="doUnEquip">
             Tháo trang bị
-          </var-button>
+          </Button>
         </div>
       </div>
     </div>

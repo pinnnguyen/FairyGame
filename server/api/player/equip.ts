@@ -51,7 +51,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (body.action === 'unequip') {
-    await PlayerEquipmentSchema.updateOne({ sid: player?.sid, slot: playerEquipment.slot }, {
+    await PlayerEquipmentSchema.updateMany({ sid: player?.sid, slot: playerEquipment.slot }, {
       used: false,
     })
 

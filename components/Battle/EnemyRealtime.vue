@@ -24,7 +24,7 @@ defineProps<{
       </span>
       <span v-else>-{{ realTime.enemy.dmg }}</span>
     </span>
-    <NuxtImg
+    <nuxt-img
       format="webp" class="h-[100px]" :class="{
         'filter grayscale': realTime.enemy.trueDamage,
       }" src="/pve/nv2.png"

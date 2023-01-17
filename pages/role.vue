@@ -81,7 +81,7 @@ const handleCreateFigure = async () => {
               <p class="text-center font-semibold">
                 {{ classE.name }}
               </p>
-              <NuxtImg
+              <nuxt-img
                 class="w-full duration-500 transition transform h-[300px] object-cover"
                 :class="{ 'scale-130': selected ? selected.id === classE.id : 0 }"
                 format="webg"

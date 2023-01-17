@@ -1,15 +1,20 @@
 export default defineNuxtConfig({
-  ssr: true,
+  ssr: false,
   auth: {
-    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tienhoi.vercel.app',
+    origin: process.env.NODE_ENV === 'development' ? 'http://192.168.1.57:3000/' : 'https://tienhoi.vercel.app',
     enableGlobalAppMiddleware: false,
   },
   nitro: {
     // preset: 'vercel',
     plugins: [
       '~/server/index.ts',
-      // '~/server/plugins/socket',
     ],
+  },
+  app: {
+    buildAssetsDir: '/assets/',
+    head: {
+      viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+    },
   },
   runtimeConfig: {
     mongoUrl: process.env.MONGO_URL,
@@ -33,7 +38,21 @@ export default defineNuxtConfig({
     'nuxt-windicss',
     'nuxt-icon',
     '@sidebase/nuxt-auth',
+    '@kevinmarrec/nuxt-pwa',
   ],
+  pwa: {
+    meta: {
+      // Generate splash screens for iOS
+      mobileAppIOS: true,
+      name: 'Tu tiên giới',
+      description: 'Tu tiên độ nhân phẩm',
+      theme_color: '#475181',
+      lang: 'vi',
+    },
+    workbox: {
+      enabled: true,
+    },
+  },
   experimental: {
     reactivityTransform: false,
     inlineSSRStyles: false,

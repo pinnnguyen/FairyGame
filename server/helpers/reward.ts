@@ -1,7 +1,7 @@
+import type { BasicItem, EnemyObject, PlayerEquipment } from '~/types'
 import { randomNumber } from '~/common'
 import { BASE_EXP, BASE_GOLD } from '~/server/rule/reward'
 import { ItemSchema, PlayerSchema, addPlayerEquipments, addPlayerItem } from '~/server/schema'
-import type { EnemyObject, PlayerEquipment } from '~/types'
 
 import { DEFAULT_MAX_RATE_RECEIVED, DEFAULT_MIN_RATE_RECEIVED, WINNER } from '~/constants'
 
@@ -16,21 +16,24 @@ export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject, win
     }
   }
 
-  const equipmentIds = []
-  let playerEquipments: PlayerEquipment[] = []
   const equipRates = _enemyObj.reward.equipRates
-
-  if (equipRates.length > 0) {
-    for (let i = 0; i < equipRates.length; i++) {
-      const currentRate = equipRates[i]
-      const randomRate = randomNumber(DEFAULT_MIN_RATE_RECEIVED, DEFAULT_MAX_RATE_RECEIVED)
-      if (currentRate.rate >= randomRate)
-        equipmentIds.push(currentRate.id)
+  if (!equipRates) {
+    return {
+      equipments: [],
     }
   }
 
-  if (equipmentIds.length > 0)
-    playerEquipments = await addPlayerEquipments(sid, equipmentIds)
+  const equipmentIds = []
+  let playerEquipments: PlayerEquipment[] = []
+
+  for (let i = 0; i < equipRates.length; i++) {
+    const currentRate = equipRates[i]
+    const randomRate = randomNumber(DEFAULT_MIN_RATE_RECEIVED, DEFAULT_MAX_RATE_RECEIVED)
+    if (currentRate.rate >= randomRate)
+      equipmentIds.push(currentRate.id)
+  }
+
+  playerEquipments = await addPlayerEquipments(sid, equipmentIds)
 
   return {
     equipments: playerEquipments,
@@ -40,36 +43,61 @@ export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject, win
 export const receivedItems = async (sid: string, _enemyObj: EnemyObject, winner: string) => {
   if (winner === WINNER.youlose) {
     return {
-      items: [],
+      itemDrafts: [],
     }
   }
 
   const itemReward = _enemyObj.reward.itemRates
+  if (!itemReward) {
+    return {
+      itemDrafts: [],
+    }
+  }
+
   const itemReceived = []
+  for (let i = 0; i < itemReward.length; i++) {
+    const rate = itemReward[i].rate
+    const quantityRate = itemReward[i].quantityRate.split('|')
+    const randomRate = randomNumber(DEFAULT_MIN_RATE_RECEIVED, DEFAULT_MAX_RATE_RECEIVED)
+    if (rate >= randomRate) {
+      const quantity = Math.round(randomNumber(parseInt(quantityRate[0]), parseInt(quantityRate[1])))
+      const itemId = itemReward[i].id
+      itemReceived.push({
+        id: itemId,
+        quantity,
+      })
 
-  if (itemReward.length > 0) {
-    for (let i = 0; i < itemReward.length; i++) {
-      const rate = itemReward[i].rate
-      const quantityRate = itemReward[i].quantityRate.split('|')
-      const randomRate = randomNumber(DEFAULT_MIN_RATE_RECEIVED, DEFAULT_MAX_RATE_RECEIVED)
-      if (rate >= randomRate) {
-        const itemId = itemReward[i].id
-        itemReceived.push(itemId)
+      await addPlayerItem(sid, quantity, itemId)
+    }
+  }
 
-        const quantity = Math.round(randomNumber(parseInt(quantityRate[0]), parseInt(quantityRate[1])))
-        await addPlayerItem(sid, quantity, itemId)
+  const ids = itemReceived.map(i => i.id)
+  const itemDrafts = await ItemSchema.find({
+    id: {
+      $in: ids,
+    },
+  })
+
+  const itemResponse: Partial<BasicItem>[] = []
+  for (let i = 0; i < itemDrafts.length; i++) {
+    for (let j = 0; j < itemReceived.length; j++) {
+      if (itemDrafts[i].id === itemReceived[j].id) {
+        itemResponse.push({
+          kind: itemDrafts[i].kind,
+          name: itemDrafts[i].name,
+          info: itemDrafts[i].info,
+          preview: itemDrafts[i].preview,
+          rank: itemDrafts[i].rank,
+          value: itemDrafts[i].value,
+          quantity: itemReceived[j].quantity,
+        })
       }
     }
   }
 
-  const itemDrafts = await ItemSchema.find({
-    id: {
-      $in: itemReceived,
-    },
-  })
-
+  console.log('itemResponse', itemResponse)
   return {
-    itemDrafts,
+    itemDrafts: itemResponse,
   }
 }
 

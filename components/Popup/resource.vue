@@ -34,7 +34,7 @@ const close = () => {
             + <span>{{ formatNumber(exp) }}</span> XP
           </div>
           <div class="text-xs text-[#ffeb00] text-center font-bold flex items-center mx-2">
-            <NuxtImg format="webp" class="w-[20px] pb-[2px] pr-[2px]" src="/bag/00578.png" />
+            <nuxt-img format="webp" class="w-[20px] pb-[2px] pr-[2px]" src="/bag/00578.png" />
             <span>{{ formatNumber(gold) }} Vàng</span>
           </div>
         </div>

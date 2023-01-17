@@ -1,4 +1,4 @@
-import type { Item } from './item'
+import type { BasicItem } from './item'
 import type { PlayerEquipment } from '~/types/equiment'
 import type { EnemyObject } from '~/types/monster'
 import type { BaseReward, Emulator } from '~/types/war'
@@ -24,7 +24,7 @@ export interface Battle {
   winner?: 'youwin' | 'youlost'
   reward?: {
     base: BaseReward
-    items: Item[]
+    items: BasicItem[]
     equipments: PlayerEquipment[]
   }
   damage?: number

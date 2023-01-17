@@ -20,9 +20,10 @@ export const formatNumber = (str: string) => {
   return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
-export const formatCash = (n: number) => {
+export const formatCash = (n: number | string | undefined) => {
   if (!n)
     return 0
+
   if (n < 1e3)
     return n
   // if (n >= 1e3 && n < 1e6)

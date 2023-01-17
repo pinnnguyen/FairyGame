@@ -1,10 +1,13 @@
 export interface BasicItem {
-  kind: number
-  name: string
-  info: string
-  preview: string
-  rank: number
-  value: number
+  _id?: string
+  id: number
+  kind?: number
+  name?: string
+  info?: string
+  preview?: string
+  rank?: number
+  value?: number
+  quantity?: number
 }
 
 export interface Item {

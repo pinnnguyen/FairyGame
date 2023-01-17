@@ -1,25 +1,8 @@
 <script setup>
-import { storeToRefs } from 'pinia'
-import { useLocalStorage } from '@vueuse/core'
-import { useAppStore } from '~/composables/app'
-const { playerInfoComponent } = storeToRefs(useAppStore())
-
-const startBattle = useLocalStorage('startBattle', false)
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen">
-    <ClientOnly>
-      <div>
-        <var-popup v-model:show="playerInfoComponent" position="center">
-          <PlayerInfomation />
-        </var-popup>
-
-        <var-popup v-model:show="startBattle" position="center">
-          <Battle />
-        </var-popup>
-      </div>
-    </ClientOnly>
+  <div class="flex flex-col h-screen overflow-hidden game-center font-sans">
     <slot name="header">
       <PageNavbar />
     </slot>
