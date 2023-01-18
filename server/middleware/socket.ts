@@ -2,7 +2,7 @@ import { Server } from 'socket.io'
 import { BATTLE_KIND } from './../../constants/war'
 import { BattleSchema } from '~/server/schema'
 import type { ClientToServerEvents, ServerToClientEvents } from '~/types'
-import { battleJoinHandler, handleAuction, handleEquipUpgrade } from '~/server/sockets'
+import { battleJoinHandler, handleAuction, handleEquipStar, handleEquipUpgrade } from '~/server/sockets'
 
 let server: any = null
 
@@ -65,6 +65,7 @@ export default defineEventHandler((event) => {
     await handleAuction(socket)
     await handleEquipUpgrade(io, socket)
     await battleJoinHandler(io, socket)
+    await handleEquipStar(io, socket)
 
     socket.on('disconnect', () => {
       console.log('disconnect', socket.id)

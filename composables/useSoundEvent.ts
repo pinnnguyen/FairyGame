@@ -7,6 +7,11 @@ import bg_music_22 from '~/assets/sound/bg_music_22.mp3'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import bg_music_home from '~/assets/sound/76180931-42ba-4a4f-a837-940988b10b49.mp3'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import attack from '~/assets/sound/attack.mp3'
+
+const audioHome = new Audio(bg_music_home)
 
 export const useSoundClickEvent = async () => {
   const audio = new Audio(click)
@@ -19,6 +24,11 @@ export const useSoundBattleEvent = () => {
 }
 
 export const useSoundHomeEvent = () => {
-  const audio = new Audio(bg_music_home)
-  return audio
+  return audioHome
+}
+
+export const useSoundEventAttack = async () => {
+  audioHome.pause()
+  const audio = new Audio(attack)
+  await audio.play()
 }

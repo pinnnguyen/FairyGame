@@ -19,7 +19,7 @@ interface Props {
 
 const props = defineProps<Props>()
 const emits = defineEmits(['close', 'retry'])
-const endTime = ref(6000)
+const endTime = ref(3000)
 
 const target = ref(null)
 onClickOutside(target, () => emits('close'))

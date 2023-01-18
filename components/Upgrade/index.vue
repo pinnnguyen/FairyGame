@@ -19,7 +19,7 @@ const showEquipInfo = ref(false)
 
 onMounted(() => {
   $io.emit('equip:upgrade:start', `equip:upgrade:${playerInfo.value?.sid}`)
-  $io.on('equip:preview:response', (require) => {
+  $io.on('upgrade:preview:response', (require) => {
     needResource.value = require
   })
 
@@ -165,7 +165,7 @@ const goToHome = () => {
           </div>
         </div>
         <div class="mb-6 mt-2 flex justify-center">
-          <var-button :loading="loading" color="#ffd400" size="small" class="font-medium uppercase" @click.stop="upgrade">
+          <var-button :loading="loading" class="!text-[#333] font-medium font-semibold uppercase" color="#ffd400" size="small" @click.stop="upgrade">
             Cường hoá
           </var-button>
         </div>

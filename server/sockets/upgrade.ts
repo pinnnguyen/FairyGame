@@ -9,7 +9,7 @@ export const handleEquipUpgrade = (io: any, socket: any) => {
       if (!equip)
         return
 
-      const { gold, cuongHoaThach } = needResourceUpgrade('upgrade', equip?.enhance)
+      const { gold, cuongHoaThach } = needResourceUpgrade(equip?.enhance)
       const totalCuongHoaThach = await PlayerItemSchema.findOne({ itemId: 1, sid: equip.sid })
 
       const require = {
@@ -18,7 +18,7 @@ export const handleEquipUpgrade = (io: any, socket: any) => {
         totalCuongHoaThach: totalCuongHoaThach?.sum ? totalCuongHoaThach?.sum : 0,
       }
 
-      io.to(_channel).emit('equip:preview:response', require)
+      io.to(_channel).emit('upgrade:preview:response', require)
     })
 
     socket.on('equip:upgrade', async (type: string, _equipId: string) => {
@@ -26,7 +26,7 @@ export const handleEquipUpgrade = (io: any, socket: any) => {
       if (!equip)
         return
 
-      const reedRss = needResourceUpgrade('upgrade', equip.enhance)
+      const reedRss = needResourceUpgrade(equip.enhance)
       const playerItem = await PlayerItemSchema.findOneAndUpdate({ itemId: 1, sid: equip.sid }, {
         $inc: {
           sum: -reedRss.cuongHoaThach,
@@ -80,7 +80,7 @@ export const handleEquipUpgrade = (io: any, socket: any) => {
         stats,
       })
 
-      const { gold, cuongHoaThach } = needResourceUpgrade('upgrade', equipEnhanceUpdated ? equipEnhanceUpdated?.enhance : equip?.enhance)
+      const { gold, cuongHoaThach } = needResourceUpgrade(equipEnhanceUpdated ? equipEnhanceUpdated?.enhance : equip?.enhance)
 
       io.to(_channel).emit('equip:upgrade:response', {
         gold,

@@ -3,7 +3,7 @@ export interface ServerToClientEvents {
   'battle:start': (response: any) => void
   'boss-daily:start': (response: any) => void
   'send-message': (reponse: any) => void
-  'equip:preview:response': (require: any) => void
+  'upgrade:preview:response': (require: any) => void
   'equip:upgrade:response': (require: any) => void
   'auction-response': (response: {}) => void
   'send-battle:log': (topDMG: {

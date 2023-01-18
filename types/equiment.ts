@@ -28,6 +28,7 @@ export interface Equipment {
 export interface EquipmentBaseEnhance {
   enhance: number
   main: number
+  star: number
 }
 export interface PlayerEquipmentStat {
   speed: EquipmentBaseEnhance
@@ -50,6 +51,7 @@ export interface PlayerEquipment {
   slot: number
   preview?: string
   enhance?: number
+  star?: number
   stats?: PlayerEquipmentStat[]
   used?: boolean
 }

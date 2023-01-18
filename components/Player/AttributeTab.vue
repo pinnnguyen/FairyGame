@@ -137,13 +137,13 @@ const addAttribute = async (target: string) => {
           Hệ: <span :class="`bg-[${classColor}]`">{{ classTitle }}</span>
         </span>
         <span class="">
-          Tiên ngọc: {{ Math.round(playerInfo?.coin) }}
+          Tiên ngọc: {{ Math.round(playerInfo!.coin) }}
         </span>
         <span class="">
-          KNB: {{ Math.round(playerInfo?.knb) ?? 0 }}
+          KNB: {{ Math.round(playerInfo!.knb) ?? 0 }}
         </span>
         <span class="">
-          Vàng: {{ Math.round(playerInfo?.gold) }}
+          Vàng: {{ Math.round(playerInfo!.gold) }}
         </span>
         <span class=" ">
           Tu vị: {{ formatCash((playerInfo?.exp)) }}/{{ formatCash(playerInfo?.expLimited) }}

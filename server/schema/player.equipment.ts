@@ -20,6 +20,7 @@ const schema = new mongoose.Schema<PlayerEquipment>(
     slot: Number,
     preview: String,
     enhance: Number,
+    star: Number,
     stats: [],
     used: {
       type: Boolean,
@@ -29,9 +30,10 @@ const schema = new mongoose.Schema<PlayerEquipment>(
   { timestamps: true },
 )
 
-schema.index({ sid: -1 })
+schema.index({ sid: -1 }, { unique: true })
 schema.index({ slot: -1 })
 schema.index({ rank: -1 })
+schema.index({ equipmentId: -1 })
 export const PlayerEquipmentSchema = mongoose.model('PlayerEquipmentSchemas', schema, 'gl_player_equipments')
 
 export const addPlayerEquipments = async (sid: string, equipmentIds: Array<number>) => {

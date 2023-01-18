@@ -1,18 +1,14 @@
 <script setup>
-import { onClickOutside } from '@vueuse/core'
 const emits = defineEmits(['close'])
 
-const target = ref(null)
-onClickOutside(target, event => emits('close'))
-
 const currentTab = ref('elite')
-const equipShow = ref(false)
+// const equipShow = ref(false)
 
-const { data: dataResponse, loading, refresh } = await useAsyncData('boss', () => $fetch('/api/boss', {
+const { data: dataResponse, loading } = await useFetch('/api/boss', {
   params: {
     kind: currentTab.value,
   },
-}))
+})
 
 const bossElites = computed(() => dataResponse.value.elites)
 const bossDaily = computed(() => dataResponse.value.daily)
@@ -20,11 +16,11 @@ const bossFrameTime = computed(() => dataResponse.value.frameTime)
 </script>
 
 <template>
-  <var-popup v-model:show="equipShow">
-    <PopupEquipInfo :item="equipSelected" @close="equipShow = false" />
-  </var-popup>
+  <!--  <var-popup v-model:show="equipShow"> -->
+  <!--    <PopupEquipInfo :item="equipSelected" @close="equipShow = false" /> -->
+  <!--  </var-popup> -->
   <var-loading description="Đang tải" type="circle" :loading="loading">
-    <div ref="target" class="w-[calc(100vw_-_30px)] h-[75vh]">
+    <div class="w-[calc(100vw_-_30px)] h-[75vh] overflow-hidden">
       <div class="w-full h-full relative">
         <span class="font-semibold absolute w-[40px] left-[calc(50%_-_15px)] top-[-1px] text-[#656f99]">BOSS</span>
         <nuxt-img class="w-full h-full" src="/common/bj_tongyong_1.png" />

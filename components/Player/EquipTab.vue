@@ -16,7 +16,10 @@ const openDetail = (slot: PlayerEquipment) => {
 
 <template>
   <var-popup v-model:show="equipShow" position="center">
-    <BagEquipDetail :item="equipSelected" />
+    <BagEquipDetail
+      :action="true"
+      :item="equipSelected"
+    />
   </var-popup>
   <div class="h-full flex items-center justify-center">
     <div class="grid grid-cols-2 gap-10 mb-2">

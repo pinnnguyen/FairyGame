@@ -65,7 +65,7 @@ onMounted(async () => {
     <div class="w-full absolute top-0 h-[40%]">
       <div class="relative h-full">
         <nuxt-img format="webp" class="h-full object-cover" src="/index/bg.png" />
-        <nuxt-img class="absolute bottom-5 left-[calc(50%_-_65px)] w-[135px]" format="webp" src="/pve/nv1.png" />
+        <nuxt-img class="absolute bottom-7 left-[calc(50%_-_75px)] w-[150px]" format="webp" src="/pve/nv1.png" />
       </div>
     </div>
     <div class="absolute bottom-0 w-full h-[60%]">

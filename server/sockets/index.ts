@@ -1,3 +1,4 @@
 export * from './battle'
 export * from './upgrade'
 export * from './auction'
+export * from './upstar'

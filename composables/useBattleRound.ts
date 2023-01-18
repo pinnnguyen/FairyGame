@@ -4,6 +4,7 @@ import { sleep } from '~/common'
 import { BATTLE_TURN } from '~/constants/war'
 import type { BasicItem, PlayerEquipment } from '~/types'
 import type { BaseProperties, BaseReward, BattleResponse } from '~/types/war'
+import { useSoundEventAttack } from '~/composables/useSoundEvent'
 
 export const useBattleRoundStore = defineStore('battleRound', () => {
   const loading = ref(true)
@@ -129,6 +130,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
           console.log('emuT', emuT)
           await sleep(TURN_DELAY.value)
           set(playerEffect, _turn)
+          await useSoundEventAttack()
 
           receiver.value[__turn].hp = emuT.now.hp[__turn]
           receiver.value[__turn].mp = emuT.now.mp[_turn]
