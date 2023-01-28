@@ -1,13 +1,14 @@
 import moment from 'moment'
-import { RewardLogSchema } from './../schema/reward.log'
-import { PlayerSchema } from './../schema/player'
 import { WINNER } from '~/constants/war'
 import {
   BattleSchema,
   BossDataSchema,
   BossEliteSchema,
   MonsterSchema,
+  PlayerSchema,
   PlayerStatusSchema,
+  RewardLogSchema,
+  // addSystemChat,
   reviveBossElite,
 } from '~/server/schema'
 import type { BattleRequest, EnemyObject, PlayerInfo } from '~/types'
@@ -17,8 +18,13 @@ import { PlayerStatusTypeCon } from '~/types'
 const handleTargetNormal = async (_p: PlayerInfo) => {
   const now = new Date().getTime()
   const battle = await BattleSchema
-    .findOne({ sid: _p.player.sid, kind: BATTLE_KIND.PVE })
-    .sort({ createdAt: -1 }).select('player enemy reward createdAt')
+    .findOne(
+      {
+        sid: _p.player.sid,
+        kind: BATTLE_KIND.PVE,
+        winner: WINNER.youwin,
+      })
+    .sort({ createdAt: -1 }).select('player enemy reward createdAt winner kind')
 
   if (battle) {
     // Clear pve history
@@ -52,6 +58,7 @@ const handleTargetNormal = async (_p: PlayerInfo) => {
         enemyBefore: battle.enemy,
         reward: battle.reward,
         winnerBefore: battle.winner,
+        kind: battle.kind,
       }
     }
   }
@@ -66,7 +73,7 @@ const handleTargetFrameTime = async (_p: PlayerInfo) => {
 
   const battle = await BattleSchema
     .findOne({ sid: _p.player.sid, kind: BATTLE_KIND.BOSS_FRAME_TIME })
-    .sort({ createdAt: -1 }).select('player enemy reward createdAt')
+    .sort({ createdAt: -1 }).select('player enemy reward createdAt winner kind')
 
   if (battle) {
     // validate
@@ -79,6 +86,7 @@ const handleTargetFrameTime = async (_p: PlayerInfo) => {
         enemyBefore: battle.enemy,
         reward: battle.reward,
         winnerBefore: battle.winner,
+        kind: battle.kind,
       }
     }
   }
@@ -93,7 +101,7 @@ const handleTargetElite = async (_p: PlayerInfo) => {
 
   const battle = await BattleSchema
     .findOne({ sid: _p.player.sid, kind: BATTLE_KIND.BOSS_ELITE })
-    .sort({ createdAt: -1 }).select('player enemy reward createdAt')
+    .sort({ createdAt: -1 }).select('player enemy reward createdAt winner kind')
 
   if (battle) {
     // validate
@@ -106,6 +114,7 @@ const handleTargetElite = async (_p: PlayerInfo) => {
         enemyBefore: battle.enemy,
         reward: battle.reward,
         winnerBefore: battle.winner,
+        kind: battle.kind,
       }
     }
   }
@@ -119,6 +128,7 @@ const handleTargetDaily = async (_p: PlayerInfo, battleRequest: BattleRequest, _
   const now = new Date().getTime()
   const today = moment().startOf('day')
 
+  console.log('battleRequest', battleRequest)
   const numberOfBattle = await BattleSchema.find({
     sid: _p.player.sid,
     kind: BATTLE_KIND.BOSS_DAILY,
@@ -129,6 +139,7 @@ const handleTargetDaily = async (_p: PlayerInfo, battleRequest: BattleRequest, _
     },
   }).count()
 
+  console.log('numberOfBattle', numberOfBattle)
   if (numberOfBattle > _enemyObj?.numberOfTurn) {
     return {
       inRefresh: true,
@@ -137,6 +148,8 @@ const handleTargetDaily = async (_p: PlayerInfo, battleRequest: BattleRequest, _
       enemyBefore: null,
       reward: null,
       winnerBefore: null,
+      winner: '',
+      kind: '',
     }
   }
 
@@ -154,6 +167,13 @@ export const handleBeforeStartWar = async (battleRequest: BattleRequest, _p: Pla
 
   if (normal) {
     const _enemyObj = await MonsterSchema.findOne({ id: _p.player.midId })
+    if (battleRequest?.skip) {
+      return {
+        _enemyObj,
+        inRefresh: false,
+      }
+    }
+
     return { _enemyObj, ...await handleTargetNormal(_p) }
   }
 
@@ -192,6 +212,18 @@ export const handleAfterEndWar = async (request: {
   const { battleRequest, _p, winner, totalDamage } = request
   const bossFrameTime = battleRequest.target.type === TARGET_TYPE.BOSS_FRAME_TIME
   const elite = battleRequest.target.type === TARGET_TYPE.BOSS_ELITE
+  // const normal = battleRequest.target.type === TARGET_TYPE.MONSTER
+  const isWinner = winner === WINNER.youwin
+
+  // if (normal && isWinner) {
+  //   console.log('heheheh')
+  //   // await addSystemChat(_p.player.sid, `Chúc mừng đạo hữu ${_p.player.name} vượt qua cửa ải ${_p.player.midId}`)
+  //   // await PlayerSchema.updateOne({ sid: _p.player.midId }, {
+  //   //   $inc: {
+  //   //     midId: 1,
+  //   //   },
+  //   // })
+  // }
 
   if (bossFrameTime) {
     await BossDataSchema.findOneAndUpdate({ id: battleRequest.target.id }, {
@@ -208,7 +240,7 @@ export const handleAfterEndWar = async (request: {
       },
     })
 
-    if (winner === WINNER.youwin) {
+    if (isWinner) {
       const eliteBossUpdated = await BossEliteSchema.findOneAndUpdate({ _id: battleRequest.target.id }, {
         death: true,
         killer: {
@@ -249,8 +281,6 @@ export const handleAfterEndWar = async (request: {
         ],
       )
 
-      console.log('topDMG', topDMG)
-      console.log('eliteBossUpdated?.reward', eliteBossUpdated?.reward)
       // Thưởng kích sát boss
       await PlayerSchema.findOneAndUpdate({ sid: _p.player.sid }, {
         $inc: {

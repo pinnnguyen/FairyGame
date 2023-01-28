@@ -17,6 +17,7 @@ defineProps<{
         :hp="state?.player?.hp"
         :damage="state?.player?.damage"
         :def="state?.player?.def"
+        :class-a="state?.player?.class"
       />
     </div>
 
@@ -31,6 +32,7 @@ defineProps<{
         :hp="state?.enemy?.hp"
         :damage="state?.enemy?.damage"
         :def="state?.enemy?.def"
+        :class-a="state?.enemy?.class"
       />
     </div>
   </div>

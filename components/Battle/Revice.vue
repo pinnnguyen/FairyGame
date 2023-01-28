@@ -21,7 +21,7 @@ onMounted(() => {
 
 <template>
   <div class="text-white flex flex-col items-center justify-center">
-    <div class="text-base bg-[#009688] text-white font-medium p-1 mb-2 rounded">
+    <div class="text-12 bg-[#41466e] text-white font-medium p-1 mb-2 rounded px-4">
       Đang làm mới {{ Math.round(convertMillisecondsToSeconds(endTime)) }}s
     </div>
   </div>

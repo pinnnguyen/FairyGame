@@ -9,8 +9,20 @@ export interface BaseAttributes {
   critical: number
   bloodsucking: number
   criticalDamage: number
+  avoid: number
+  reductionCriticalDamage: number
+  counterAttack: number
+  recoveryPerformance: number
 }
-export interface Player {
+
+export interface CoreAttribute {
+  ofAttribute: number
+  ofPower: number
+  ofAgility: number
+  ofSkillful: number
+  ofVitality: number
+}
+export interface Player extends CoreAttribute {
   _id?: string
   sid: string
   name: string
@@ -28,16 +40,11 @@ export interface Player {
   floor: string
   expLimited: number
   class: number
-  ofAttribute: number
-  ofPower: number
-  ofAgility: number
-  ofSkillful: number
-  ofVitality: number
 }
 
 export interface PlayerAttribute extends BaseAttributes {
   _id?: string
-  sid: string
+  sid?: string
 }
 
 export interface PlayerResponse {

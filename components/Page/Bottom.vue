@@ -4,18 +4,18 @@ import { storeToRefs } from 'pinia'
 import { sendMessage, usePlayerStore, useSoundClickEvent } from '#imports'
 
 const { playerInfo } = storeToRefs(usePlayerStore())
-const startBattle = useLocalStorage('startBattle', false)
+const startBattle = useState('startBattle')
 
 const togglePlayerInfo = useState('togglePlayerInfo')
 const toggleAuction = useState('toggleAuction')
-
 const toggleStore = useState('toggleStore')
 const toggleBag = useState('toggleBag')
-
 const toggleUpgrade = useState('toggleUpgrade')
 const toggleUpStar = useState('toggleUpStar')
+const toggleUpRank = useState('toggleUpRank')
+const toggleUpGem = useState('toggleUpGem')
+const toggleBoss = useState('toggleBoss')
 const upgradeOptions = ref(false)
-
 const needTimeResource = ref(0)
 const doReFetch = ref(false)
 
@@ -57,8 +57,23 @@ const onToggleUpgrade = () => {
   useSoundClickEvent()
 }
 
+const ontoggleBoss = () => {
+  toggleBoss.value = true
+  useSoundClickEvent()
+}
+
 const onToggleUpStar = () => {
   toggleUpStar.value = true
+  useSoundClickEvent()
+}
+
+const onToggleUpRank = () => {
+  toggleUpRank.value = true
+  useSoundClickEvent()
+}
+
+const onToggleUpGem = () => {
+  toggleUpGem.value = true
   useSoundClickEvent()
 }
 
@@ -103,9 +118,21 @@ const onPlayerInfo = () => {
         </span>
       </div>
       <div class="bg-white rounded-[150px] flex items-center justify-center w-[70%] h-[40px] p-1 mt-2 relative m-3" @click="onToggleUpStar">
-        <icon name="material-symbols:star" size="25" class="absolute left-5" />
+        <icon name="fluent:star-add-24-filled" size="25" class="absolute left-5" />
         <span class="font-bold">
           Nâng sao
+        </span>
+      </div>
+      <div class="bg-white rounded-[150px] flex items-center justify-center w-[70%] h-[40px] p-1 mt-2 relative m-3" @click="onToggleUpRank">
+        <icon name="mingcute:transfer-3-fill" size="25" class="absolute left-5" />
+        <span class="font-bold">
+          Tăng bậc
+        </span>
+      </div>
+      <div class="bg-white rounded-[150px] flex items-center justify-center w-[70%] h-[40px] p-1 mt-2 relative m-3" @click="onToggleUpGem">
+        <icon name="fontisto:ruby" size="25" class="absolute left-5" />
+        <span class="font-bold">
+          Đá hồn
         </span>
       </div>
     </div>
@@ -142,7 +169,7 @@ const onPlayerInfo = () => {
           <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
             <nuxt-img src="/bottom/menu/XJHomescreenButton_27.png" format="webp" class="transform rotate-45" />
           </div>
-          <span class="whitespace-nowrap text-12 text-black/60 mt-2">Đấu giá</span>
+          <span class="whitespace-nowrap text-12 text-black/60 mt-2">Mua bán</span>
         </div>
         <div class="flex items-center jsutify-center flex-col">
           <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
@@ -156,15 +183,16 @@ const onPlayerInfo = () => {
           </div>
           <span class="whitespace-nowrap text-12 text-black/60 mt-2">Nâng cấp</span>
         </div>
-        <div class="flex items-center jsutify-center flex-col">
+        <div class="flex items-center jsutify-center flex-col" @click.stop="ontoggleBoss">
           <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
-            <icon name="material-symbols:settings-outline" size="20" class="transform rotate-45" />
+            <nuxt-img src="/bottom/menu/XJDengxiandao_14.png" format="webp" class="transform rotate-45" />
           </div>
           <span class="whitespace-nowrap text-12 text-black/60 mt-2">
-            Cài đặt
+            Hoạt động
           </span>
         </div>
       </div>
+      <Chat />
       <div class="h-12 w-full flex justify-around items-center bg-[#1d3a62]">
         <nuxt-img class="w-[45px]" src="/index/avatar-bottom.png" />
         <div class="w-[60%] bg-gray-200 rounded-full h-1 dark:bg-gray-700">

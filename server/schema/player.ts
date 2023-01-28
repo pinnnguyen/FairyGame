@@ -51,7 +51,4 @@ const schema = new mongoose.Schema<Player>(
 )
 
 schema.index({ sid: -1 }, { unique: true })
-export const PlayerSchema = mongoose.models.PlayerSchemas || mongoose.model('PlayerSchemas', schema, 'players')
-// export const PlayerSchema = (mongoose.models && mongoose.models.PlayerSchemas
-//   ? mongoose.models.PlayerSchemas
-//   : mongoose.model('PlayerSchemas', schema, 'players'))
+export const PlayerSchema = mongoose.model('PlayerSchema', schema, 'players')

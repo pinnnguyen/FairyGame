@@ -63,6 +63,20 @@
 //    font-weight: 600;
 //    font-style: normal;
 //}
+
+body::after {
+    content: '';
+    filter: blur(12px);
+    background: url('~/assets/images/background/bg.png');
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+}
+
 .transform-center {
     top: 50%;
     left: 50%;
@@ -123,37 +137,6 @@
     text-align: center;
     transition: all 0.25s;
 }
-
-body .button-confirm {
-    width: 175px;
-    line-height: 35px;
-    border: none;
-    margin-top: 20px;
-    text-align: center;
-    background-color: #ffd400;
-    font-size: 14px;
-    text-transform: uppercase;
-    color: #333;
-    font-weight: 600;
-    border-radius: 150px;
-}
-
-body .button-cancel {
-    width: 175px;
-    line-height: 35px;
-    margin-top: 20px;
-    text-align: center;
-    font-size: 14px;
-    text-transform: uppercase;
-    color: white;
-    background-color: transparent;
-    border: 3px solid #ffffff;
-    color: #ffffff;
-    border-radius: 25px;
-    margin-left: 10px;
-    font-weight: 600;
-}
-
 
 .glow-on-hover {
     width: 175px;

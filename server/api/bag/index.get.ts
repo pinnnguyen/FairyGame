@@ -1,8 +1,8 @@
 import type { H3Event } from 'h3'
-import { PlayerEquipmentSchema } from '~~/server/schema/player.equipment'
+import { PlayerEquipmentSchema } from '~/server/schema/player.equipment'
 import { PlayerSchema } from '~/server/schema/player'
 import { getServerSession } from '#auth'
-import { PlayerItemSchema, getPlayerItems } from '~/server/schema'
+import { PlayerGemSchema, getPlayerItems } from '~/server/schema'
 
 export default defineEventHandler(async (event: H3Event) => {
   const uServer = await getServerSession(event)
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event: H3Event) => {
     })
   }
 
-  const equipments = await PlayerEquipmentSchema.find({ sid: player?.sid })
+  const equipments = await PlayerEquipmentSchema.find({ sid: player?.sid, used: false }).sort({ rank: -1, level: -1 })
   const playerItems = await getPlayerItems(player.sid)
 
   return {

@@ -10,7 +10,7 @@ const classList = [
   {
     id: 1,
     name: 'Tu tiên',
-    img: '/role/fs_007_1.png',
+    img: '/role/tientoc.png',
     description: `              <p class="text-12 mt-1">
                               Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu ma
                             </p>
@@ -20,7 +20,7 @@ const classList = [
   {
     id: 2,
     name: 'Tu yêu',
-    img: '/role/fs_007_2.png',
+    img: '/role/tuyeu.png',
     description: `                <p class="text-12 mt-1">
                               Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu tiên
                             </p>
@@ -30,7 +30,7 @@ const classList = [
   {
     id: 3,
     name: 'Tu ma',
-    img: '/role/fs_007_4.png',
+    img: '/role/tuma.png',
     description: `                   <p class="text-12 mt-1">
                               Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi nhân tộc
                             </p>
@@ -40,7 +40,7 @@ const classList = [
   {
     id: 4,
     name: 'Nhân tộc',
-    img: '/role/fs_007_3.png',
+    img: '/role/nhantoc.png',
     description: `              <p class="text-12 mt-1">
                               Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu yêu
                             </p>

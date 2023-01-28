@@ -14,7 +14,7 @@ const {
   reward,
   refreshTime,
   inRefresh,
-  speed,
+  SPEED,
 } = storeToRefs(useBattleRoundStore())
 
 const { playerInfo } = storeToRefs(usePlayerStore())
@@ -31,44 +31,42 @@ const queryTarget = computed(() => (route.query.target as string))
 const queryTargetId = computed(() => (route.query.id as string))
 const topDMG = ref<TopDMG[]>([])
 
-onMounted(() => {
-  let kind = ''
+let kind = ''
 
-  if (route.query.target === TARGET_TYPE.BOSS_DAILY)
-    kind = BATTLE_KIND.BOSS_DAILY
+if (route.query.target === TARGET_TYPE.BOSS_DAILY)
+  kind = BATTLE_KIND.BOSS_DAILY
 
-  if (route.query.target === TARGET_TYPE.BOSS_FRAME_TIME)
-    kind = BATTLE_KIND.BOSS_FRAME_TIME
+if (route.query.target === TARGET_TYPE.BOSS_FRAME_TIME)
+  kind = BATTLE_KIND.BOSS_FRAME_TIME
 
-  if (route.query.target === TARGET_TYPE.BOSS_ELITE)
-    kind = BATTLE_KIND.BOSS_ELITE
+if (route.query.target === TARGET_TYPE.BOSS_ELITE)
+  kind = BATTLE_KIND.BOSS_ELITE
 
-  $io.emit('battle:join', `${playerInfo.value?._id}-battle-boss-daily`, {
-    kind,
-    player: {
-      userId: playerInfo.value?.userId,
-    },
-    target: {
-      type: queryTarget.value,
-      id: queryTargetId.value,
-    },
-  })
+$io.emit('battle:join', {
+  kind,
+  player: {
+    userId: playerInfo.value?.userId,
+  },
+  target: {
+    type: queryTarget.value,
+    id: queryTargetId.value,
+  },
+})
 
-  $io.on('battle:start', async (war: BattleResponse) => {
-    console.log('war', war)
-    await startBattle(war)
-  })
+$io.on('battle:start', async (war: BattleResponse) => {
+  console.log('war', war)
+  await startBattle(war)
+})
 
-  $io.emit('battle:log', queryTargetId.value)
-  $io.on('send-battle:log', (topDMGResponse) => {
-    topDMG.value = topDMGResponse
-    console.log('send-battle:log', topDMGResponse)
-  })
+$io.emit('battle:log', queryTargetId.value)
+$io.on('send-battle:log', (topDMGResponse) => {
+  topDMG.value = topDMGResponse
+  console.log('send-battle:log', topDMGResponse)
 })
 
 onUnmounted(() => {
-  console.log('battle:leave')
-  $io.emit('battle:leave')
+  $io.off('battle:start')
+  $io.off('send-battle:log')
 })
 
 const doCloseBattleR = () => {
@@ -99,9 +97,9 @@ const refreshFinished = () => {
   <LoadingScreen v-if="loading" />
   <div class="h-screen bg-white">
     <div class="h-[54%] bg-bg_pve bg-cover relative">
-      <div class="text-center pt-2 text-base font-semibold flex items-center justify-center">
-        <span class="bg-[#009688] text-white p-1 rounded">
-          [{{ state.enemy?.name }}]
+      <div class="bg-[#41466e] text-center py-2 text-base font-semibold flex items-center justify-center">
+        <span class="text-white rounded text-12">
+          [{{ state?.enemy?.name }} Map {{ playerInfo?.midId }}]
         </span>
       </div>
       <BattleAttributeInfo :state="state" />
@@ -118,10 +116,10 @@ const refreshFinished = () => {
         />
       </div>
       <div class="absolute bottom-0 right-0 py-2">
-        <var-button v-show="speed === 1" outline size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 2">
+        <var-button v-show="SPEED === 1" outline size="small" class="rounded mr-2 text-base font-semibold" @click="SPEED = 2">
           X1
         </var-button>
-        <var-button v-show="speed === 2" outline size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 1">
+        <var-button v-show="SPEED === 2" outline size="small" class="rounded mr-2 text-base font-semibold" @click="SPEED = 1">
           X2
         </var-button>
       </div>
@@ -137,9 +135,9 @@ const refreshFinished = () => {
           @refresh-finished="refreshFinished"
         />
         <div class="flex items-center gap-2">
-          <Button class="w-[80px] uppercase font-medium" size="small" type="default" @click.stop="navigateTo('/')">
+          <var-button class="w-[80px] uppercase font-medium" size="small" type="default" @click.stop="navigateTo('/')">
             Về thành
-          </Button>
+          </var-button>
         </div>
       </div>
     </div>

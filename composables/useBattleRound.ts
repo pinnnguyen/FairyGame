@@ -64,10 +64,10 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     },
   })
 
-  const speed = useLocalStorage('speed', 1)
-  const skip = ref(false)
-  const TURN_DELAY = computed(() => 2000 / speed.value)
-  // const REAL_TIME_DELAY = 700
+  const roundNum = ref(0)
+  const SPEED = useLocalStorage('SPEED', 1)
+  const SKIP = ref(false)
+  const TURN_DELAY = computed(() => 2000 / SPEED.value)
   const DAMAGE_DELAY = 1200
   const SHOULD_WIN_DELAY = 1000
 
@@ -76,11 +76,12 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     win: '',
   })
 
-  const setSkip = (boo: boolean) => {
-    set(skip, boo)
+  const setSKIP = (boo: boolean) => {
+    set(SKIP, boo)
   }
   const startBattle = async (war: BattleResponse) => {
     console.log('war', war)
+    set(roundNum, 0)
     set(inRefresh, false)
     set(refreshTime, 0)
     set(loading, false)
@@ -112,13 +113,18 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
       return
     }
 
-    let roundNum = 0
     for (const emulator of war.emulators) {
       for (const turn in emulator) {
-        if (skip.value)
-          return
+        if (SKIP.value) {
+          battleResult.value = {
+            show: true,
+            win: war.winner,
+          }
 
-        roundNum++
+          return
+        }
+
+        roundNum.value++
         const _turn = turn.replace(/1_|2_/g, '') // replace '1_player' -> player
         const __turn: string = _turn === BATTLE_TURN.PLAYER ? BATTLE_TURN.ENEMY : BATTLE_TURN.PLAYER // Đảo ngược key
 
@@ -126,8 +132,6 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
         const DMG = emuT?.state?.damage
 
         if (emuT.action) {
-          console.log('__turn', __turn)
-          console.log('emuT', emuT)
           await sleep(TURN_DELAY.value)
           set(playerEffect, _turn)
           await useSoundEventAttack()
@@ -143,21 +147,21 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
           battleRounds.value.unshift({
             turn: _turn,
             damage: DMG,
-            roundNum,
+            roundNum: roundNum.value,
           })
 
           setTimeout(() => {
             realTime.value[__turn].trueDamage = false
           }, DAMAGE_DELAY)
 
-          if (roundNum === war.emulators.length - 1 || (receiver.value[__turn].hp as number) <= 0) {
+          // (receiver.value[__turn].hp as number) <= 0
+          if ((receiver.value[__turn].hp as number) <= 0) {
             setTimeout(() => {
               battleResult.value = {
                 show: true,
                 win: war.winner,
               }
             }, SHOULD_WIN_DELAY)
-
             return
           }
         }
@@ -178,8 +182,9 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     battleRounds,
     battleResult,
     rankDMG,
-    speed,
-    setSkip,
+    SPEED,
+    setSKIP,
+    roundNum,
   }
 })
 

@@ -193,14 +193,14 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
   player.floor = floor
   player.expLimited = expLimited
 
-  if (attribute)
-    useAttribute(player, attribute)
+  if (playerEquips.length > 0)
+    useEquipment(playerEquips, attribute, player)
 
   if (player.class > 0 && attribute)
     useClass(player.class, attribute)
 
-  if (playerEquips.length > 0) {
-    useEquipment(playerEquips, attribute)
+  if (attribute) {
+    useAttribute(player, attribute)
     formatAttributes(attribute)
   }
 

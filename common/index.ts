@@ -26,15 +26,15 @@ export const formatCash = (n: number | string | undefined) => {
 
   if (n < 1e3)
     return n
-  // if (n >= 1e3 && n < 1e6)
-  //   return `${+(n / 1e3).toFixed(1)} Vạn`
-  // if (n >= 1e6 && n < 1e9)
-  //   return `${+(n / 1e6).toFixed(1)}M`
-  // if (n >= 1e9 && n < 1e12)
-  //   return `${+(n / 1e9).toFixed(1)}B`
-  // if (n >= 1e12)
-  //   return `${+(n / 1e12).toFixed(1)}T`
-  return `${+(n / 1e3).toFixed(1)} Vạn`
+
+  if (n >= 1e3 && n < 1e6)
+    return `${+(n / 1e3).toFixed(1)} Vạn`
+  if (n >= 1e6 && n < 1e9)
+    return `${+(n / 1e6).toFixed(1)}M`
+  if (n >= 1e9 && n < 1e12)
+    return `${+(n / 1e9).toFixed(1)}B`
+  if (n >= 1e12)
+    return `${+(n / 1e12).toFixed(1)}T`
 }
 
 export const timeOffset = (time: number) => {
@@ -89,19 +89,114 @@ export function fromNow(to: number, now = +new Date()) {
   const elapsed = now - to
 
   if (elapsed < msPerMinute)
-    return `${Math.round(elapsed / 1000)} seconds ago`
+    return `${Math.round(elapsed / 1000)} Giây trước`
 
   else if (elapsed < msPerHour)
-    return `${Math.round(elapsed / msPerMinute)} minutes ago`
+    return `${Math.round(elapsed / msPerMinute)} Phút trước`
 
   else if (elapsed < msPerDay)
-    return `${Math.round(elapsed / msPerHour)} hours ago`
+    return `${Math.round(elapsed / msPerHour)} Giờ trước`
 
   else if (elapsed < msPerMonth)
-    return `${Math.round(elapsed / msPerDay)} days ago`
+    return `${Math.round(elapsed / msPerDay)} Ngày trước`
 
   else if (elapsed < msPerYear)
-    return `${Math.round(elapsed / msPerMonth)} months ago`
+    return `${Math.round(elapsed / msPerMonth)} Tháng trước`
   else
-    return `${Math.round(elapsed / msPerYear)} years ago`
+    return `${Math.round(elapsed / msPerYear)} Năm trước`
+}
+
+export const qualityPalette = (quality: number) => {
+  if (quality === 1)
+    return '#6ba55f'
+
+  if (quality === 2)
+    return '#5388c1'
+
+  if (quality === 3)
+    return '#915fb3'
+
+  if (quality === 4)
+    return '#db8840'
+
+  if (quality === 5)
+    return '#cb525f'
+
+  if (quality! >= 6)
+    return '#e17298'
+}
+
+export const colorQuality = (quality: number) => {
+  if (quality === 1) {
+    return {
+      color: '#6ba55f',
+    }
+  }
+
+  if (quality === 2) {
+    return {
+      color: '#5388c1',
+    }
+  }
+
+  if (quality === 3) {
+    return {
+      color: '#915fb3',
+    }
+  }
+
+  if (quality === 4) {
+    return {
+      color: '#db8840',
+    }
+  }
+
+  if (quality === 5) {
+    return {
+      color: '#cb525f',
+    }
+  }
+
+  if (quality! >= 6) {
+    return {
+      color: '#e17298',
+    }
+  }
+}
+export const backgroundQuality = (quality: number) => {
+  if (quality === 1) {
+    return {
+      'background-image': 'linear-gradient(#6ba55f, #5e9a5038)',
+    }
+  }
+
+  if (quality === 2) {
+    return {
+      'background-image': 'linear-gradient(#5388c1, #5e90c71a)',
+    }
+  }
+
+  if (quality === 3) {
+    return {
+      'background-image': 'linear-gradient(#915fb3, #915fb31a)',
+    }
+  }
+
+  if (quality === 4) {
+    return {
+      'background-image': 'linear-gradient(#db8840, #db884017)',
+    }
+  }
+
+  if (quality === 5) {
+    return {
+      'background-image': 'linear-gradient(#cb525f, #cb525f17)',
+    }
+  }
+
+  if (quality! >= 6) {
+    return {
+      'background-image': 'linear-gradient(#e17298, #e172981a)',
+    }
+  }
 }

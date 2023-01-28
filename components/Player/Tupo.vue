@@ -3,6 +3,7 @@ import { set } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '~/composables/usePlayer'
 import { sendMessage } from '~/composables/useMessage'
+import { formatCash } from '~/common'
 
 const emits = defineEmits(['close'])
 const { upgrade, playerInfo } = storeToRefs(usePlayerStore())
@@ -45,25 +46,28 @@ const close = () => {
 <template>
   <div class="p-4">
     <div class="flex flex-col items-center justify-center mb-1">
-      <div class="text-center text-[#dcc18d] text-sm font-bold mb-2 uppercase">
+      <div class="text-center text-sm font-bold mb-2 uppercase">
         Đột phá cảnh giới
       </div>
     </div>
     <div class="flex justify-between">
       <div class="w-[48%]">
-        <div class="bg-[#2d251d] rounded h-[35px] leading-[35px] text-center text-10">
-          {{ playerInfo.levelTitle }} {{ playerInfo.floor }}
+        <div class="border border-[#9e9e9e] rounded h-[35px] leading-[35px] text-center text-10">
+          EXP {{ formatCash(playerInfo.exp) }}/{{ formatCash(playerInfo.expLimited) }}
         </div>
       </div>
       <div class="w-[48%]">
-        <div class="bg-[#2d251d] rounded h-[35px] leading-[35px] text-center flex items-center justify-center text-10">
-          <img class="w-[22px] pb-[2px] pr-[2px]" src="/items/3_s.png" alt=""> {{ upgrade?.condition?.needGold }} / {{ playerInfo.gold }}
+        <div class="border border-[#9e9e9e] rounded h-[35px] leading-[35px] text-center flex items-center justify-center text-10">
+          <img class="w-[22px] pb-[2px] pr-[2px]" src="/items/3_s.png" alt=""> {{ formatCash(upgrade?.condition?.needGold) }} / {{ formatCash(playerInfo.gold) }}
         </div>
       </div>
     </div>
     <div class="mt-4" />
     <div class="text-center">
-      <div class="bg-[#2d251d] rounded flex justify-between p-4 leading-6 text-10">
+      <div class="text-center mb-4 text-14">
+        {{ playerInfo.levelTitle }} {{ playerInfo.floor }}
+      </div>
+      <div class="border border-[#9e9e9e] rounded flex justify-between p-4 leading-6 text-10">
         <div class="flex flex-col items-start">
           <template v-if="playerAfter">
             <span>

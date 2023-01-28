@@ -5,7 +5,7 @@ const { data: storeItems } = await useFetch('/api/store')
 <template>
   <div class="relative w-[calc(100vw_-_30px)] h-[75vh]">
     <nuxt-img format="webp" class="absolute w-full h-full" src="/common/panel_common_bg1.png" />
-    <p class="absolute top-0 left-[calc(50%_-_50px)] flex justify-center w-[100px] text-[#ad3a36] font-semibold">
+    <p class="absolute top-[3px] left-[calc(50%_-_50px)] flex justify-center w-[100px] text-[#ad3a36] font-semibold">
       Cửa hàng
     </p>
     <div class="absolute w-full h-full flex justify-center">

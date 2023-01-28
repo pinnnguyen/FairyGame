@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PlayerEquipment } from '~/types'
-import { EQUIPMENT_SLOT } from '~/constants'
+import { EQUIPMENT_SLOT, QUALITY_TITLE } from '~/constants'
 import { usePlayerStore } from '~/composables/usePlayer'
+import { backgroundQuality, colorQuality } from '~/common'
 
 interface Prop {
   item: PlayerEquipment
@@ -14,6 +15,21 @@ const emits = defineEmits(['close', 'changeEquip'])
 const { getPlayer } = usePlayerStore()
 const loading = ref(false)
 const propItem = ref(props.item)
+
+const styles = computed(() => {
+  return backgroundQuality(props.item.quality)
+})
+
+const qualityTitle = computed(() => {
+  return QUALITY_TITLE[props.item.quality]
+})
+
+const gemReduceSlot = computed(() => {
+  if (!props.item.gems)
+    return props.item!.gemSlot
+
+  return props.item.gemSlot! - props.item.gems!.length
+})
 
 const doEquip = async () => {
   const _id = props.item._id
@@ -29,6 +45,7 @@ const doEquip = async () => {
 
   loading.value = false
   propItem.value.used = true
+  emits('changeEquip')
   await getPlayer()
 }
 
@@ -46,141 +63,168 @@ const doUnEquip = async () => {
 
   propItem.value.used = false
   loading.value = false
+  emits('changeEquip')
   await getPlayer()
 }
 </script>
 
 <template>
-  <div class="relative leading-6 text-white bg-[#252c47] p-0 w-[calc(100vw_-_40px)]">
-    <div class="p-3 text-12 font-medium">
-      <div class="flex items-center justify-between mb-4">
+  <div class="relative leading-6 text-white bg-black/80 p-0 w-[calc(100vw_-_70px)] overflow-hidden">
+    <div class="text-12 font-medium">
+      <div
+        class="flex items-center justify-between p-2"
+        :style="styles"
+      >
         <div class="flex items-center justify-center">
-          <item-rank class="w-15" :quantity="0" :rank="item.rank" :preview="item?.preview" />
+          <item-rank
+            class="w-15"
+            :quality="item.quality"
+            :quantity="0"
+            :rank="item.rank"
+            :preview="item?.preview"
+          />
         </div>
-        <div class="mx-2">
-          <div class="text-14">
-            {{ item.name }} + <span class="text-16">{{ item.enhance }}</span>
+        <div class="mx-2 font-bold">
+          <div>
+            {{ qualityTitle }} {{ item.name }} + <span class="text-14">{{ item.enhance }}</span>
           </div>
           <div class="flex">
             <icon v-for="i of item.star" :key="i" class="text-yellow-300" name="material-symbols:star" size="18" />
           </div>
           <div>
-            Vị trí: {{ EQUIPMENT_SLOT[item.slot] }}
+            {{ EQUIPMENT_SLOT[item.slot] }}
           </div>
           <div>Bậc {{ item.rank }}</div>
         </div>
       </div>
       <div class="flex flex-col items-start justify-start">
+        <div class="mx-2 my-2 text-10 text-center w-full">
+          ________Thuộc tính cơ bản________
+        </div>
         <div class="mx-2">
           <div v-for="(stat, index) in item.stats" :key="index">
-            <p v-if="stat.speed" class="flex justify-between">
+            <p v-if="stat.speed && stat.speed.main > 0" class="flex justify-between">
               <span class="flex items-center gap-2">
                 <Icon name="mdi:bow-arrow" size="16" class="text-[#a855f7]" />
-                <span>Tốc độ: {{ stat.speed.main }}</span>
-                <span class="text-green-500 flex items-center">
-                  <icon name="game-icons:sword-in-stone" size="15" />
-                  {{ stat.speed.enhance }}
+                <span>Tốc độ: {{ Math.round(stat.speed.main) }}</span>
+                <span v-if="item.enhance" class="text-green-300 flex items-center">
+                  (Cường hoá + {{ Math.round(stat.speed.enhance) }})
                 </span>
-                <span v-if="item.star! > 0" class="text-yellow-300 flex items-center">
-                  <icon name="material-symbols:star" size="15" />
-                  {{ stat.speed.star }}
-                </span>
-                <span>
-                  ({{ stat.speed?.main + stat.speed?.enhance + (stat.speed?.star ?? 0) }})
+                <span v-if="item.star > 0" class="text-yellow-300 flex items-center">
+                  (<icon name="material-symbols:star" size="15" />
+                  {{ stat.speed.star }})
                 </span>
               </span>
             </p>
-            <p v-if="stat.damage" class="flex justify-between">
+            <p v-if="stat.damage && stat.damage.main > 0" class="flex justify-between">
               <span class="flex items-center gap-2">
                 <Icon name="material-symbols:swords" size="16" class="text-rose-600" />
-                <span>Công kích: {{ stat.damage.main }}</span>
-                <span class="text-green-500 flex items-center">
-                  <icon name="game-icons:sword-in-stone" size="15" />
-                  {{ stat.damage.enhance }}
+                <span>Công kích: {{ Math.round(stat.damage.main) }}</span>
+                <span v-if="item.enhance" class="text-green-300 flex items-center">
+                  (Cường hoá + {{ Math.round(stat.damage.enhance) }})
                 </span>
-                <span v-if="item.star! > 0" class="text-yellow-300 flex items-center">
-                  <icon name="material-symbols:star" size="15" />
-                  {{ stat.damage.star }}
+                <span v-if="item.star > 0" class="text-yellow-300 flex items-center">
+                  (<icon name="material-symbols:star" size="15" />
+                  {{ stat.damage.star }})
                 </span>
-                ({{ stat.damage?.main + stat.damage?.enhance + (stat.damage?.star ?? 0) }})
               </span>
             </p>
-            <p v-if="stat.def" class="flex justify-between">
+            <p v-if="stat.def && stat.def.main > 0" class="flex justify-between">
               <span class="flex items-center gap-2">
                 <Icon name="material-symbols:shield" size="16" class="text-green-500" />
-                <span>Phòng ngự: {{ stat.def.main }}</span>
-                <span class="text-green-500 flex items-center">
-                  <icon name="game-icons:sword-in-stone" size="15" />
-                  {{ stat.def.enhance }}
+                <span>Phòng ngự: {{ Math.round(stat.def.main) }}</span>
+                <span v-if="item.enhance" class="text-green-300 flex items-center">
+                  (Cường hoá + {{ Math.round(stat.def.enhance) }})
                 </span>
-                <span v-if="item.star! > 0" class="text-yellow-300 flex items-center">
-                  <icon name="material-symbols:star" size="15" />
-                  {{ stat.def.star }}
+                <span v-if="item.star > 0" class="text-yellow-300 flex items-center">
+                  (<icon name="material-symbols:star" size="15" />
+                  {{ stat.def.star }})
                 </span>
-                ({{ stat.def?.main + stat.def?.enhance + (stat.def?.star ?? 0) }})
               </span>
             </p>
-            <p v-if="stat.hp" class="flex justify-between">
+            <p v-if="stat.hp && stat.hp.main > 0" class="flex justify-between">
               <span class="flex items-center gap-2">
                 <Icon name="mdi:cards-heart" size="16" class="text-red-500" />
-                <span> Sinh lực: {{ stat.hp.main }}</span>
-                <span class="text-green-500 flex items-center">
-                  <icon name="game-icons:sword-in-stone" size="15" />
-                  {{ stat.hp.enhance }}
+                <span> Sinh lực: {{ Math.round(stat.hp.main) }}</span>
+                <span v-if="item.enhance" class="text-green-300 flex items-center">
+                  (Cường hoá + {{ Math.round(stat.hp.enhance) }})
                 </span>
-                <span v-if="item.star! > 0" class="text-yellow-300 flex items-center">
-                  <icon name="material-symbols:star" size="15" />
-                  {{ stat.hp.star }}
+                <span v-if="item.star > 0" class="text-yellow-300 flex items-center">
+                  (<icon name="material-symbols:star" size="15" />
+                  {{ stat.hp.star }})
                 </span>
-                ({{ stat.hp?.main + stat.hp?.enhance + (stat.hp?.star ?? 0) }})
               </span>
             </p>
-            <p v-if="stat.critical" class="flex justify-between">
+            <p v-if="stat.critical && stat.critical.main > 0" class="flex justify-between">
               <span class="flex items-center gap-2">
                 <Icon name="game-icons:pointy-sword" size="16" class="text-yellow-300" />
-                <span>Bạo kích: {{ stat.critical.main }}</span>
-                <span class="text-green-500 flex items-center">
-                  <icon name="game-icons:sword-in-stone" size="15" />
-                  {{ stat.critical.enhance }}
+                <span>Bạo kích: {{ Math.round(stat.critical.main) }}%</span>
+                <span v-if="item.enhance" class="text-green-300 flex items-center">
+                  (Cường hoá + {{ Math.round(stat.critical.enhance) }})
                 </span>
-                <span v-if="item.star! > 0" class="text-yellow-300 flex items-center">
-                  <icon name="material-symbols:star" size="15" />
-                  {{ stat.critical.star }}
+                <span v-if="item.star > 0" class="text-yellow-300 flex items-center">
+                  (<icon name="material-symbols:star" size="15" />
+                  {{ stat.critical.star }})
                 </span>
-                ({{ stat.critical?.main + stat.critical?.enhance + (stat.critical?.star ?? 0) }})
               </span>
             </p>
-            <p v-if="stat.bloodsucking" class="flex justify-between">
+            <p v-if="stat.bloodsucking && stat.bloodsucking.main > 0" class="flex justify-between">
               <span class="flex items-center gap-2">
                 <Icon name="game-icons:bloody-sword" size="16" class="text-[#ec4899]" />
-                <span>Hút máu: {{ stat.bloodsucking.main }}</span>
-                <span class="text-green-500 flex items-center">
-                  <icon name="game-icons:sword-in-stone" size="15" />
-                  {{ stat.bloodsucking.enhance }}
+                <span>Hút máu: {{ Math.round(stat.bloodsucking.main) }}%</span>
+                <span v-if="item.enhance" class="text-green-300 flex items-center">
+                  (Cường hoá + {{ Math.round(stat.bloodsucking.enhance) }})
                 </span>
-                <span v-if="item.star! > 0" class="text-yellow-300 flex items-center">
-                  <icon name="material-symbols:star" size="15" />
-                  {{ stat.bloodsucking.star }}
+                <span v-if="item.star > 0" class="text-yellow-300 flex items-center">
+                  (<icon name="material-symbols:star" size="15" />
+                  {{ stat.bloodsucking.star }})
                 </span>
-                ({{ stat?.bloodsucking?.main + stat?.bloodsucking?.enhance + (stat.bloodsucking?.star ?? 0) }})
               </span>
             </p>
           </div>
+        </div>
+        <div class="mx-2 my-2 text-10 text-center w-full">
+          ________Đá hồn________
+        </div>
+        <div v-if="item?.gems.length > 0" class="mx-2 max-h-[250px] overflow-auto">
+          <div v-for="(gem, i) in item?.gems" :key="i" class="flex items-center px-1 p-1 bg-black/40 mb-1 relative">
+            <gem-item :gem="gem" />
+          </div>
+          <template v-if="gemReduceSlot > 0">
+            <div v-for="i in gemReduceSlot" :key="i" class="flex items-center mb-2">
+              <nuxt-img src="/gem/default.png" format="webp" class="w-12 h-12 bg-black" />
+              <span class="ml-2 text-10">
+                (Chưa khảm)
+              </span>
+            </div>
+          </template>
         </div>
       </div>
     </div>
     <div v-if="action" class="flex justify-center my-4">
       <div>
-        <var-button v-if="!propItem.used" class="!text-[#333] font-medium font-semibold uppercase" color="#ffd400" size="small" @click.stop="doEquip">
+        <var-button
+          v-if="!propItem.used" class="!text-[#333] font-medium font-semibold uppercase"
+          color="#ffd400"
+          size="small"
+          @click.stop="doEquip"
+        >
           Trang bị
         </var-button>
-        <var-button v-else class="!text-[#333] font-medium uppercase" size="small" @click.stop="doUnEquip">
+        <var-button
+          v-else
+          class="!text-[#333] font-medium uppercase"
+          size="small"
+          @click.stop="doUnEquip"
+        >
           Tháo trang bị
         </var-button>
       </div>
     </div>
-    <div class="border-t py-2 w-[75%] m-auto text-12 py-4">
-      <span>Cấp độ sử dụng: {{ item.level }}</span>
+    <div class="border-t py-2 w-[75%] m-auto text-12 mt-2">
+      <div class="text-center text-10">
+        Cấp độ sử dụng: {{ item.level }}
+      </div>
     </div>
   </div>
 </template>

@@ -1,4 +1,5 @@
-import type { PlayerAttribute, PlayerEquipment } from '~/types'
+import { PlayerEquipmentSchema } from '~/server/schema'
+import type { Player, PlayerAttribute, PlayerEquipment } from '~/types'
 export const ATTRIBUTE_SLOT: any = {
   1: {
     damage: 2,
@@ -129,9 +130,51 @@ export const needResourceUpStar = (star?: number) => {
   }
 }
 
-export const useEquipment = (playerEquips: PlayerEquipment[], attribute: PlayerAttribute) => {
+export const needResourceUpRank = async (equipment: PlayerEquipment) => {
+  const BASE_GOLD = 100000
+  const BASE_KNB = 30
+
+  const playerEquipments = await PlayerEquipmentSchema.find({
+    sid: equipment?.sid,
+    equipmentId: equipment?.equipmentId,
+    rank: equipment?.rank,
+    _id: {
+      $nin: [equipment?._id],
+    },
+  })
+
+  return {
+    gold: BASE_GOLD * equipment.rank!,
+    knb: BASE_KNB * equipment.rank!,
+    needFoodNumber: 3 + equipment.rank!,
+    playerEquipments,
+  }
+}
+
+export const useEquipment = (playerEquips: PlayerEquipment[], attribute: PlayerAttribute, player: Player) => {
   for (let i = 0; i < playerEquips.length; i++) {
     const playerEquip = playerEquips[i]
+    if (playerEquip.gems && playerEquip.gems.length > 0) {
+      for (const gem of playerEquip.gems) {
+        // console.log('gem', gem)
+        if (!gem?.values)
+          continue
+
+        for (const g of gem.values) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          if (g.type === 'normal' && g.target === 'base') { // @ts-expect-error
+            player[g.sign] += gem.quality === 1 ? g.value : Math.round(g.value * ((gem.quality! - 1) * gem.rateOnLevel!))
+          }
+
+          if (g.type === 'normal' && g.target === 'attribute') {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            attribute[g.sign] += gem.quality === 1 ? g.value : Math.round(g.value * (gem.quality! * gem.rateOnLevel!))
+          }
+        }
+      }
+    }
+
     if (playerEquip && playerEquip.stats) {
       for (let j = 0; j < playerEquip.stats.length; j++) {
         const stat = playerEquip.stats[j]

@@ -1,7 +1,5 @@
 import mongoose from 'mongoose'
 import type { Item } from '~/types'
-import { ItemSchema } from '~/server/schema/item'
-
 const ObjectId = mongoose.Types.ObjectId
 
 const schema = new mongoose.Schema<Item>(
@@ -59,6 +57,12 @@ export const getPlayerItems = (sid: string) => {
     },
     {
       $unwind: '$info',
+    },
+    {
+      $sort: {
+        'info.kind': 1,
+        'info.rank': 1,
+      },
     },
   ])
 }

@@ -11,6 +11,7 @@ export interface BattleRequest {
     id?: string
     type?: string | 'monster' | 'boss-daily'
   }
+  skip: boolean
 }
 
 export interface EmulatorBattle {
@@ -32,6 +33,7 @@ export interface BaseProperties extends BaseAttributes {
   level: number
   levelTitle?: string
   floor?: string
+  class: number
 }
 
 export interface BaseReward {
@@ -47,6 +49,7 @@ export interface BattleResponse extends BattleInRefresh {
   enemy: BaseProperties
   winner: string
   emulators: Emulator[]
+  kind: string
   reward: {
     base: BaseReward
     items: BasicItem[]

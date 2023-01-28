@@ -1,7 +1,18 @@
 export default defineNuxtConfig({
   ssr: false,
+  routeRules: {
+    '/': {
+      static: true,
+    },
+    '/login': {
+      static: true,
+    },
+    '/register': {
+      static: true,
+    },
+  },
   auth: {
-    origin: process.env.NODE_ENV === 'development' ? 'http://192.168.1.57:3000/' : 'https://tienhoi.vercel.app',
+    origin: process.env.NODE_ENV === 'development' ? 'http://192.168.1.5:3000' : 'https://tienhoi.vercel.app',
     enableGlobalAppMiddleware: false,
   },
   nitro: {

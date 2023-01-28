@@ -29,7 +29,7 @@
   background: white;
   font-size: 14px;
   user-select: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .footer {

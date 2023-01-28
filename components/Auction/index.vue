@@ -57,7 +57,13 @@ const doAuction = (auctionItem: AuctionItem) => {
         <div v-for="auctionItem in auctionItems" :key="auctionItem._id" class="relative h-[75px]">
           <nuxt-img format="webp" src="/common/bg-aution.png" />
           <div class="absolute top-0">
-            <Lazyitem-rank class="m-2" :quantity="0" :rank="auctionItem?.detail.rank" :preview="auctionItem?.detail.preview" />
+            <lazy-item-rank
+              class="m-2"
+              :quantity="0"
+              :quality="auctionItem?.detail.quality"
+              :rank="auctionItem?.detail.rank"
+              :preview="auctionItem?.detail.preview"
+            />
           </div>
           <div class="absolute top-0 right-0 flex mt-2 mr-2 flex-col ">
             <div class="flex">

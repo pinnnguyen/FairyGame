@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { randomNumber } from '~/common'
+import { ROLE_IMG } from '~/constants'
 
-defineProps<{
+const props = defineProps<{
   realTime: any
   state: any
   receiver: any
 }>()
+
+const playerClassIMG = computed(() => {
+  return ROLE_IMG[props.state?.player?.class]
+})
 </script>
 
 <template>
@@ -15,19 +20,27 @@ defineProps<{
       transform: realTime.enemy.trueDamage ? 'translate(15%)' : '',
     }"
   >
-    <span class="text-[#22ae28] font-semibold battle-damage whitespace-nowrap" :class="{ show: realTime.enemy?.bloodsucking > 0 && realTime.enemy.trueDamage }">
+    <span
+      class="text-[#22ae28] font-semibold battle-damage whitespace-nowrap"
+      :class="{ show: realTime.enemy?.bloodsucking > 0 && realTime.enemy.trueDamage }"
+    >
       Hút (+{{ realTime.enemy?.bloodsucking }})
     </span>
-    <span class="duration-800 text-xl font-semibold text-red-500 battle-damage" :class="{ show: realTime.player.trueDamage }">
+    <span
+      class="duration-800 text-xl font-semibold text-red-500 battle-damage"
+      :class="{ show: realTime.player.trueDamage }"
+    >
       <span v-if="realTime?.player?.critical" class="whitespace-nowrap font-bold">
         Chí mạng -{{ realTime.player.dmg }}
       </span>
       <span v-else>-{{ realTime.player.dmg }}</span>
     </span>
     <nuxt-img
+      v-if="playerClassIMG"
       :class="{
         'filter grayscale': realTime.player.trueDamage,
-      }" format="webp" class="h-[100px]" src="/pve/nv1.png"
+      }" format="webp" class="h-[100px]"
+      :src="playerClassIMG"
     />
     <img
       v-if="realTime.player.trueDamage"

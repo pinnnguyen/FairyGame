@@ -1,3 +1,5 @@
+import type { Gem, PlayerGem } from '~/types/gem'
+
 export interface EquipRateReward {
   id: number
   rate: number
@@ -54,6 +56,9 @@ export interface PlayerEquipment {
   star?: number
   stats?: PlayerEquipmentStat[]
   used?: boolean
+  quality: number
+  gemSlot: number
+  gems: Partial<PlayerGem[]>
 }
 export interface Bag {
   equipments: PlayerEquipment

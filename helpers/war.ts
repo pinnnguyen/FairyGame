@@ -81,6 +81,7 @@ export const enemyDeep = (enemy: EnemyObject) => {
     critical: enemy?.attribute.critical,
     speed: enemy?.attribute.speed,
     name: enemy?.name,
+    class: enemy.class,
   } as BaseProperties
 }
 
@@ -95,6 +96,7 @@ export const playerDeep = (params: PlayerInfo) => {
     speed: params?.attribute?.speed,
     critical: params?.attribute?.critical,
     name: params?.player?.name,
+    class: params.player.class,
   } as BaseProperties
 }
 
@@ -247,20 +249,46 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
       })[0])
     }
 
+    console.log('playerAttribute?.hp', playerAttribute?.hp)
     if (playerAttribute?.hp <= 0) {
-      endWar = true
       winner = WINNER.youlose
+      endWar = true
+
+      return {
+        player: playerClone,
+        enemy: enemyClone,
+        emulators,
+        winner,
+        totalDamage,
+      } as BattleResponse
     }
 
     if (_enemy?.attribute.hp <= 0) {
-      endWar = true
       winner = WINNER.youwin
+      endWar = true
+
+      return {
+        player: playerClone,
+        enemy: enemyClone,
+        emulators,
+        winner,
+        totalDamage,
+      } as BattleResponse
     }
 
-    if (round >= 20) {
-      endWar = true
+    if (round >= 30) {
       winner = WINNER.youlose
+      endWar = true
+
+      return {
+        player: playerClone,
+        enemy: enemyClone,
+        emulators,
+        winner,
+        totalDamage,
+      } as BattleResponse
     }
+
     round++
   }
 

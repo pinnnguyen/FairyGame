@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { getServerSession } from '#auth'
-import { MidSchema, PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
+import { MidSchema, PlayerAttributeSchema, PlayerSchema, addSystemChat } from '~/server/schema'
 import { getPlayer } from '~/server/helpers'
 
 import { DEFAULT_ATTRIBUTE, DEFAULT_ROLE } from '~/constants'
@@ -54,6 +54,7 @@ export default defineEventHandler(async (event) => {
   })
 
   await createAttribute.save()
+  await addSystemChat('', `Chào mừng ${body.name} gia nhập Tu tiên giả`)
 
   return {
     player: createRole,

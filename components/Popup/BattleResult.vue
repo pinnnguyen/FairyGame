@@ -23,9 +23,16 @@ const endTime = ref(3000)
 
 const target = ref(null)
 onClickOutside(target, () => emits('close'))
+const startBattle = useState('startBattle')
 
 const close = () => {
   emits('close')
+  emits('retry')
+}
+
+const back = () => {
+  emits('close')
+  startBattle.value = false
 }
 
 const youWin = computed(() => props.battleResult.win === WINNER.youwin)
@@ -45,7 +52,7 @@ if (youWin.value) {
   <Blocker class="duration-500 transition-colors transition-opacity z-9">
     <div ref="target" class="flex flex-col items-center">
       <nuxt-img class="w-[300px]" format="webp" :src="battleResult.win === WINNER.youwin ? '/battle/win.png' : '/battle/lose.png' " />
-      <div class="w-[250px] h-[250px] border border-[#6d6c6c] bg-black rounded-md">
+      <div class="w-[250px] h-[250px] border border-[#6d6c6c] bg-black/40 rounded-md">
         <ul v-if="youWin" class="h-full w-full p-1">
           <li v-for="(value, key) in reward.base" :key="key" class="float-left w-[calc(23%_-_8px)] h-[48px] ml-2 m-1 bg-iconbg_3 bg-cover ">
             <div class="relative">
@@ -81,7 +88,7 @@ if (youWin.value) {
         </ButtonConfirm>
       </div>
       <div v-else class="flex">
-        <ButtonCancel class-name="h-[30px]" class="m-2" @click.stop="navigateTo('/')">
+        <ButtonCancel class-name="h-[30px]" class="m-2" @click.stop="back">
           <span class="font-semibold z-9">Quay về</span>
         </ButtonCancel>
         <ButtonConfirm class-name="h-[30px]" class="m-2" @click="emits('retry')">

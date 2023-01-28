@@ -38,20 +38,33 @@ export default defineEventHandler(async (event) => {
     },
   })
 
-  const playerStatus = await PlayerStatusSchema.findOne({ sid: body.sid, type: PlayerStatusTypeCon.reduce_waiting_time_training })
+  const playerStatus = await PlayerStatusSchema.findOne({
+    sid: body.sid,
+    type: PlayerStatusTypeCon.reduce_waiting_time_training,
+  })
+
   if (!playerStatus) {
-    await new PlayerStatusSchema({
+    await PlayerStatusSchema.create({
       sid: body.sid,
       type: PlayerStatusTypeCon.reduce_waiting_time_training,
       value: playerItem.info.value,
       timeLeft: new Date().getTime() + 86400000,
     })
   }
-  else {
+
+  if (playerStatus) {
+    const now = new Date().getTime()
+    let timeLeft = 0
+    if (playerStatus.timeLeft! < now)
+      timeLeft = now + 86400000
+
+    else
+      timeLeft = playerStatus?.timeLeft + 86400000
+
     await PlayerStatusSchema.updateOne({ sid: body.sid, type: PlayerStatusTypeCon.reduce_waiting_time_training }, {
       value: playerItem.info.value,
       $inc: {
-        timeLeft: +86400000, // 1 Day
+        timeLeft, // 1 Day
       },
     })
   }

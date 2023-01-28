@@ -11,6 +11,8 @@ import {
 } from '~/server/helpers'
 import {
   BattleSchema,
+  addPlayerGem,
+  addSystemChat,
 } from '~/server/schema'
 import { startWar } from '~/helpers'
 import type { BattleRequest, BattleResponse, PlayerInfo } from '~/types'
@@ -24,6 +26,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     enemyBefore,
     reward,
     winnerBefore,
+    kind,
   } = await (handleBeforeStartWar(battleRequest, _p) as any)
 
   if (inRefresh) {
@@ -34,6 +37,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
       enemy: enemyBefore,
       reward,
       winner: winnerBefore,
+      kind,
     }
   }
 
@@ -75,11 +79,13 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     },
   }).save()
 
+  await addSystemChat('', `Bạn nhận được ${exp} XP ${gold} vàng`)
   return {
     player,
     enemy,
     emulators,
     winner,
+    kind: battleRequest.kind,
     reward: {
       base: {
         exp,
@@ -101,6 +107,11 @@ export const handleWars = async (request: BattleRequest) => {
       statusMessage: 'player not found!',
     })
   }
+
+  // await addPlayerGem(player.player.sid, 1, 1, 3)
+  // await addPlayerGem(player.player.sid, 2, 2, 3)
+  // await addPlayerGem(player.player.sid, 3, 3, 3)
+  // await addPlayerGem(player.player.sid, 4, 5, 3)
 
   if (!request.target.type) {
     return createError({

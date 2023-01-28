@@ -37,6 +37,7 @@ const buy = async (storeItem: StoreItem) => {
     <div class="absolute top-0">
       <item-rank
         class="m-2"
+        :quality="storeItem.info.rank"
         :quantity="storeItem.quantity"
         :rank="storeItem.info.rank"
         :preview="storeItem.info.preview"
@@ -49,12 +50,12 @@ const buy = async (storeItem: StoreItem) => {
           {{ storeItem.price ?? 0 }}
         </span>
       </div>
-      <Button :loading="loading" type="warning" size="mini" @click="buy(storeItem)">
+      <var-button :loading="loading" type="warning" size="mini" @click="buy(storeItem)">
         Mua
-      </Button>
+      </var-button>
     </div>
-    <p class="text-10 absolute bottom-1 font-semibold left-2 line-clamp-1">
-      {{ storeItem.info.name }}
+    <p class="text-12 opacity-60 absolute bottom-1 font-semibold left-2 line-clamp-1">
+      {{ storeItem?.info?.name }}
     </p>
   </div>
 </template>

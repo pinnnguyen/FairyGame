@@ -1,27 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { usePlayerStore } from '~/composables/usePlayer'
-import { sendMessage } from '~/composables/useMessage'
-import { formatCash } from '~/common'
+import { sendMessage, usePlayerStore } from '#imports'
 
 const { playerInfo, attribute } = storeToRefs(usePlayerStore())
 const { loadPlayer } = usePlayerStore()
-const classToTitle: Record<number, string> = {
-  1: 'Tu tiên',
-  2: 'Tu yêu',
-  3: 'Tu ma',
-  4: 'Nhân tộc',
-}
-
-const classListColor: Record<number, string> = {
-  1: '#75cd52',
-  2: '#b257a0',
-  3: '#2f94fa',
-  4: '#7788e8',
-}
-
-const classTitle = computed(() => classToTitle[playerInfo.value!.class])
-const classColor = computed(() => classListColor[playerInfo.value!.class])
 const tooltip = ref(false)
 
 const addAttribute = async (target: string) => {
@@ -113,41 +95,9 @@ const addAttribute = async (target: string) => {
       </p>
     </div>
   </var-popup>
-  <div class="p-2">
-    <div class="h-[60px] justify-between flex items-center mx-3">
-      <div class="flex items-center">
-        <nuxt-img class="h-[50px] mr-2" format="webp" src="/pve/player-avatar.png" />
-        <div class="flex flex-col items-start">
-          <div>
-            Tên: {{ playerInfo?.name }}
-          </div>
-          <div>
-            Cảnh giới: {{ playerInfo?.levelTitle }} {{ playerInfo?.floor }}
-          </div>
-          <div>
-            Đẳng cấp: {{ playerInfo?.level }}
-          </div>
-        </div>
-      </div>
-      <!--          <a style="background: radial-gradient(black, transparent);" class="text-white giftcode" href="?cmd=Yc2x1pkhPpWR1aWh1YW4mc2lkPTQ3MTRjMmE2NDNmOTQwMTY3NWE5YjY0OTFhZDJiOGQ4">Giftcode</a> -->
-    </div>
-    <div class="m-3 flex justify-between">
+  <div class="p-2 text-12 pt-4">
+    <div class="m-3 flex justify-between text-12">
       <div class="leading-[22px] flex flex-col items-start w-[70%]">
-        <span class="">
-          Hệ: <span :class="`bg-[${classColor}]`">{{ classTitle }}</span>
-        </span>
-        <span class="">
-          Tiên ngọc: {{ Math.round(playerInfo!.coin) }}
-        </span>
-        <span class="">
-          KNB: {{ Math.round(playerInfo!.knb) ?? 0 }}
-        </span>
-        <span class="">
-          Vàng: {{ Math.round(playerInfo!.gold) }}
-        </span>
-        <span class=" ">
-          Tu vị: {{ formatCash((playerInfo?.exp)) }}/{{ formatCash(playerInfo?.expLimited) }}
-        </span>
         <span class=" ">
           Tốc độ: {{ attribute?.speed ?? 0 }}
         </span>
@@ -167,7 +117,19 @@ const addAttribute = async (target: string) => {
           Sát thương bạo kích: 150%
         </span>
         <span class=" ">
+          Miễn sát thương bạo kích: {{ attribute?.reductionCriticalDamage ?? 0 }}%
+        </span>
+        <span class=" ">
           Hút máu: {{ attribute?.bloodsucking ?? 0 }}%
+        </span>
+        <span class=" ">
+          Né đòn: {{ attribute?.avoid ?? 0 }}%
+        </span>
+        <span class=" ">
+          Phản đòn: {{ attribute?.counterAttack ?? 0 }}%
+        </span>
+        <span class=" ">
+          Hiệu xuất hồi phục: {{ attribute?.recoveryPerformance ?? 0 }}%
         </span>
       </div>
       <div class="flex flex-col w-[150px] leading-[22px]">
@@ -201,7 +163,7 @@ const addAttribute = async (target: string) => {
       </div>
       <div />
     </div>
-    <p class="absolute bottom-4 right-2" @click="tooltip = true">
+    <p class="absolute top-5 right-4" @click="tooltip = true">
       <Icon name="ri:question-fill" size="20" />
     </p>
   </div>
