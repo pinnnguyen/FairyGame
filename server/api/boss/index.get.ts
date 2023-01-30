@@ -8,7 +8,7 @@ import { cloneDeep } from '~/helpers'
 
 const getBossDaily = async (player: Player) => {
   const today = moment().startOf('day')
-  const bossNe = await BossDataSchema.find({ kind: 'daily' })
+  const bossNe = await BossDataSchema.find({ kind: 'daily' }).sort({ level: 1 })
 
   for (let i = 0; i < bossNe.length; i++) {
     const equipIds = bossNe[i].reward.equipRates.map((i: { id: number }) => i.id)

@@ -14,7 +14,7 @@ const {
   reward,
   refreshTime,
   inRefresh,
-  SPEED,
+  speed,
 } = storeToRefs(useBattleRoundStore())
 
 const { playerInfo } = storeToRefs(usePlayerStore())
@@ -75,13 +75,13 @@ const doCloseBattleR = () => {
 }
 
 const retry = () => {
-  console.log('retry')
   battleResult.value.show = false
-  $io.emit('battle:refresh')
+  $io.emit('battle:refresh', {
+    skip: false,
+  })
 }
 
 const refreshFinished = () => {
-  console.log('refreshFinished')
   $io.emit('battle:refresh')
 }
 </script>
@@ -116,10 +116,10 @@ const refreshFinished = () => {
         />
       </div>
       <div class="absolute bottom-0 right-0 py-2">
-        <var-button v-show="SPEED === 1" outline size="small" class="rounded mr-2 text-base font-semibold" @click="SPEED = 2">
+        <var-button v-show="speed === 1" outline size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 2">
           X1
         </var-button>
-        <var-button v-show="SPEED === 2" outline size="small" class="rounded mr-2 text-base font-semibold" @click="SPEED = 1">
+        <var-button v-show="speed === 2" outline size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 1">
           X2
         </var-button>
       </div>
@@ -127,7 +127,7 @@ const refreshFinished = () => {
     <div class="relative h-full">
       <nuxt-img class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" />
       <BattleHistory :battle-rounds="battleRounds" />
-      <BattleTopDMG :top-d-m-g="topDMG" />
+      <BattleTopDMG v-if="topDMG" :top-d-m-g="topDMG" />
       <div class="flex items-center flex-col justify-center w-full fixed bottom-2">
         <BattleRevice
           v-if="inRefresh"

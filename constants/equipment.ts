@@ -1,14 +1,12 @@
 export const EQUIPMENT_SLOT = {
   1: 'Vũ khí',
-  2: 'Nón',
-  3: 'Áo giáp',
-  4: 'Găng tay',
-  5: 'Thủ hộ',
-  6: 'Đai lưng',
-  7: 'Hạng liên',
-  8: 'Nhẫn trái',
-  9: 'Nhẫn phải',
-  10: 'Ngọc bội',
+  2: 'Áo',
+  3: 'Nón',
+  4: 'Nhẫn',
+  5: 'Ngọc Bội',
+  6: 'Găng Tay',
+  7: 'Giày',
+  8: 'Đai',
 }
 
 export const QUALITY_TITLE: Record<number, string> = {

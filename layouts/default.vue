@@ -30,6 +30,7 @@
   font-size: 14px;
   user-select: none;
   font-weight: 600;
+  text-transform: capitalize;
 }
 
 .footer {

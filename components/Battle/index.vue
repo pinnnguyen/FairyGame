@@ -15,13 +15,12 @@ const {
   inRefresh,
   refreshTime,
   reward,
-  SPEED,
+  speed,
   roundNum,
 } = storeToRefs(useBattleRoundStore())
-const { setSKIP } = useBattleRoundStore()
 
 const { $io } = useNuxtApp()
-const { startBattle } = useBattleRoundStore()
+const { startBattle, setSKIP } = useBattleRoundStore()
 const { playerInfo } = storeToRefs(usePlayerStore())
 
 const { loadPlayer } = usePlayerStore()
@@ -44,7 +43,7 @@ $io.on('battle:start', async (war: BattleResponse) => {
   await startBattle(war)
 })
 
-onUnmounted(() => {
+onUnmounted(async () => {
   $io.off('battle:start')
 })
 
@@ -151,10 +150,10 @@ const retry = () => {
               Bỏ qua
             </var-button>
             <div class="py-2">
-              <var-button v-show="SPEED === 1" size="small" class="rounded mr-2 text-base font-semibold" @click="SPEED = 2">
+              <var-button v-show="speed === 1" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 2">
                 X1
               </var-button>
-              <var-button v-show="SPEED === 2" size="small" class="rounded mr-2 text-base font-semibold" @click="SPEED = 1">
+              <var-button v-show="speed === 2" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 1">
                 X2
               </var-button>
             </div>

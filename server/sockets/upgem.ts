@@ -1,6 +1,7 @@
 import { PlayerEquipmentSchema, PlayerGemSchema, PlayerSchema, addPlayerGem, addSystemChat } from '~/server/schema'
 import type { PlayerGem } from '~/types'
 import { QUALITY_TITLE } from '~/constants'
+import { randomNumber } from '~/common'
 
 export const handleEventUpGem = async (io: any, socket: any) => {
   socket.on('equip:gem:preview', async (_equipId: string) => {
@@ -46,10 +47,13 @@ export const handleEventUpGem = async (io: any, socket: any) => {
       },
     })
 
+    const rateOnLevel = Math.round(randomNumber(1, 2) * 100) / 100
     await PlayerGemSchema.findOneAndUpdate({ sid: playerInfo.sid, gemId: gem.gemId, quality: gem.quality! + 1 }, {
       name: gem.name,
-      rateOnLevel: gem.rateOnLevel,
+      rateOnLevel,
       values: gem.values,
+      slot: gem.slot,
+      target: gem.target,
       $inc: {
         sum: 1,
       },
@@ -82,7 +86,6 @@ export const handleEventUpGem = async (io: any, socket: any) => {
       new: true,
     })
 
-    console.log('gem', gem)
     await addPlayerGem(playerEquipment?.sid, gem.gemId, gem.quality, 1)
     socket.emit('gem:unmosaic:response', {
       success: true,
@@ -92,7 +95,7 @@ export const handleEventUpGem = async (io: any, socket: any) => {
   })
 
   socket.on('gem:mosaic', async (_equipId: string, _gemId: string) => {
-    const playerEquipment = await PlayerEquipmentSchema.findById(_equipId).select('gemSlot quality sid gems name')
+    const playerEquipment = await PlayerEquipmentSchema.findById(_equipId).select('gemSlot quality sid gems name slot')
     if (!playerEquipment) {
       socket.emit('gem:mosaic:response', {
         success: false,
@@ -131,6 +134,26 @@ export const handleEventUpGem = async (io: any, socket: any) => {
       return
     }
 
+    const playerGems = playerEquipment.gems ?? []
+    const gemExits = playerGems.find(g => g?.gemId === gemInfo.gemId)
+    if (gemExits) {
+      socket.emit('gem:mosaic:response', {
+        success: false,
+        message: 'Đá hồn được khảm duy nhất trên mỗi trang bị',
+      })
+
+      return
+    }
+
+    if (playerEquipment.slot !== gemInfo.slot) {
+      socket.emit('gem:mosaic:response', {
+        success: false,
+        message: 'Đá hồn khảm không đúng trang bị',
+      })
+
+      return
+    }
+
     if (gemInfo?.sum === 1) {
       await PlayerGemSchema.findOneAndDelete({ _id: gemInfo._id })
     }
@@ -142,10 +165,11 @@ export const handleEventUpGem = async (io: any, socket: any) => {
       })
     }
 
-    const playerGems = playerEquipment.gems ?? []
     playerGems.push({
       gemId: gemInfo.gemId,
       name: gemInfo?.name,
+      slot: gemInfo?.slot,
+      target: gemInfo?.target,
       quality: gemInfo?.quality,
       rateOnLevel: gemInfo?.rateOnLevel,
       values: gemInfo?.values,
@@ -175,7 +199,7 @@ export const handleEventUpGem = async (io: any, socket: any) => {
       return
     }
 
-    if (playerEquipment.gemSlot >= playerEquipment.quality) {
+    if (playerEquipment.gemSlot >= 3) {
       socket.emit('gem:punchahole:response', {
         success: false,
         message: 'Phẩm chất trang bị đã đạt tối đa không thể đục thêm lỗ',

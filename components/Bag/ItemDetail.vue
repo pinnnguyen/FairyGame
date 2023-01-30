@@ -40,7 +40,7 @@ const useItem = async () => {
 
 <template>
   <div
-    class="relative text-xs leading-6 text-white rounded shadow-md p-0 w-[320px]"
+    class="relative text-xs leading-5 text-white rounded shadow-md p-0 w-[320px]"
     :style="styles"
   >
     <div class="p-3">

@@ -20,7 +20,7 @@ export const formatNumber = (str: string) => {
   return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
-export const formatCash = (n: number | string | undefined) => {
+export const formatCash = (n: any) => {
   if (!n)
     return 0
 

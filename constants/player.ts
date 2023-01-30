@@ -16,24 +16,18 @@ export const DEFAULT_ATTRIBUTE: PlayerAttribute = {
   recoveryPerformance: 0, // hiệu xuất hồi phục
   avoid: 0, // né đòn
   reductionCriticalDamage: 0, // miễn thương bạo kích
+  reductionRecoveryPerformance: 0, // khang hoi phuc
+  reductionBloodsucking: 0,
   damage: 50,
   def: 30,
   hp: 200,
   mp: 50,
   bloodsucking: 0,
-  critical: 0,
-  criticalDamage: 1.5,
+  critical: 0, // 0%
+  criticalDamage: 150, // 150%
   speed: 1,
-}
-
-export const ATTRIBUTE_TITLE_STATS = {
-  damage: 'Công kích',
-  def: 'Phòng ngự',
-  hp: 'Sinh lực',
-  mp: 'Ma lực',
-  bloodsucking: 'Hút máu',
-  critical: 'Bạo kích',
-  speed: 'Tốc độ',
+  reductionCounterAttack: 0,
+  reductionAvoid: 0,
 }
 
 export const ROLE_IMG: Record<number, string> = {

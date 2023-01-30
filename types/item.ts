@@ -17,3 +17,11 @@ export interface Item {
   itemId?: number
   info?: BasicItem
 }
+
+export interface PlayerItem {
+  _id?: string
+  sid?: string
+  sum?: number
+  itemId?: number
+  info?: BasicItem
+}

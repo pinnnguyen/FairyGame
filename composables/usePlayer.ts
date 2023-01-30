@@ -12,7 +12,6 @@ export const usePlayerStore = defineStore('player', () => {
   const equipments = computed(() => playerInfo.value?.equipments)
 
   const loadPlayer = (data: any) => {
-    console.log('data', data)
     set(playerInfo, {
       ...data.player,
       attribute: {

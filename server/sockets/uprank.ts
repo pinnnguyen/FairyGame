@@ -77,6 +77,14 @@ export const handleEquipUpRank = async (io: any, socket: any) => {
       new: true,
     })
 
+    if (!equipStarUpdated) {
+      socket.emit('equip:rank:response', {
+        message: 'Nâng cấp thất bại',
+      })
+
+      return
+    }
+
     const stats = equip.stats
     const extentAttributeRankLevel = 10
     for (let i = 0; i < stats!.length; i++) {

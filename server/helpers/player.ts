@@ -72,7 +72,7 @@ export const playerTitle = (level: number, playerNextLevel: number) => {
   }
 }
 const useClass = (ofClass: number, attribute: PlayerAttribute) => {
-  attribute.criticalDamage = 1.5 // 150% sat thuong bao kich
+  // attribute.criticalDamage = attribute.criticalDamage // 150% sat thuong bao kich
   switch (ofClass) {
     case 1:
       // Tu tiên 10% tấn công & 5% sát thương bạo tăng kích
@@ -99,26 +99,29 @@ const useClass = (ofClass: number, attribute: PlayerAttribute) => {
 }
 
 const useAttribute = (_p: Player, attribute: PlayerAttribute) => {
-  if (_p.ofPower > 0) {
-    attribute.hp += 30 * _p.ofPower
-    attribute.damage += (0.2 * _p.ofPower) * attribute.damage / 100
+  if (!_p.coreAttribute)
+    return
+
+  if (_p?.coreAttribute?.ofPower > 0) {
+    attribute.hp += 30 * _p?.coreAttribute?.ofPower
+    attribute.damage += (0.2 * _p?.coreAttribute?.ofPower) * attribute.damage / 100
   }
 
-  if (_p.ofAgility) {
-    attribute.speed += 1 * _p.ofAgility
-    attribute.critical += (0.2 * _p.ofAgility) * attribute.critical / 100
+  if (_p?.coreAttribute?.ofAgility) {
+    attribute.speed += 1 * _p?.coreAttribute?.ofAgility
+    attribute.critical += (0.2 * _p?.coreAttribute?.ofAgility) * attribute.critical / 100
   }
 
-  if (_p.ofVitality) {
-    attribute.def += (0.2 * _p.ofVitality) * attribute.def / 100
-    attribute.hp += (0.2 * _p.ofVitality) * attribute.hp / 100
+  if (_p?.coreAttribute?.ofVitality) {
+    attribute.def += (0.2 * _p?.coreAttribute?.ofVitality) * attribute.def / 100
+    attribute.hp += (0.2 * _p?.coreAttribute?.ofVitality) * attribute.hp / 100
     attribute.hp += 20
+  }
 
-    if (_p.ofSkillful) {
-      attribute.speed += 0.5 * _p.ofSkillful
-      attribute.def += 10 * _p.ofSkillful
-      attribute.critical += (0.2 * _p.ofSkillful) * attribute.critical / 100
-    }
+  if (_p?.coreAttribute?.ofSkillful) {
+    attribute.speed += 0.5 * _p?.coreAttribute?.ofSkillful
+    attribute.def += 10 * _p?.coreAttribute?.ofSkillful
+    attribute.critical += (0.2 * _p?.coreAttribute?.ofSkillful) * attribute.critical / 100
   }
 }
 

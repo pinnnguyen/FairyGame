@@ -23,6 +23,10 @@ const schema = new mongoose.Schema<PlayerAttribute>(
     reductionCriticalDamage: Number,
     counterAttack: Number,
     recoveryPerformance: Number,
+    reductionBloodsucking: Number,
+    reductionRecoveryPerformance: Number,
+    reductionCounterAttack: Number,
+    reductionAvoid: Number,
   },
   { timestamps: true },
 )

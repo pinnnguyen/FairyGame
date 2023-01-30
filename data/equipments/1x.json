@@ -221,7 +221,7 @@
   },
   {
     "id": 5,
-    "name": "[Tân thủ] Mộc Ngọc",
+    "name": "[Tân thủ] Mộc Bội",
     "info": "[Tân thủ] Mộc Ngọc",
     "rank": 1,
     "quality": 1,
@@ -391,7 +391,7 @@
     "rank": 1,
     "quality": 1,
     "level": 1,
-    "slot": 7,
+    "slot": 8,
     "preview": "/items/50006.png",
     "enhance": 0,
     "stats": [

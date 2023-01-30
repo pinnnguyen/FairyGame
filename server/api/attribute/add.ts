@@ -46,8 +46,8 @@ export default defineEventHandler(async (event: H3Event) => {
   if (body.target === 'ofPower') {
     await PlayerSchema.updateOne({ sid: player.sid }, {
       $inc: {
-        ofPower: 1,
-        ofAttribute: -1,
+        'coreAttribute.ofPower': 1,
+        'ofAttribute': -1,
       },
     })
   }
@@ -55,8 +55,8 @@ export default defineEventHandler(async (event: H3Event) => {
   if (body.target === 'ofAgility') {
     await PlayerSchema.updateOne({ sid: player.sid }, {
       $inc: {
-        ofAgility: 1,
-        ofAttribute: -1,
+        'coreAttribute.ofAgility': 1,
+        'ofAttribute': -1,
       },
     })
   }
@@ -64,8 +64,8 @@ export default defineEventHandler(async (event: H3Event) => {
   if (body.target === 'ofSkillful') {
     await PlayerSchema.updateOne({ sid: player.sid }, {
       $inc: {
-        ofSkillful: 1,
-        ofAttribute: -1,
+        'coreAttribute.ofSkillful': 1,
+        'ofAttribute': -1,
       },
     })
   }
@@ -73,8 +73,8 @@ export default defineEventHandler(async (event: H3Event) => {
   if (body.target === 'ofVitality') {
     await PlayerSchema.updateOne({ sid: player.sid }, {
       $inc: {
-        ofVitality: 1,
-        ofAttribute: -1,
+        'coreAttribute.ofVitality': 1,
+        'ofAttribute': -1,
       },
     })
   }

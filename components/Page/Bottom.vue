@@ -188,7 +188,7 @@ const onPlayerInfo = () => {
             <nuxt-img src="/bottom/menu/XJDengxiandao_14.png" format="webp" class="transform rotate-45" />
           </div>
           <span class="whitespace-nowrap text-12 text-black/60 mt-2">
-            Hoạt động
+            Boss
           </span>
         </div>
       </div>

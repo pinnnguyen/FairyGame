@@ -14,7 +14,9 @@ export interface Gem {
   name?: string
   quality?: number
   rateOnLevel?: number
+  target?: 'attribute'
   values?: GemValue[]
+  slot: number
 }
 
 export interface PlayerGem {
@@ -24,6 +26,8 @@ export interface PlayerGem {
   gemId?: number
   name?: string
   quality?: number
+  target?: 'attribute'
   rateOnLevel?: number
   values?: GemValue[]
+  slot: number
 }

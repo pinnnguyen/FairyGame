@@ -69,7 +69,7 @@ const doUnEquip = async () => {
 </script>
 
 <template>
-  <div class="relative leading-6 text-white bg-black/80 p-0 w-[calc(100vw_-_70px)] overflow-hidden">
+  <div class="relative leading-5 text-white bg-black/80 p-0 w-[calc(100vw_-_70px)] overflow-hidden">
     <div class="text-12 font-medium">
       <div
         class="flex items-center justify-between p-2"
@@ -99,7 +99,7 @@ const doUnEquip = async () => {
       </div>
       <div class="flex flex-col items-start justify-start">
         <div class="mx-2 my-2 text-10 text-center w-full">
-          ________Thuộc tính cơ bản________
+          --------Thuộc tính cơ bản--------
         </div>
         <div class="mx-2">
           <div v-for="(stat, index) in item.stats" :key="index">
@@ -171,7 +171,7 @@ const doUnEquip = async () => {
             <p v-if="stat.bloodsucking && stat.bloodsucking.main > 0" class="flex justify-between">
               <span class="flex items-center gap-2">
                 <Icon name="game-icons:bloody-sword" size="16" class="text-[#ec4899]" />
-                <span>Hút máu: {{ Math.round(stat.bloodsucking.main) }}%</span>
+                <span>Hút sinh lực: {{ Math.round(stat.bloodsucking.main) }}%</span>
                 <span v-if="item.enhance" class="text-green-300 flex items-center">
                   (Cường hoá + {{ Math.round(stat.bloodsucking.enhance) }})
                 </span>
@@ -184,7 +184,7 @@ const doUnEquip = async () => {
           </div>
         </div>
         <div class="mx-2 my-2 text-10 text-center w-full">
-          ________Đá hồn________
+          -------Đá hồn--------
         </div>
         <div v-if="item?.gems.length > 0" class="mx-2 max-h-[250px] overflow-auto">
           <div v-for="(gem, i) in item?.gems" :key="i" class="flex items-center px-1 p-1 bg-black/40 mb-1 relative">

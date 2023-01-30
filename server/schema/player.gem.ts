@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import type { PlayerGem } from '~/types'
 import { GemSchema } from '~/server/schema/gem'
+import { randomNumber } from '~/common'
 const ObjectId = mongoose.Types.ObjectId
 
 const schema = new mongoose.Schema<PlayerGem>(
@@ -15,6 +16,8 @@ const schema = new mongoose.Schema<PlayerGem>(
     gemId: Number,
     name: String,
     quality: Number,
+    target: String,
+    slot: Number,
     rateOnLevel: Number,
     values: [],
     sum: Number,
@@ -30,10 +33,13 @@ export const addPlayerGem = async (sid?: string, gemId?: number, quality?: numbe
   if (!gem)
     return
 
+  const rateOnLevel = Math.round(randomNumber(1, 2) * 100) / 100
   await PlayerGemSchema.findOneAndUpdate({ sid, gemId, quality }, {
     name: gem.name,
-    rateOnLevel: gem.rateOnLevel,
+    slot: gem.slot,
+    rateOnLevel,
     values: gem.values,
+    target: gem.target,
     $inc: {
       sum: num,
     },

@@ -47,27 +47,34 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   const realTime = ref<Record<string | 'player' | 'enemy', {
     dmg?: number
     critical?: boolean
-    trueDamage?: boolean
+    sureDamage?: boolean
     bloodsucking?: number
+    counterDamage?: number
+    avoid?: boolean
   }>>({
     player: {
       critical: false,
       bloodsucking: 0,
-      trueDamage: false,
+      sureDamage: false,
       dmg: 0,
+      counterDamage: 0,
+      avoid: false,
     },
     enemy: {
       critical: false,
-      trueDamage: false,
+      sureDamage: false,
       bloodsucking: 0,
       dmg: 0,
+      counterDamage: 0,
+      avoid: false,
     },
   })
 
+  const stop = ref(false)
   const roundNum = ref(0)
-  const SPEED = useLocalStorage('SPEED', 1)
+  const speed = useLocalStorage('speed', 1)
   const SKIP = ref(false)
-  const TURN_DELAY = computed(() => 2000 / SPEED.value)
+  const TURN_DELAY = computed(() => 2000 / speed.value)
   const DAMAGE_DELAY = 1200
   const SHOULD_WIN_DELAY = 1000
 
@@ -81,17 +88,17 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   }
   const startBattle = async (war: BattleResponse) => {
     console.log('war', war)
-    set(roundNum, 0)
-    set(inRefresh, false)
-    set(refreshTime, 0)
-    set(loading, false)
-    set(battleRounds, [])
-    set(reward, null)
-    set(rankDMG, war.rankDMG)
-
     if (!war)
       return
 
+    set(loading, true)
+    set(stop, false)
+    set(roundNum, 0)
+    set(inRefresh, false)
+    set(refreshTime, 0)
+    set(battleRounds, [])
+    set(reward, null)
+    set(rankDMG, war.rankDMG)
     set(reward, war?.reward)
     state.value.player = war.player
     state.value.enemy = war.enemy
@@ -108,13 +115,18 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     }
 
     if (war.inRefresh) {
+      // set(loading, false)
       set(inRefresh, war.inRefresh)
       set(refreshTime, war.refreshTime)
       return
     }
 
+    set(loading, false)
     for (const emulator of war.emulators) {
       for (const turn in emulator) {
+        if (stop.value)
+          return
+
         if (SKIP.value) {
           battleResult.value = {
             show: true,
@@ -135,14 +147,18 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
           await sleep(TURN_DELAY.value)
           set(playerEffect, _turn)
           await useSoundEventAttack()
+          // hành động tấn công trước
+          realTime.value[__turn].sureDamage = true
 
           receiver.value[__turn].hp = emuT.now.hp[__turn]
           receiver.value[__turn].mp = emuT.now.mp[_turn]
 
           realTime.value[__turn].dmg = DMG
-          realTime.value[__turn].trueDamage = true
           realTime.value[__turn].critical = emuT?.state?.critical
           realTime.value[__turn].bloodsucking = emuT.state.bloodsucking
+
+          realTime.value[_turn].counterDamage = emuT.state.counterDamage
+          realTime.value[_turn].avoid = emuT.state.avoid
 
           battleRounds.value.unshift({
             turn: _turn,
@@ -150,8 +166,9 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
             roundNum: roundNum.value,
           })
 
+          console.log('realTime', realTime.value)
           setTimeout(() => {
-            realTime.value[__turn].trueDamage = false
+            realTime.value[__turn].sureDamage = false
           }, DAMAGE_DELAY)
 
           // (receiver.value[__turn].hp as number) <= 0
@@ -168,6 +185,11 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
       }
     }
   }
+
+  onUnmounted(() => {
+    set(stop, true)
+  })
+
   return {
     state,
     reward,
@@ -182,7 +204,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     battleRounds,
     battleResult,
     rankDMG,
-    SPEED,
+    speed,
     setSKIP,
     roundNum,
   }

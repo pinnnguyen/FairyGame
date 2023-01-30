@@ -13,10 +13,12 @@ const schema = new mongoose.Schema<Gem>(
     id: Number,
     name: String,
     quality: Number,
+    target: String,
     rateOnLevel: Number,
     values: [],
+    slot: Number,
   },
   { timestamps: true },
 )
-schema.index({ id: -1 })
+schema.index({ id: -1 }, { unique: true })
 export const GemSchema = mongoose.model('GemSchema', schema, 'gl_gems')

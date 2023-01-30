@@ -72,7 +72,7 @@ const startWar = (boss: BossElite) => {
       <Icon name="material-symbols:swords" size="16" />
       Sẵn sàng
     </div>
-    <div class="flex justify-between mt-2">
+    <div class="flex justify-around mt-2">
       <div class="flex flex-col justify-between">
         <div class="relative mr-2 flex flex-col items-center justify-center">
           <nuxt-img class="w-[55px] h-[55px] rounded-full border border-[#bbc4d2]" format="webp" :src="boss.avatar" />
@@ -143,7 +143,7 @@ const startWar = (boss: BossElite) => {
         <div>
           <Icon name="game-icons:bloody-sword" size="16" class="text-[#ec4899]" />
           <span>
-            Hút máu: {{ boss.attribute.bloodsucking }}%
+            Hút sinh lực: {{ boss.attribute.bloodsucking }}%
           </span>
         </div>
       </div>

@@ -9,21 +9,26 @@ export interface BaseAttributes {
   critical: number
   bloodsucking: number
   criticalDamage: number
-  avoid: number
-  reductionCriticalDamage: number
-  counterAttack: number
-  recoveryPerformance: number
+  avoid: number // Ne Don
+  reductionAvoid: number // Bo qua ne don
+  reductionCriticalDamage: number // Khang sat thuong bao kich
+  reductionBloodsucking: number // Khang hut mau
+  counterAttack: number // Phan dam
+  recoveryPerformance: number // Hieu xuat hoi phuc
+  reductionRecoveryPerformance: number // Khang hoi phuc
+  reductionCounterAttack: number // Khang phan dam
 }
 
 export interface CoreAttribute {
-  ofAttribute: number
   ofPower: number
   ofAgility: number
   ofSkillful: number
   ofVitality: number
 }
-export interface Player extends CoreAttribute {
+export interface Player {
   _id?: string
+  ofAttribute: number
+  coreAttribute: CoreAttribute
   sid: string
   name: string
   gold: number

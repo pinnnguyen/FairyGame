@@ -9,7 +9,16 @@ export const handleAuction = (socket: any) => {
 
     const price = auctionItem?.price ?? 0
     const player = await PlayerSchema.findOne({ sid: params.sid })
-    if (player.knb < price + 20) {
+    if (!player) {
+      socket.emit('auction-response', {
+        statusCode: 400,
+        statusMessage: 'Nhân vật không tồn tại ',
+      })
+
+      return
+    }
+
+    if (player.knb! < price + 20) {
       socket.emit('auction-response', {
         statusCode: 400,
         statusMessage: 'Knb nhân vật không đủ để đấu giá ',

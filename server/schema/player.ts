@@ -27,10 +27,7 @@ const schema = new mongoose.Schema<Player>(
     expLimited: Number,
     class: Number,
     ofAttribute: Number,
-    ofPower: Number,
-    ofAgility: Number,
-    ofSkillful: Number,
-    ofVitality: Number,
+    coreAttribute: {},
   },
   {
     timestamps: true,

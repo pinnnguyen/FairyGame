@@ -17,21 +17,35 @@ const enemyClassIMG = computed(() => {
   <div
     class="relative duration-800 transition-transform flex flex-col items-center justify-center"
     :style="{
-      transform: realTime.player.trueDamage ? 'translate(-15%)' : '',
+      transform: realTime.player.sureDamage ? 'translate(-15%)' : '',
     }"
   >
     <span
       class="text-[#22ae28] font-semibold battle-damage whitespace-nowrap"
-      :class="{ show: realTime.player?.bloodsucking > 0 && realTime.player.trueDamage }"
+      :class="{ show: realTime.player?.bloodsucking > 0 && realTime.player.sureDamage }"
     >
-      Hút (+{{ realTime.player?.bloodsucking }})
+      Hút sinh lực (+{{ realTime.player?.bloodsucking }})
     </span>
     <span
+      :class="{ show: realTime.enemy?.counterDamage > 0 && realTime.player.sureDamage }"
+      class="text-red-500 font-semibold battle-damage whitespace-nowrap"
+    >
+      Phản đòn -{{ realTime.enemy.counterDamage }}
+    </span>
+
+    <span
+      class="text-blue-300 font-semibold battle-damage whitespace-nowrap"
+      :class="{ show: realTime.enemy?.avoid && realTime.enemy.sureDamage }"
+    >
+      Né tránh
+    </span>
+
+    <span
       class="text-xl duration-800 font-semibold text-red-500 battle-damage"
-      :class="{ show: realTime.enemy.trueDamage }"
+      :class="{ show: realTime.enemy.sureDamage && !realTime.enemy?.avoid }"
     >
       <span v-if="realTime?.enemy?.critical" class="whitespace-nowrap font-bold">
-        Chí mạng -{{ realTime.enemy.dmg }}
+        Bạo kích -{{ realTime.enemy.dmg }}
       </span>
       <span v-else>-{{ realTime.enemy.dmg }}</span>
     </span>
@@ -39,12 +53,12 @@ const enemyClassIMG = computed(() => {
       v-if="enemyClassIMG"
       format="webp" class="h-[100px]"
       :class="{
-        'filter grayscale': realTime.enemy.trueDamage,
+        'filter grayscale': realTime.enemy.sureDamage,
       }"
       :src="enemyClassIMG"
     />
     <img
-      v-if="realTime.enemy.trueDamage"
+      v-if="realTime.enemy.sureDamage"
       class="w-[105px] h-[105px] absolute" :src="`/battle/player_gif.gif?v=${randomNumber(1, 1000)}`"
     >
     <BattleStatusBar

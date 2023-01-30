@@ -91,7 +91,7 @@ const parseEquipments = (equipments: Equipment[]) => {
         Boss kết thúc: {{ timeOffset(endTime).hours ? timeOffset(endTime).hours : 0 }}h {{ timeOffset(endTime).minutes ? timeOffset(endTime).minutes : 0 }}phút {{ timeOffset(endTime).seconds ? timeOffset(endTime).seconds : 0 }}s
       </span>
     </p>
-    <div class="flex justify-between mt-2">
+    <div class="flex justify-around mt-2">
       <div class="flex flex-col justify-between">
         <div class="relative mr-2 flex flex-col items-center justify-center">
           <nuxt-img class="w-[55px] h-[55px] rounded-full border border-[#bbc4d2]" format="webp" :src="boss.avatar" />
@@ -139,7 +139,7 @@ const parseEquipments = (equipments: Equipment[]) => {
         <div>
           <Icon name="game-icons:bloody-sword" size="16" class="text-[#ec4899]" />
           <span>
-            Hút máu: {{ boss.attribute.bloodsucking }}%
+            Hút sinh lực: {{ boss.attribute.bloodsucking }}%
           </span>
         </div>
       </div>

@@ -20,6 +20,8 @@ export interface EmulatorBattle {
     damage?: number
     bloodsucking?: number
     critical?: boolean
+    counterDamage?: number
+    avoid?: boolean
   }
   now: {
     hp: Record<string | 'player' | 'enemy', number>

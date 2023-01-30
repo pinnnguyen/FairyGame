@@ -13,20 +13,30 @@ const { slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8 } = storeToRefs(u
 const { getSlotEquipUpgrade } = usePlayerSlot()
 
 const { getPlayer } = usePlayerStore()
-const { data: gems, refresh } = await useFetch('/api/gem')
-
 const equipSelected = ref<Partial<PlayerEquipment>>({})
-const gemSelected = ref<PlayerGem>()
+const gems = ref<PlayerGem[]>([])
 
+const gemSelected = ref<PlayerGem>()
 const viewGem = ref(false)
 const gemsLength = ref(0)
 const punchaLoading = ref(false)
 const hasSelectedAction = ref(false)
 
+const getGems = async () => {
+  if (!equipSelected.value.slot)
+    return
+
+  gems.value = await $fetch('/api/gem', {
+    params: {
+      slot: equipSelected.value.slot,
+    },
+  })
+}
+
 $io.on('gem:mosaic:response', async (data) => {
   sendMessage(data.message, 3000)
   if (data.success) {
-    refresh()
+    await getGems()
     await getPlayer()
     set(equipSelected, data.equipment)
   }
@@ -35,7 +45,7 @@ $io.on('gem:mosaic:response', async (data) => {
 $io.on('gem:unmosaic:response', async (data) => {
   sendMessage(data.message, 3000)
   if (data.success) {
-    refresh()
+    await getGems()
     await getPlayer()
     set(equipSelected, data.equipment)
   }
@@ -54,7 +64,6 @@ const reduceGemSlot = computed(() => {
 
   return equipSelected.value.gemSlot! - gemsLength.value
 })
-
 const punchahole = () => {
   $io.off('equip:gem:preview')
   $io.off('gem:preview:response')
@@ -82,7 +91,6 @@ const onmosaic = (gem: PlayerGem) => {
   $io.emit('gem:mosaic', equipSelected.value._id, gem._id)
   set(viewGem, false)
 }
-
 const unmosaic = (gem: PlayerGem, index: number) => {
   Dialog({
     title: 'Nhắc nhở',
@@ -99,27 +107,23 @@ const unmosaic = (gem: PlayerGem, index: number) => {
     },
   })
 }
-
 const showGemWithAction = (gem: PlayerGem) => {
   set(gemSelected, gem)
   set(viewGem, true)
   set(hasSelectedAction, true)
 }
-
 const showGemNormal = (gem: PlayerGem) => {
   set(gemSelected, gem)
   set(viewGem, true)
   set(hasSelectedAction, false)
 }
-
-const onmergeGems = () => {
-  refresh()
+const onmergeGems = async () => {
+  await getGems()
   set(viewGem, false)
 }
-
-watch(equipSelected, (value) => {
+watch(equipSelected, async (value) => {
   set(gemsLength, value.gems?.length ?? 0)
-  // emits('equipSelected', value)
+  await getGems()
 })
 
 onUnmounted(() => {
@@ -297,10 +301,11 @@ onUnmounted(() => {
               v-for="(gem, i) in equipSelected.gems"
               :key="i"
               class="px-1 p-1 bg-black/40 mb-[1px]"
+              bg-class="!w-10 !h-10"
               :gem="gem"
               @click="showGemNormal(gem)"
             >
-              <icon class="absolute right-1 text-gray-300" size="10" name="fa:close" @click.stop="unmosaic(gem, i)" />
+              <icon class="absolute right-2 text-gray-300" size="10" name="fa:close" @click.stop="unmosaic(gem, i)" />
             </gem-item>
           </div>
           <template v-if="reduceGemSlot > 0">
@@ -331,6 +336,7 @@ onUnmounted(() => {
               v-for="(gem, i) in gems"
               :key="i"
               class="px-1 p-1 bg-black/40 mb-[1px]"
+              bg-class="!w-10 !h-10"
               :gem="gem"
               @click="showGemWithAction(gem)"
             />

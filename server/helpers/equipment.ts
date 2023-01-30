@@ -1,110 +1,5 @@
 import { PlayerEquipmentSchema } from '~/server/schema'
 import type { Player, PlayerAttribute, PlayerEquipment } from '~/types'
-export const ATTRIBUTE_SLOT: any = {
-  1: {
-    damage: 2,
-    hp: 3,
-    critical: 1.2,
-    bloodsucking: 1.2,
-    speed: 1.1,
-    def: 1,
-    mp: 1,
-  },
-  2: {
-    damage: 1,
-    hp: 3,
-    critical: 1,
-    bloodsucking: 1,
-    speed: 1,
-    def: 2,
-    mp: 1,
-  },
-  3: {
-    damage: 1,
-    hp: 3,
-    critical: 1,
-    bloodsucking: 1,
-    speed: 1,
-    def: 2,
-    mp: 1,
-  },
-  4: {
-    damage: 2,
-    hp: 1.5,
-    critical: 1.1,
-    bloodsucking: 1.1,
-    speed: 1,
-    def: 1,
-    mp: 1,
-  },
-  5: {
-    damage: 2,
-    hp: 1.5,
-    critical: 1.1,
-    bloodsucking: 1.1,
-    speed: 1,
-    def: 1,
-    mp: 1,
-  },
-  6: {
-    damage: 1,
-    hp: 1.5,
-    critical: 1,
-    bloodsucking: 1,
-    speed: 1,
-    def: 2,
-    mp: 1,
-  },
-  7: {
-    damage: 1,
-    hp: 1.5,
-    critical: 1,
-    bloodsucking: 1,
-    speed: 1,
-    def: 2,
-    mp: 1,
-  },
-  8: {
-    damage: 1,
-    hp: 1.5,
-    critical: 1,
-    bloodsucking: 1,
-    speed: 1,
-    def: 2,
-    mp: 1,
-  },
-}
-
-export const prepareSlots = (pos: number | undefined, _equipId: string) => {
-  const slots: Record<number, any> = {
-    1: {
-      slot_1: _equipId,
-    },
-    2: {
-      slot_2: _equipId,
-    },
-    3: {
-      slot_3: _equipId,
-    },
-    4: {
-      slot_4: _equipId,
-    },
-    5: {
-      slot_5: _equipId,
-    },
-    6: {
-      slot_6: _equipId,
-    },
-    7: {
-      slot_7: _equipId,
-    },
-    8: {
-      slot_8: _equipId,
-    },
-  }
-
-  return slots[pos || 1]
-}
 
 export const needResourceUpgrade = (enhance?: number) => {
   const BASE_GOLD = 10000
@@ -156,20 +51,41 @@ export const useEquipment = (playerEquips: PlayerEquipment[], attribute: PlayerA
     const playerEquip = playerEquips[i]
     if (playerEquip.gems && playerEquip.gems.length > 0) {
       for (const gem of playerEquip.gems) {
-        // console.log('gem', gem)
         if (!gem?.values)
           continue
 
         for (const g of gem.values) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          if (g.type === 'normal' && g.target === 'base') { // @ts-expect-error
-            player[g.sign] += gem.quality === 1 ? g.value : Math.round(g.value * ((gem.quality! - 1) * gem.rateOnLevel!))
-          }
+          let gValue = 0
+          if (gem.quality === 1)
+            gValue = g.value
+          else
+            gValue = Math.round(g.value * (gem.quality! * gem.rateOnLevel!))
 
-          if (g.type === 'normal' && g.target === 'attribute') {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
-            attribute[g.sign] += gem.quality === 1 ? g.value : Math.round(g.value * (gem.quality! * gem.rateOnLevel!))
+          switch (g.type) {
+            case 'normal':
+              if (g.target === 'base') {
+                if (player.coreAttribute)
+                  player.coreAttribute[g.sign] += gValue
+              }
+
+              if (g.target === 'attribute')
+                attribute[g.sign] += gValue
+
+              break
+            case 'percent':
+              if (g.target === 'base')
+                continue
+
+              if (g.target === 'attribute') {
+                // console.log('attribute[g.sign]', attribute[g.sign])
+                // console.log('attribute[g.sign]', g.sign)
+                if (!attribute[g.sign])
+                  attribute[g.sign] = gValue
+                else
+                  attribute[g.sign] += gValue
+              }
+
+              break
           }
         }
       }

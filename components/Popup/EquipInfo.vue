@@ -95,7 +95,7 @@ onClickOutside(target, () => {
             <p v-if="stat.bloodsucking" class="flex justify-between">
               <span class="flex items-center gap-2">
                 <Icon name="game-icons:bloody-sword" size="16" class="text-[#ec4899]" />
-                <span>Hút máu: {{ stat.bloodsucking.main }}</span>
+                <span>Hút sinh lực: {{ stat.bloodsucking.main }}</span>
                 +
                 <span class="text-green-500">{{ stat.bloodsucking.enhance }}</span>
                 ({{ stat.bloodsucking.main + stat.bloodsucking.enhance }})

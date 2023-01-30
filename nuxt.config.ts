@@ -54,6 +54,7 @@ export default defineNuxtConfig({
   pwa: {
     meta: {
       // Generate splash screens for iOS
+      mobileApp: true,
       mobileAppIOS: true,
       name: 'Tu tiên giới',
       description: 'Tu tiên độ nhân phẩm',
