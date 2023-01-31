@@ -110,7 +110,7 @@ const onPlayerInfo = () => {
 
 <template>
   <var-popup v-model:show="upgradeOptions" position="center">
-    <div class="w-[85vw] bg-[#252c47] flex flex-col justify-center items-center p-5">
+    <div class="w-[85vw] bg-[#252c47] flex flex-col justify-center items-center p-5 rounded border border-white/40">
       <div class="bg-white rounded-[150px] flex items-center justify-center w-[70%] h-[40px] p-1 relative m-3" @click="onToggleUpgrade">
         <icon name="game-icons:sword-in-stone" size="25" class="absolute left-5" />
         <span class="font-bold">
@@ -154,7 +154,7 @@ const onPlayerInfo = () => {
       </div>
       <nuxt-link class="flex flex-col items-center justify-center w-[50px] mb-3" @click="onstartBattle">
         <nuxt-img class="w-[40px]" src="/bottom/menu/XJHomescreenButton_15.png" />
-        <span class="text-black/60 whitespace-nowrap text-12">Vượt ải</span>
+        <span class="text-black/60 whitespace-nowrap text-12">Cốt truyện</span>
       </nuxt-link>
     </div>
     <div class="absolute bottom-0 text-center w-full flex justify-center flex-col items-center text-white">

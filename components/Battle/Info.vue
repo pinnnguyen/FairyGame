@@ -1,47 +1,43 @@
 <script setup lang="ts">
-import { ROLE_NAME } from '~/constants'
-
 const props = defineProps<{
-  levelTitle?: string
-  floor?: string
+  receiverHp?: number
+  stateHp?: number
   name?: string
   hp?: number
   damage?: number
   def?: number
-  classA?: number
+  className?: string
+  isEnemy?: boolean
 }>()
-
-const className = computed(() => {
-  if (!props?.classA)
-    return ''
-
-  return ROLE_NAME[props.classA]
-})
 </script>
 
 <template>
-  <div class="flex justify-start flex-col mt-2 text-10 w-[150px]">
-    <div class="text-white bg-black rounded p-3">
-      <span class="pb-[2px] font-medium">
-        {{ className }} {{ name }}
-      </span>
-      <p>{{ levelTitle }} {{ floor }}</p>
-      <p class="flex items-center gap-1">
-        <Icon name="ph:heart-straight-fill" />
+  <div :class="className" class="flex justify-end flex-col mt-2 text-10 w-[150px]">
+    <div class="text-[#333]">
+      <div v-if="!isEnemy" class="flex items-center justify-center">
+        <span class="mr-2">Sinh lực</span>
+        <BattleStatusBar
+          :receiver-hp="receiverHp"
+          :hp="stateHp"
+        />
+      </div>
+      <div v-else class="flex items-center justify-center">
+        <BattleStatusBar
+          :receiver-hp="receiverHp"
+          :hp="stateHp"
+        />
+        <span class="ml-2">Sinh lực</span>
+      </div>
+      <div class="flex items-center">
+        <!--        <Icon name="material-symbols:swords" /> -->
         <span>
-          Sinh lực: {{ hp }}
+          Công kích ({{ damage }})
         </span>
-      </p>
-      <p class="flex items-center gap-1">
-        <Icon name="material-symbols:swords" />
-        <span>
-          Công kích {{ damage }}
-        </span>
-      </p>
-      <p class="flex items-center gap-1">
-        <Icon name="material-symbols:shield" />
-        <span>Phòng ngự {{ def }}</span>
-      </p>
+      </div>
+      <div class="flex items-center">
+        <!--        <Icon name="material-symbols:shield" /> -->
+        <span>Phòng ngự ({{ def }})</span>
+      </div>
     </div>
   </div>
 </template>

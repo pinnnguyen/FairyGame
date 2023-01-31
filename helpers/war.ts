@@ -342,6 +342,32 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
     if (enemyAttribute.hp > 0 && enemyBloodsucking)
       enemyAttribute.hp += enemyBloodsucking
 
+    if (enemyAttribute.hp <= 0) {
+      winner = WINNER.youwin
+      endWar = true
+
+      return {
+        player: playerClone,
+        enemy: enemyClone,
+        emulators,
+        winner,
+        totalDamage,
+      } as BattleResponse
+    }
+
+    if (playerAttribute?.hp <= 0) {
+      winner = WINNER.youlose
+      endWar = true
+
+      return {
+        player: playerClone,
+        enemy: enemyClone,
+        emulators,
+        winner,
+        totalDamage,
+      } as BattleResponse
+    }
+
     //  Tốc độ cao hơn sẽ đánh
     if (playerAttribute?.speed < enemyAttribute?.speed) {
       emulators.push(addEnemyFirstEmulators({
@@ -375,32 +401,6 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
         enemyAvoid,
         playerAvoid,
       })[0])
-    }
-
-    if (playerAttribute?.hp <= 0) {
-      winner = WINNER.youlose
-      endWar = true
-
-      return {
-        player: playerClone,
-        enemy: enemyClone,
-        emulators,
-        winner,
-        totalDamage,
-      } as BattleResponse
-    }
-
-    if (enemyAttribute.hp <= 0) {
-      winner = WINNER.youwin
-      endWar = true
-
-      return {
-        player: playerClone,
-        enemy: enemyClone,
-        emulators,
-        winner,
-        totalDamage,
-      } as BattleResponse
     }
 
     if (round >= 30) {

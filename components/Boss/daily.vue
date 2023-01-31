@@ -10,8 +10,6 @@ defineProps<{
 }>()
 
 const { playerInfo } = storeToRefs(usePlayerStore())
-const equipSelected = ref({})
-const equipShow = ref(false)
 const tooltip = ref(false)
 
 const startWar = (boss: Boss) => {

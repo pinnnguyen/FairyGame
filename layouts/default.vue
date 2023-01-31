@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col h-screen overflow-hidden game-center font-sans">
+  <div class="flex flex-col h-screen overflow-hidden game-center">
     <slot name="header">
       <PageNavbar />
     </slot>
@@ -30,7 +30,6 @@
   font-size: 14px;
   user-select: none;
   font-weight: 600;
-  text-transform: capitalize;
 }
 
 .footer {

@@ -24,7 +24,6 @@ const { startBattle, setSKIP } = useBattleRoundStore()
 const { playerInfo } = storeToRefs(usePlayerStore())
 
 const { loadPlayer } = usePlayerStore()
-const battleHistory = ref(false)
 const warResult = ref()
 
 $io.emit('battle:join', {
@@ -93,16 +92,11 @@ const retry = () => {
     @retry="retry"
     @close="doCloseBattleR"
   />
-  <var-popup v-model:show="battleHistory" position="bottom">
-    <BattleHistory :battle-rounds="battleRounds" />
-  </var-popup>
   <var-loading :loading="loading" description="Đang tải trận chiến" color="#333">
-    <div class="h-[75vh] bg-white overflow-hidden w-[calc(100vw_-_35px)]">
-      <div class="bg-white/70 relative h-full">
-        <div class="bg-[#41466e] text-center py-2 text-base font-semibold flex items-center justify-center">
-          <div class="absolute left-4 w-6 h-6 bg-white rounded-full flex items-center justify-center" @click="battleHistory = true">
-            <icon name="ion:bar-chart" />
-          </div>
+    <div class="h-[80vh] bg-white overflow-hidden w-[calc(100vw_-_35px)]">
+      <div class="relative h-[60%] relative">
+        <nuxt-img format="webp" src="/pve/bg-pve.png" class="absolute top-0 h-full w-full" />
+        <div class="bg-[#41466e] text-center py-2 text-base font-semibold flex items-center justify-center absolute w-full">
           <!--          <var-button class="w-[80px] uppercase font-medium absolute left-4" size="small" @click="nextMid"> -->
           <div v-if="isWinner" class="absolute right-4 bg-white w-6 h-6 rounded-full">
             <icon name="material-symbols:next-plan-rounded" size="25" @click="nextMid" />
@@ -112,14 +106,8 @@ const retry = () => {
             [{{ state?.enemy?.name }} Map {{ playerInfo?.midId }}]
           </span>
         </div>
-        <p v-if="roundNum > 0" class="py-2 text-center">
-          Lượt {{ roundNum }}
-        </p>
-        <p v-else class="py-2 text-center">
-          ...
-        </p>
-        <BattleAttributeInfo :state="state" />
-        <div class="flex justify-around mt-8">
+        <BattleAttributeInfo class="absolute top-10 w-full" :receiver="receiver" :state="state" />
+        <div class="flex justify-around absolute transform-center bottom-0 w-full top-[70%]">
           <BattlePlayerRealtime
             :player-effect="playerEffect"
             :state="state"
@@ -134,28 +122,30 @@ const retry = () => {
           />
         </div>
       </div>
-      <div class="relative">
-        <!-- <nuxt-img class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" /> -->
-        <!-- <div class="p-4 h-[25%] overflow-scroll">
-            <BattleHistory :battle-rounds="battleRounds" />
-          </div> -->
-        <div class="flex items-center flex-col justify-center w-full absolute bottom-0">
+      <div
+        class="relative h-[40%] bg-[#f3ebdb]"
+      >
+        <nuxt-img src="/pve/alert.png" format="webp" class="absolute top-0 w-full h-full object-fill" />
+        <div class="p-4 h-full w-full absolute top-0 overflow-scroll scrollbar-hide">
+          <BattleHistory :battle-rounds="battleRounds" />
+        </div>
+        <div class="flex items-center flex-col justify-center w-full absolute bottom-2">
           <BattleRevice
             v-if="inRefresh"
             :refresh-time="refreshTime"
             @refresh-finished="refreshFinished"
           />
           <div class="flex items-center gap-2">
-            <var-button v-if="roundNum > 5" size="small" class="rounded mr-2 text-base font-semibold" @click="setSKIP(true)">
+            <button v-if="roundNum > 5" class="px-2 py-[2px] shadow rounded mr-2 text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]" @click="setSKIP(true)">
               Bỏ qua
-            </var-button>
+            </button>
             <div class="py-2">
-              <var-button v-show="speed === 1" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 2">
-                X1
-              </var-button>
-              <var-button v-show="speed === 2" size="small" class="rounded mr-2 text-base font-semibold" @click="speed = 1">
-                X2
-              </var-button>
+              <button v-show="speed === 1" class="px-2 py-[2px] shadow rounded mr-2 text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]" @click="speed = 2">
+                Tăng tốc
+              </button>
+              <button v-show="speed === 2" class="px-2 py-[2px] shadow rounded mr-2 text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]" @click="speed = 1">
+                Giảm tốc
+              </button>
             </div>
           </div>
         </div>

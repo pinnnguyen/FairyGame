@@ -1,7 +1,18 @@
 <script setup>
+import {
+  StyleProvider,
+} from '@varlet/ui'
+import '@varlet/ui/es/snackbar/style/index'
+import '@varlet/ui/es/dialog/style/index'
 import { useAppStore } from '~/composables/app'
-// import 'vexip-ui/css/index.css'
-// import 'vexip-ui/css/button.css'
+
+StyleProvider({
+  '--snackbar-font-size': '12px',
+  '--snackbar-content-padding': '6px 16px',
+  '--snackbar-background': '#1d1d1cdb',
+  '--popup-content-background-color': '1',
+  '--dialog-message-color': 'white',
+})
 
 const { loading } = useAppStore()
 useHead({

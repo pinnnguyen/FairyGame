@@ -98,24 +98,11 @@ export default defineConfig({
       iconbg_6: 'url(\'/quality_bg/iconbg_6.png\')',
     },
     extend: {
-      // keyframes: {
-      //   'true-damage': {
-      //     '0%': { opacity: 0, bottom: '90px' },
-      //     '20%': { opacity: 1 },
-      //     '99%': { opacity: 1, bottom: '120px' },
-      //     '100%': { opacity: 0, bottom: '80px' },
-      //   },
-      // },
-      // animation: {
-      //   'true-damage': 'true-damage 1s',
-      // },
       maxWidth: {
         '8xl': '90rem',
       },
       colors: {
         primary: MyTheme.colors.green,
-        // if want to change primary color to blue
-        // primary: MyTheme.colors.blue,
         green: MyTheme.colors.green,
         blue: MyTheme.colors.blue,
         red: MyTheme.colors.red,

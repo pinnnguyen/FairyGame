@@ -100,6 +100,12 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     set(reward, null)
     set(rankDMG, war.rankDMG)
     set(reward, war?.reward)
+    // set(receiver, {})
+    // set(state, {})
+    set(battleResult, {
+      show: false,
+      win: '',
+    })
     state.value.player = war.player
     state.value.enemy = war.enemy
 
@@ -115,7 +121,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     }
 
     if (war.inRefresh) {
-      // set(loading, false)
+      set(loading, false)
       set(inRefresh, war.inRefresh)
       set(refreshTime, war.refreshTime)
       return

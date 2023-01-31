@@ -26,7 +26,6 @@ definePageMeta({
 })
 
 const { startBattle } = useBattleRoundStore()
-
 const queryTarget = computed(() => (route.query.target as string))
 const queryTargetId = computed(() => (route.query.id as string))
 const topDMG = ref<TopDMG[]>([])
@@ -54,14 +53,13 @@ $io.emit('battle:join', {
 })
 
 $io.on('battle:start', async (war: BattleResponse) => {
-  console.log('war', war)
   await startBattle(war)
 })
 
 $io.emit('battle:log', queryTargetId.value)
 $io.on('send-battle:log', (topDMGResponse) => {
   topDMG.value = topDMGResponse
-  console.log('send-battle:log', topDMGResponse)
+  // console.log('send-battle:log', topDMGResponse)
 })
 
 onUnmounted(() => {
@@ -96,7 +94,7 @@ const refreshFinished = () => {
   />
   <LoadingScreen v-if="loading" />
   <div class="h-screen bg-white">
-    <div class="h-[54%] bg-bg_pve bg-cover relative">
+    <div class="h-[54%] relative">
       <div class="bg-[#41466e] text-center py-2 text-base font-semibold flex items-center justify-center">
         <span class="text-white rounded text-12">
           [{{ state?.enemy?.name }} Map {{ playerInfo?.midId }}]
@@ -125,7 +123,7 @@ const refreshFinished = () => {
       </div>
     </div>
     <div class="relative h-full">
-      <nuxt-img class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" />
+      <!--      <nuxt-img class="h-full w-full object-cover absolute" format="webp" src="/index/bg_bottom.png" /> -->
       <BattleHistory :battle-rounds="battleRounds" />
       <BattleTopDMG v-if="topDMG" :top-d-m-g="topDMG" />
       <div class="flex items-center flex-col justify-center w-full fixed bottom-2">

@@ -1,38 +1,44 @@
 <script setup lang="ts">
 defineProps<{
   state: any
+  receiver: any
 }>()
 </script>
 
 <template>
   <div class="flex justify-between p-2 pt-2">
     <div>
-      <div class="flex items-center justify-start">
+      <div class="flex justify-start items-end">
         <nuxt-img format="webp" class="h-[35px] border border-[#d0d0d0] bg-[#d0d0d0] rounded-full" src="/pve/player-avatar.png" />
+        <span class="text-10 ml-1">{{ state?.player?.name }}</span>
       </div>
       <BattleInfo
-        :level-title="state.player?.levelTitle"
-        :floor="state.player?.floor"
         :name="state?.player?.name"
         :hp="state?.player?.hp"
         :damage="state?.player?.damage"
         :def="state?.player?.def"
-        :class-a="state?.player?.class"
+        :receiver-hp="receiver?.player?.hp"
+        :state-hp="state?.player?.hp"
+        :is-enemy="false"
+        class-name="items-start"
       />
     </div>
 
     <div>
-      <div class="flex items-center justify-end">
+      <div class="flex items-end justify-end">
+        <span class="text-10">
+          {{ state?.enemy?.name }}
+        </span>
         <nuxt-img format="webp" class="h-[35px] bg-black border border-[#d0d0d0] bg-[#d0d0d0] rounded-full" src="/pve/monter-avatar.png" />
       </div>
       <BattleInfo
-        :level-title="state.enemy?.levelTitle"
-        :floor="state.enemy?.floor"
         :name="state?.enemy?.name"
-        :hp="state?.enemy?.hp"
         :damage="state?.enemy?.damage"
         :def="state?.enemy?.def"
-        :class-a="state?.enemy?.class"
+        :receiver-hp="receiver?.enemy?.hp"
+        :state-hp="state?.enemy?.hp"
+        :is-enemy="true"
+        class-name="items-end"
       />
     </div>
   </div>

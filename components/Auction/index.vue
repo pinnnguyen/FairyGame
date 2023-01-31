@@ -41,12 +41,12 @@ const doAuction = (auctionItem: AuctionItem) => {
 </script>
 
 <template>
-  <p v-if="auction" class="text-white">
+  <p v-if="auction && endTime > 0" class="text-white text-center">
     Kết thúc sau {{ timeOffset(endTime).minutes }}p {{ timeOffset(endTime).seconds }}s
   </p>
   <div class="relative w-[calc(100vw_-_30px)] h-[75vh]">
-    <nuxt-img format="webp" class="absolute w-full h-full" src="/common/panel_common_bg1.png" />
-    <p class="absolute top-0 left-[calc(50%_-_50px)] flex justify-center w-[100px] text-[#ad3a36] font-semibold">
+    <nuxt-img format="webp" class="absolute w-full h-full object-fill" src="/common/panel_common_bg1.png" />
+    <p class="absolute top-[0.3%] left-[calc(50%_-_50px)] flex justify-center w-[100px] text-[#ad3a36] font-semibold">
       Đấu giá
     </p>
     <div class="absolute w-full h-full">

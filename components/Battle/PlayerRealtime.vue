@@ -50,22 +50,15 @@ const playerClassIMG = computed(() => {
       <span v-else>-{{ realTime.player.dmg }}</span>
     </span>
     <nuxt-img
-      v-if="playerClassIMG"
       :class="{
         'filter grayscale': realTime.player.sureDamage,
-      }" format="webp" class="h-[100px]"
-      :src="playerClassIMG"
+      }" format="webp" class="h-[120px]"
+      src="/pve/player.png"
     />
     <img
       v-if="realTime.player.sureDamage"
       class="w-[105px] h-[105px] absolute"
-      :src="`/battle/enemy_gif.gif?v=${randomNumber(1, 100)}`"
+      :src="`/battle/enemy_gif.gif?v=${randomNumber(1, 1000)}`"
     >
-    <BattleStatusBar
-      :receiver-hp="receiver?.player?.hp"
-      :hp="state?.player?.hp"
-      :receiver-mp="receiver?.player?.mp"
-      :mp="state?.player?.mp"
-    />
   </div>
 </template>
