@@ -1,29 +1,6 @@
 <script setup lang="ts">
-import { set } from '@vueuse/core'
-import { useFetch } from '#app'
-import type { Bag, Item, PlayerEquipment, PlayerGem } from '~/types'
-
 const emits = defineEmits(['close'])
 const currentTab = ref<'equip' | 'gem' | 'item'>('item')
-
-// const { data: bagDataResponse, pending, refresh } = await useFetch<Bag>('/api/bag', {
-//   headers: (useRequestHeaders(['cookie']) as any),
-// })
-
-// const { data: gems, refresh: refreshGems } = await useFetch('/api/gem')
-// const onchangeEquip = () => {
-//   refresh()
-// }
-
-// const onmergeGems = () => {
-//   refreshGems()
-//   set(showGemDetail, false)
-// }
-
-// const pickItem = (item: Item) => {
-//   set(selectedItem, item)
-//   set(showItemDetail, true)
-// }
 </script>
 
 <template>

@@ -3,7 +3,7 @@ import { set } from '@vueuse/core'
 import type { PlayerItem } from '~/types'
 import { useFetch } from '#app'
 
-const { data: items, pending, refresh: refreshGems } = await useFetch('/api/bag/items')
+const { data: items, pending, refresh } = await useFetch('/api/bag/items')
 
 const selectedItem = ref()
 const show = ref(false)
@@ -11,18 +11,19 @@ const pickItem = (item: PlayerItem) => {
   set(selectedItem, item)
   set(show, true)
 }
+
+const onSell = () => {
+  refresh()
+  set(show, false)
+}
 </script>
 
 <template>
   <var-popup v-model:show="show" position="center">
-    <lazy-bag-item-detail
-      :item-id="selectedItem?.itemId"
-      :kind="selectedItem?.info?.kind"
-      :rank="selectedItem?.info?.rank"
-      :preview="selectedItem?.info?.preview"
-      :quality="selectedItem?.info?.rank"
-      :name="selectedItem?.info?.name"
-      :info="selectedItem?.info?.info"
+    <bag-item-detail
+      :item="selectedItem"
+      :sell-action="true"
+      @refresh="onSell"
     />
   </var-popup>
   <var-loading :loading="pending" description="Đang tải trang bị" color="#333">

@@ -63,7 +63,7 @@ const playerClassIMG = computed(() => {
     <Upgrade v-if="toggleUpgrade" />
   </var-popup>
   <var-popup v-model:show="toggleAuction" position="center">
-    <Auction />
+    <Market />
   </var-popup>
   <var-popup v-model:show="toggleBag" position="center">
     <Bag />

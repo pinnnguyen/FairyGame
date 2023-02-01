@@ -2,17 +2,23 @@
 import { sendMessage, usePlayerStore } from '#imports'
 import type { PlayerGem } from '~/types'
 import { colorQuality, qualityPalette } from '~/common'
-import { EQUIPMENT_SLOT, QUALITY_TITLE } from '~/constants'
+import { QUALITY_TITLE, SLOT_NAME } from '~/constants'
 interface Prop {
   gem: PlayerGem
   selectAction?: boolean
+  sellAction?: boolean
   mergeGem?: boolean
 }
 
 const props = defineProps<Prop>()
-const emits = defineEmits(['selected', 'mergegem'])
+const emits = defineEmits(['selected', 'mergegem', 'refresh'])
 const { sid } = usePlayerStore()
 const { $io } = useNuxtApp()
+const sellPopup = ref(false)
+const sellOptions = ref({
+  price: 0,
+  quantity: 0,
+})
 
 const qualityTitle = computed(() => {
   return QUALITY_TITLE[props.gem.quality!]
@@ -33,21 +39,61 @@ const onmergeGems = (gem: PlayerGem) => {
   $io.emit('gem:merge', gem)
 }
 
-// const rateOnLevelTitle = computed(() => {
-//   if (props.gem.rateOnLevel! >= 1.3)
-//     return 'Bình thường'
-//
-//   if (props.gem.rateOnLevel! > 1.3 && props.gem.rateOnLevel! <= 1.6)
-//     return 'Hoàn mĩ'
-//
-//   if (props.gem.rateOnLevel! > 1.6)
-//     return 'Tuyệt phẩm'
-// })
+const sell = async () => {
+  if (sellOptions.value.price <= 0) {
+    sendMessage('Giá treo bán không hợp lệ')
+    return
+  }
+
+  if (sellOptions.value.quantity <= 0 || sellOptions.value.quantity > props.gem.sum!) {
+    sendMessage('Số lượng treo bán không hợp lệ')
+    return
+  }
+
+  try {
+    const sellRes: {
+      success: boolean
+      message: string
+    } = await $fetch('/api/market/sell', {
+      method: 'POST',
+      body: {
+        type: 'gem',
+        quantity: sellOptions.value.quantity,
+        price: sellOptions.value.price,
+        _id: props.gem._id,
+      },
+    })
+
+    if (sellRes.success) {
+      emits('refresh')
+      sendMessage(sellRes.message)
+    }
+  }
+  catch (e: any) {
+    sendMessage(e.statusMessage)
+  }
+}
 </script>
 
 <template>
+  <var-popup v-model:show="sellPopup" position="bottom">
+    <div class="p-4">
+      <var-input v-model="sellOptions.price" type="number" placeholder="Nhập giá bán" />
+      <var-input v-model="sellOptions.quantity" type="number" placeholder="Nhập số lượng" />
+    </div>
+
+    <div class="text-center my-4">
+      <var-button
+        class="!text-[#333] font-medium mx-2"
+        size="small"
+        @click.stop="sell"
+      >
+        Treo bán
+      </var-button>
+    </div>
+  </var-popup>
   <div
-    class="relative text-xs leading-6 text-white rounded shadow-md p-0 bg-black/70"
+    class="relative text-xs leading-6 text-white rounded shadow-md p-0 bg-black/70 w-[90%] m-auto"
   >
     <div
       class="flex flex-col items-center justify-between px-3 pt-4 leading-5"
@@ -73,7 +119,7 @@ const onmergeGems = (gem: PlayerGem) => {
       <div class="flex">
         <div class="w-25">
           Vị trí:
-        </div> {{ EQUIPMENT_SLOT[gem.slot] }}
+        </div> {{ SLOT_NAME[gem.slot] }}
       </div>
       <div class="flex">
         <div class="w-25">
@@ -143,6 +189,14 @@ const onmergeGems = (gem: PlayerGem) => {
         (Chỉ được khảm 1 đá hồn này lên trang bị)
       </div>
       <div class="text-center py-2">
+        <var-button
+          v-if="sellAction"
+          class="!text-[#333] font-medium mx-2"
+          size="small"
+          @click.stop="sellPopup = true"
+        >
+          Treo bán
+        </var-button>
         <var-button
           v-if="selectAction"
           class="!text-[#333] font-medium mx-2"

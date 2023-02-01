@@ -1,4 +1,4 @@
-export const EQUIPMENT_SLOT = {
+export const SLOT_NAME = {
   1: 'Vũ khí',
   2: 'Áo',
   3: 'Nón',

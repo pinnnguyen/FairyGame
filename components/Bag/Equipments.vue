@@ -20,9 +20,11 @@ const onchangeEquip = () => {
 
 <template>
   <var-popup v-model:show="show" position="center">
-    <lazy-bag-equip-detail
+    <bag-equip-detail
       :item="equipItemSelected"
       :action="true"
+      :sell-action="true"
+      @refresh="onchangeEquip"
       @changeEquip="onchangeEquip"
     />
   </var-popup>

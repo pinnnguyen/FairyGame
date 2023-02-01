@@ -108,17 +108,17 @@ export const handleWars = async (request: BattleRequest) => {
     })
   }
 
-  // await addPlayerGem(player.player.sid, 5, 1, 3)
-  // await addPlayerGem(player.player.sid, 6, 2, 3)
-  // await addPlayerGem(player.player.sid, 7, 3, 3)
-  // await addPlayerGem(player.player.sid, 8, 5, 3)
-  // await addPlayerGem(player.player.sid, 9, 5, 3)
-  //
-  // await addPlayerGem(player.player.sid, 10, 5, 3)
-  // await addPlayerGem(player.player.sid, 11, 5, 3)
-  // await addPlayerGem(player.player.sid, 12, 5, 3)
-  // await addPlayerGem(player.player.sid, 13, 5, 3)
-  // await addPlayerGem(player.player.sid, 14, 5, 3)
+  await addPlayerGem(player.player.sid, 5, 1, 3)
+  await addPlayerGem(player.player.sid, 6, 2, 3)
+  await addPlayerGem(player.player.sid, 7, 3, 3)
+  await addPlayerGem(player.player.sid, 8, 5, 3)
+  await addPlayerGem(player.player.sid, 9, 5, 3)
+
+  await addPlayerGem(player.player.sid, 10, 5, 3)
+  await addPlayerGem(player.player.sid, 11, 5, 3)
+  await addPlayerGem(player.player.sid, 12, 5, 3)
+  await addPlayerGem(player.player.sid, 13, 5, 3)
+  await addPlayerGem(player.player.sid, 14, 5, 3)
 
   if (!request.target.type) {
     return createError({

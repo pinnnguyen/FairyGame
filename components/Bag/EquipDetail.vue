@@ -1,20 +1,27 @@
 <script setup lang="ts">
 import type { PlayerEquipment } from '~/types'
-import { EQUIPMENT_SLOT, QUALITY_TITLE } from '~/constants'
+import { QUALITY_TITLE, SLOT_NAME } from '~/constants'
 import { usePlayerStore } from '~/composables/usePlayer'
-import { backgroundQuality, colorQuality } from '~/common'
+import { backgroundQuality } from '~/common'
+import { sendMessage } from '~/composables/useMessage'
 
 interface Prop {
   item: PlayerEquipment
   action?: boolean
+  sellAction?: boolean
 }
 
 const props = defineProps<Prop>()
-const emits = defineEmits(['close', 'changeEquip'])
+const emits = defineEmits(['close', 'changeEquip', 'refresh'])
 
 const { getPlayer } = usePlayerStore()
 const loading = ref(false)
 const propItem = ref(props.item)
+const sellPopup = ref(false)
+const sellOptions = ref({
+  price: 0,
+  quantity: 0,
+})
 
 const styles = computed(() => {
   return backgroundQuality(props.item.quality)
@@ -66,10 +73,49 @@ const doUnEquip = async () => {
   emits('changeEquip')
   await getPlayer()
 }
+const sell = async () => {
+  try {
+    const sellRes: {
+      success: boolean
+      message: string
+    } = await $fetch('/api/market/sell', {
+      method: 'POST',
+      body: {
+        type: 'equipment',
+        quantity: 1,
+        price: sellOptions.value.price,
+        _id: props.item._id,
+      },
+    })
+
+    if (sellRes.success) {
+      emits('refresh')
+      sendMessage(sellRes.message)
+    }
+  }
+  catch (e: any) {
+    sendMessage(e.statusMessage)
+  }
+}
 </script>
 
 <template>
-  <div class="relative leading-5 text-white bg-black/80 p-0 w-[calc(100vw_-_70px)] overflow-hidden">
+  <var-popup v-model:show="sellPopup" position="bottom">
+    <div class="p-4">
+      <var-input v-model="sellOptions.price" placeholder="Nhập giá bán" />
+    </div>
+
+    <div class="text-center my-4">
+      <var-button
+        class="!text-[#333] font-medium mx-2"
+        size="small"
+        @click.stop="sell"
+      >
+        Treo bán
+      </var-button>
+    </div>
+  </var-popup>
+  <div class="relative leading-6 text-white bg-black/60 p-0 w-[90%] m-auto overflow-hidden rounded">
     <div class="text-12 font-medium">
       <div
         class="flex items-center justify-between p-2"
@@ -84,7 +130,7 @@ const doUnEquip = async () => {
             :preview="item?.preview"
           />
         </div>
-        <div class="mx-2 font-bold">
+        <div class="mx-2 font-semibold text-14">
           <div>
             {{ qualityTitle }} {{ item.name }} + <span class="text-14">{{ item.enhance }}</span>
           </div>
@@ -92,7 +138,7 @@ const doUnEquip = async () => {
             <icon v-for="i of item.star" :key="i" class="text-yellow-300" name="material-symbols:star" size="18" />
           </div>
           <div>
-            {{ EQUIPMENT_SLOT[item.slot] }}
+            {{ SLOT_NAME[item.slot] }}
           </div>
           <div>Bậc {{ item.rank }}</div>
         </div>
@@ -204,6 +250,14 @@ const doUnEquip = async () => {
     <div v-if="action" class="flex justify-center my-4">
       <div>
         <var-button
+          v-if="sellAction"
+          class="!text-[#333] font-medium mx-2"
+          size="small"
+          @click.stop="sellPopup = true"
+        >
+          Treo bán
+        </var-button>
+        <var-button
           v-if="!propItem.used" class="!text-[#333] font-medium font-semibold uppercase"
           color="#ffd400"
           size="small"
@@ -221,7 +275,7 @@ const doUnEquip = async () => {
         </var-button>
       </div>
     </div>
-    <div class="border-t py-2 w-[75%] m-auto text-12 mt-2">
+    <div class="border-t border-white/40 py-2 w-[75%] m-auto text-12 mt-2">
       <div class="text-center text-10">
         Cấp độ sử dụng: {{ item.level }}
       </div>

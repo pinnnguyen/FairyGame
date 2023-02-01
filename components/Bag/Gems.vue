@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { set } from '@vueuse/core'
-import { QUALITY_TITLE } from '~/constants'
 import type { PlayerGem } from '~/types'
 import { qualityPalette } from '~/common'
 
@@ -23,8 +22,10 @@ const onmergeGems = () => {
   <var-loading :loading="pending" description="Đang tải đá hồn" color="#333">
     <div class="grid-cols-6 grid gap-1 overflow-auto max-h-[88%] scrollbar-hide">
       <var-popup v-model:show="show" position="center">
-        <lazy-bag-gem-detail
+        <bag-gem-detail
           :gem="gemSelected"
+          :sell-action="true"
+          @refresh="onmergeGems"
           @mergegem="onmergeGems"
         />
       </var-popup>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
 import type { PlayerEquipment } from '~/types'
-import { EQUIPMENT_SLOT } from '~/constants'
+import { SLOT_NAME } from '~/constants'
 import { usePlayerStore } from '~/composables/usePlayer'
 
 interface Prop {
@@ -37,7 +37,7 @@ onClickOutside(target, () => {
           </div>
           <div>Cường hoá + {{ item.enhance }}</div>
           <div>
-            Vị trí: {{ EQUIPMENT_SLOT[item.slot] }}
+            Vị trí: {{ SLOT_NAME[item.slot] }}
           </div>
           <div>
             Đẳng cấp: {{ item.level }}
