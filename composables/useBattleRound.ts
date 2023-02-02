@@ -86,7 +86,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   const setSKIP = (boo: boolean) => {
     set(SKIP, boo)
   }
-  const startBattle = async (war: BattleResponse) => {
+  const startBattle = async (war: BattleResponse, cb: Function) => {
     console.log('war', war)
     if (!war)
       return
@@ -152,8 +152,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
         if (emuT.action) {
           await sleep(TURN_DELAY.value)
           set(playerEffect, _turn)
-          await useSoundEventAttack()
-          // hành động tấn công trước
+          // await useSoundEventAttack()
           realTime.value[__turn].sureDamage = true
 
           receiver.value[__turn].hp = emuT.now.hp[__turn]
@@ -172,21 +171,26 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
             roundNum: roundNum.value,
           })
 
-          console.log('realTime', realTime.value)
           setTimeout(() => {
             realTime.value[__turn].sureDamage = false
           }, DAMAGE_DELAY)
 
-          // (receiver.value[__turn].hp as number) <= 0
-          if ((receiver.value[__turn].hp as number) <= 0) {
+          if (roundNum.value === (war.emulators.length * 2)) {
             setTimeout(() => {
-              battleResult.value = {
-                show: true,
-                win: war.winner,
-              }
+              cb()
             }, SHOULD_WIN_DELAY)
-            return
           }
+
+          // (receiver.value[__turn].hp as number) <= 0
+          // if ((receiver.value[__turn].hp as number) <= 0) {
+          //   setTimeout(() => {
+          //     battleResult.value = {
+          //       show: true,
+          //       win: war.winner,
+          //     }
+          //   }, SHOULD_WIN_DELAY)
+          //   return
+          // }
         }
       }
     }

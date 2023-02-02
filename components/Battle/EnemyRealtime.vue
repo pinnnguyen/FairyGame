@@ -15,33 +15,44 @@ const enemyClassIMG = computed(() => {
 
 <template>
   <div
-    class="relative duration-800 transition-transform flex flex-col items-center justify-center"
+    class="relative duration-800 transition-transform border-2 border-white/40 rounded-md px-1 h-15"
     :style="{
       transform: realTime.player.sureDamage ? 'translate(-15%)' : '',
     }"
   >
+    <div class="w-35 italic">
+      <div class="flex justify-start items-end">
+        <span class="text-14 ml-1 text-[#34a830] line-clamp-1">{{ state?.enemy?.name ?? '...' }}</span>
+      </div>
+      <BattleInfo
+        :name="state?.enemy?.name"
+        :state="state"
+        :receiver="receiver"
+        :is-enemy="true"
+      />
+    </div>
     <span
-      class="text-[#22ae28] font-semibold battle-damage whitespace-nowrap"
+      class="text-[#22ae28] font-bold battle-damage whitespace-nowrap"
       :class="{ show: realTime.player?.bloodsucking > 0 && realTime.player.sureDamage }"
     >
       Hút sinh lực (+{{ realTime.player?.bloodsucking }})
     </span>
     <span
       :class="{ show: realTime.enemy?.counterDamage > 0 && realTime.player.sureDamage }"
-      class="text-red-500 font-semibold battle-damage whitespace-nowrap"
+      class="text-red-500 font-bold shadow battle-damage whitespace-nowrap"
     >
       Phản đòn -{{ realTime.enemy.counterDamage }}
     </span>
 
     <span
-      class="text-blue-300 font-semibold battle-damage whitespace-nowrap"
+      class="text-blue-300 font-bold shadow battle-damage whitespace-nowrap"
       :class="{ show: realTime.enemy?.avoid && realTime.enemy.sureDamage }"
     >
       Né tránh
     </span>
 
     <span
-      class="text-xl duration-800 font-semibold text-red-500 battle-damage"
+      class="text-14 duration-800 font-bold shadow text-red-500 battle-damage"
       :class="{ show: realTime.enemy.sureDamage && !realTime.enemy?.avoid }"
     >
       <span v-if="realTime?.enemy?.critical" class="whitespace-nowrap font-bold">
@@ -49,16 +60,9 @@ const enemyClassIMG = computed(() => {
       </span>
       <span v-else>-{{ realTime.enemy.dmg }}</span>
     </span>
-    <nuxt-img
-      format="webp" class="h-[120px]"
-      :class="{
-        'filter grayscale': realTime.enemy.sureDamage,
-      }"
-      src="/pve/monster.png"
-    />
-    <img
-      v-if="realTime.enemy.sureDamage"
-      class="w-[105px] h-[105px] absolute" :src="`/battle/player_gif.gif?v=${randomNumber(1, 1000)}`"
-    >
+    <!--    <img -->
+    <!--      v-if="realTime.enemy.sureDamage" -->
+    <!--      class="w-[105px] h-[105px] absolute" :src="`/battle/player_gif.gif?v=${randomNumber(1, 1000)}`" -->
+    <!--    > -->
   </div>
 </template>

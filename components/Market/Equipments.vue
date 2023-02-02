@@ -1,13 +1,48 @@
 <script setup lang="ts">
+import { Dialog } from '@varlet/ui'
+
 defineProps<{
   equipments: any
 }>()
 
+const emits = defineEmits(['buy'])
 const show = ref(false)
 const equipItemSelected = ref({})
 const onItemSelected = (equipment: any) => {
   equipItemSelected.value = equipment.record
   show.value = true
+}
+
+const buy = (equipment: any) => {
+  Dialog({
+    title: 'Nhắc nhở',
+    message: `Bạn có chắc muốn mua ${equipment.record.name}`,
+    confirmButtonText: 'Chắc chắn',
+    cancelButtonText: 'Không chắc',
+    closeOnClickOverlay: false,
+    dialogClass: '!bg-black/70 text-white',
+    confirmButtonColor: '#5388c1',
+    confirmButtonTextColor: 'white',
+    cancelButtonTextColor: '#5388c1',
+    onConfirm: async () => {
+      try {
+        const buyRes: { success: boolean; message: string } = await $fetch('/api/market/buy', {
+          method: 'POST',
+          body: {
+            _id: equipment._id,
+            name: equipment.record.name,
+          },
+        })
+
+        sendMessage(buyRes.message, 2000)
+        if (buyRes.success)
+          emits('buy')
+      }
+      catch (e: any) {
+        sendMessage(e.statusMessage, 2000)
+      }
+    },
+  })
 }
 </script>
 
@@ -34,7 +69,7 @@ const onItemSelected = (equipment: any) => {
               <span class="text-8 ml-1 font-semibold">{{ equipment.price }}</span>
             </div>
           </div>
-          <button class="mb-3 px-2 py-[2px] shadow rounded mr-2 text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]">
+          <button class="mb-3 px-2 py-[2px] shadow rounded mr-2 text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]" @click="buy(equipment)">
             Mua
           </button>
         </div>

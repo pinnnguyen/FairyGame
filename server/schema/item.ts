@@ -14,7 +14,7 @@ const schema = new mongoose.Schema(
     name: String,
     info: String,
     preview: String,
-    rank: Number,
+    quality: Number,
     value: Number,
   },
   { timestamps: true },
@@ -22,4 +22,3 @@ const schema = new mongoose.Schema(
 
 schema.index({ id: -1 }, { unique: true })
 export const ItemSchema = mongoose.model('ItemSchemas', schema, 'gl_items')
-// export const ItemSchema = (mongoose.models && mongoose.models.ItemSchema ? mongoose.models.ItemSchema : mongoose.model('ItemSchema', schema, 'items'))

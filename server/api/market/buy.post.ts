@@ -1,5 +1,13 @@
 import { getServerSession } from '#auth'
-import { MarketSchema, PlayerSchema, sendKNBSystemMail, sendSystemMail } from '~/server/schema'
+import {
+  ItemSchema,
+  MarketSchema,
+  PlayerItemSchema,
+  PlayerSchema,
+  sendKNBSystemMail,
+  sendSystemMail,
+} from '~/server/schema'
+import { cloneDeep } from '~/helpers'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
@@ -63,8 +71,16 @@ export default defineEventHandler(async (event) => {
   if (recordType === 'equipment')
     await sendSystemMail(player.sid, 'equipment', record, body.name)
 
-  if (recordType === 'item')
-    await sendSystemMail(player.sid, 'item', record, body.name)
+  if (recordType === 'item') {
+    const item = await ItemSchema.findOne({ id: record.itemId }, { _id: false, __v: false })
+    const cloneItem = cloneDeep(item)
+
+    await sendSystemMail(player.sid, 'item', {
+      sum: record.sum,
+      itemId: cloneItem?.id,
+      ...cloneItem,
+    }, body.name)
+  }
 
   return {
     success: true,

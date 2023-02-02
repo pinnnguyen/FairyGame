@@ -44,6 +44,17 @@ export default defineEventHandler(async () => {
         foreignField: 'id',
         localField: 'record.itemId',
         as: 'info',
+        pipeline: [
+          {
+            $project: {
+              _id: false,
+              id: false,
+            },
+          },
+          {
+            $limit: 1,
+          },
+        ],
       },
     },
     {
@@ -57,6 +68,9 @@ export default defineEventHandler(async () => {
             $project: {
               name: true,
             },
+          },
+          {
+            $limit: 1,
           },
         ],
       },

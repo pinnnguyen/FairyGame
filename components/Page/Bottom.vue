@@ -138,24 +138,35 @@ const onPlayerInfo = () => {
     </div>
   </var-popup>
   <div class="h-full">
-    <nuxt-img class="h-full object-cover" format="webp" src="/index/bg_bottom.png" />
+    <!--    <nuxt-img class="h-full object-cover" format="webp" src="/index/bg_bottom.png" /> -->
     <div class="flex justify-around w-full absolute top-[10px] pl-1 text-white">
-      <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
-        <nuxt-img class="w-[40px]" src="/bottom/menu/XJHomescreenButton_29.png" @click.stop="onPlayerInfo" />
-        <span class="text-black/60 whitespace-nowrap text-12">Nhân vật</span>
-      </div>
-      <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3">
-        <nuxt-img class="w-[40px]" format="webp" src="/bottom/menu/XJDengxiandao_15.png" @click.stop="ontoggleBag" />
-        <span class="text-black/60 whitespace-nowrap text-12">Túi</span>
-      </div>
-      <div class="items-center justify-center flex flex-col w-[50px] mb-3">
-        <nuxt-img class="w-[40px]" src="/bottom/menu/XJHomescreenButton_20.png" @click.stop="ontoggleStore" />
-        <span class="text-black/60 whitespace-nowrap text-12">Cửa hàng</span>
-      </div>
-      <nuxt-link class="flex flex-col items-center justify-center w-[50px] mb-3" @click="onstartBattle">
-        <nuxt-img class="w-[40px]" src="/bottom/menu/XJHomescreenButton_15.png" />
-        <span class="text-black/60 whitespace-nowrap text-12">Cốt truyện</span>
-      </nuxt-link>
+      <!--      <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3"> -->
+      <!--        <nuxt-img class="w-[40px]" src="/bottom/menu/XJHomescreenButton_29.png" @click.stop="onPlayerInfo" /> -->
+      <!--        <span class="text-black/60 whitespace-nowrap text-12">Nhân vật</span> -->
+      <!--      </div> -->
+      <button
+        class="mx-2 h-10 w-10 shadow rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
+        @click.stop="onPlayerInfo"
+      >
+        Nhân vật
+      </button>
+      <button
+        class="mx-2 h-10 w-10 shadow rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
+        @click.stop="ontoggleBag"
+      >
+        Túi
+      </button>
+      <button
+        class="mx-2 h-10 w-10 shadow rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
+        @click.stop="ontoggleStore"
+      >
+        Cửa hàng
+      </button>
+      <button
+        class="mx-2 h-10 w-10 shadow rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
+      >
+        Nhân vật
+      </button>
     </div>
     <div class="absolute bottom-0 text-center w-full flex justify-center flex-col items-center text-white">
       <div class="flex items-center justify-around w-full mb-4">

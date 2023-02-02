@@ -1,4 +1,6 @@
 import mongoose from 'mongoose'
+import { cloneDeep } from '~/helpers'
+import { ItemSchema } from '~/server/schema/item'
 const ObjectId = mongoose.Types.ObjectId
 
 const schema = new mongoose.Schema(
@@ -28,6 +30,8 @@ schema.index({ deleted: -1 })
 export const MailSchema = mongoose.model('MailSchema', schema, 'gl_mails')
 
 export const sendKNBSystemMail = async (sid?: string, sum?: number, name?: string) => {
+  const item = await ItemSchema.findOne({ id: 8 }, { _id: false, __v: false })
+  const cloneItem = cloneDeep(item)
   await MailSchema.create({
     sid,
     kind: 'system',
@@ -38,8 +42,9 @@ export const sendKNBSystemMail = async (sid?: string, sum?: number, name?: strin
     recordType: 'item',
     records: [
       {
-        itemId: 8,
         sum,
+        itemId: cloneItem?.id,
+        ...cloneItem,
       },
     ],
   })

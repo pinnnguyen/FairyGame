@@ -37,24 +37,7 @@ const typeTabItems = [
   },
 ]
 
-const { data: marketItems } = await useFetch('/api/market')
-// const gems = computed(() => {
-//   if (!marketItems.value)
-//     return []
-//
-//   return marketItems.value.filter((m: { type: string }) => {
-//     return m.type === 'gem'
-//   })
-// })
-//
-// const items = computed(() => {
-//   if (!marketItems.value)
-//     return []
-//
-//   return marketItems.value.filter((m: { type: string }) => {
-//     return m.type === 'item'
-//   })
-// })
+const { data: marketItems, refresh } = await useFetch('/api/market')
 
 const markets = computed(() => {
   if (!marketItems.value)
@@ -64,6 +47,10 @@ const markets = computed(() => {
     return m.type === typeTab.value
   })
 })
+
+const callBackBuy = () => {
+  refresh()
+}
 </script>
 
 <template>
@@ -84,9 +71,9 @@ const markets = computed(() => {
           {{ n.name }}
         </button>
       </div>
-      <MarketGems v-if="typeTab === 'gem'" :gems="markets" />
-      <MarketItems v-if="typeTab === 'item'" :items="markets" />
-      <MarketEquipments v-if="typeTab === 'equipment'" :equipments="markets" />
+      <MarketGems v-if="typeTab === 'gem'" :gems="markets" @buy="callBackBuy" />
+      <MarketItems v-if="typeTab === 'item'" :items="markets" @buy="callBackBuy" />
+      <MarketEquipments v-if="typeTab === 'equipment'" :equipments="markets" @buy="callBackBuy" />
     </div>
     <div class="absolute bottom-4 flex items-start w-full pl-4 py-2">
       <button

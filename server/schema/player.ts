@@ -33,7 +33,7 @@ const schema = new mongoose.Schema<Player>(
     timestamps: true,
     statics: {
       async changeCurrency(params: {
-        kind: 'coin' | 'gold'
+        kind: 'coin' | 'gold' | 'knb'
         sid: string
         value: number
       }) {

@@ -53,6 +53,11 @@ export const getPlayerItems = (sid: string) => {
         foreignField: 'id',
         localField: 'itemId',
         as: 'info',
+        pipeline: [
+          {
+            $limit: 1,
+          },
+        ],
       },
     },
     {
@@ -63,6 +68,9 @@ export const getPlayerItems = (sid: string) => {
         'info.kind': 1,
         'info.rank': 1,
       },
+    },
+    {
+      $limit: 1,
     },
   ])
 }
@@ -84,10 +92,18 @@ export const getPlayerItem = (sid: string, itemId: number) => {
         foreignField: 'id',
         localField: 'itemId',
         as: 'info',
+        pipeline: [
+          {
+            $limit: 1,
+          },
+        ],
       },
     },
     {
       $unwind: '$info',
+    },
+    {
+      $limit: 1,
     },
   ])
 }

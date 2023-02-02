@@ -16,7 +16,7 @@ import LineClampPlugin from 'windicss/plugin/line-clamp'
 const MyTheme = {
   colors: {
     green: {
-      DEFAULT: '#3BA676',
+      DEFAULT: '#212121',
       50: '#B4E4CF',
       100: '#A5DFC5',
       200: '#87D4B2',
@@ -81,6 +81,9 @@ export default defineConfig({
       14: '14px',
       16: '16px',
     },
+    // backgroundColor: {
+    //   'button-menu': 'radial-gradient(#332d2d, #191a1e)',
+    // },
     backgroundImage: {
       bg_aution: 'url("/common/bg-aution.png")',
       bg_bottom: 'url("/index/bg_bottom.png")',
@@ -102,7 +105,7 @@ export default defineConfig({
         '8xl': '90rem',
       },
       colors: {
-        primary: MyTheme.colors.green,
+        primary: '#d2d2d2',
         green: MyTheme.colors.green,
         blue: MyTheme.colors.blue,
         red: MyTheme.colors.red,

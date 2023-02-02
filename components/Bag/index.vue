@@ -9,15 +9,9 @@ const currentTab = ref<'equip' | 'gem' | 'item'>('item')
       <span class="font-bold text-14 absolute w-[40px] left-[calc(50%_-_10px)] top-[4px] text-[#656f99]">TÚI</span>
       <nuxt-img class="w-full h-full" format="webp" src="/common/bj_tongyong_1.png" />
       <div class="absolute top-[30px] w-[90%] h-[93%] flex flex-col items-center w-full">
-        <template v-if="currentTab === 'equip' ">
-          <BagEquipments />
-        </template>
-        <template v-if="currentTab === 'item' ">
-          <BagItems />
-        </template>
-        <template v-if="currentTab === 'gem' ">
-          <BagGems />
-        </template>
+        <BagEquipments v-if="currentTab === 'equip' " />
+        <BagItems v-if="currentTab === 'item' " />
+        <BagGems v-if="currentTab === 'gem' " />
         <div class="absolute bottom-0 flex items-start w-full pl-4 py-2">
           <button
             :class="{

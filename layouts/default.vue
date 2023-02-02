@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col overflow-hidden game-center">
+  <div class="flex flex-col overflow-hidden game-center h-screen">
     <slot name="header">
       <PageNavbar />
     </slot>
@@ -20,10 +20,11 @@
   margin: 0 auto;
   position: relative;
   overflow: hidden;
-  background: white;
+  background: #191b1e;
   font-size: 14px;
   user-select: none;
   font-weight: 600;
+  touch-action: none;
 }
 
 .footer {

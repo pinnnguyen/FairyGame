@@ -30,6 +30,11 @@ export const getStoreItems = async () => {
         foreignField: 'id',
         localField: 'itemId',
         as: 'info',
+        pipeline: [
+          {
+            $limit: 1,
+          },
+        ],
       },
     },
     {

@@ -115,7 +115,7 @@ const sell = async () => {
       </var-button>
     </div>
   </var-popup>
-  <div class="relative leading-6 text-white bg-black/60 p-0 w-[90%] m-auto overflow-hidden rounded">
+  <div class="relative leading-6 text-white bg-black/60 p-0 w-[85vw] border border-white/30 m-auto overflow-hidden rounded">
     <div class="text-12 font-medium">
       <div
         class="flex items-center justify-between p-2"
@@ -130,7 +130,7 @@ const sell = async () => {
             :preview="item?.preview"
           />
         </div>
-        <div class="mx-2 font-semibold text-14">
+        <div class="mx-2 font-semibold text-12 text-left">
           <div>
             {{ qualityTitle }} {{ item.name }} + <span class="text-14">{{ item.enhance }}</span>
           </div>

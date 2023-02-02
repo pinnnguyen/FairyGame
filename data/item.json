@@ -5,7 +5,7 @@
     "info": "Đạo cụ dùng để cường hoá trang bị",
     "kind": 2,
     "preview": "/items/11.png",
-    "rank": 2
+    "quality": 2
   },
   {
     "id": 2,
@@ -13,7 +13,7 @@
     "info": "Đạo cụ dùng để nâng sao trang bị",
     "kind": 2,
     "preview": "/items/17.png",
-    "rank": 2
+    "quality": 2
   },
   {
     "id": 3,
@@ -21,7 +21,7 @@
     "info": "Đạo cụ dùng để tẩy luyện trang bị",
     "kind": 2,
     "preview": "/items/18.png",
-    "rank": 2
+    "quality": 2
   },
   {
     "id": 4,
@@ -30,7 +30,7 @@
     "info": "Đạo cụ dùng để làm giảm 5% thời gian làm mới quái vật khi treo tại vượt ải",
     "kind": 3,
     "preview": "/items/10043.png",
-    "rank": 2
+    "quality": 2
   },
   {
     "id": 5,
@@ -39,7 +39,7 @@
     "info": "Đạo cụ dùng để làm giảm 10% thời gian làm mới quái vật khi treo tại vượt ải",
     "kind": 3,
     "preview": "/items/10044.png",
-    "rank": 3
+    "quality": 3
   },
   {
     "id": 6,
@@ -48,7 +48,7 @@
     "info": "Đạo cụ dùng để làm giảm 15% thời gian làm mới quái vật khi treo tại vượt ải",
     "kind": 3,
     "preview": "/items/10045.png",
-    "rank": 4
+    "quality": 4
   },
   {
     "id": 7,
@@ -57,7 +57,7 @@
     "info": "Đạo cụ dùng để làm giảm 20% thời gian làm mới quái vật khi treo tại vượt ải",
     "kind": 3,
     "preview": "/items/10046.png",
-    "rank": 5
+    "quality": 5
   },
   {
     "id": 8,
@@ -65,6 +65,6 @@
     "info": "Dùng mua các đạo cụ trong game",
     "kind": 3,
     "preview": "/items/1.png",
-    "rank": 1
+    "quality": 5
   }
 ]

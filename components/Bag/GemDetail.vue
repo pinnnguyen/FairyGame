@@ -93,7 +93,7 @@ const sell = async () => {
     </div>
   </var-popup>
   <div
-    class="relative text-xs leading-6 text-white rounded shadow-md p-0 bg-black/70 w-[90%] m-auto"
+    class="relative text-xs leading-6 text-white rounded shadow-md p-0 bg-black/60 border border-white/30 w-[90%] m-auto"
   >
     <div
       class="flex flex-col items-center justify-between px-3 pt-4 leading-5"
@@ -103,7 +103,7 @@ const sell = async () => {
           <nuxt-img class="absolute top-0" format="webp" :src="`/quality_bg/iconbg_${gem.quality}.png`" />
           <nuxt-img class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" format="webp" :src="`/gem/${gem.gemId}.png`" />
         </div>
-        <div class="">
+        <div class="text-left">
           <p
             class="text-12 font-bold"
           >

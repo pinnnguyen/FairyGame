@@ -17,11 +17,19 @@ const toggle = reactive({
 
 $io.emit('get:chat:request')
 $io.emit('get:mail', sid)
+setInterval(() => {
+  $io.emit('get:mail', sid)
+}, 10000)
 
 $io.off('mail:response')
 $io.on('mail:response', (response) => {
-  console.log('mails', mails)
   set(mails, response)
+})
+
+const mailUnread = computed(() => {
+  return mails.value.filter((m: any) => {
+    return !m.isRead
+  })
 })
 
 $io.off('get:chat:response')
@@ -124,8 +132,8 @@ const sendChat = () => {
       </div>
     </div>
     <div class="relative">
-      <nuxt-img src="/bottom/menu/XJHomescreenButton_45.png" format="webp" class="w-8" @click="toggle.mail = true" />
-      <span class="absolute bg-red-600 w-4 h-4 rounded-full top-0 text-10 right-0 flex items-center justify-center">{{ mails.length }}</span>
+      <nuxt-img src="/bottom/menu/XJHomescreenButton_45.png" format="webp" class="w-15" @click="toggle.mail = true" />
+      <span class="absolute bg-red-600 w-4 h-4 rounded-full top-0 text-10 right-0 flex items-center justify-center">{{ mailUnread.length }}</span>
     </div>
   </div>
 </template>

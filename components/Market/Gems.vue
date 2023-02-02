@@ -4,6 +4,7 @@ defineProps<{
   gems: any
 }>()
 
+const emits = defineEmits(['buy'])
 const show = ref(false)
 const gemSelected = ref({})
 const onSelectedGem = (gem: any) => {
@@ -23,7 +24,6 @@ const buy = (gem: any) => {
     confirmButtonTextColor: 'white',
     cancelButtonTextColor: '#5388c1',
     onConfirm: async () => {
-      console.log('hehehe')
       try {
         const buyRes: { success: boolean; message: string } = await $fetch('/api/market/buy', {
           method: 'POST',
@@ -34,6 +34,8 @@ const buy = (gem: any) => {
         })
 
         sendMessage(buyRes.message, 2000)
+        if (buyRes.success)
+          emits('buy')
       }
       catch (e: any) {
         sendMessage(e.statusMessage, 2000)
@@ -59,9 +61,10 @@ const buy = (gem: any) => {
           <nuxt-img format="webp" :src="`/gem/${gem.record.gemId}.png`" class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" />
         </div>
         <div class="absolute top-0 right-0 flex mt-2 mr-2 flex-col w-1/2 h-full justify-around text-8">
-          <span>Người bán: {{ gem.player.name }}</span>
+          <span><icon name="tabler:user-check" size="12" /> {{ gem.player.name }}</span>
+          <span>{{ gem.record.name }}</span>
           <div class="flex justify-between">
-            <span>SL: 1</span>
+            <span>SL: {{ gem.record.sum }}</span>
             <div class="flex">
               <nuxt-img class="w-3 object-contain" format="webp" src="/items/1_s.png" />
               <span class="ml-1 font-semibold">{{ gem.price }}</span>

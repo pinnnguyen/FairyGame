@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     ],
   },
   auth: {
-    origin: process.env.NODE_ENV === 'development' ? 'http://192.168.2.135:3000/' : 'https://tienhoi.vercel.app',
+    origin: process.env.NODE_ENV === 'development' ? 'http://192.168.1.5:3000/' : 'https://tienhoi.vercel.app',
     enableGlobalAppMiddleware: false,
   },
   nitro: {
@@ -70,61 +70,19 @@ export default defineNuxtConfig({
     'nuxt-windicss',
     'nuxt-icon',
     '@sidebase/nuxt-auth',
+    '@kevinmarrec/nuxt-pwa',
   ],
-  // pwa: {
-  //   manifest: {
-  //     name: 'Võ luyện đỉnh phong',
-  //     short_name: 'VLDP',
-  //     theme_color: '#ffffff',
-  //     icons: [
-  //       {
-  //         src: 'pwa-192x192.png',
-  //         sizes: '192x192',
-  //         type: 'image/png',
-  //       },
-  //       {
-  //         src: 'pwa-512x512.png',
-  //         sizes: '512x512',
-  //         type: 'image/png',
-  //       },
-  //       {
-  //         src: 'pwa-512x512.png',
-  //         sizes: '512x512',
-  //         type: 'image/png',
-  //         purpose: 'any maskable',
-  //       },
-  //     ],
-  //   },
-  //   workbox: {
-  //     navigateFallback: '/',
-  //   },
-  //   client: {
-  //     installPrompt: true,
-  //     periodicSyncForUpdates: 20,
-  //   },
-  //   devOptions: {
-  //     enabled: true,
-  //     type: 'module',
-  //   },
-  // },
-  // pwa: {
-  //   meta: {
-  //     // Generate splash screens for iOS
-  //     mobileApp: true,
-  //     mobileAppIOS: true,
-  //     name: 'Tu tiên giới',
-  //     description: 'Tu tiên độ nhân phẩm',
-  //     theme_color: '#475181',
-  //     lang: 'vi',
-  //   },
-  //   workbox: {
-  //     enabled: true,
-  //   },
-  // },
-  // experimental: {
-  //   reactivityTransform: false,
-  //   inlineSSRStyles: false,
-  // },
+  pwa: {
+    meta: {
+      appleStatusBarStyle: 'default',
+      mobileApp: true,
+      mobileAppIOS: true,
+      name: 'TTG',
+    },
+    workbox: {
+      enabled: true,
+    },
+  },
   css: [
     '~/assets/css/main.scss',
     '~/assets/css/toast.css',
