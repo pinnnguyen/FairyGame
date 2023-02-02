@@ -1,6 +1,6 @@
 import { Server } from 'socket.io'
 import { BATTLE_KIND } from '~/constants/war'
-import { BattleSchema, ChatSchema } from '~/server/schema'
+import { BattleSchema, ChatSchema, MailSchema } from '~/server/schema'
 // import type { ClientToServerEvents, ServerToClientEvents } from '~/types'
 import {
   battleJoinHandler,
@@ -25,9 +25,15 @@ export default defineEventHandler((event) => {
   console.log('Start websocket...')
   io.on('connection', async (socket) => {
     console.log(`Socket connected: ${socket.id}`)
-    // socket.on('send-notify', (message) => {
-    //   socket.broadcast.emit('send-message', message)
-    // })
+
+    socket.on('get:mail', async (sid: string) => {
+      const mails = await MailSchema.find({ sid }).sort({
+        createdAt: -1,
+      })
+
+      socket.emit('mail:response', mails)
+    })
+
     const changeStreamBattle = await BattleSchema.watch()
     const changeStreamChat = await ChatSchema.watch()
 

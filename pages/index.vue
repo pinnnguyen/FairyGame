@@ -80,22 +80,15 @@ const playerClassIMG = computed(() => {
   <var-popup v-model:show="toggleUpGem" position="center">
     <UpgradeGem />
   </var-popup>
-
-  <PageSection class="flex-1 flex items-center relative justify-center z-9">
-    <div class="w-full absolute top-0 h-[40%]">
-      <div class="relative h-full">
-        <nuxt-img format="webp" class="h-full object-cover" src="/index/bg.png" />
-        <nuxt-img
-          class="absolute bottom-7 left-[calc(50%_-_75px)] w-[150px]"
-          format="webp"
-          :src="playerClassIMG"
-        />
-      </div>
-    </div>
-    <div class="absolute bottom-0 w-full h-[60%]">
-      <div class="relative h-full">
-        <PageBottom />
-      </div>
-    </div>
-  </PageSection>
+  <div class="relative">
+    <nuxt-img format="webp" class="" src="/index/bg.png" />
+    <nuxt-img
+      class="absolute bottom-7 left-[calc(50%_-_75px)] w-[150px]"
+      format="webp"
+      :src="playerClassIMG"
+    />
+  </div>
+  <div class="relative h-full">
+    <PageBottom />
+  </div>
 </template>

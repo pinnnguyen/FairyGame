@@ -58,5 +58,13 @@
     "kind": 3,
     "preview": "/items/10046.png",
     "rank": 5
+  },
+  {
+    "id": 8,
+    "name": "KNB",
+    "info": "Dùng mua các đạo cụ trong game",
+    "kind": 3,
+    "preview": "/items/1.png",
+    "rank": 1
   }
 ]

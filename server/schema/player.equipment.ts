@@ -117,17 +117,17 @@ export const addPlayerEquipments = async (sid: string, equipmentIds: Array<numbe
 
   return playerEquipments
 }
-export const addPlayerEquipment = async (_sid: string, equipment: Equipment) => {
-  await new PlayerEquipmentSchema({
-    sid: _sid,
-    equipmentId: equipment?.id,
-    name: equipment?.name,
-    info: equipment?.info,
-    rank: equipment?.rank,
-    level: equipment?.level,
-    slot: equipment?.slot,
-    preview: equipment?.preview,
-    enhance: equipment.enhance,
-    stats: equipment.stats,
-  }).save()
-}
+// export const addPlayerEquipment = async (_sid: string, equipment: Equipment) => {
+//   await new PlayerEquipmentSchema({
+//     sid: _sid,
+//     equipmentId: equipment?.id,
+//     name: equipment?.name,
+//     info: equipment?.info,
+//     rank: equipment?.rank,
+//     level: equipment?.level,
+//     slot: equipment?.slot,
+//     preview: equipment?.preview,
+//     enhance: equipment.enhance,
+//     stats: equipment.stats,
+//   }).save()
+// }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Dialog } from '@varlet/ui'
 defineProps<{
   gems: any
 }>()
@@ -8,6 +9,37 @@ const gemSelected = ref({})
 const onSelectedGem = (gem: any) => {
   gemSelected.value = gem.record
   show.value = true
+}
+
+const buy = (gem: any) => {
+  Dialog({
+    title: 'Nhắc nhở',
+    message: `Bạn có chắc muốn mua ${gem.record.name}`,
+    confirmButtonText: 'Chắc chắn',
+    cancelButtonText: 'Không chắc',
+    closeOnClickOverlay: false,
+    dialogClass: '!bg-black/70 text-white',
+    confirmButtonColor: '#5388c1',
+    confirmButtonTextColor: 'white',
+    cancelButtonTextColor: '#5388c1',
+    onConfirm: async () => {
+      console.log('hehehe')
+      try {
+        const buyRes: { success: boolean; message: string } = await $fetch('/api/market/buy', {
+          method: 'POST',
+          body: {
+            _id: gem._id,
+            name: gem.record.name,
+          },
+        })
+
+        sendMessage(buyRes.message, 2000)
+      }
+      catch (e: any) {
+        sendMessage(e.statusMessage, 2000)
+      }
+    },
+  })
 }
 </script>
 
@@ -35,7 +67,10 @@ const onSelectedGem = (gem: any) => {
               <span class="ml-1 font-semibold">{{ gem.price }}</span>
             </div>
           </div>
-          <button class="mb-3 px-1 py-[2px] shadow rounded mr-2 text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]">
+          <button
+            class="mb-3 px-1 py-[2px] shadow rounded mr-2 text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]"
+            @click.stop="buy(gem)"
+          >
             Mua
           </button>
         </div>

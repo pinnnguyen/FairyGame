@@ -2,17 +2,11 @@
 </script>
 
 <template>
-  <div class="flex flex-col h-screen overflow-hidden game-center">
+  <div class="flex flex-col overflow-hidden game-center">
     <slot name="header">
       <PageNavbar />
     </slot>
-    <div class="flex-1 w-full flex flex-col bg-white">
-      <div
-        class="relative flex-1 flex flex-col mx-auto max-w-8xl w-full h-full"
-      >
-        <slot />
-      </div>
-    </div>
+    <slot />
   </div>
 </template>
 

@@ -6,8 +6,8 @@ specifiers:
   '@pinia/nuxt': ^0.4.3
   '@sidebase/nuxt-auth': ^0.3.2
   '@types/node-cron': ^3.0.7
-  '@varlet/ui': ^2.6.1
-  '@vite-pwa/nuxt': ^0.0.2
+  '@varlet/ui': ^2.7.1
+  '@vite-pwa/nuxt': ^0.0.3
   '@vueuse/core': ^9.9.0
   '@vueuse/nuxt': ^9.5.0
   eslint: ^8.31.0
@@ -28,7 +28,7 @@ specifiers:
 
 dependencies:
   '@varlet/ui': 2.7.1
-  '@vite-pwa/nuxt': 0.0.2
+  '@vite-pwa/nuxt': 0.0.3
 
 devDependencies:
   '@antfu/eslint-config': 0.34.0_zkdaqh7it7uc4cvz2haft7rc6u
@@ -2712,8 +2712,8 @@ packages:
       - supports-color
     dev: true
 
-  /@vite-pwa/nuxt/0.0.2:
-    resolution: {integrity: sha512-PLmk8n20HbF4Uh2g/6Z0ZjtCV/QnNvO0CIEQqys8iOLSAbSlTSyh6EnucRdX7MqKt7fn3xPsvcrVoLm8ypJ7Wg==}
+  /@vite-pwa/nuxt/0.0.3:
+    resolution: {integrity: sha512-Ta2ftn9OM7SrFr61cV/fhGNS1f0hve8/SLmVDldX9+PRQp+IbJOwZwImCmzJVNg/b5x1egAOe0YdhFWN0kWniw==}
     peerDependencies:
       vite-plugin-pwa: ^0.14.0
     dependencies:

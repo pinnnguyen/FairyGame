@@ -59,7 +59,7 @@ export default defineEventHandler(async (event) => {
       timeLeft = now + 86400000
 
     else
-      timeLeft = playerStatus?.timeLeft + 86400000
+      timeLeft = playerStatus.timeLeft! + 86400000
 
     await PlayerStatusSchema.updateOne({ sid: body.sid, type: PlayerStatusTypeCon.reduce_waiting_time_training }, {
       value: playerItem.info.value,

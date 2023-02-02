@@ -17,9 +17,9 @@ export default defineNuxtConfig({
     },
   },
   vite: {
-    ssr: {
-      noExternal: ['@varlet/ui'],
-    },
+    // ssr: {
+    //   noExternal: ['@varlet/ui'],
+    // },
 
     plugins: [
       components({
@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     ],
   },
   auth: {
-    origin: process.env.NODE_ENV === 'development' ? 'http://192.168.1.5:3000/' : 'https://tienhoi.vercel.app',
+    origin: process.env.NODE_ENV === 'development' ? 'http://192.168.2.135:3000/' : 'https://tienhoi.vercel.app',
     enableGlobalAppMiddleware: false,
   },
   nitro: {
@@ -63,13 +63,13 @@ export default defineNuxtConfig({
   //   transpile: ['@varlet/ui'],
   // },
   modules: [
+    // '@vite-pwa/nuxt',
     '@vueuse/nuxt',
     '@pinia/nuxt',
     '@nuxt/image-edge',
     'nuxt-windicss',
     'nuxt-icon',
     '@sidebase/nuxt-auth',
-    // 'vite-pwa/nuxt',
   ],
   // pwa: {
   //   manifest: {

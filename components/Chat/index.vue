@@ -1,25 +1,41 @@
 <script setup lang="ts">
+import { set } from '@vueuse/core'
 import { usePlayerStore } from '~/composables/usePlayer'
 import { fromNow } from '~/common'
 
 const { $io } = useNuxtApp()
-const { playerInfo } = usePlayerStore()
+const { playerInfo, sid } = usePlayerStore()
 
-const contents = ref<any>([])
-const toggle = ref(false)
-const chatContent = ref('')
 const tab = ref('general')
+const contents = ref<any>([])
+const chatContent = ref('')
+const mails = ref([])
+const toggle = reactive({
+  chat: false,
+  mail: false,
+})
 
 $io.emit('get:chat:request')
+$io.emit('get:mail', sid)
+
+$io.off('mail:response')
+$io.on('mail:response', (response) => {
+  console.log('mails', mails)
+  set(mails, response)
+})
+
+$io.off('get:chat:response')
 $io.on('get:chat:response', (data: any) => {
   contents.value.push(...data)
 })
 
+$io.off('send:chat:response')
 $io.on('send:chat:response', (data: any) => {
   contents.value.unshift(data)
   contents.value.splice(contents.value.length - 1, 1)
 })
 
+$io.off('chat:system')
 $io.on('chat:system', (data: any) => {
   if (!contents.value.find((i: any) => data._id === i._id))
     contents.value.unshift(data)
@@ -36,12 +52,12 @@ const typeContents = computed(() => {
 
 const sendChat = () => {
   $io.emit('send:chat', playerInfo?.sid, playerInfo?.name, chatContent.value)
-  chatContent.value = ''
+  set(chatContent, '')
 }
 </script>
 
 <template>
-  <var-popup v-model:show="toggle" position="bottom">
+  <var-popup v-model:show="toggle.chat" position="bottom">
     <div class="bg-[#1C160F]">
       <div class="py-2">
         <span
@@ -87,8 +103,11 @@ const sendChat = () => {
       </div>
     </div>
   </var-popup>
-  <div class="h-12 bg-black/80 text-12 w-full flex items-center gap-2 p-2">
-    <nuxt-img src="/bottom/menu/XJShare_07.png" format="webp" class="w-8" @click="toggle = true" />
+  <var-popup v-model:show="toggle.mail" position="center">
+    <Mail :mails="mails" />
+  </var-popup>
+  <div class="h-12 bg-black/80 text-12 w-full flex items-center justify-between gap-2 p-2">
+    <nuxt-img src="/bottom/menu/XJShare_07.png" format="webp" class="w-8" @click="toggle.chat = true" />
     <div class="h-12 overflow-auto text-left">
       <div v-for="content in typeContents" :key="content._id">
         <span
@@ -103,6 +122,10 @@ const sendChat = () => {
           {{ content.content }}
         </span>
       </div>
+    </div>
+    <div class="relative">
+      <nuxt-img src="/bottom/menu/XJHomescreenButton_45.png" format="webp" class="w-8" @click="toggle.mail = true" />
+      <span class="absolute bg-red-600 w-4 h-4 rounded-full top-0 text-10 right-0 flex items-center justify-center">{{ mails.length }}</span>
     </div>
   </div>
 </template>
