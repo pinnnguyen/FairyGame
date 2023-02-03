@@ -2,6 +2,7 @@
 import { set } from '@vueuse/core'
 import type { PlayerItem } from '~/types'
 import { useFetch } from '#app'
+import { qualityPalette } from '~/common'
 
 const { data: items, pending, refresh } = await useFetch('/api/bag/items')
 
@@ -28,21 +29,25 @@ const onSell = () => {
   </var-popup>
   <var-loading :loading="pending" description="Đang tải trang bị" color="#333">
     <div
-      class="grid-cols-6 grid gap-1 overflow-auto max-h-[88%] scrollbar-hide"
+      class="grid-cols-3 grid gap-1 overflow-auto max-h-[58%] scrollbar-hide"
     >
-      <lazy-item-rank
-        v-for="item in items" :key="item.id"
-        :preview="item.info.preview"
-        :rank="item.info.rank"
-        :quantity="item.sum"
-        :quality="item.info.rank"
-        class="w-12"
+      <div
+        v-for="item in items" :key="item.id" class="border rounded p-2" :style="{
+          border: `1px solid ${qualityPalette(item.info.rank ?? item.info.quality)}`,
+        }"
         @click.stop="pickItem(item)"
       >
-        <p class="text-10 font-semibold line-clamp-1">
+        <div
+          class="text-12 font-bold line-clamp-1" :style="{
+            color: qualityPalette(item.info.rank ?? item.info.quality),
+          }"
+        >
           {{ item?.info.name }}
-        </p>
-      </lazy-item-rank>
+        </div>
+        <div class="pt-4 text-[10px]">
+          {{ item?.info.info }}
+        </div>
+      </div>
     </div>
   </var-loading>
 </template>

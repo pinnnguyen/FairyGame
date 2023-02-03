@@ -1,11 +1,11 @@
 export const SLOT_NAME = {
-  1: 'Vũ khí',
-  2: 'Áo',
-  3: 'Nón',
+  1: 'Vũ Khí',
+  2: 'Trang Phục',
+  3: 'Khôi',
   4: 'Nhẫn',
   5: 'Ngọc Bội',
-  6: 'Găng Tay',
-  7: 'Giày',
+  6: 'Hộ Uyển',
+  7: 'Thủ Ngoạ',
   8: 'Đai',
 }
 

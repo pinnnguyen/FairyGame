@@ -8,7 +8,7 @@ const tooltip = ref(false)
 
 const addAttribute = async (target: string) => {
   try {
-    const response = await $fetch('/api/attribute/add', {
+    const response: any = await $fetch('/api/attribute/add', {
       method: 'POST',
       body: {
         target,

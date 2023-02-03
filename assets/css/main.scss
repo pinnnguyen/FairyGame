@@ -86,7 +86,7 @@ body::after {
 @keyframes true-damage {
     0% {
         opacity: 0;
-        bottom: 50px;
+        bottom: 30px;
     }
     20% {
         opacity: 0.5;
@@ -97,13 +97,9 @@ body::after {
     70% {
         opacity: 0.9;
     }
-    99% {
-        opacity: 1;
-        bottom: 80px;
-    }
     100% {
         opacity: 0;
-        bottom: 50px;
+        bottom: 60px;
     }
 }
 
@@ -112,13 +108,56 @@ body::after {
     animation-duration: 1s;
 }
 
+.battle-action.show {
+    animation-name: true-damage;
+    animation-duration: 1s;
+}
+
+.battle-action-bloodsucking.show {
+    animation-name: true-damage;
+    animation-duration: 1s;
+}
+
+.battle-action {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 60px;
+    z-index: 2;
+    opacity: 0;
+    //background: -webkit-linear-gradient(#fccb61, #fd733d);
+    //-webkit-background-clip: text;
+    //-webkit-text-fill-color: transparent;
+    font-size: 18px;
+    font-family: monospace;
+}
+
+.battle-action-bloodsucking {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 60px;
+    z-index: 2;
+    opacity: 0;
+    background: -webkit-linear-gradient(#b2fee0, #46e6a7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 18px;
+    font-family: monospace;
+}
+
 .battle-damage {
     position: absolute;
     left: 50%;
     transform: translate(-50%);
-    bottom: 80px;
+    bottom: 60px;
     z-index: 2;
     opacity: 0;
+    background: -webkit-linear-gradient(#fccb61, #fd733d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 22px;
+    font-family: monospace;
 }
 
 .blocker {
@@ -222,13 +261,12 @@ body::after {
 }
 
 .diamond {
-    background-color: #254770;
-    width: 120px;
-    height: 120px;
-//    background: #1eff00;
-    /* Rotate */
-    transform: rotate(-45deg);
-    /* Rotate Origin */
+    color: #797b7f;
+    border: 1px solid #797b7f;
+    background-color: #191b1f;
+    width: 50px;
+    height: 50px;
+    //transform: rotate(-45deg);
 }
 
 .var-popup__content {
@@ -256,6 +294,16 @@ body::after {
     height: 100%;
 }
 
+.var-snackbar__wrapper {
+    font-style: italic;
+    font-weight: 700;
+    border-top: 1px solid #ffffff28;
+    border-bottom: 1px solid #ffffff28;
+    border-radius: 0;
+    box-shadow: none;
+}
+
 .bg-button-menu {
     background: radial-gradient(#332d2d, #191a1e);
+    font-weight: 700 !important;
 }

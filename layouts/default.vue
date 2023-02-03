@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col overflow-hidden game-center h-screen">
+  <div class="flex flex-col overflow-hidden font-san game-center h-screen">
     <slot name="header">
       <PageNavbar />
     </slot>
@@ -25,6 +25,7 @@
   user-select: none;
   font-weight: 600;
   touch-action: none;
+  font-style: italic;
 }
 
 .footer {

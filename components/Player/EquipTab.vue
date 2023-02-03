@@ -65,14 +65,14 @@ const openDetail = (slot: PlayerEquipment) => {
     <span class=" ">
       Tu vị: {{ formatCash((playerInfo?.exp)) }}
     </span>
+    <!--    <span class=""> -->
+    <!--      Tiên ngọc: {{ Math.round(playerInfo.coin) }} -->
+    <!--    </span> -->
     <span class="">
-      Tiên ngọc: {{ Math.round(playerInfo.coin) }}
+      Tiên duyên: {{ Math.round(playerInfo.knb) ?? 0 }}
     </span>
     <span class="">
-      KNB: {{ Math.round(playerInfo.knb) ?? 0 }}
-    </span>
-    <span class="">
-      Vàng: {{ formatCash(playerInfo.gold) }}
+      Tiền tiên: {{ formatCash(playerInfo.gold) }}
     </span>
   </div>
   <div class="h-full flex items-center justify-around h-[70%]">

@@ -3,9 +3,7 @@ import { useIntervalFn, useLocalStorage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { sendMessage, usePlayerStore, useSoundClickEvent } from '#imports'
 
-const { playerInfo } = storeToRefs(usePlayerStore())
-const startBattle = useState('startBattle')
-
+const { playerInfo, attribute } = storeToRefs(usePlayerStore())
 const togglePlayerInfo = useState('togglePlayerInfo')
 const toggleAuction = useState('toggleAuction')
 const toggleStore = useState('toggleStore')
@@ -87,10 +85,10 @@ const onToggleAuction = () => {
   useSoundClickEvent()
 }
 
-const onstartBattle = () => {
-  startBattle.value = true
-  useSoundClickEvent()
-}
+// const onstartBattle = () => {
+//   startBattle.value = true
+//   useSoundClickEvent()
+// }
 
 const ontoggleStore = () => {
   toggleStore.value = true
@@ -106,6 +104,40 @@ const onPlayerInfo = () => {
   togglePlayerInfo.value = true
   useSoundClickEvent()
 }
+
+const tab = ref('character')
+const menuItems = [
+  {
+    key: 'character',
+    name: 'Nhân vât',
+    fn: onPlayerInfo,
+  },
+  {
+    key: 'upgrade',
+    name: 'Nâng Cấp',
+    fn: onToggleUpgrade,
+  },
+  {
+    key: 'bag',
+    name: 'Túi',
+    fn: ontoggleBag,
+  },
+  {
+    key: 'market',
+    name: 'Chợ',
+    fn: onToggleAuction,
+  },
+  {
+    key: 'store',
+    name: 'Cửa Hàng',
+    fn: ontoggleStore,
+  },
+  {
+    key: 'boss',
+    name: 'Săn Boss',
+    fn: ontoggleBoss,
+  },
+]
 </script>
 
 <template>
@@ -140,76 +172,42 @@ const onPlayerInfo = () => {
   <div class="h-full">
     <!--    <nuxt-img class="h-full object-cover" format="webp" src="/index/bg_bottom.png" /> -->
     <div class="flex justify-around w-full absolute top-[10px] pl-1 text-white">
-      <!--      <div class="border-none p-0 flex flex-col items-center justify-center w-[50px] mb-3"> -->
-      <!--        <nuxt-img class="w-[40px]" src="/bottom/menu/XJHomescreenButton_29.png" @click.stop="onPlayerInfo" /> -->
-      <!--        <span class="text-black/60 whitespace-nowrap text-12">Nhân vật</span> -->
-      <!--      </div> -->
       <button
+        v-for="menu in menuItems"
+        :key="menu.key"
         class="mx-2 h-10 w-10 shadow rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
-        @click.stop="onPlayerInfo"
+        @click.stop="menu.fn()"
       >
-        Nhân vật
-      </button>
-      <button
-        class="mx-2 h-10 w-10 shadow rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
-        @click.stop="ontoggleBag"
-      >
-        Túi
-      </button>
-      <button
-        class="mx-2 h-10 w-10 shadow rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
-        @click.stop="ontoggleStore"
-      >
-        Cửa hàng
-      </button>
-      <button
-        class="mx-2 h-10 w-10 shadow rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
-      >
-        Nhân vật
+        <span
+          :class="{
+            'text-[#4add3b]': tab === menu.key,
+          }"
+          @click.stop="tab = menu.key"
+        >
+          {{ menu.name }}
+        </span>
       </button>
     </div>
     <div class="absolute bottom-0 text-center w-full flex justify-center flex-col items-center text-white">
-      <div class="flex items-center justify-around w-full mb-4">
-        <div class="flex items-center jsutify-center flex-col">
-          <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
-            <nuxt-img src="/bottom/menu/XJHomescreenButton_23.png" format="webp" class="transform rotate-45" />
-          </div>
-          <span class="whitespace-nowrap text-12 text-black/60 mt-2">Công pháp</span>
-        </div>
-        <div class="flex items-center jsutify-center flex-col" @click="onToggleAuction">
-          <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
-            <nuxt-img src="/bottom/menu/XJHomescreenButton_27.png" format="webp" class="transform rotate-45" />
-          </div>
-          <span class="whitespace-nowrap text-12 text-black/60 mt-2">Mua bán</span>
-        </div>
-        <div class="flex items-center jsutify-center flex-col">
-          <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
-            <nuxt-img src="/bottom/menu/XJHomescreenButton_10.png" format="webp" class="transform rotate-45" />
-          </div>
-          <span class="whitespace-nowrap text-12 text-black/60 mt-2">Tông môn</span>
-        </div>
-        <div class="flex items-center jsutify-center flex-col" @click.stop="onUpgradeOptions">
-          <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
-            <nuxt-img src="/bottom/menu/XJHomescreenButton_04.png" format="webp" class="transform rotate-45" />
-          </div>
-          <span class="whitespace-nowrap text-12 text-black/60 mt-2">Nâng cấp</span>
-        </div>
-        <div class="flex items-center jsutify-center flex-col" @click.stop="ontoggleBoss">
-          <div class="diamond w-[30px] h-[30px] flex items-center justify-center">
-            <nuxt-img src="/bottom/menu/XJDengxiandao_14.png" format="webp" class="transform rotate-45" />
-          </div>
-          <span class="whitespace-nowrap text-12 text-black/60 mt-2">
-            Boss
-          </span>
-        </div>
-      </div>
       <Chat />
-      <div class="h-12 w-full flex justify-around items-center bg-[#1d3a62]">
-        <nuxt-img class="w-[45px]" src="/index/avatar-bottom.png" />
-        <div class="w-[60%] bg-gray-200 rounded-full h-1 dark:bg-gray-700">
-          <div class="bg-blue-600 h-1 rounded-full duration-700" :style="{ width: `${needTimeResource}%` }" />
+    </div>
+    <div class="absolute top-16 text-10 h-full text-[#eaeced] italic w-full">
+      <template v-if="tab === 'character'">
+        <Line class="mb-4">
+          Thuộc tính nhân vật
+        </Line>
+        <div class="flex">
+          <PlayerShortView />
+          <PlayerTupo />
         </div>
-      </div>
+        <Line class="mt-4">
+          Thiết lập trang bị
+        </Line>
+        <PlayerEquipmentDefault />
+      </template>
+      <template v-if="tab === 'bag'">
+        <Bag />
+      </template>
     </div>
   </div>
 </template>

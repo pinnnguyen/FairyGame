@@ -9,7 +9,9 @@ import { useAppStore } from '~/composables/app'
 StyleProvider({
   '--snackbar-font-size': '12px',
   '--snackbar-content-padding': '6px 16px',
-  '--snackbar-background': '#1d1d1cdb',
+  '--snackbar-background': 'radial-gradient(#4041448c, #191b1e)',
+  '--snackbar-border-radius': '0px',
+  '--snackbar-width': '200px',
   '--popup-content-background-color': '1',
   '--dialog-message-color': 'white',
 })

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { sendMessage, usePlayerStore } from '#imports'
-import { backgroundQuality } from '~/common'
+import { backgroundQuality, qualityPalette } from '~/common'
 import type { BasicItem, PlayerItem } from '~/types'
 interface Prop {
   item: any
@@ -94,26 +94,22 @@ const sell = async () => {
     </div>
   </var-popup>
   <div
-    class="relative text-xs leading-5 text-white rounded shadow-md p-4 bg-black/70"
+    class="relative leading-5 text-primary rounded p-4 bg-black/70"
+    :style="{
+      border: `1px solid ${qualityPalette(item.info?.rank ?? item.info?.quality)}`,
+    }"
   >
-    <div class="p-3">
-      <div class="flex flex-col items-center justify-between mb-4">
-        <div class="flex items-center justify-center">
-          <item-rank
-            class="w-15"
-            :quantity="0"
-            :rank="item.info.rank"
-            :preview="item.info.preview"
-            :quality="item.info.quality"
-          />
+    <div class="flex flex-col items-start justify-start mb-4">
+      <div class="mt-2">
+        <div
+          class="text-12 font-bold uppercase text-left" :style="{
+            color: qualityPalette(item.info?.rank ?? item.info?.quality),
+          }"
+        >
+          {{ item.info.name }}
         </div>
-        <div class="mt-2">
-          <div class="text-12 font-bold uppercase text-center">
-            {{ item.info.name }}
-          </div>
-          <div class="text-12 border border-white/40 p-4 rounded max-w-[270px]">
-            {{ item.info.info }}
-          </div>
+        <div class="text-10 text-left rounded mt-4">
+          {{ item.info.info }}
         </div>
       </div>
     </div>

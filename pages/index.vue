@@ -56,17 +56,11 @@ const playerClassIMG = computed(() => {
   <var-popup v-model:show="togglePlayerInfo" position="center">
     <PlayerInfomation />
   </var-popup>
-  <!--  <var-popup v-model:show="startBattle" position="center"> -->
-  <!--    <Battle /> -->
-  <!--  </var-popup> -->
   <var-popup v-model:show="toggleUpgrade" position="center">
     <Upgrade v-if="toggleUpgrade" />
   </var-popup>
   <var-popup v-model:show="toggleAuction" position="center">
     <Market />
-  </var-popup>
-  <var-popup v-model:show="toggleBag" position="center">
-    <Bag />
   </var-popup>
   <var-popup v-model:show="toggleStore" position="center">
     <Store />
@@ -82,7 +76,7 @@ const playerClassIMG = computed(() => {
   </var-popup>
   <PageSection class="flex-1 flex items-center relative justify-center z-9">
     <div class="w-full absolute top-0 h-[40%]">
-      <div class="relative h-full bg-[#181a1d]">
+      <div class="relative h-full border-b border-white/10">
         <Battle />
       </div>
     </div>

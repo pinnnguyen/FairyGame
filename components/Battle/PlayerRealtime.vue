@@ -15,9 +15,9 @@ const playerClassIMG = computed(() => {
 
 <template>
   <div
-    class="relative duration-800 transition-transform border-2 border-white/40 rounded-md px-1 h-15"
+    class="relative duration-500 transition-transform border-2 border-white/40 rounded-md px-1 h-15"
     :style="{
-      transform: realTime.enemy.sureDamage ? 'translate(15%)' : '',
+      transform: realTime.enemy.sureDamage ? 'translate(20%)' : '',
     }"
   >
     <div class="w-35 italic">
@@ -32,30 +32,30 @@ const playerClassIMG = computed(() => {
       />
     </div>
     <span
-      class="text-[#22ae28] font-bold shadow battle-damage whitespace-nowrap"
+      class="battle-action-bloodsucking whitespace-nowrap"
       :class="{ show: realTime.enemy?.bloodsucking > 0 && realTime.enemy.sureDamage }"
     >
       Hút sinh lực (+{{ realTime.enemy?.bloodsucking }})
     </span>
     <span
       :class="{ show: realTime.player?.counterDamage > 0 && realTime.enemy.sureDamage }"
-      class="text-red-500 font-semibold battle-damage whitespace-nowrap"
+      class="battle-damage whitespace-nowrap"
     >
       Phản đòn -{{ realTime.player.counterDamage }}
     </span>
 
     <span
-      class="text-blue-300 font-bold shadow battle-damage whitespace-nowrap"
+      class="battle-action whitespace-nowrap"
       :class="{ show: realTime.player?.avoid && realTime.player.sureDamage }"
     >
       Né tránh
     </span>
 
     <span
-      class="duration-800 text-14 font-bold shadow text-red-500 battle-damage"
+      class="battle-damage"
       :class="{ show: realTime.player.sureDamage && !realTime.player?.avoid }"
     >
-      <span v-if="realTime?.player?.critical" class="whitespace-nowrap font-bold">
+      <span v-if="realTime?.player?.critical" class="whitespace-nowrap">
         Bạo kích -{{ realTime.player.dmg }}
       </span>
       <span v-else>-{{ realTime.player.dmg }}</span>

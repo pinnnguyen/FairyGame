@@ -62,11 +62,16 @@ const sendChat = () => {
   $io.emit('send:chat', playerInfo?.sid, playerInfo?.name, chatContent.value)
   set(chatContent, '')
 }
+
+const openMail = () => {
+  toggle.mail = true
+  console.log('open')
+}
 </script>
 
 <template>
   <var-popup v-model:show="toggle.chat" position="bottom">
-    <div class="bg-[#1C160F]">
+    <div class="bg-black">
       <div class="py-2">
         <span
           :class="{
@@ -132,7 +137,7 @@ const sendChat = () => {
       </div>
     </div>
     <div class="relative">
-      <nuxt-img src="/bottom/menu/XJHomescreenButton_45.png" format="webp" class="w-15" @click="toggle.mail = true" />
+      <nuxt-img src="/bottom/menu/XJHomescreenButton_45.png" format="webp" class="w-8" @click.stop="openMail" />
       <span class="absolute bg-red-600 w-4 h-4 rounded-full top-0 text-10 right-0 flex items-center justify-center">{{ mailUnread.length }}</span>
     </div>
   </div>
