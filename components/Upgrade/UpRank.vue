@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { set } from '@vueuse/core'
 import { sendMessage, usePlayerStore } from '#imports'
 import type { PlayerEquipment } from '~/types'
 
@@ -14,29 +15,32 @@ interface Require {
 const emits = defineEmits(['close'])
 const { $io } = useNuxtApp()
 const { playerInfo } = storeToRefs(usePlayerStore())
-const { getPlayer } = usePlayerStore()
+const { fetchPlayer } = usePlayerStore()
 
-const equipSelected = ref<Partial<PlayerEquipment>>({})
 const needResource = ref<Require>()
 const loading = ref(false)
 
-const tooltip = ref(false)
-const showEquipInfo = ref(false)
+const options = reactive<{
+  equipSelected: Partial<PlayerEquipment>
+  showEquipInfo: boolean
+  tooltip: boolean
+}>({
+  equipSelected: {},
+  showEquipInfo: false,
+  tooltip: false,
+})
+
 const currentFood = ref<string[]>([])
 
-// onMounted(() => {
-// $io.emit('equip:rank:start', `equip:rank:${playerInfo.value?.sid}`)
 $io.on('rank:preview:response', (require: Require) => {
-  console.log('require', require)
-  loading.value = false
-  needResource.value = require
+  set(loading, false)
+  set(needResource, require)
 })
 
 $io.on('equip:rank:response', async (require: any) => {
-  await getPlayer()
-  console.log('require', require)
-  needResource.value = require
-  loading.value = false
+  fetchPlayer()
+  set(needResource, require)
+  set(loading, false)
   sendMessage(require.message)
 })
 
@@ -46,43 +50,43 @@ onUnmounted(() => {
 })
 
 const onEquipSelected = (equip: PlayerEquipment) => {
-  equipSelected.value = equip
-  loading.value = true
-  currentFood.value = []
+  options.equipSelected = equip
+  set(loading, true)
+  set(currentFood, [])
   $io.emit('equip:rank:preview', equip._id)
 }
 
 const upgrade = () => {
-  loading.value = true
+  set(loading, true)
   if (!playerInfo.value)
     return
 
-  if (!equipSelected.value._id) {
+  if (!options.equipSelected._id) {
     sendMessage('Đạo hữu cần chọn trang bị để nâng cấp')
-    loading.value = false
+    set(loading, false)
     return
   }
 
   if (needResource.value!.gold! > playerInfo.value?.gold) {
     sendMessage('Đạo hữu không đủ vàng để nâng cấp')
-    loading.value = false
+    set(loading, false)
     return
   }
 
   if (needResource.value!.knb! > playerInfo.value?.knb) {
     sendMessage('Đạo hữu không đủ KNB để nâng cấp')
-    loading.value = false
+    set(loading, false)
     return
   }
 
   if (currentFood.value.length < needResource.value!.needFoodNumber) {
     sendMessage('Số lượng trang bị phôi của đạo hữu không đủ')
-    loading.value = false
+    set(loading, false)
     return
   }
 
   $io.emit('equip:rank:levelup', {
-    _equipId: equipSelected.value?._id,
+    _equipId: options.equipSelected?._id,
     listFood: currentFood.value,
   })
 }
@@ -96,7 +100,7 @@ const pickEquipmentFood = (_id?: string) => {
 </script>
 
 <template>
-  <var-popup v-model:show="tooltip" position="center">
+  <var-popup v-model:show="options.tooltip" position="center">
     <div class="w-60 p-4 bg-white text-12">
       <p>Mỗi bậc sẽ tăng 10% toàn bộ thuộc tính gốc cho trang bị</p>
       <br>
@@ -109,15 +113,19 @@ const pickEquipmentFood = (_id?: string) => {
       <p>Tăng bậc trang bị sẽ có tỉ lên thành công 100%</p>
     </div>
   </var-popup>
-  <var-popup v-model:show="showEquipInfo" position="center">
+  <var-popup v-model:show="options.showEquipInfo" position="center">
     <BagEquipDetail
       :action="false"
-      :item="equipSelected"
+      :item="options.equipSelected"
     />
   </var-popup>
-  <upgrade-item @equipSelected="onEquipSelected">
+  <upgrade-item @onselected="onEquipSelected">
     <template #title>
-      Nâng bậc
+      <Line class="my-2">
+        <div class="whitespace-nowrap">
+          Nâng bậc
+        </div>
+      </Line>
     </template>
   </upgrade-item>
   <div class="absolute bottom-25 h-20 w-full">
@@ -161,7 +169,7 @@ const pickEquipmentFood = (_id?: string) => {
       </var-button>
     </div>
   </div>
-  <p class="absolute bottom-5 right-5" @click="tooltip = true">
+  <p class="absolute bottom-5 right-5" @click="options.tooltip = true">
     <Icon name="ri:question-fill" size="20" />
   </p>
 </template>

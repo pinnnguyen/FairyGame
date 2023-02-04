@@ -15,14 +15,14 @@ const playerClassIMG = computed(() => {
 
 <template>
   <div
-    class="relative duration-500 transition-transform border-2 border-white/40 rounded-md px-1 h-15"
+    class="relative duration-500 transition-transform border-1 border-white/40 rounded-md px-1 h-14"
     :style="{
       transform: realTime.enemy.sureDamage ? 'translate(20%)' : '',
     }"
   >
-    <div class="w-35 italic">
+    <div class="w-30 italic">
       <div class="flex justify-start items-end">
-        <span class="text-14 ml-1 text-[#6ce8d4] line-clamp-1">{{ state?.player?.name ?? '...' }}</span>
+        <span class="text-12 ml-1 text-[#6ce8d4] line-clamp-1">{{ state?.player?.name ?? '...' }}</span>
       </div>
       <BattleInfo
         :name="state?.player?.name"
@@ -35,7 +35,7 @@ const playerClassIMG = computed(() => {
       class="battle-action-bloodsucking whitespace-nowrap"
       :class="{ show: realTime.enemy?.bloodsucking > 0 && realTime.enemy.sureDamage }"
     >
-      Hút sinh lực (+{{ realTime.enemy?.bloodsucking }})
+      (+{{ realTime.enemy?.bloodsucking }})
     </span>
     <span
       :class="{ show: realTime.player?.counterDamage > 0 && realTime.enemy.sureDamage }"

@@ -40,6 +40,10 @@ onMounted(() => {
   $io.on('battle:start', async (war: BattleResponse) => {
     warResult.value = war
     await startBattle(war, () => {
+      // $io.emit('fetch:player', playerInfo.value?.sid)
+      playerInfo.value.gold += reward.value?.base.gold ?? 0
+      playerInfo.value.exp += reward.value?.base.exp ?? 0
+
       Snackbar.allowMultiple(true)
       sendMessage(`Nhận Tiền Tiên x${reward.value?.base.gold}`, 2000, 'top')
       sendMessage(`Nhận Tu Vi x${reward.value?.base.exp}`, 200, 'top')
@@ -74,10 +78,10 @@ const nextMid = async () => {
     $io.emit('battle:refresh', {
       skip: true,
     })
-    sendMessage('Qua ải thành công')
+    sendMessage('Qua ải thành công', 2000)
   }
   catch (e) {
-    sendMessage('Hãy vượt ải trước đó để tiếp tục')
+    sendMessage('Hãy vượt ải trước đó để tiếp tục', 2000)
     loading.value = false
   }
 }
@@ -135,7 +139,10 @@ const retry = () => {
     <div class="h-10 absolute bottom-0 bg-black w-full flex items-center justify-end italic">
       <div class="text-[#f5f5f5] text-12 flex items-center">
         <span>Hiện tại: thứ {{ playerInfo?.midId }} Ải</span>
-        <button class="h-6 px-2 ml-1 shadow rounded mr-2 text-10 font-semibold text-white border-2 border-[#040404] bg-[#841919]">
+        <button
+          class="h-6 px-2 ml-1 shadow rounded mr-2 text-10 font-semibold text-white border-2 border-[#040404] bg-[#841919] shadow italic"
+          @click.stop="nextMid"
+        >
           Khiêu chiến
         </button>
       </div>

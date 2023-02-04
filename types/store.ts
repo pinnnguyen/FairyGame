@@ -1,3 +1,5 @@
+import type { BasicItem, Item } from '~/types/item'
+
 export type currency = 'KNB' | 'GOLD' | 'COIN'
 export interface StoreItem {
   _id?: string
@@ -7,4 +9,5 @@ export interface StoreItem {
   quantity: number
   kind: number
   currency: currency
+  props: BasicItem
 }

@@ -12,7 +12,7 @@ const schema = new mongoose.Schema(
     id: Number,
     kind: Number,
     name: String,
-    info: String,
+    note: String,
     preview: String,
     quality: Number,
     value: Number,

@@ -124,6 +124,8 @@ export const qualityPalette = (quality: number) => {
 
   if (quality! >= 6)
     return '#e17298'
+
+  return '#d2d2d2'
 }
 
 export const colorQuality = (quality: number) => {

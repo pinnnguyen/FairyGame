@@ -94,29 +94,29 @@ const sell = async () => {
     </div>
   </var-popup>
   <div
-    class="relative leading-5 text-primary rounded p-4 bg-black/70"
+    class="rounded p-2 bg-black/70"
     :style="{
-      border: `1px solid ${qualityPalette(item.info?.rank ?? item.info?.quality)}`,
+      border: `1px solid ${qualityPalette(item.props?.quality)}`,
     }"
   >
     <div class="flex flex-col items-start justify-start mb-4">
       <div class="mt-2">
         <div
           class="text-12 font-bold uppercase text-left" :style="{
-            color: qualityPalette(item.info?.rank ?? item.info?.quality),
+            color: qualityPalette(item.props?.quality),
           }"
         >
-          {{ item.info.name }}
+          {{ item.props.name }}
         </div>
-        <div class="text-10 text-left rounded mt-4">
-          {{ item.info.info }}
+        <div class="text-left mt-2">
+          {{ item.props.note }}
         </div>
       </div>
     </div>
     <div class="flex justify-center">
       <var-button
         v-if="sellAction"
-        class="!text-[#333] font-medium mx-2"
+        class="!text-[#333] font-semibold mx-2 italic"
         size="small"
         @click.stop="sellPopup = true"
       >
@@ -124,7 +124,7 @@ const sell = async () => {
       </var-button>
       <var-button
         v-if="item.kind === 3"
-        class="mb-2 !text-[#333] font-medium uppercase font-semibold"
+        class="mb-2 !text-[#333] font-semibold italic"
         color="#ffd400"
         size="small"
         @click.stop="useItem"

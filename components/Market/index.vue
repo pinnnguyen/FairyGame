@@ -51,39 +51,34 @@ const markets = computed(() => {
 const callBackBuy = () => {
   refresh()
 }
+
+const isTabMarket = computed(() => tab.value === 'market')
+const gemTab = computed(() => typeTab.value === 'gem')
+const itemTab = computed(() => typeTab.value === 'item')
+const equipTab = computed(() => typeTab.value === 'equipment')
 </script>
 
 <template>
-  <div class="relative w-[calc(100vw_-_30px)] h-[75vh]">
-    <nuxt-img format="webp" class="absolute w-full h-full object-fill" src="/common/panel_common_bg1.png" />
-    <!--    <p class="absolute top-[0.3%] left-[calc(50%_-_50px)] flex justify-center w-[100px] text-[#ad3a36] font-semibold"> -->
-    <!--      Đấu giá -->
-    <!--    </p> -->
-    <div v-show="tab === 'market'" class="relative w-full h-full">
-      <div class="absolute top-10 left-10 z-9">
-        <button
-          v-for="n in typeTabItems"
-          :key="n.key"
-          :class="{ '!opacity-100': n.key === typeTab }"
-          class="opacity-50 transition transition-opacity px-2 py-[2px] shadow rounded mr-2 text-12 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]"
-          @click.stop="typeTab = n.key"
-        >
-          {{ n.name }}
-        </button>
-      </div>
-      <MarketGems v-if="typeTab === 'gem'" :gems="markets" @buy="callBackBuy" />
-      <MarketItems v-if="typeTab === 'item'" :items="markets" @buy="callBackBuy" />
-      <MarketEquipments v-if="typeTab === 'equipment'" :equipments="markets" @buy="callBackBuy" />
-    </div>
-    <div class="absolute bottom-4 flex items-start w-full pl-4 py-2">
+  <div class="h-full">
+    <div class="px-4">
       <button
-        v-for="n in tabItems"
+        v-for="n in typeTabItems"
         :key="n.key"
-        :class="{ '!opacity-100': n.key === tab }"
-        class="opacity-50 transition transition-opacity px-2 py-[2px] shadow rounded mr-2 text-12 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]" @click="tab = n.key"
+        :class="{ '!opacity-100': n.key === typeTab }"
+        class="transition opacity-40 transition-opacity mx-2 w-16 h-8 leading-3 italic shadow rounded font-bold border-1 text-primary border-white/40"
+        @click.stop="typeTab = n.key"
       >
         {{ n.name }}
       </button>
     </div>
+    <MarketGems
+      v-if="gemTab" :gems="markets" @buy="callBackBuy"
+    />
+    <MarketItems
+      v-if="itemTab" :items="markets" @buy="callBackBuy"
+    />
+    <MarketEquipments
+      v-if="equipTab" :equipments="markets" @buy="callBackBuy"
+    />
   </div>
 </template>

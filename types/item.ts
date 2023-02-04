@@ -3,9 +3,8 @@ export interface BasicItem {
   id: number
   kind?: number
   name?: string
-  info?: string
+  note?: string
   preview?: string
-  rank?: number
   value?: number
   quantity?: number
 }

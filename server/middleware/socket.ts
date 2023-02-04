@@ -10,6 +10,7 @@ import {
   handleEquipUpgrade,
   handleEventUpGem,
 } from '~/server/sockets'
+import { getPlayer } from '~/server/helpers'
 
 let server: any = null
 
@@ -25,6 +26,16 @@ export default defineEventHandler((event) => {
   console.log('Start websocket...')
   io.on('connection', async (socket) => {
     console.log(`Socket connected: ${socket.id}`)
+
+    socket.on('fetch:player', async (sid) => {
+      const playerResource = await getPlayer('', sid)
+      if (!playerResource)
+        return null
+
+      socket.emit('fetch:player:response', {
+        ...playerResource,
+      })
+    })
 
     socket.on('get:mail', async (sid: string) => {
       const mails = await MailSchema.find({ sid }).sort({

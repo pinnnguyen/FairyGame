@@ -28,24 +28,26 @@ const onSell = () => {
     />
   </var-popup>
   <var-loading :loading="pending" description="Đang tải trang bị" color="#333">
-    <div
-      class="grid-cols-3 grid gap-1 overflow-auto max-h-[58%] scrollbar-hide"
-    >
+    <div class="h-full w-full overflow-auto scrollbar-hide">
       <div
-        v-for="item in items" :key="item.id" class="border rounded p-2" :style="{
-          border: `1px solid ${qualityPalette(item.info.rank ?? item.info.quality)}`,
-        }"
-        @click.stop="pickItem(item)"
+        class="grid-cols-3 grid gap-2 "
       >
         <div
-          class="text-12 font-bold line-clamp-1" :style="{
-            color: qualityPalette(item.info.rank ?? item.info.quality),
+          v-for="item in items" :key="item.id" class="rounded p-2" :style="{
+            border: `1px solid ${qualityPalette(item.props.quality)}`,
           }"
+          @click.stop="pickItem(item)"
         >
-          {{ item?.info.name }}
-        </div>
-        <div class="pt-4 text-[10px]">
-          {{ item?.info.info }}
+          <div
+            class="text-10 font-bold line-clamp-1" :style="{
+              color: qualityPalette(item.props.quality),
+            }"
+          >
+            {{ item?.props.name }}
+          </div>
+          <div class="pt-2 text-[10px]">
+            {{ item?.props.note }}
+          </div>
         </div>
       </div>
     </div>

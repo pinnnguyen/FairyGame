@@ -19,8 +19,10 @@ const read = (mail: any) => {
 
 <template>
   <var-popup v-model:show="toggle.mail">
-    <div class="h-[40vh] w-[calc(100vw_-_70px)] m-auto bg-[#97c7e9] p-2 border-2 border-black rounded text-10 text-white/80">
-      <div class="h-full p-2" style="background-image: linear-gradient(#244363, #6a8ca7)">
+    <div
+      class="h-[40vh] border-1 border-white/40 w-[calc(100vw_-_70px)] m-auto bg-primary p-2 rounded text-10 text-white/80"
+    >
+      <div class="h-full p-2">
         <div class="h-[40%]">
           <div class="text-12 pt-2 text-white">
             {{ readMail?.title }}
@@ -28,13 +30,13 @@ const read = (mail: any) => {
           <div class="whitespace-pre-line pt-2 text-left">
             {{ readMail?.note }}
           </div>
-          <div class="text-right pr-2">
+          <div class="text-right pr-2 pt-2">
             <span class="text-yellow-400">{{ readMail?.kind === 'system' ? 'Hệ thống' : 'Cá nhân' }}</span>
             <p>{{ fromNow(new Date(readMail.createdAt).getTime()) }}</p>
           </div>
         </div>
         <div v-if="readMail?.records.length > 0" class="relative mt-2 h-35">
-          <div class="mb-10">
+          <div class="mb-10 text-center">
             Phần thưởng
           </div>
           <MailList :mail="readMail" :_mail-id="readMail._id" :record-type="readMail.recordType" :records="readMail.records" />
@@ -42,15 +44,29 @@ const read = (mail: any) => {
       </div>
     </div>
   </var-popup>
-  <div class="h-[55vh] w-[calc(100vw_-_70px)] m-auto bg-[#485384] p-2 border-2 border-black rounded">
-    <h2>Thư</h2>
+  <div class="h-[55vh] w-[calc(100vw_-_70px)] m-auto bg-primary p-2 border-1 border-white/40 rounded">
+    <Line class="py-2">
+      <span class="text-white">Thư</span>
+    </Line>
     <div class="h-[90%] overflow-scroll scrollbar-hide">
-      <div v-for="mail in mails" :key="mail?._id" class="flex items-center bg-[#87c6ea] p-2 m-1 gap-2 rounded" @click.stop="read(mail)">
-        <icon v-if="!mail.isRead" name="material-symbols:mark-email-unread" size="30" />
-        <icon v-else name="material-symbols:mark-email-read" size="30" />
-        <div class="flex flex-col items-start">
+      <div
+        v-for="mail in mails"
+        :key="mail?._id"
+        class="flex items-center border border-white/40 p-2 m-1 gap-2 rounded"
+        @click.stop="read(mail)"
+      >
+        <div v-if="!mail.isRead" class="text-10 text-primary">
+          (Chưa nhận)
+        </div>
+        <div v-else class="text-10 text-primary">
+          (Đã nhận)
+        </div>
+        <div class="flex flex-col items-start text-white">
           <div>{{ mail?.title }}</div>
-          <div v-if="mail?.records.length > 0 && !mail.isRead" class="text-10 text-green-500">
+          <div
+            v-if="mail?.records.length > 0 && !mail.isRead"
+            class="text-10 text-green-300"
+          >
             Có đính kèm chưa nhận
           </div>
         </div>

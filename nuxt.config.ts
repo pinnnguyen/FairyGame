@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     ],
   },
   auth: {
-    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://tienhoi.vercel.app',
+    origin: process.env.NODE_ENV === 'development' ? 'http://192.168.2.135:3000' : 'https://tienhoi.vercel.app',
     enableGlobalAppMiddleware: false,
   },
   nitro: {
@@ -64,6 +64,7 @@ export default defineNuxtConfig({
   // },
   modules: [
     // '@vite-pwa/nuxt',
+    // '@unocss/nuxt',
     '@vueuse/nuxt',
     '@pinia/nuxt',
     '@nuxt/image-edge',
@@ -72,20 +73,24 @@ export default defineNuxtConfig({
     '@sidebase/nuxt-auth',
     // '@kevinmarrec/nuxt-pwa',
   ],
-  pwa: {
-    meta: {
-      appleStatusBarStyle: 'default',
-      mobileApp: true,
-      mobileAppIOS: true,
-      name: 'TTG',
-    },
-    workbox: {
-      enabled: true,
-    },
+  // pwa: {
+  //   meta: {
+  //     // appleStatusBarStyle: 'default',
+  //     mobileApp: true,
+  //     mobileAppIOS: true,
+  //     name: 'TTG',
+  //   },
+  //   workbox: {
+  //     enabled: true,
+  //   },
+  // },
+  pinia: {
+    autoImports: ['storeToRefs'],
   },
   css: [
+    // '@unocss/reset/tailwind.css',
     '~/assets/css/main.scss',
-    '~/assets/css/toast.css',
+    // '~/assets/css/toast.css',
     'virtual:windi.css',
   ],
   windicss: {

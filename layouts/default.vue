@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col overflow-hidden font-san game-center h-screen">
+  <div class="flex flex-col overflow-hidden font-san game-center h-full">
     <slot name="header">
       <PageNavbar />
     </slot>

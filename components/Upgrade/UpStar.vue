@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { sendMessage, usePlayerSlot, usePlayerStore } from '#imports'
+import { set } from '@vueuse/core'
+import { sendMessage, usePlayerStore } from '#imports'
 import type { PlayerEquipment } from '~/types'
 
 interface Require {
@@ -11,10 +12,9 @@ interface Require {
 }
 
 const emits = defineEmits(['close'])
-const { getSlotEquipUpgrade } = usePlayerSlot()
 const { $io } = useNuxtApp()
 const { playerInfo } = storeToRefs(usePlayerStore())
-const { getPlayer } = usePlayerStore()
+const { getPlayer, fetchPlayer } = usePlayerStore()
 
 const equipSelected = ref<Partial<PlayerEquipment>>({})
 const needResource = ref<Require>()
@@ -24,15 +24,13 @@ const tooltip = ref(false)
 const showEquipInfo = ref(false)
 
 $io.on('star:preview:response', (require: Require) => {
-  console.log('require', require)
   needResource.value = require
 })
 
 $io.on('equip:star:response', async (require: any) => {
-  await getPlayer()
-  console.log('require', require)
-  needResource.value = require
-  loading.value = false
+  fetchPlayer()
+  set(needResource, require)
+  set(loading, false)
   sendMessage('Nâng sao trang bị thành công')
 })
 
@@ -90,15 +88,14 @@ onUnmounted(() => {
   <var-popup v-model:show="showEquipInfo" position="center">
     <BagEquipDetail :action="false" :item="equipSelected" />
   </var-popup>
-  <upgrade-item @equipSelected="onEquipSelected">
+  <upgrade-item @onselected="onEquipSelected">
     <template #title>
-      Nâng sao
+      <Line class="my-2">
+        <div class="whitespace-nowrap">
+          Nâng sao
+        </div>
+      </Line>
     </template>
-    <!--    <template #upgrade-level> -->
-    <!--      <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[45px] flex justify-center"> -->
-    <!--        {{ getSlotEquipUpgrade(equipSelected?.slot)?.star }} sao -->
-    <!--      </div> -->
-    <!--    </template> -->
   </upgrade-item>
   <div v-if="needResource" class="absolute bottom-0 w-full duration-500">
     <div class="flex items-center justify-center">

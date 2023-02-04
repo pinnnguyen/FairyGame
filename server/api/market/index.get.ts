@@ -43,7 +43,7 @@ export default defineEventHandler(async () => {
         from: 'gl_items',
         foreignField: 'id',
         localField: 'record.itemId',
-        as: 'info',
+        as: 'props',
         pipeline: [
           {
             $project: {
@@ -79,7 +79,7 @@ export default defineEventHandler(async () => {
       $unwind: '$player',
     },
     {
-      $unwind: '$info',
+      $unwind: '$props',
     },
     {
       $limit: 25,

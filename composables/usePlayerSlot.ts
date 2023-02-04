@@ -16,6 +16,48 @@ export const usePlayerSlot = defineStore('playerSlot', () => {
   const slot7 = computed(() => equipments.value?.find((e: { slot: number }) => e.slot === 7))
   const slot8 = computed(() => equipments.value?.find((e: { slot: number }) => e.slot === 8))
 
+  const leftSlots = computed(() => {
+    return [
+      {
+        no: 1,
+        slot: slot1.value,
+      },
+      {
+        no: 2,
+        slot: slot2.value,
+      },
+      {
+        no: 3,
+        slot: slot3.value,
+      },
+      {
+        no: 4,
+        slot: slot4.value,
+      },
+    ]
+  })
+
+  const rightSlots = computed(() => {
+    return [
+      {
+        no: 5,
+        slot: slot5.value,
+      },
+      {
+        no: 6,
+        slot: slot6.value,
+      },
+      {
+        no: 7,
+        slot: slot7.value,
+      },
+      {
+        no: 8,
+        slot: slot8.value,
+      },
+    ]
+  })
+
   const getSlotEquipUpgrade = (slot?: number) => {
     return equipments.value.find((e: any) => e.slot === slot)
   }
@@ -29,6 +71,8 @@ export const usePlayerSlot = defineStore('playerSlot', () => {
     slot6,
     slot7,
     slot8,
+    leftSlots,
+    rightSlots,
     getSlotEquipUpgrade,
   }
 })

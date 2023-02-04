@@ -1,35 +1,34 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { sendMessage, usePlayerSlot, usePlayerStore, useSoundClickEvent } from '#imports'
+import { sendMessage, usePlayerStore, useSoundClickEvent } from '#imports'
 import type { PlayerEquipment } from '~/types'
 const emits = defineEmits(['close'])
 
-const { getSlotEquipUpgrade } = usePlayerSlot()
-const { $io } = useNuxtApp()
-
+const $io = useNuxtApp().$io
 const { playerInfo } = storeToRefs(usePlayerStore())
-const { getPlayer } = usePlayerStore()
+const { fetchPlayer } = usePlayerStore()
 
-const equipSelected = ref<Partial<PlayerEquipment>>({})
 const needResource = ref()
 const loading = ref(false)
 const tooltip = ref(false)
-const showEquipInfo = ref(false)
+const options = reactive<{
+  showEquipInfo: boolean
+  equipSelected: Partial<PlayerEquipment>
+}>({
+  showEquipInfo: false,
+  equipSelected: {},
+})
 
-// onMounted(() => {
-// $io.emit('equip:upgrade:start', `equip:upgrade:${playerInfo.value?.sid}`)
 $io.on('upgrade:preview:response', (require) => {
-  console.log('require', require)
   needResource.value = require
 })
 
 $io.on('equip:upgrade:response', async (require: any) => {
-  await getPlayer()
+  fetchPlayer()
   needResource.value = require
   loading.value = false
-  sendMessage('Cường hoá thành công')
+  sendMessage('Cường hoá thành công', 2000, 'bottom')
 })
-// })
 
 onUnmounted(() => {
   $io.off('equip:upgrade:response')
@@ -37,7 +36,8 @@ onUnmounted(() => {
 })
 
 const onEquipSelected = (equip: PlayerEquipment) => {
-  equipSelected.value = equip
+  console.log('equip', equip)
+  options.equipSelected = equip
   $io.emit('equip:upgrade:preview', equip._id)
 }
 
@@ -47,29 +47,25 @@ const upgrade = () => {
   if (!playerInfo.value)
     return
 
-  if (!equipSelected.value._id) {
-    sendMessage('Đạo hữu cần chọn trang bị để nâng cấp')
+  if (!options.equipSelected._id) {
+    sendMessage('Đạo hữu cần chọn trang bị để nâng cấp', 2000, 'bottom')
     loading.value = false
     return
   }
 
   if (needResource.value.gold > playerInfo.value?.gold) {
-    sendMessage('Đạo hữu không đủ vàng để nâng cấp')
+    sendMessage('Đạo hữu không đủ vàng để nâng cấp', 2000, 'bottom')
     loading.value = false
     return
   }
 
   if (needResource.value.totalCuongHoaThach < needResource.value.cuongHoaThach) {
-    sendMessage('Nguyên liệu nâng cấp của đạo hữu không đủ')
+    sendMessage('Nguyên liệu nâng cấp của đạo hữu không đủ', 2000, 'bottom')
     loading.value = false
     return
   }
 
-  $io.emit('equip:upgrade', 'upgrade', equipSelected.value?._id)
-}
-
-const goToHome = () => {
-  emits('close')
+  $io.emit('equip:upgrade', 'upgrade', options.equipSelected?._id)
 }
 </script>
 
@@ -81,32 +77,35 @@ const goToHome = () => {
       <p>Thất bại sẽ giảm 1 cấp cường hóa.</p>
     </div>
   </var-popup>
-  <var-popup v-model:show="showEquipInfo" position="center">
-    <PopupEquipInfo :item="equipSelected" />
+  <var-popup v-model:show="options.showEquipInfo" position="center">
+    <PopupEquipInfo :item="options.equipSelected" />
   </var-popup>
-  <upgrade-item @equipSelected="onEquipSelected">
+  <upgrade-item @onselected="onEquipSelected">
     <template #title>
-      Cường hoá
+      <Line class="my-2">
+        <div class="whitespace-nowrap">
+          Cường hoá
+        </div>
+      </Line>
     </template>
-    <!--    <template #upgrade-level> -->
-    <!--      <div class="absolute bottom-0 pl-[2px] pb-[2px] text-12 font-semibold text-white w-[45px] flex justify-center"> -->
-    <!--        {{ getSlotEquipUpgrade(equipSelected?.slot)?.enhance }} cấp -->
-    <!--      </div> -->
-    <!--    </template> -->
   </upgrade-item>
   <div v-if="needResource" class="absolute bottom-0 w-full duration-500">
-    <div class="flex items-center justify-center">
-      <div class="flex items-center mx-1">
-        <nuxt-img format="webp" class="w-5 mr-1" src="/items/3_s.png" />
-        <span class="text-12 font-semibold text-[#52648e]">{{ needResource?.gold }}</span>
+    <div class="flex items-center flex-col justify-center">
+      <div class="flex items-center mx-1 font-semibold text-primary text-12">
+        <span class="">Tiền tiên: {{ needResource?.gold }}</span>
       </div>
-      <div class="flex items-center mx-1">
-        <nuxt-img format="webp" class="w-5 mr-1" src="/upgrade/cuonghoathach.png" />
-        <span class="text-12 font-semibold text-[#52648e]"> {{ needResource?.cuongHoaThach }}/{{ needResource?.totalCuongHoaThach }}</span>
+      <div class="flex items-center text-primary font-semibold text-12 mx-2">
+        <span class=""> Đá cường hoá: {{ needResource?.cuongHoaThach }}/{{ needResource?.totalCuongHoaThach }}</span>
       </div>
     </div>
     <div class="mb-6 mt-2 flex justify-center">
-      <var-button :loading="loading" class="!text-[#333] font-medium font-semibold uppercase" color="#ffd400" size="small" @click.stop="upgrade">
+      <var-button
+        :loading="loading"
+        class="italic font-semibold"
+        color="#ffd400"
+        size="small"
+        @click.stop="upgrade"
+      >
         Cường hoá
       </var-button>
     </div>

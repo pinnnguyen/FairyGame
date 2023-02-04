@@ -3,6 +3,7 @@ import { set } from '@vueuse/core'
 import type { PlayerEquipment } from '~/types'
 import { useFetch } from '#app'
 import { qualityPalette } from '~/common'
+import { QUALITY_TITLE } from '~/constants'
 
 const { data: equipments, pending, refresh } = await useFetch('/api/bag/equipments')
 const equipItemSelected = ref<PlayerEquipment>()
@@ -29,28 +30,30 @@ const onchangeEquip = () => {
     />
   </var-popup>
   <var-loading :loading="pending" description="Đang tải trang bị" color="#333">
-    <div
-      v-if="equipments.length > 0"
-      class="grid-cols-6 grid gap-1 overflow-auto max-h-[88%] scrollbar-hide"
-    >
-      <lazy-item-rank
-        v-for="equipment in equipments"
-        :key="equipment?._id"
-        :preview="equipment?.preview"
-        :rank="equipment?.rank"
-        :quality="equipment.quality"
-        :quantity="0"
-        class="w-12"
-        @click.stop="pickEquipItem(equipment)"
+    <div class="h-full w-full overflow-auto scrollbar-hide">
+      <div
+        v-if="equipments.length > 0"
+        class="grid-cols-3 grid gap-2"
       >
-        <p
-          class="text-10 font-semibold line-clamp-1" :style="{
-            color: qualityPalette(equipment.quality),
+        <div
+          v-for="equipment in equipments"
+          :key="equipment?._id"
+          class="rounded p-2"
+          :style="{
+            border: `1px solid ${qualityPalette(equipment.quality)}`,
           }"
+          @click.stop="pickEquipItem(equipment)"
         >
-          {{ equipment?.name }}
-        </p>
-      </lazy-item-rank>
+          <div
+            class="text-10 font-bold"
+            :style="{
+              color: qualityPalette(equipment.quality),
+            }"
+          >
+            {{ `${QUALITY_TITLE[equipment.quality ?? 1]} -` }} {{ equipment?.name }}
+          </div>
+        </div>
+      </div>
     </div>
   </var-loading>
 </template>

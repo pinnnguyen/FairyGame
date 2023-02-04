@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { sendMessage, usePlayerStore } from '#imports'
 import type { StoreItem } from '~/types'
+import { qualityPalette } from '~/common'
 
 defineProps<{
   storeItem: StoreItem
@@ -11,7 +12,7 @@ const { playerInfo } = storeToRefs(usePlayerStore())
 const loading = ref(false)
 const buy = async (storeItem: StoreItem) => {
   try {
-    const resBuy = await $fetch('/api/store/buy', {
+    const resBuy: any = await $fetch('/api/store/buy', {
       method: 'POST',
       body: {
         sid: playerInfo.value?.sid,
@@ -20,8 +21,8 @@ const buy = async (storeItem: StoreItem) => {
         currency: storeItem.currency,
       },
     })
-    sendMessage(resBuy.statusMessage)
 
+    sendMessage(resBuy.statusMessage)
     if (resBuy.statusCode === 200)
       playerInfo.value!.knb -= storeItem.price
   }
@@ -32,30 +33,32 @@ const buy = async (storeItem: StoreItem) => {
 </script>
 
 <template>
-  <div class="relative">
-    <nuxt-img format="webp" src="/common/bg-aution.png" />
-    <div class="absolute top-0">
-      <item-rank
-        class="m-2"
-        :quality="storeItem.info.rank"
-        :quantity="storeItem.quantity"
-        :rank="storeItem.info.rank"
-        :preview="storeItem.info.preview"
-      />
+  <div
+    class="rounded p-2"
+    :style="{
+      border: `1px solid ${qualityPalette(storeItem.props?.quality)}`,
+    }"
+  >
+    <div
+      class="text-10 font-bold" :style="{
+        color: qualityPalette(storeItem?.props?.quality),
+      }"
+    >
+      {{ storeItem.props?.name }}
     </div>
-    <div class="absolute top-0 right-0 flex mt-2 mr-2 flex-col ">
-      <div class="flex">
-        <nuxt-img class="w-4 object-cover" format="webp" src="/items/1_s.png" />
-        <span class="text-12 ml-1 font-semibold">
-          {{ storeItem.price ?? 0 }}
-        </span>
-      </div>
-      <var-button :loading="loading" type="warning" size="mini" @click="buy(storeItem)">
+    <div class="pt-2 text-10 line-clamp-2 text-primary">
+      {{ storeItem?.props?.note }}
+    </div>
+    <div class="mt-2 text-primary">
+      Giá bán: {{ storeItem?.price }}
+    </div>
+    <div class="text-center">
+      <button
+        class="px-2 py-[2px] shadow rounded mt-2 text-10 font-semibold text-white border-2 border-[#040404] bg-[#841919] w-full italic"
+        @click.stop="buy(storeItem)"
+      >
         Mua
-      </var-button>
+      </button>
     </div>
-    <p class="text-12 opacity-60 absolute bottom-1 font-semibold left-2 line-clamp-1">
-      {{ storeItem?.info?.name }}
-    </p>
   </div>
 </template>

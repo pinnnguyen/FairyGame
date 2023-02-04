@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Dialog } from '@varlet/ui'
+import { qualityPalette } from '~/common'
 
 defineProps<{
   items: any
@@ -8,7 +9,7 @@ defineProps<{
 const emits = defineEmits(['buy'])
 const show = ref(false)
 const itemSelected = ref({})
-const onSelectedGem = (item: any) => {
+const onSelectedItem = (item: any) => {
   itemSelected.value = item
   show.value = true
 }
@@ -52,25 +53,39 @@ const buy = (item: any) => {
       :item="itemSelected"
     />
   </var-popup>
-
-  <div class="absolute top-10 px-6 w-full">
-    <div class="grid grid-cols-2 m-auto overflow-auto mt-10 gap-2">
-      <div v-for="item in items" :key="item._id" class="relative">
-        <nuxt-img class="h-[75px] w-full" format="webp" src="/common/bg-aution.png" />
-        <div class="absolute w-12 h-12 transform-center left-[22%]" @click.stop="onSelectedGem(item)">
-          <nuxt-img format="webp" :src="`/quality_bg/iconbg_${item.info.rank}.png`" class="absolute top-0" />
-          <nuxt-img format="webp" :src="item.info.preview" class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" />
+  <div class="overflow-auto scrollbar-hide px-6 pt-4">
+    <div class="grid grid-cols-3 gap-2 text-10">
+      <div
+        v-for="item in items"
+        :key="item._id"
+        class="rounded p-2"
+        :style="{
+          border: `1px solid ${qualityPalette(item.props?.quality)}`,
+        }"
+        @click.stop="onSelectedItem(item)"
+      >
+        <div
+          class="text-12"
+          :style="{
+            color: qualityPalette(item.props?.quality),
+          }"
+        >
+          {{ item.props.name }}
         </div>
-        <div class="absolute top-0 right-0 flex mt-2 mr-2 flex-col w-1/2 h-full justify-around text-8">
-          <span>Người bán: {{ item.player.name }}</span>
-          <div class="flex justify-between">
-            <span>SL: {{ item.record.sum }}</span>
-            <div class="flex">
-              <nuxt-img class="w-3 object-contain" format="webp" src="/items/1_s.png" />
-              <span class="ml-1 font-semibold">{{ item.price }}</span>
-            </div>
-          </div>
-          <button class="mb-3 px-2 py-[2px] shadow rounded mr-2 text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]" @click.stop="buy(item)">
+        <div class="text-primary my-1">
+          (NB: {{ item.player.name }})
+        </div>
+        <div class="flex justify-between text-primary mb-1">
+          <span>
+            Giá bán: {{ item.price }}
+          </span>
+          <span>SL: {{ item.record.sum }}</span>
+        </div>
+        <div class="text-center">
+          <button
+            class="px-2 py-[2px] rounded text-10 font-semibold text-white border-2 border-[#040404] bg-[#841919] italic w-full"
+            @click.stop="buy(item)"
+          >
             Mua
           </button>
         </div>

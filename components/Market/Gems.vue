@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Dialog } from '@varlet/ui'
+import { qualityPalette } from '~/common'
 defineProps<{
   gems: any
 }>()
@@ -18,11 +19,10 @@ const buy = (gem: any) => {
     message: `Bạn có chắc muốn mua ${gem.record.name}`,
     confirmButtonText: 'Chắc chắn',
     cancelButtonText: 'Không chắc',
-    closeOnClickOverlay: false,
-    dialogClass: '!bg-black/70 text-white',
-    confirmButtonColor: '#5388c1',
-    confirmButtonTextColor: 'white',
-    cancelButtonTextColor: '#5388c1',
+    dialogClass: '!bg-black/80 text-white border border-white/40 italic',
+    confirmButtonColor: '#FFF',
+    confirmButtonTextColor: '#333',
+    cancelButtonTextColor: '#d2d2d2',
     onConfirm: async () => {
       try {
         const buyRes: { success: boolean; message: string } = await $fetch('/api/market/buy', {
@@ -52,31 +52,48 @@ const buy = (gem: any) => {
     />
   </var-popup>
 
-  <div class="absolute top-10 px-6 w-full">
-    <div class="grid grid-cols-2 m-auto overflow-auto mt-10 gap-2">
-      <div v-for="gem in gems" :key="gem._id" class="relative">
-        <nuxt-img class="h-[75px] w-full" format="webp" src="/common/bg-aution.png" />
-        <div class="absolute w-15 h-15 transform-center left-[22%]" @click.stop="onSelectedGem(gem)">
-          <nuxt-img format="webp" :src="`/quality_bg/iconbg_${gem.record.quality}.png`" class="absolute top-0" />
-          <nuxt-img format="webp" :src="`/gem/${gem.record.gemId}.png`" class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" />
-        </div>
-        <div class="absolute top-0 right-0 flex mt-2 mr-2 flex-col w-1/2 h-full justify-around text-8">
-          <span><icon name="tabler:user-check" size="12" /> {{ gem.player.name }}</span>
-          <span>{{ gem.record.name }}</span>
-          <div class="flex justify-between">
-            <span>SL: {{ gem.record.sum }}</span>
-            <div class="flex">
-              <nuxt-img class="w-3 object-contain" format="webp" src="/items/1_s.png" />
-              <span class="ml-1 font-semibold">{{ gem.price }}</span>
+  <div class="px-6 pt-2 overflow-auto scrollbar-hide">
+    <div class="grid grid-cols-2 gap-2">
+      <div
+        v-for="gem in gems" :key="gem._id"
+        class="rounded p-2 relative flex flex-col gap-2"
+        :style="{
+          border: `1px solid ${qualityPalette(gem?.record?.quality)}`,
+        }"
+        @click.stop="onSelectedGem(gem)"
+      >
+        <div class="flex gap-2">
+          <div class="relative w-12 h-12">
+            <nuxt-img
+              format="webp"
+              :src="`/quality_bg/iconbg_${gem?.record?.quality}.png`"
+              class="absolute top-0"
+            />
+            <nuxt-img
+              format="webp"
+              :src="`/gem/${gem?.record?.gemId}.png`"
+              class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover"
+            />
+            <div class="absolute bg-black/60 text-8 font-bold text-white bottom-1 right-1 px-1 rounded-2xl text-yellow-300">
+              {{ gem?.record?.sum }}
             </div>
           </div>
-          <button
-            class="mb-3 px-1 py-[2px] shadow rounded mr-2 text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]"
-            @click.stop="buy(gem)"
-          >
-            Mua
-          </button>
+          <div>
+            <div
+              class="text-10 font-semibold"
+              :style="{ color: qualityPalette(gem?.record?.quality) }"
+            >
+              {{ gem?.record?.name }}
+            </div>
+            <span class="text-primary">(NB: {{ gem.player?.name }})</span>
+          </div>
         </div>
+        <button
+          class="px-2 py-[2px] shadow rounded text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919] italic"
+          @click.stop="buy(gem)"
+        >
+          Mua
+        </button>
       </div>
     </div>
   </div>

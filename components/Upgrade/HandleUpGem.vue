@@ -143,13 +143,11 @@ onUnmounted(() => {
       @mergegem="onmergeGems"
     />
   </var-popup>
-  <div class="flex items-center justify-center w-[100vw] h-[70vh]">
-    <div class="w-full h-full relative">
-      <span class="font-bold absolute left-[calc(50%_-_50px)] top-[2px] text-[#656f99] text-12 w-25 flex justify-center">
+  <div class="flex items-center justify-center bg-[#191b1e] w-[95vw] h-[70vh]">
+    <div class="w-full h-full relative border border-white/40">
+      <span class="font-bold absolute left-[calc(50%_-_50px)] top-2 text-white text-12 w-25 flex justify-center">
         <slot name="title" />
       </span>
-      <nuxt-img class="w-full h-full" format="webp" src="/common/bj_tongyong_1.png" />
-      <div class="absolute top-[30px] flex flex-col gap-1 items-center justify-center w-full" />
       <div class="flex justify-between w-full absolute top-10 h-[85%]">
         <div class="flex flex-col gap-2 ml-2 w-[20%]">
           <div
@@ -289,8 +287,8 @@ onUnmounted(() => {
             <div v-else class="w-[40px] h-[40px] bg-iconbg_0 bg-cover rounded" />
           </div>
         </div>
-        <div class="w-[37%] bg-[#41737b] max-h-[100%] overflow-auto">
-          <div class="text-white text-center text-12 pt-2 bg-[#0f6f7e] h-10">
+        <div class="w-[37%] border-x border-[#303235] max-h-[100%] overflow-auto">
+          <div class="text-white text-center text-12 pt-2 border-b border-[#303235] h-10">
             Đá khảm
           </div>
           <div
@@ -322,13 +320,19 @@ onUnmounted(() => {
             </div>
           </template>
           <div class="text-center mt-2">
-            <var-button :loading="punchaLoading" loading-type="cube" size="mini" class="!text-[#333] font-medium mx-2 m-auto" @click="punchahole">
+            <var-button
+              :loading="punchaLoading"
+              loading-type="cube"
+              size="mini"
+              class="!text-[#333] font-medium mx-2 m-auto italic"
+              @click="punchahole"
+            >
               Đục lỗ
             </var-button>
           </div>
         </div>
-        <div class="w-[37%] bg-[#41737b] mr-4 ml-[1px] max-h-[100%] overflow-auto">
-          <div class="text-white text-center text-12 pt-2 bg-[#0f6f7e] h-10">
+        <div class="w-[37%] mr-4 ml-[1px] max-h-[100%] overflow-auto">
+          <div class="text-white text-center text-12 pt-2 h-10 border-b border-[#303235]">
             Có thể khảm
           </div>
           <template v-if="equipSelected._id">

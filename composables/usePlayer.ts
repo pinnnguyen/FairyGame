@@ -5,12 +5,16 @@ import type { PlayerDataResponse, PlayerServerResponse } from '~/types'
 export const usePlayerStore = defineStore('player', () => {
   const playerInfo = ref<PlayerDataResponse>()
 
+  const $io = useNuxtApp().$io
   const sid = computed(() => playerInfo.value?.sid)
   const mids = computed(() => playerInfo.value?.mid)
   const upgrade = computed(() => playerInfo.value?.upgrade)
   const attribute = computed(() => playerInfo.value?.attribute)
   const equipments = computed(() => playerInfo.value?.equipments)
 
+  const fetchPlayer = () => {
+    $io.emit('fetch:player', sid.value)
+  }
   const loadPlayer = (data: any) => {
     set(playerInfo, {
       ...data.player,
@@ -56,6 +60,7 @@ export const usePlayerStore = defineStore('player', () => {
     playerInfo,
     getPlayer,
     loadPlayer,
+    fetchPlayer,
     upgrade,
     attribute,
     equipments,

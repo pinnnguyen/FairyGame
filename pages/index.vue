@@ -3,12 +3,9 @@ import { usePlayerStore, useSoundHomeEvent } from '#imports'
 import { ROLE_IMG } from '~/constants'
 
 const { $io } = useNuxtApp()
-const { playerInfo } = usePlayerStore()
+const { playerInfo, loadPlayer } = usePlayerStore()
 
 const toggleAuction = useState('toggleAuction')
-const toggleStore = useState('toggleStore')
-
-const toggleBag = useState('toggleBag')
 const toggleUpgrade = useState('toggleUpgrade')
 
 const toggleUpStar = useState('toggleUpStar')
@@ -18,16 +15,15 @@ const toggleUpGem = useState('toggleUpGem')
 const togglePlayerInfo = useState('togglePlayerInfo')
 const toggleBoss = useState('toggleBoss')
 
-const startBattle = useState('startBattle')
-// console.log('bg_mu', bg_mu)
-// const activeSound = useSound(bg_mu, {
-//   volume: 0.5,
-// })
-
 // activeSound.play()
 definePageMeta({
   middleware: ['game'],
   auth: false,
+})
+
+$io.on('fetch:player:response', (data) => {
+  console.log('data', data)
+  loadPlayer(data)
 })
 
 onMounted(async () => {
@@ -39,12 +35,6 @@ onMounted(async () => {
   //   floor: playerInfo.value?.floor,
   //   levelTitle: playerInfo.value?.levelTitle,
   // })
-})
-const playerClassIMG = computed(() => {
-  if (!playerInfo?.class)
-    return ''
-
-  return ROLE_IMG[playerInfo.class]
 })
 </script>
 
@@ -58,12 +48,6 @@ const playerClassIMG = computed(() => {
   </var-popup>
   <var-popup v-model:show="toggleUpgrade" position="center">
     <Upgrade v-if="toggleUpgrade" />
-  </var-popup>
-  <var-popup v-model:show="toggleAuction" position="center">
-    <Market />
-  </var-popup>
-  <var-popup v-model:show="toggleStore" position="center">
-    <Store />
   </var-popup>
   <var-popup v-model:show="toggleUpStar" position="center">
     <UpgradeUpStar />
@@ -85,5 +69,6 @@ const playerClassIMG = computed(() => {
         <PageBottom />
       </div>
     </div>
+    <Chat />
   </PageSection>
 </template>

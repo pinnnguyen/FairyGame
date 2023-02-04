@@ -8,7 +8,7 @@ const { attribute } = storeToRefs(usePlayerStore())
 <template>
   <div class="flex pr-2 border-r-2 border-white/80 w-[45%]">
     <div>
-      <button class="mx-2 w-16 h-8 leading-3 shadow rounded font-bold border-1 text-primary border-white/40">
+      <button class="mx-2 w-9 py-2 leading-3 shadow rounded font-bold border-1 text-primary border-white/40">
         Chi tiết nhân vật
       </button>
     </div>

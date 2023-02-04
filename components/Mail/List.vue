@@ -57,7 +57,7 @@ const take = async () => {
     class="absolute bottom-0 transform-center w-25 flex items-center justify-center"
     @click.stop="onSelectedGem(record)"
   >
-    <div>
+    <div class="text-center">
       <div class="relative w-12 h-12 m-auto mt-2">
         <nuxt-img format="webp" :src="`/quality_bg/iconbg_${record.quality || record.rank}.png`" class="absolute top-0" />
         <nuxt-img v-if="recordType === 'gem'" format="webp" :src="`gem/${record.gemId}.png`" class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" />
@@ -67,7 +67,7 @@ const take = async () => {
         </div>
       </div>
       <p
-        class="text-10 font-semibold whitespace-nowrap" :style="{
+        class="text-10 font-semibold whitespace-nowrap pt-1" :style="{
           color: qualityPalette(record.quality),
         }"
       >

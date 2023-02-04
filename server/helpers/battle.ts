@@ -45,7 +45,7 @@ const handleTargetNormal = async (_p: PlayerInfo) => {
     }).select('value')
 
     // validate
-    let ms = 20000
+    let ms = 5000
     if (playerStatus && playerStatus.value)
       ms -= (ms / 100) * playerStatus.value
 

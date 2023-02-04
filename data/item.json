@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "Đá cường hoá",
-    "info": "Đạo cụ dùng để cường hoá trang bị",
+    "note": "Đạo cụ dùng để cường hoá trang bị",
     "kind": 2,
     "preview": "/items/11.png",
     "quality": 2
@@ -10,7 +10,7 @@
   {
     "id": 2,
     "name": "Đá nâng sao",
-    "info": "Đạo cụ dùng để nâng sao trang bị",
+    "note": "Đạo cụ dùng để nâng sao trang bị",
     "kind": 2,
     "preview": "/items/17.png",
     "quality": 2
@@ -18,7 +18,7 @@
   {
     "id": 3,
     "name": "Đá tẩy luyện",
-    "info": "Đạo cụ dùng để tẩy luyện trang bị",
+    "note": "Đạo cụ dùng để tẩy luyện trang bị",
     "kind": 2,
     "preview": "/items/18.png",
     "quality": 2
@@ -27,7 +27,7 @@
     "id": 4,
     "value": 5,
     "name": "Giảm thời gian làm mới quái (Thường)",
-    "info": "Đạo cụ dùng để làm giảm 5% thời gian làm mới quái vật khi treo tại vượt ải",
+    "note": "Đạo cụ dùng để làm giảm 5% thời gian làm mới quái vật khi treo tại vượt ải",
     "kind": 3,
     "preview": "/items/10043.png",
     "quality": 2
@@ -36,7 +36,7 @@
     "id": 5,
     "value": 10,
     "name": "Giảm thời gian làm mới quái (Trung)",
-    "info": "Đạo cụ dùng để làm giảm 10% thời gian làm mới quái vật khi treo tại vượt ải",
+    "note": "Đạo cụ dùng để làm giảm 10% thời gian làm mới quái vật khi treo tại vượt ải",
     "kind": 3,
     "preview": "/items/10044.png",
     "quality": 3
@@ -45,7 +45,7 @@
     "id": 6,
     "value": 15,
     "name": "Giảm thời gian làm mới quái (Cao)",
-    "info": "Đạo cụ dùng để làm giảm 15% thời gian làm mới quái vật khi treo tại vượt ải",
+    "note": "Đạo cụ dùng để làm giảm 15% thời gian làm mới quái vật khi treo tại vượt ải",
     "kind": 3,
     "preview": "/items/10045.png",
     "quality": 4
@@ -54,7 +54,7 @@
     "id": 7,
     "value": 20,
     "name": "Giảm thời gian làm mới quái (Hoàn mỹ)",
-    "info": "Đạo cụ dùng để làm giảm 20% thời gian làm mới quái vật khi treo tại vượt ải",
+    "note": "Đạo cụ dùng để làm giảm 20% thời gian làm mới quái vật khi treo tại vượt ải",
     "kind": 3,
     "preview": "/items/10046.png",
     "quality": 5
@@ -62,7 +62,7 @@
   {
     "id": 8,
     "name": "KNB",
-    "info": "Dùng mua các đạo cụ trong game",
+    "note": "Dùng mua các đạo cụ trong game",
     "kind": 3,
     "preview": "/items/1.png",
     "quality": 5

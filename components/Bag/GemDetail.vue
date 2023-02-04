@@ -81,7 +81,6 @@ const sell = async () => {
       <var-input v-model="sellOptions.price" type="number" placeholder="Nhập giá bán" />
       <var-input v-model="sellOptions.quantity" type="number" placeholder="Nhập số lượng" />
     </div>
-
     <div class="text-center my-4">
       <var-button
         class="!text-[#333] font-medium mx-2"
@@ -93,7 +92,7 @@ const sell = async () => {
     </div>
   </var-popup>
   <div
-    class="relative text-xs leading-6 text-white rounded shadow-md p-0 bg-black/60 border border-white/30 w-[90%] m-auto"
+    class="relative text-xs leading-6 text-white rounded shadow-md p-0 bg-black/70 border border-white/30 w-[90%] m-auto"
   >
     <div
       class="flex flex-col items-center justify-between px-3 pt-4 leading-5"
@@ -106,6 +105,7 @@ const sell = async () => {
         <div class="text-left">
           <p
             class="text-12 font-bold"
+            :style="{ color: qualityPalette(gem.quality) }"
           >
             {{ gem.name }}
           </p>
@@ -130,11 +130,13 @@ const sell = async () => {
       <div class="flex">
         <div class="w-25">
           Phẩm đá hồn :
-        </div><span
+        </div>
+        <span
           :style="{
             color: qualityPalette(gem.quality),
           }"
-        >{{ qualityTitle }}
+        >
+          {{ qualityTitle }}
         </span>
       </div>
       <div class="flex">
@@ -145,9 +147,11 @@ const sell = async () => {
           <gem-values :gem="gem" />
         </div>
       </div>
-      <div class="text-center mt-4 text-10">
-        --------Ghép Đá Hồn--------
-      </div>
+      <Line class="py-2">
+        <div class="whitespace-nowrap">
+          Ghép Đá Hồn
+        </div>
+      </Line>
       <div class="mt-2 flex justify-between items-center gap-2 mb-2">
         <div class="flex items-center border border-white/20 p-2">
           <div class="relative w-10 h-10 mr-2">
@@ -191,7 +195,7 @@ const sell = async () => {
       <div class="text-center py-2">
         <var-button
           v-if="sellAction"
-          class="!text-[#333] font-medium mx-2"
+          class="!text-[#333] font-semibold mx-2 italic"
           size="small"
           @click.stop="sellPopup = true"
         >
@@ -199,7 +203,7 @@ const sell = async () => {
         </var-button>
         <var-button
           v-if="selectAction"
-          class="!text-[#333] font-medium mx-2"
+          class="!text-[#333] mx-2 italic font-semibold"
           size="small"
           @click.stop="emits('selected', gem)"
         >
@@ -207,7 +211,7 @@ const sell = async () => {
         </var-button>
         <var-button
           v-if="gem.sum >= 3"
-          class="font-medium mx-2 !text-[#333]"
+          class="font-semibold mx-2 !text-[#333] italic"
           size="small"
           @click.stop="onmergeGems(gem)"
         >

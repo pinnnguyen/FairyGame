@@ -52,16 +52,22 @@ export const getPlayerItems = (sid: string) => {
         from: 'gl_items',
         foreignField: 'id',
         localField: 'itemId',
-        as: 'info',
+        as: 'props',
         pipeline: [
           {
             $limit: 1,
+          },
+          {
+            $project: {
+              _id: false,
+              __v: false,
+            },
           },
         ],
       },
     },
     {
-      $unwind: '$info',
+      $unwind: '$props',
     },
     {
       $sort: {

@@ -59,7 +59,7 @@ const MyTheme = {
 
 export default defineConfig({
   darkMode: 'class',
-  attributify: false,
+  attributify: true,
   extract: {
     include: [
       './components/**/*.{vue,js}',
@@ -83,9 +83,9 @@ export default defineConfig({
       18: '18px',
       20: '20px',
     },
-    // backgroundColor: {
-    //   'button-menu': 'radial-gradient(#332d2d, #191a1e)',
-    // },
+    backgroundColor: {
+      primary: '#191b1e',
+    },
     backgroundImage: {
       bg_aution: 'url("/common/bg-aution.png")',
       bg_bottom: 'url("/index/bg_bottom.png")',
