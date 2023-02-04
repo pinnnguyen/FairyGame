@@ -33,7 +33,7 @@ const tabItems = [
       </button>
     </div>
 
-    <div class="absolute w-full top-10 flex flex-col items-center p-4">
+    <div class="absolute top-10  flex flex-col items-center p-4 h-[calc(100%_-_47px)] overflow-auto">
       <BagEquipments v-if="currentTab === 'equip' " />
       <BagItems v-if="currentTab === 'item' " />
       <BagGems v-if="currentTab === 'gem' " />

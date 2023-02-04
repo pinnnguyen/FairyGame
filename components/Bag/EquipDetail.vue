@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PlayerEquipment } from '~/types'
-import { QUALITY_TITLE, SLOT_NAME } from '~/constants'
+import { ATTRIBUTE_NAME, QUALITY_TITLE, SLOT_NAME } from '~/constants'
 import { usePlayerStore } from '~/composables/usePlayer'
 import { backgroundQuality, qualityPalette } from '~/common'
 import { sendMessage } from '~/composables/useMessage'
@@ -116,7 +116,7 @@ const sell = async () => {
     </div>
   </var-popup>
   <div
-    class="relative text-white bg-black/70 leading-[23px] p-0 w-[85vw] m-auto overflow-hidden rounded border border-white/40"
+    class="relative text-white bg-primary leading-[23px] p-0 w-[85vw] m-auto overflow-hidden rounded border border-white/40"
   >
     <div class="text-12 font-medium">
       <div
@@ -143,76 +143,25 @@ const sell = async () => {
             Thuộc tính cơ bản
           </div>
         </Line>
-        <div class="mx-2">
-          <div v-for="(stat, index) in item.stats" :key="index">
-            <p v-if="stat.speed && stat.speed.main > 0" class="flex justify-between">
-              <span class="flex items-center gap-2">
-                <span>Tốc độ: {{ Math.round(stat.speed.main) }}</span>
-                <span v-if="item.enhance" class="text-green-300 flex items-center">
-                  (Cường hoá + {{ Math.round(stat.speed.enhance) }})
+        <div class="mx-2 w-full">
+          <div
+            v-for="(stat, si) in item.stats"
+            :key="si"
+          >
+            <div
+              v-for="(value, key) in stat"
+              :key="key"
+            >
+              <div v-if="value.main > 0 && value" class="flex justify-between">
+                <span> {{ ATTRIBUTE_NAME[key] }}: {{ Math.round(value.main) }}</span>
+                <span v-if="value.enhance" class="text-green-300 px-2">
+                  (Cường hoá + {{ Math.round(value.enhance) }})
+                  <span v-if="value.star > 0" class="text-yellow-300">
+                    ({{ Math.round(value.star) }})
+                  </span>
                 </span>
-                <span v-if="item.star > 0" class="text-yellow-300 flex items-center">
-                  {{ stat.speed.star }})
-                </span>
-              </span>
-            </p>
-            <p v-if="stat.damage && stat.damage.main > 0" class="flex justify-between">
-              <span class="flex items-center gap-2">
-                <span>Công kích: {{ Math.round(stat.damage.main) }}</span>
-                <span v-if="item.enhance" class="text-green-300 flex items-center">
-                  (Cường hoá + {{ Math.round(stat.damage.enhance) }})
-                </span>
-                <span v-if="item.star > 0" class="text-yellow-300 flex items-center">
-                  (<icon name="material-symbols:star" size="15" />
-                  {{ stat.damage.star }})
-                </span>
-              </span>
-            </p>
-            <p v-if="stat.def && stat.def.main > 0" class="flex justify-between">
-              <span class="flex items-center gap-2">
-                <span>Phòng ngự: {{ Math.round(stat.def.main) }}</span>
-                <span v-if="item.enhance" class="text-green-300 flex items-center">
-                  (Cường hoá + {{ Math.round(stat.def.enhance) }})
-                </span>
-                <span v-if="item.star > 0" class="text-yellow-300 flex items-center">
-                  {{ stat.def.star }})
-                </span>
-              </span>
-            </p>
-            <p v-if="stat.hp && stat.hp.main > 0" class="flex justify-between">
-              <span class="flex items-center gap-2">
-                <span> Sinh lực: {{ Math.round(stat.hp.main) }}</span>
-                <span v-if="item.enhance" class="text-green-300 flex items-center">
-                  (Cường hoá + {{ Math.round(stat.hp.enhance) }})
-                </span>
-                <span v-if="item.star > 0" class="text-yellow-300 flex items-center">
-                  {{ stat.hp.star }})
-                </span>
-              </span>
-            </p>
-            <p v-if="stat.critical && stat.critical.main > 0" class="flex justify-between">
-              <span class="flex items-center gap-2">
-                <span>Bạo kích: {{ Math.round(stat.critical.main) }}%</span>
-                <span v-if="item.enhance" class="text-green-300 flex items-center">
-                  (Cường hoá + {{ Math.round(stat.critical.enhance) }})
-                </span>
-                <span v-if="item.star > 0" class="text-yellow-300 flex items-center">
-                  {{ stat.critical.star }})
-                </span>
-              </span>
-            </p>
-            <p v-if="stat.bloodsucking && stat.bloodsucking.main > 0" class="flex justify-between">
-              <span class="flex items-center gap-2">
-                <span>Hút sinh lực: {{ Math.round(stat.bloodsucking.main) }}%</span>
-                <span v-if="item.enhance" class="text-green-300 flex items-center">
-                  (Cường hoá + {{ Math.round(stat.bloodsucking.enhance) }})
-                </span>
-                <span v-if="item.star > 0" class="text-yellow-300 flex items-center">
-                  (<icon name="material-symbols:star" size="15" />
-                  {{ stat.bloodsucking.star }})
-                </span>
-              </span>
-            </p>
+              </div>
+            </div>
           </div>
         </div>
         <Line class="my-2">

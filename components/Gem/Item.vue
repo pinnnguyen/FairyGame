@@ -22,13 +22,13 @@ const props = defineProps<{
     </div>
     <div class="w-[65%]">
       <span
-        class="ml-1 text-white text-10 line-clamp-1" :style="{
+        class="ml-1 text-white text-8 line-clamp-1" :style="{
           color: qualityPalette(gem.quality),
         }"
       >
         {{ gem.name }}
       </span>
-      <div class="flex flex-col text-10 leading-4 ml-1">
+      <div class="flex flex-col text-8 leading-4 ml-1">
         <gem-values :gem="gem" />
       </div>
     </div>

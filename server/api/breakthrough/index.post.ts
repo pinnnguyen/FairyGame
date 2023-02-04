@@ -3,6 +3,7 @@ import { PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
 import { randomNumber } from '~/common'
 import { UPGRADE_LEVEL } from '~/server/rule'
 import { getPlayer } from '~/server/helpers'
+import type { Player } from '~/types'
 interface Response {
   level: number
   nextLevel: number
@@ -10,6 +11,7 @@ interface Response {
   needGold: number
   message: string
   status: boolean
+  rate: number
 }
 
 const caseNone = (response: Response) => {
@@ -19,8 +21,8 @@ const caseNone = (response: Response) => {
   return response
 }
 
-const caseLevelUpNormal = async (response: Response, sjs: number, sid: string) => {
-  const pAttribute = await PlayerAttributeSchema.findOne({ sid })
+const caseLevelUpNormal = async (response: Response, sjs: number, _p: Player, rate: number) => {
+  const pAttribute = await PlayerAttributeSchema.findOne({ sid: _p.sid })
   if (!pAttribute) {
     return createError({
       statusCode: 400,
@@ -28,7 +30,7 @@ const caseLevelUpNormal = async (response: Response, sjs: number, sid: string) =
     })
   }
 
-  if (sjs <= 3) {
+  if (rate < sjs) {
     response.status = false
     response.message = 'Đột phá thất bại'
 
@@ -40,7 +42,7 @@ const caseLevelUpNormal = async (response: Response, sjs: number, sid: string) =
   const udef = 3 + Math.round(pAttribute.def / 70)
 
   // Đại cảnh giới đc tăng thêm chỉ số
-  await PlayerAttributeSchema.updateOne({ sid }, {
+  await PlayerAttributeSchema.updateOne({ sid: _p.sid }, {
     $inc: {
       hp: uhp,
       damage: udmg,
@@ -48,15 +50,15 @@ const caseLevelUpNormal = async (response: Response, sjs: number, sid: string) =
     },
   })
 
-  await playerLevelUp(sid)
+  await playerLevelUp(_p.sid)
   response.status = true
   response.message = 'Đột phá thành công'
 
   return response
 }
 
-const caseBigLevel = async (response: Response, sjs: number, sid: string) => {
-  const pAttribute = await PlayerAttributeSchema.findOne({ sid })
+const caseBigLevel = async (response: Response, sjs: number, _p: Player, rate: number) => {
+  const pAttribute = await PlayerAttributeSchema.findOne({ sid: _p.sid })
   if (!pAttribute) {
     return createError({
       statusCode: 400,
@@ -68,14 +70,14 @@ const caseBigLevel = async (response: Response, sjs: number, sid: string) => {
   const udmg = 2 + Math.round(pAttribute.damage / 10)
   const udef = 2 + Math.round(pAttribute.def / 10)
 
-  if (sjs < 8) {
+  if (rate < sjs) {
     response.status = false
     response.message = 'Đột phá thất bại'
 
     return response
   }
   // Đại cảnh giới đc tăng thêm chỉ số
-  await PlayerAttributeSchema.updateOne({ sid }, {
+  await PlayerAttributeSchema.updateOne({ sid: _p.sid }, {
     $inc: {
       hp: uhp,
       damage: udmg,
@@ -83,13 +85,38 @@ const caseBigLevel = async (response: Response, sjs: number, sid: string) => {
     },
   })
 
-  await playerLevelUp(sid)
+  await playerLevelUp(_p.sid)
   response.status = true
   response.message = 'Đột phá thành công'
 
   return response
 }
 
+export const getSjs = (tupo?: number, level?: number) => {
+  if (tupo === 1) {
+    let rate = 100 - level!
+    if (rate < 20)
+      rate = 30
+
+    return {
+      rate,
+    }
+  }
+
+  if (tupo === 2) {
+    let rate = 100 - level!
+    if (rate < 70)
+      rate = 70
+
+    return {
+      rate,
+    }
+  }
+
+  return {
+    rate: 100,
+  }
+}
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const playerAfter = await getPlayer('', body.sid)
@@ -102,14 +129,16 @@ export default defineEventHandler(async (event) => {
 
   const _p = playerAfter.player
   const { needGold } = conditionForUpLevel(_p)
-  const sjs = randomNumber(1, 10)
   const upgrade = shouldTupo(_p)
+  const { rate } = getSjs(upgrade, _p.level)
+  const sjs = randomNumber(1, 100)
 
   const response: Response = {
     level: _p.level,
     nextLevel: _p.level + 1,
     gold: _p.gold,
     needGold,
+    rate,
     message: '',
     status: true,
   }
@@ -151,10 +180,10 @@ export default defineEventHandler(async (event) => {
     case UPGRADE_LEVEL.BIG_UP_LEVEL:
       response.status = true
       response.message = 'Đột đại phá thành công'
-      await caseBigLevel(response, sjs, _p.sid)
+      await caseBigLevel(response, sjs, _p, rate)
       break
     case UPGRADE_LEVEL.UP_LEVEL:
-      await caseLevelUpNormal(response, sjs, _p.sid)
+      await caseLevelUpNormal(response, sjs, _p, rate)
       break
   }
 

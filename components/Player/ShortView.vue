@@ -3,12 +3,16 @@ import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '~/composables/usePlayer'
 
 const { attribute } = storeToRefs(usePlayerStore())
+const togglePlayerInfo = useState('togglePlayerInfo')
 </script>
 
 <template>
-  <div class="flex pr-2 border-r-2 border-white/80 w-[45%]">
+  <div class="flex pr-2 border-r-2 border-white/10 w-[45%]">
     <div>
-      <button class="mx-2 w-9 py-2 leading-3 shadow rounded font-bold border-1 text-primary border-white/40">
+      <button
+        class="mx-2 w-9 py-2 leading-3 shadow rounded font-bold border-1 text-primary border-white/40"
+        @click.stop="togglePlayerInfo = true"
+      >
         Chi tiết nhân vật
       </button>
     </div>

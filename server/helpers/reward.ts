@@ -6,7 +6,7 @@ import { ItemSchema, PlayerSchema, addPlayerEquipments, addPlayerItem } from '~/
 import { DEFAULT_MAX_RATE_RECEIVED, DEFAULT_MIN_RATE_RECEIVED, WINNER } from '~/constants'
 
 export const setLastTimeReceivedRss = async (sid: string) => {
-  await PlayerSchema.updateOne({ sid }, { lastTimeReceivedRss: new Date().getTime() })
+  await PlayerSchema.findOneAndUpdate({ sid }, { lastTimeReceivedRss: new Date().getTime() })
 }
 
 export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject, winner: string) => {
@@ -85,9 +85,9 @@ export const receivedItems = async (sid: string, _enemyObj: EnemyObject, winner:
         itemResponse.push({
           kind: itemDrafts[i].kind,
           name: itemDrafts[i].name,
-          info: itemDrafts[i].info,
+          note: itemDrafts[i].note,
           preview: itemDrafts[i].preview,
-          rank: itemDrafts[i].rank,
+          quality: itemDrafts[i].quality,
           value: itemDrafts[i].value,
           quantity: itemReceived[j].quantity,
         })
@@ -95,7 +95,7 @@ export const receivedItems = async (sid: string, _enemyObj: EnemyObject, winner:
     }
   }
 
-  console.log('itemResponse', itemResponse)
+  console.log('take', itemResponse)
   return {
     itemDrafts: itemResponse,
   }

@@ -4,6 +4,9 @@ import { SLOT_NAME } from '~/constants'
 import type { PlayerEquipment } from '~/types'
 import { qualityPalette } from '~/common'
 
+defineProps<{
+  wClass?: string
+}>()
 const { leftSlots, rightSlots } = storeToRefs(usePlayerSlot())
 const options = reactive<{
   equipSelected: Partial<PlayerEquipment>
@@ -25,7 +28,7 @@ const setSlot = (slot: PlayerEquipment) => {
       :action="false"
     />
   </var-popup>
-  <div class="gap-4 grid grid-cols-4 p-3">
+  <div :class="wClass" class="gap-4 grid grid-cols-4 p-3 text-center">
     <div
       v-for="leftS in leftSlots"
       :key="leftS.no"
@@ -49,7 +52,7 @@ const setSlot = (slot: PlayerEquipment) => {
         <span class="text-10 font-bold italic">
           {{ SLOT_NAME[leftS.no] }}
           <div class="text-8 whitespace-nowrap">
-            (Chưa trang bị)
+            (Trống)
           </div>
         </span>
       </button>
@@ -77,7 +80,7 @@ const setSlot = (slot: PlayerEquipment) => {
         <span class="text-10 font-bold italic">
           {{ SLOT_NAME[rightS.no] }}
           <span class="text-8 whitespace-nowrap">
-            (Chưa trang bị)
+            (Trống)
           </span>
         </span>
       </button>

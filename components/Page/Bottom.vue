@@ -154,28 +154,28 @@ const setTab = (t: string) => {
   <var-popup v-model:show="upgradeOptions" position="center">
     <div class="w-[90vw] bg-[#191b1e] flex flex-col justify-center items-center p-5 rounded border border-white/40">
       <div
-        class="bg-white rounded flex rounded-[150px] items-center justify-center w-[60%] h-[35px] p-1 relative m-3"
+        class="bg-[#fff] rounded flex rounded-[150px] items-center justify-center w-[60%] h-[35px] p-1 relative m-3"
         @click="onToggleUpgrade"
       >
-        <span class="font-bold">
+        <span class="font-semibold">
           Cường hoá
         </span>
       </div>
       <div
-        class="bg-white rounded-[150px] flex items-center justify-center w-[60%] h-[35px] p-1 mt-2 relative m-3"
+        class="bg-[#fff] rounded-[150px] flex items-center justify-center w-[60%] h-[35px] p-1 mt-2 relative m-3"
         @click="onToggleUpStar"
       >
-        <span class="font-bold">
+        <span class="font-semibold">
           Nâng sao
         </span>
       </div>
-      <div class="bg-white rounded-[150px] flex items-center justify-center w-[60%] h-[35px] p-1 mt-2 relative m-3" @click="onToggleUpRank">
-        <span class="font-bold">
+      <div class="bg-[#fff] rounded-[150px] flex items-center justify-center w-[60%] h-[35px] p-1 mt-2 relative m-3" @click="onToggleUpRank">
+        <span class="font-semibold">
           Tăng bậc
         </span>
       </div>
-      <div class="bg-white rounded-[150px] flex items-center justify-center w-[60%] h-[35px] p-1 mt-2 relative m-3" @click="onToggleUpGem">
-        <span class="font-bold">
+      <div class="bg-[#fff] rounded-[150px] flex items-center justify-center w-[60%] h-[35px] p-1 mt-2 relative m-3" @click="onToggleUpGem">
+        <span class="font-semibold">
           Đá hồn
         </span>
       </div>
@@ -205,9 +205,13 @@ const setTab = (t: string) => {
         <Line class="mb-4">
           Thuộc tính nhân vật
         </Line>
-        <div class="flex">
-          <PlayerShortView />
-          <PlayerTupo />
+        <div class="flex items-center justify-center">
+          <div class="flex w-full justify-around">
+            <PlayerShortView />
+            <div>
+              <PlayerTupo />
+            </div>
+          </div>
         </div>
         <Line class="mt-4">
           Thiết lập trang bị

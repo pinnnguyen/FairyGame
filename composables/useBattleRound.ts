@@ -152,7 +152,12 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
         if (emuT.action) {
           await sleep(TURN_DELAY.value)
           set(playerEffect, _turn)
-          // await useSoundEventAttack()
+          try {
+            useSoundEventAttack()
+          }
+          catch (e) {
+            console.log('e', e)
+          }
           realTime.value[__turn].sureDamage = true
 
           receiver.value[__turn].hp = emuT.now.hp[__turn]
@@ -196,6 +201,10 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     }
   }
 
+  const onStop = () => {
+    set(stop, true)
+  }
+
   onUnmounted(() => {
     set(stop, true)
   })
@@ -216,6 +225,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     rankDMG,
     speed,
     setSKIP,
+    onStop,
     roundNum,
   }
 })

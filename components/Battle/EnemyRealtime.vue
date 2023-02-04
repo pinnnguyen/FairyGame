@@ -14,13 +14,13 @@ const enemyClassIMG = computed(() => {
 </script>
 
 <template>
+  <!--    :style="{ -->
+  <!--      transform: realTime.player.sureDamage ? 'translate(-20%)' : '', -->
+  <!--    }" -->
   <div
     class="relative duration-500 transition-transform border-1 border-white/40 rounded-md px-1 h-14"
-    :style="{
-      transform: realTime.player.sureDamage ? 'translate(-20%)' : '',
-    }"
   >
-    <div class="w-35 italic">
+    <div class="w-30 italic relative">
       <div class="flex justify-start items-end">
         <span class="text-12 ml-1 text-[#34a830] line-clamp-1">{{ state?.enemy?.name ?? '...' }}</span>
       </div>
@@ -30,6 +30,10 @@ const enemyClassIMG = computed(() => {
         :receiver="receiver"
         :is-enemy="true"
       />
+      <img
+        v-show="realTime.enemy.sureDamage"
+        class="h-20 transform-center absolute" :src="`/battle/player_gif.gif?v=${randomNumber(1, 1000)}`"
+      >
     </div>
     <span
       class="battle-action-bloodsucking whitespace-nowrap"
@@ -55,14 +59,10 @@ const enemyClassIMG = computed(() => {
       class="battle-damage"
       :class="{ show: realTime.enemy.sureDamage && !realTime.enemy?.avoid }"
     >
-      <span v-if="realTime?.enemy?.critical" class="whitespace-nowrap font-bold">
+      <span v-if="realTime?.enemy?.critical" class="whitespace-nowrap font-bold !opacity-100">
         Bạo kích -{{ realTime.enemy.dmg }}
       </span>
       <span v-else>-{{ realTime.enemy.dmg }}</span>
     </span>
-    <!--    <img -->
-    <!--      v-if="realTime.enemy.sureDamage" -->
-    <!--      class="w-[105px] h-[105px] absolute" :src="`/battle/player_gif.gif?v=${randomNumber(1, 1000)}`" -->
-    <!--    > -->
   </div>
 </template>

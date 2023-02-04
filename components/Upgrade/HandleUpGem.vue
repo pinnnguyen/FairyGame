@@ -2,14 +2,16 @@
 import { storeToRefs } from 'pinia'
 import { Dialog } from '@varlet/ui'
 import { set } from '@vueuse/core'
+import { SLOT_NAME } from '../../constants'
 import { usePlayerSlot } from '~/composables/usePlayerSlot'
 import type { PlayerEquipment, PlayerGem } from '~/types'
 import { sendMessage, usePlayerStore } from '#imports'
+import { qualityPalette } from '~/common'
 
 const emits = defineEmits(['equipSelected'])
 const { $io } = useNuxtApp()
 
-const { slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8 } = storeToRefs(usePlayerSlot())
+const { slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8, leftSlots, rightSlots } = storeToRefs(usePlayerSlot())
 const { getSlotEquipUpgrade } = usePlayerSlot()
 
 const { getPlayer } = usePlayerStore()
@@ -69,7 +71,7 @@ const punchahole = () => {
   $io.off('gem:preview:response')
   $io.emit('equip:gem:preview', equipSelected.value._id)
 
-  $io.on('gem:preview:response', (data) => {
+  $io.on('gem:preview:response', (data: any) => {
     Dialog({
       title: 'Nhắc nhở',
       message: `Đục thêm 1 lỗ trên trang bi này cần ${data?.needPunchAHole} KNB đạo hữu có muốn thực hiện?`,
@@ -149,146 +151,69 @@ onUnmounted(() => {
         <slot name="title" />
       </span>
       <div class="flex justify-between w-full absolute top-10 h-[85%]">
-        <div class="flex flex-col gap-2 ml-2 w-[20%]">
+        <div class="flex flex-col gap-2 ml-2 w-[20%] h-full overflow-auto">
           <div
-            class="flex justify-center mx-1"
-            :class="{
-              'bg-black/10': slot1?._id === equipSelected?._id,
-            }"
+            v-for="leftS in leftSlots"
+            :key="leftS.no"
           >
-            <item-rank
-              v-if="slot1?.preview"
-              class="w-[40px] h-[40px]"
-              :quantity="0"
-              :quality="slot1.quality"
-              :rank="slot1.rank"
-              :preview="slot1?.preview"
-              @click.stop="equipSelected = slot1"
-            />
-            <div v-else class="w-[40px] h-[40px] bg-iconbg_0 bg-cover rounded" />
+            <button
+              v-if="leftS.slot"
+              class="diamond w-15"
+              :class="{
+                'border border-green-500 bg-[#000000]': equipSelected?._id === leftS.slot?._id,
+              }"
+              @click.stop="equipSelected = leftS.slot"
+            >
+              <div class="text-10 font-bold italic">
+                {{ leftS.slot?.name }}(+{{ leftS.slot?.enhance }})
+              </div>
+            </button>
+            <button
+              v-else
+              class="diamond w-15"
+            >
+              <div class="text-10 font-bold italic">
+                {{ SLOT_NAME[leftS.no] }}
+                <div class="text-8 whitespace-nowrap">
+                  (Trống)
+                </div>
+              </div>
+            </button>
           </div>
           <div
-            class="flex justify-center mx-1"
-            :class="{
-              'bg-black/10': slot2?._id === equipSelected?._id,
-            }"
+            v-for="rightS in rightSlots"
+            :key="rightS.no"
           >
-            <item-rank
-              v-if="slot2?.preview"
-              class="w-[40px] h-[40px]"
-              :quantity="0"
-              :quality="slot2.quality"
-              :rank="slot2.rank"
-              :preview="slot2?.preview"
-              @click.stop="equipSelected = slot2"
-            />
-            <div v-else class="w-[40px] h-[40px] bg-iconbg_0 bg-cover rounded" />
-          </div>
-          <div
-            class="flex justify-center mx-1"
-            :class="{
-              'bg-black/10': slot3?._id === equipSelected?._id,
-            }"
-          >
-            <item-rank
-              v-if="slot3?.preview"
-              class="w-[40px] h-[40px]"
-              :quantity="0"
-              :quality="slot3.quality"
-              :rank="slot3.rank"
-              :preview="slot3?.preview"
-              @click.stop="equipSelected = slot3"
-            />
-            <div v-else class="w-[40px] h-[40px] bg-iconbg_0 bg-cover rounded" />
-          </div>
-          <div
-            class="flex justify-center mx-1"
-            :class="{
-              'bg-black/10': slot4?._id === equipSelected?._id,
-            }"
-          >
-            <item-rank
-              v-if="slot4?.preview"
-              class="w-[40px] h-[40px]"
-              :quantity="0"
-              :quality="slot4.quality"
-              :rank="slot4.rank"
-              :preview="slot4?.preview"
-              @click.stop="equipSelected = slot4"
-            />
-            <div v-else class="w-[40px] h-[40px] bg-iconbg_0 bg-cover rounded" />
-          </div>
-          <div
-            class="flex justify-center mx-1"
-            :class="{
-              'bg-black/10': slot5?._id === equipSelected?._id,
-            }"
-          >
-            <item-rank
-              v-if="slot5?.preview"
-              class="w-[40px] h-[40px]"
-              :quantity="0"
-              :quality="slot5.quality"
-              :rank="slot5.rank"
-              :preview="slot5?.preview"
-              @click.stop="equipSelected = slot5"
-            />
-            <div v-else class="w-[40px] h-[40px] bg-iconbg_0 bg-cover rounded" />
-          </div>
-          <div
-            class="flex justify-center mx-1"
-            :class="{
-              'bg-black/10': slot6?._id === equipSelected?._id,
-            }"
-          >
-            <item-rank
-              v-if="slot6?.preview"
-              class="w-[40px] h-[40px]"
-              :quantity="0"
-              :quality="slot6.quality"
-              :rank="slot6.rank"
-              :preview="slot6?.preview"
-              @click.stop="equipSelected = slot6"
-            />
-            <div v-else class="w-[40px] h-[40px] bg-iconbg_0 bg-cover rounded" />
-          </div>
-          <div
-            class="flex justify-center mx-1"
-            :class="{
-              'bg-black/10': slot7?._id === equipSelected?._id,
-            }"
-          >
-            <item-rank
-              v-if="slot7?.preview"
-              class="w-[40px] h-[40px]"
-              :quantity="0"
-              :quality="slot7.quality"
-              :rank="slot7.rank"
-              :preview="slot7?.preview"
-              @click.stop="equipSelected = slot7"
-            />
-            <div v-else class="w-[55px] h-[55px] bg-iconbg_0 bg-cover rounded" />
-          </div>
-          <div
-            class="flex justify-center mx-1"
-            :class="{
-              'bg-black/10': slot8?._id === equipSelected?._id,
-            }"
-          >
-            <item-rank
-              v-if="slot8?.preview"
-              class="w-[40px] h-[40px]"
-              :quantity="0"
-              :quality="slot8.quality"
-              :rank="slot8.rank"
-              :preview="slot8?.preview"
-              @click.stop="equipSelected = slot8"
-            />
-            <div v-else class="w-[40px] h-[40px] bg-iconbg_0 bg-cover rounded" />
+            <button
+              v-if="rightS.slot"
+              class="diamond w-15"
+              :class="{
+                'border border-green-500 bg-green-500': equipSelected?._id === leftS.slot?._id,
+              }"
+              :style="{
+                border: `1px solid ${qualityPalette(rightS.slot?.quality)}`,
+              }"
+              @click.stop="equipSelected = rightS.slot"
+            >
+              <div class="text-10 font-bold italic">
+                {{ rightS.slot?.name }}(+{{ rightS.slot?.enhance }})
+              </div>
+            </button>
+            <button
+              v-else
+              class="diamond w-15"
+            >
+              <div class="text-10 font-bold italic">
+                {{ SLOT_NAME[rightS.no] }}
+                <div class="text-8 whitespace-nowrap">
+                  (Trống)
+                </div>
+              </div>
+            </button>
           </div>
         </div>
-        <div class="w-[37%] border-x border-[#303235] max-h-[100%] overflow-auto">
-          <div class="text-white text-center text-12 pt-2 border-b border-[#303235] h-10">
+        <div class="w-[37%] border-x border-white/10 max-h-[100%] overflow-auto">
+          <div class="text-white text-center text-12 pt-2 border-b border-white/10 h-10">
             Đá khảm
           </div>
           <div
@@ -310,17 +235,18 @@ onUnmounted(() => {
             <div
               v-for="i in reduceGemSlot"
               :key="i"
-              class="flex items-center px-1 p-1 bg-black/40 mb-[1px]"
+              class="flex items-center px-1 p-1 bg-black/40 mb-[1px] border border-white/20 m-2"
             >
               <img
                 src="/gem/default.png"
                 class="w-10 h-10 bg-black"
               >
-              <span class="ml-2 text-white text-10"> (Chưa khảm) </span>
+              <span class="ml-2 text-primary text-8"> (Chưa khảm) </span>
             </div>
           </template>
           <div class="text-center mt-2">
             <var-button
+              v-if="equipSelected._id"
               :loading="punchaLoading"
               loading-type="cube"
               size="mini"
@@ -332,14 +258,14 @@ onUnmounted(() => {
           </div>
         </div>
         <div class="w-[37%] mr-4 ml-[1px] max-h-[100%] overflow-auto">
-          <div class="text-white text-center text-12 pt-2 h-10 border-b border-[#303235]">
+          <div class="text-white text-center text-12 pt-2 h-10 border-b border-white/10">
             Có thể khảm
           </div>
           <template v-if="equipSelected._id">
             <gem-item
               v-for="(gem, i) in gems"
               :key="i"
-              class="px-1 p-1 bg-black/40 mb-[1px]"
+              class="px-1 m-1 p-1 bg-black/40 mb-[1px] border border-white/20"
               bg-class="!w-10 !h-10"
               :gem="gem"
               @click="showGemWithAction(gem)"

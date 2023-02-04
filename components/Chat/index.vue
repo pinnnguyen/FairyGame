@@ -76,7 +76,7 @@ const openMail = () => {
           :class="{
             '!opacity-100': tab === 'general',
           }"
-          class="transition transition-opacity bg-white text-[#333] opacity-40 text-white px-2 m-2 p-1 text-14 uppercase"
+          class="transition transition-opacity bg-[#ffffff] text-[#333] opacity-40 text-white px-2 m-2 p-1 text-14 uppercase"
           @click="tab = 'general'"
         >
           Chung
@@ -85,14 +85,18 @@ const openMail = () => {
           :class="{
             '!opacity-100': tab !== 'general',
           }"
-          class="transition transition-opacity bg-white text-[#333] opacity-40 text-white px-2 m-2 p-1 text-14 uppercase"
+          class="transition transition-opacity bg-[#ffffff] text-[#333] opacity-40 text-white px-2 m-2 p-1 text-14 uppercase"
           @click="tab = 'system'"
         >
           Hệ thống
         </span>
       </div>
       <div class="h-[50vh] w-[90%] m-auto relative overflow-auto">
-        <div v-for="(content, index) in typeContents" :key="index" class="relative mb-7 flex justify-start items-center bg-[#332d27] m-2 p-2">
+        <div
+          v-for="(content, index) in typeContents"
+          :key="index"
+          class="relative mb-7 flex justify-start items-center bg-[#332d27] m-2 p-2"
+        >
           <div
             class="text-white font-bold h-5 text-14 text-left mr-2 whitespace-nowrap"
             :class="{
@@ -104,7 +108,7 @@ const openMail = () => {
           <span class="text-left text-12 text-white">
             {{ content.content }}
           </span>
-          <p class="absolute bottom-[-10px] right-0 bg-black/60 rounded-lg text-10 px-2">
+          <p class="absolute bottom-[-10px] right-0 bg-black/60 rounded-lg text-10 px-2 text-white">
             {{ fromNow(new Date(content.createdAt).getTime()) }}
           </p>
         </div>
@@ -118,8 +122,10 @@ const openMail = () => {
   <var-popup v-model:show="toggle.mail" position="center">
     <Mail :mails="mails" />
   </var-popup>
-  <div class="h-12 bg-black/80 text-12 w-full flex items-center justify-between gap-2 p-2 fixed bottom-0">
-    <nuxt-img src="/bottom/menu/XJShare_07.png" format="webp" class="w-8" @click="toggle.chat = true" />
+  <div class="h-12 bg-black/80 text-12 w-full flex items-center justify-between gap-2 p-2 fixed bottom-0 border-t border-white/10">
+    <button class="h-8 w-8 rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu" @click="toggle.chat = true">
+      <span class="">Giao lưu</span>
+    </button>
     <div class="h-12 overflow-auto text-left">
       <div v-for="content in typeContents" :key="content._id">
         <span
@@ -130,14 +136,15 @@ const openMail = () => {
           [{{ content.name }}]
         </span>
         :
-        <span>
+        <span class="text-white">
           {{ content.content }}
         </span>
       </div>
     </div>
     <div class="relative">
-      <nuxt-img src="/bottom/menu/XJHomescreenButton_45.png" format="webp" class="w-8" @click.stop="openMail" />
-      <span class="absolute bg-red-600 w-4 h-4 rounded-full top-0 text-10 right-0 flex items-center justify-center">{{ mailUnread.length }}</span>
+      <button class="h-8 w-8 rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu" @click="openMail">
+        <span class="">Thư <span class="text-10">({{ mailUnread.length }})</span></span>
+      </button>
     </div>
   </div>
 </template>

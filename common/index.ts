@@ -1,3 +1,5 @@
+import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule'
+
 export const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -200,5 +202,30 @@ export const backgroundQuality = (quality: number) => {
     return {
       'background-image': 'linear-gradient(#e17298, #e172981a)',
     }
+  }
+}
+
+export const playerTitle = (level: number, playerNextLevel: number) => {
+  let levelTitle = ''
+  let floor = ''
+  let expLimited = 0
+
+  for (let i = 0; i < RANGE_PLAYER_BIG_LEVEL.length; i++) {
+    if (level >= RANGE_PLAYER_BIG_LEVEL[i] && level < RANGE_PLAYER_BIG_LEVEL[i + 1]) {
+      const djc = level - RANGE_PLAYER_BIG_LEVEL[i]
+      const jds = (RANGE_PLAYER_BIG_LEVEL[i + 1] - RANGE_PLAYER_BIG_LEVEL[i]) / 10
+      const dd = Math.floor(djc / jds)
+      const jd = RANGE_LEVEL_ID[dd]
+
+      levelTitle = PLAYER_LEVEL_TITLE[i]
+      floor = `Tầng ${jd}`
+      expLimited = playerNextLevel * (playerNextLevel + Math.round(playerNextLevel / 5)) * 12 * RANGE_EXP_A_LEVEL[i] + playerNextLevel
+    }
+  }
+
+  return {
+    levelTitle,
+    floor,
+    expLimited,
   }
 }

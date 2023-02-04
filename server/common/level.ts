@@ -8,6 +8,7 @@ import {
 import type { Player } from '~/types'
 import { PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
 import { getPlayer } from '~/server/helpers'
+import { getSjs } from '~/server/api/breakthrough/index.post'
 
 export const shouldTupo = (_p: Player) => {
   const playerNextLevel = _p.level + 1
@@ -19,11 +20,11 @@ export const shouldTupo = (_p: Player) => {
         return 1
       }
 
-      const djc = playerNextLevel - RANGE_PLAYER_BIG_LEVEL[i]
-      const jds = (RANGE_PLAYER_BIG_LEVEL[i + 1] - RANGE_PLAYER_BIG_LEVEL[i]) / 10
-      const jieduan = Math.floor(djc / jds)
-      const jd = RANGE_LEVEL_ID[jieduan]
-      if (_p.floor !== `Tầng ${jd}`) {
+      const bl = playerNextLevel - RANGE_PLAYER_BIG_LEVEL[i]
+      const blbl = (RANGE_PLAYER_BIG_LEVEL[i + 1] - RANGE_PLAYER_BIG_LEVEL[i]) / 10
+      const j = Math.floor(bl / blbl)
+      const rli = RANGE_LEVEL_ID[j]
+      if (_p.floor !== `Tầng ${rli}`) {
         // đột phá cấp độ
         return 2
       }
@@ -40,7 +41,7 @@ export const playerLevelUp = async (sid: string) => {
 
   if (_p.player.exp >= _p.player.expLimited) {
     // Giảm exp hiện tại khi tăng level & + 1 level
-    await PlayerSchema.updateOne({ sid }, {
+    await PlayerSchema.findOneAndUpdate({ sid }, {
       $inc: {
         exp: -_p.player.expLimited,
         level: 1,
@@ -51,7 +52,7 @@ export const playerLevelUp = async (sid: string) => {
     const playerNextLevel = _p.player.level + 1
     for (let i = 0; i < RANGE_PLAYER_BIG_LEVEL.length; i++) {
       if (playerNextLevel >= RANGE_PLAYER_BIG_LEVEL[i] && playerNextLevel < RANGE_PLAYER_BIG_LEVEL[i + 1]) {
-        await PlayerAttributeSchema.updateOne({ sid }, {
+        await PlayerAttributeSchema.findOneAndUpdate({ sid }, {
           $inc: {
             hp: RANGE_HP_A_LEVEL[i],
             damage: RANGE_DMG_A_LEVEL[i],
@@ -70,6 +71,7 @@ export const playerLevelUp = async (sid: string) => {
 export const conditionForUpLevel = (_p: Player) => {
   let needGold = 0
   const upgrade = shouldTupo(_p)
+  const { rate } = getSjs(upgrade, _p.level)
   if (upgrade === UPGRADE_LEVEL.BIG_UP_LEVEL)
     needGold = _p.level * _p.level * _p.level * 10
   else if (upgrade === UPGRADE_LEVEL.UP_LEVEL)
@@ -77,5 +79,6 @@ export const conditionForUpLevel = (_p: Player) => {
 
   return {
     needGold,
+    rate,
   }
 }

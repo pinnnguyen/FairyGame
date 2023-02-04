@@ -6,7 +6,7 @@ import { qualityPalette } from '~/common'
 
 const { data: items, pending, refresh } = await useFetch('/api/bag/items')
 
-const selectedItem = ref()
+const selectedItem = ref<PlayerItem>()
 const show = ref(false)
 const pickItem = (item: PlayerItem) => {
   set(selectedItem, item)
@@ -28,26 +28,27 @@ const onSell = () => {
     />
   </var-popup>
   <var-loading :loading="pending" description="Đang tải trang bị" color="#333">
-    <div class="h-full w-full overflow-auto scrollbar-hide">
+    <div
+      class="grid-cols-3 grid gap-2 "
+    >
       <div
-        class="grid-cols-3 grid gap-2 "
+        v-for="item in items" :key="item.id" class="rounded p-2" :style="{
+          border: `1px solid ${qualityPalette(item.props.quality)}`,
+        }"
+        @click.stop="pickItem(item)"
       >
         <div
-          v-for="item in items" :key="item.id" class="rounded p-2" :style="{
-            border: `1px solid ${qualityPalette(item.props.quality)}`,
+          class="text-10 font-bold line-clamp-1" :style="{
+            color: qualityPalette(item.props.quality),
           }"
-          @click.stop="pickItem(item)"
         >
-          <div
-            class="text-10 font-bold line-clamp-1" :style="{
-              color: qualityPalette(item.props.quality),
-            }"
-          >
-            {{ item?.props.name }}
-          </div>
-          <div class="pt-2 text-[10px]">
-            {{ item?.props.note }}
-          </div>
+          {{ item?.props.name }}
+        </div>
+        <div class="pt-2 text-[10px]">
+          {{ item?.props.note }}
+        </div>
+        <div class="pt-2 text-8 text-right">
+          SL: {{ item?.sum }}
         </div>
       </div>
     </div>

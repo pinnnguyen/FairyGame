@@ -60,7 +60,7 @@ watch(options, (value) => {
               <span class="text-10 font-bold italic">
                 {{ SLOT_NAME[leftS.no] }}
                 <span class="text-8">
-                  (Chưa trang bị)
+                  (Trống)
                 </span>
               </span>
             </button>
@@ -100,7 +100,7 @@ watch(options, (value) => {
               <span class="text-10 font-bold italic">
                 {{ SLOT_NAME[rightS.no] }}
                 <span class="text-8">
-                  (Chưa trang bị)
+                  (Trống)
                 </span>
               </span>
             </button>

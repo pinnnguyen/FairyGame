@@ -21,11 +21,10 @@ const buy = (equipment: any) => {
     message: `Bạn có chắc muốn mua ${equipment.record.name}`,
     confirmButtonText: 'Chắc chắn',
     cancelButtonText: 'Không chắc',
-    closeOnClickOverlay: false,
-    dialogClass: '!bg-black/70 text-white',
-    confirmButtonColor: '#5388c1',
-    confirmButtonTextColor: 'white',
-    cancelButtonTextColor: '#5388c1',
+    dialogClass: '!bg-black/80 text-white border border-white/10 italic',
+    confirmButtonColor: '#FFF',
+    confirmButtonTextColor: '#333',
+    cancelButtonTextColor: '#d2d2d2',
     onConfirm: async () => {
       try {
         const buyRes: { success: boolean; message: string } = await $fetch('/api/market/buy', {
@@ -80,8 +79,8 @@ const buy = (equipment: any) => {
         </div>
         <div class="text-center">
           <button
-            class="px-2 py-[2px] shadow rounded text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919] italic w-full"
-            @click="buy(equipment)"
+            class="px-2 py-[2px] shadow rounded text-10 font-semibold !text-white bg-[#841919] italic w-full"
+            @click.stop="buy(equipment)"
           >
             Mua
           </button>

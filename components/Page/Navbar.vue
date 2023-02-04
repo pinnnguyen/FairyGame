@@ -8,12 +8,12 @@ const { playerInfo } = storeToRefs(usePlayerStore())
 
 <template>
   <div class="relative text-white">
-    <div class="flex items-center text-12 justify-between p-1 absolute w-full z-100 bg-black border-b border-[#303235]">
+    <div class="flex items-center text-12 justify-between p-1 absolute w-full z-100 bg-black border-b border-white/10">
       <div class="text-white pl-4 flex">
         <div class="flex items-center pr-2">
           {{ playerInfo?.name }}
         </div>
-        <div class="border-l border-[#303235] pl-2">
+        <div class="border-l border-white/10 pl-2 text-10">
           <div>
             Tu vi {{ formatCash(playerInfo.exp) }}
           </div>
@@ -23,7 +23,7 @@ const { playerInfo } = storeToRefs(usePlayerStore())
           </div>
         </div>
       </div>
-      <div class="pr-2">
+      <div class="pr-2 text-10">
         <span>Tiên duyên: </span>
         <span class="">{{ playerInfo?.knb }}</span>
       </div>

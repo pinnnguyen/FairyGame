@@ -178,7 +178,7 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
   const attribute = player.attribute
   const playerEquips = player.equipments
 
-  const { needGold } = conditionForUpLevel(player)
+  const { needGold, rate } = conditionForUpLevel(player)
   const mid = await MidSchema.find({
     id: {
       $in: [player.midId, (player.midId) + 1],
@@ -217,6 +217,7 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
     upgrade: {
       condition: {
         needGold,
+        rate,
         beUpgraded: player?.exp >= player?.expLimited,
       },
     },

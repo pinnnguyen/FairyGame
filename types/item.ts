@@ -7,6 +7,7 @@ export interface BasicItem {
   preview?: string
   value?: number
   quantity?: number
+  quality?: number
 }
 
 export interface Item {

@@ -19,7 +19,7 @@ const buy = (gem: any) => {
     message: `Bạn có chắc muốn mua ${gem.record.name}`,
     confirmButtonText: 'Chắc chắn',
     cancelButtonText: 'Không chắc',
-    dialogClass: '!bg-black/80 text-white border border-white/40 italic',
+    dialogClass: '!bg-black/80 text-white border border-white/10 italic',
     confirmButtonColor: '#FFF',
     confirmButtonTextColor: '#333',
     cancelButtonTextColor: '#d2d2d2',
@@ -89,7 +89,7 @@ const buy = (gem: any) => {
           </div>
         </div>
         <button
-          class="px-2 py-[2px] shadow rounded text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919] italic"
+          class="px-2 py-[2px] shadow rounded text-10 font-semibold !text-white bg-[#841919] italic"
           @click.stop="buy(gem)"
         >
           Mua

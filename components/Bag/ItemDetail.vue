@@ -94,7 +94,7 @@ const sell = async () => {
     </div>
   </var-popup>
   <div
-    class="rounded p-2 bg-black/70"
+    class="rounded p-2 bg-primary"
     :style="{
       border: `1px solid ${qualityPalette(item.props?.quality)}`,
     }"

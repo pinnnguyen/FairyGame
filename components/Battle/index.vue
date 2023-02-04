@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { Snackbar } from '@varlet/ui'
-import { sendMessage, useBattleRoundStore, usePlayerStore, useSoundBattleEvent } from '#imports'
+import { sendMessage, useBattleRoundStore, usePlayerStore, useSoundBattleEvent, useSoundRewardEvent } from '#imports'
 import { BATTLE_KIND, BATTLE_TURN, TARGET_TYPE, WINNER } from '~/constants'
 import type { BattleResponse } from '~/types'
 
@@ -19,7 +19,7 @@ const {
 } = storeToRefs(useBattleRoundStore())
 
 const { $io } = useNuxtApp()
-const { startBattle, setSKIP } = useBattleRoundStore()
+const { startBattle, onStop } = useBattleRoundStore()
 const { playerInfo } = storeToRefs(usePlayerStore())
 
 const { loadPlayer } = usePlayerStore()
@@ -39,14 +39,16 @@ onMounted(() => {
 
   $io.on('battle:start', async (war: BattleResponse) => {
     warResult.value = war
-    await startBattle(war, () => {
+    await startBattle(war, async () => {
       // $io.emit('fetch:player', playerInfo.value?.sid)
       playerInfo.value.gold += reward.value?.base.gold ?? 0
       playerInfo.value.exp += reward.value?.base.exp ?? 0
 
       Snackbar.allowMultiple(true)
-      sendMessage(`Nhận Tiền Tiên x${reward.value?.base.gold}`, 2000, 'top')
-      sendMessage(`Nhận Tu Vi x${reward.value?.base.exp}`, 200, 'top')
+      sendMessage(`Nhận Tiền Tiên x${reward.value?.base.gold}`, 3000, 'top')
+      sendMessage(`Nhận Tu Vi x${reward.value?.base.exp}`, 3000, 'top')
+      useSoundRewardEvent()
+
       $io.emit('battle:refresh', {
         skip: false,
       })
@@ -58,7 +60,7 @@ onUnmounted(async () => {
   $io.off('battle:start')
 })
 
-const isWinner = computed(() => warResult.value?.winner === WINNER.youwin)
+// const isWinner = computed(() => warResult.value?.winner === WINNER.youwin)
 const refreshFinished = () => {
   console.log('refreshFinished')
   $io.emit('battle:refresh', {
@@ -73,6 +75,7 @@ const nextMid = async () => {
       method: 'POST',
     })
 
+    onStop()
     loadPlayer(player)
     loading.value = false
     $io.emit('battle:refresh', {
@@ -138,42 +141,14 @@ const retry = () => {
     </div>
     <div class="h-10 absolute bottom-0 bg-black w-full flex items-center justify-end italic">
       <div class="text-[#f5f5f5] text-12 flex items-center">
-        <span>Hiện tại: thứ {{ playerInfo?.midId }} Ải</span>
+        <span class="mx-2">Hiện tại: thứ {{ playerInfo?.midId }} Ải</span>
         <button
-          class="h-6 px-2 ml-1 shadow rounded mr-2 text-10 font-semibold text-white border-2 border-[#040404] bg-[#841919] shadow italic"
+          class="h-6 px-2 ml-1 shadow rounded mx-2 text-10 font-semibold text-white bg-[#841919] shadow italic"
           @click.stop="nextMid"
         >
           Khiêu chiến
         </button>
       </div>
     </div>
-    <!--    <div -->
-    <!--      class="relative h-[40%] bg-[#f3ebdb]" -->
-    <!--    > -->
-    <!--      <nuxt-img src="/pve/alert.png" format="webp" class="absolute top-0 w-full h-full object-fill" /> -->
-    <!--      &lt;!&ndash;        <div class="p-4 h-full w-full absolute top-0 overflow-scroll scrollbar-hide"> &ndash;&gt; -->
-    <!--      &lt;!&ndash;          <BattleHistory :battle-rounds="battleRounds" /> &ndash;&gt; -->
-    <!--      &lt;!&ndash;        </div> &ndash;&gt; -->
-    <!--      <div class="flex items-center flex-col justify-center w-full absolute bottom-2"> -->
-    <!--        <BattleRevice -->
-    <!--          v-if="inRefresh" -->
-    <!--          :refresh-time="refreshTime" -->
-    <!--          @refresh-finished="refreshFinished" -->
-    <!--        /> -->
-    <!--        &lt;!&ndash;          <div class="flex items-center gap-2"> &ndash;&gt; -->
-    <!--        &lt;!&ndash;            <button v-if="roundNum > 5" class="px-2 py-[2px] shadow rounded mr-2 text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]" @click="setSKIP(true)"> &ndash;&gt; -->
-    <!--        &lt;!&ndash;              Bỏ qua &ndash;&gt; -->
-    <!--        &lt;!&ndash;            </button> &ndash;&gt; -->
-    <!--        &lt;!&ndash;            <div class="py-2"> &ndash;&gt; -->
-    <!--        &lt;!&ndash;              <button v-show="speed === 1" class="px-2 py-[2px] shadow rounded mr-2 text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]" @click="speed = 2"> &ndash;&gt; -->
-    <!--        &lt;!&ndash;                Tăng tốc &ndash;&gt; -->
-    <!--        &lt;!&ndash;              </button> &ndash;&gt; -->
-    <!--        &lt;!&ndash;              <button v-show="speed === 2" class="px-2 py-[2px] shadow rounded mr-2 text-10 font-semibold !text-white !border-2 !border-[#040404] bg-[#841919]" @click="speed = 1"> &ndash;&gt; -->
-    <!--        &lt;!&ndash;                Giảm tốc &ndash;&gt; -->
-    <!--        &lt;!&ndash;              </button> &ndash;&gt; -->
-    <!--        &lt;!&ndash;            </div> &ndash;&gt; -->
-    <!--        &lt;!&ndash;          </div> &ndash;&gt; -->
-    <!--      </div> -->
-    <!--    </div> -->
   </var-loading>
 </template>

@@ -30,28 +30,26 @@ const onchangeEquip = () => {
     />
   </var-popup>
   <var-loading :loading="pending" description="Đang tải trang bị" color="#333">
-    <div class="h-full w-full overflow-auto scrollbar-hide">
+    <div
+      v-if="equipments.length > 0"
+      class="grid-cols-3 grid gap-2"
+    >
       <div
-        v-if="equipments.length > 0"
-        class="grid-cols-3 grid gap-2"
+        v-for="equipment in equipments"
+        :key="equipment?._id"
+        class="rounded p-2"
+        :style="{
+          border: `1px solid ${qualityPalette(equipment.quality)}`,
+        }"
+        @click.stop="pickEquipItem(equipment)"
       >
         <div
-          v-for="equipment in equipments"
-          :key="equipment?._id"
-          class="rounded p-2"
+          class="text-10 font-bold"
           :style="{
-            border: `1px solid ${qualityPalette(equipment.quality)}`,
+            color: qualityPalette(equipment.quality),
           }"
-          @click.stop="pickEquipItem(equipment)"
         >
-          <div
-            class="text-10 font-bold"
-            :style="{
-              color: qualityPalette(equipment.quality),
-            }"
-          >
-            {{ `${QUALITY_TITLE[equipment.quality ?? 1]} -` }} {{ equipment?.name }}
-          </div>
+          {{ `${QUALITY_TITLE[equipment.quality ?? 1]} -` }} {{ equipment?.name }}
         </div>
       </div>
     </div>

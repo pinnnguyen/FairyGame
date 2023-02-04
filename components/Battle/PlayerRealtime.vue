@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { randomNumber } from '~/common'
 const props = defineProps<{
   realTime: any
   state: any
@@ -7,13 +8,13 @@ const props = defineProps<{
 </script>
 
 <template>
+  <!--  :style="{ -->
+  <!--  transform: realTime.enemy.sureDamage ? 'translate(20%)' : '', -->
+  <!--  }" -->
   <div
     class="relative duration-500 transition-transform border-1 border-white/40 rounded-md px-1 h-14"
-    :style="{
-      transform: realTime.enemy.sureDamage ? 'translate(20%)' : '',
-    }"
   >
-    <div class="w-30 italic">
+    <div class="w-30 italic relative">
       <div class="flex justify-start items-end">
         <span class="text-12 ml-1 text-[#6ce8d4] line-clamp-1">{{ state?.player?.name ?? '...' }}</span>
       </div>
@@ -23,6 +24,11 @@ const props = defineProps<{
         :receiver="receiver"
         :is-enemy="false"
       />
+      <img
+        v-show="realTime.player.sureDamage"
+        class="h-20 transform-center absolute"
+        :src="`/battle/enemy_gif.gif?v=${randomNumber(1, 1000)}`"
+      >
     </div>
     <span
       class="battle-action-bloodsucking whitespace-nowrap"
@@ -59,10 +65,5 @@ const props = defineProps<{
     <!--      }" format="webp" class="h-[120px]" -->
     <!--      src="/pve/player.png" -->
     <!--    /> -->
-    <!--    <img -->
-    <!--      v-if="realTime.player.sureDamage" -->
-    <!--      class="w-[105px] h-[105px] absolute" -->
-    <!--      :src="`/battle/enemy_gif.gif?v=${randomNumber(1, 1000)}`" -->
-    <!--    > -->
   </div>
 </template>

@@ -11,7 +11,6 @@ import {
 } from '~/server/helpers'
 import {
   BattleSchema,
-  addPlayerGem,
   addSystemChat,
 } from '~/server/schema'
 import { startWar } from '~/helpers'

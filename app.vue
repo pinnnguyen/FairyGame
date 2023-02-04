@@ -14,6 +14,8 @@ StyleProvider({
   '--snackbar-width': '200px',
   '--popup-content-background-color': '1',
   '--dialog-message-color': 'white',
+  '--dialog-background': '#191b1e',
+  '--dialog-cancel-button-color': '#d2d2d2',
 })
 
 const { loading } = useAppStore()

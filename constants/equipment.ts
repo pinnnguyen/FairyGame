@@ -20,3 +20,22 @@ export const QUALITY_TITLE: Record<number, string> = {
   8: 'Bát Phẩm',
   9: 'Cửu Phẩm',
 }
+
+export const ATTRIBUTE_NAME: Record<string, string> = {
+  speed: 'Tốc độ',
+  damage: 'Công kích',
+  hp: 'Sinh lực',
+  mp: 'Năng lượng',
+  def: 'Phòng thủ',
+  critical: 'Bạo kích',
+  bloodsucking: 'Hút sinh lực',
+  criticalDamage: 'Sát thương bạo kích',
+  avoid: 'Phản đòn',
+  reductionAvoid: '',
+  reductionCriticalDamage: '',
+  reductionBloodsucking: '',
+  counterAttack: '',
+  recoveryPerformance: '',
+  reductionRecoveryPerformance: '',
+  reductionCounterAttack: '',
+}

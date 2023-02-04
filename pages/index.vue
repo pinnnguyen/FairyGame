@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { usePlayerStore, useSoundHomeEvent } from '#imports'
-import { ROLE_IMG } from '~/constants'
+import { usePlayerStore } from '#imports'
 
 const { $io } = useNuxtApp()
 const { playerInfo, loadPlayer } = usePlayerStore()
 
-const toggleAuction = useState('toggleAuction')
 const toggleUpgrade = useState('toggleUpgrade')
 
 const toggleUpStar = useState('toggleUpStar')
@@ -21,15 +19,14 @@ definePageMeta({
   auth: false,
 })
 
-$io.on('fetch:player:response', (data) => {
-  console.log('data', data)
+$io.on('fetch:player:response', (data: any) => {
   loadPlayer(data)
 })
 
 onMounted(async () => {
-  setTimeout(async () => {
-    await useSoundHomeEvent().play()
-  }, 10000)
+  // setTimeout(async () => {
+  //   await useSoundHomeEvent().play()
+  // }, 10000)
   // shouldTupo({
   //   level: playerInfo.value?.level,
   //   floor: playerInfo.value?.floor,

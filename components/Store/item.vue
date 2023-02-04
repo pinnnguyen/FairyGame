@@ -54,7 +54,7 @@ const buy = async (storeItem: StoreItem) => {
     </div>
     <div class="text-center">
       <button
-        class="px-2 py-[2px] shadow rounded mt-2 text-10 font-semibold text-white border-2 border-[#040404] bg-[#841919] w-full italic"
+        class="px-2 py-[2px] shadow rounded mt-2 text-10 font-semibold text-white bg-[#841919] w-full italic"
         @click.stop="buy(storeItem)"
       >
         Mua

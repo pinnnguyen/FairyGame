@@ -10,8 +10,14 @@ import bg_music_home from '~/assets/sound/76180931-42ba-4a4f-a837-940988b10b49.m
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import attack from '~/assets/sound/attack.mp3'
+import reward from '~/assets/sound/reward.mp3'
 
 const audioHome = new Audio(bg_music_home)
+
+export const useSoundRewardEvent = async () => {
+  const audio = new Audio(reward)
+  await audio.play()
+}
 
 export const useSoundClickEvent = async () => {
   const audio = new Audio(click)
