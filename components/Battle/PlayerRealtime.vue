@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import { randomNumber } from '~/common'
-import { ROLE_IMG } from '~/constants'
-
 const props = defineProps<{
   realTime: any
   state: any
   receiver: any
 }>()
-
-const playerClassIMG = computed(() => {
-  return ROLE_IMG[props.state?.player?.class]
-})
 </script>
 
 <template>
