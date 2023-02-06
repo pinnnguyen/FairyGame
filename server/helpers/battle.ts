@@ -11,7 +11,7 @@ import {
   // addSystemChat,
   reviveBossElite,
 } from '~/server/schema'
-import type { BattleRequest, EnemyObject, PlayerInfo } from '~/types'
+import type { BattleRequest, Boss, PlayerInfo } from '~/types'
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { PlayerStatusTypeCon } from '~/types'
 
@@ -124,32 +124,36 @@ const handleTargetElite = async (_p: PlayerInfo) => {
   }
 }
 
-const handleTargetDaily = async (_p: PlayerInfo, battleRequest: BattleRequest, _enemyObj: EnemyObject) => {
+const handleTargetDaily = async (_p: PlayerInfo, battleRequest: BattleRequest, _enemyObj: Partial<Boss>) => {
   const now = new Date().getTime()
   const today = moment().startOf('day')
 
-  console.log('battleRequest', battleRequest)
-  const numberOfBattle = await BattleSchema.find({
+  const battle = await BattleSchema.find({
     sid: _p.player.sid,
     kind: BATTLE_KIND.BOSS_DAILY,
-    targetId: battleRequest.target.id,
+    targetId: _enemyObj._id,
     createdAt: {
       $gte: moment().startOf('day'),
       $lte: moment(today).endOf('day').toDate(),
     },
-  }).count()
+  }).select('player enemy reward winner kind')
 
-  console.log('numberOfBattle', numberOfBattle)
-  if (numberOfBattle > _enemyObj?.numberOfTurn) {
+  if (!battle.length) {
+    return {
+      inRefresh: false,
+    }
+  }
+
+  const numberOfBattle = battle.length
+  if (numberOfBattle >= _enemyObj.numberOfTurn!) {
     return {
       inRefresh: true,
       refreshTime: new Date(moment(today).endOf('day').toDate()).getTime() - now,
-      playerBefore: null,
-      enemyBefore: null,
-      reward: null,
-      winnerBefore: null,
-      winner: '',
-      kind: '',
+      playerBefore: battle[0].player,
+      enemyBefore: battle[0].enemy,
+      reward: battle[0].reward,
+      winnerBefore: battle[0].winner,
+      kind: battle[0].kind,
     }
   }
 
@@ -182,7 +186,7 @@ export const handleBeforeStartWar = async (battleRequest: BattleRequest, _p: Pla
 
     return {
       _enemyObj,
-      ...await handleTargetDaily(_p, battleRequest, _enemyObj),
+      ...await handleTargetDaily(_p, battleRequest, (_enemyObj as Boss)),
     }
   }
 

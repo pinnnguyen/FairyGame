@@ -9,7 +9,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="flex items-center relative">
+  <div class="flex items-center relative w-full">
     <div
       :class="bgClass"
       class="w-12 h-12 relative"
@@ -22,7 +22,7 @@ const props = defineProps<{
     </div>
     <div class="w-[65%]">
       <span
-        class="ml-1 text-white text-8 line-clamp-1" :style="{
+        class="ml-1 text-white text-10 line-clamp-1" :style="{
           color: qualityPalette(gem.quality),
         }"
       >

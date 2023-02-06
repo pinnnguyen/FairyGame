@@ -37,9 +37,9 @@ const caseLevelUpNormal = async (response: Response, sjs: number, _p: Player, ra
     return response
   }
 
-  const uhp = 5 + Math.round(pAttribute.hp / 50)
-  const udmg = 3 + Math.round(pAttribute.damage / 70)
-  const udef = 3 + Math.round(pAttribute.def / 70)
+  const uhp = 50 + Math.round(pAttribute.hp / 100)
+  const udmg = 25 + Math.round(pAttribute.damage / 70)
+  const udef = 25 + Math.round(pAttribute.def / 70)
 
   // Đại cảnh giới đc tăng thêm chỉ số
   await PlayerAttributeSchema.updateOne({ sid: _p.sid }, {
@@ -66,9 +66,9 @@ const caseBigLevel = async (response: Response, sjs: number, _p: Player, rate: n
     })
   }
 
-  const uhp = 4 + Math.round(pAttribute.hp / 20)
-  const udmg = 2 + Math.round(pAttribute.damage / 10)
-  const udef = 2 + Math.round(pAttribute.def / 10)
+  const uhp = 250 + Math.round(pAttribute.hp / 30)
+  const udmg = 50 + Math.round(pAttribute.damage / 20)
+  const udef = 50 + Math.round(pAttribute.def / 20)
 
   if (rate < sjs) {
     response.status = false
@@ -95,7 +95,7 @@ const caseBigLevel = async (response: Response, sjs: number, _p: Player, rate: n
 export const getSjs = (tupo?: number, level?: number) => {
   if (tupo === 1) {
     let rate = 100 - level!
-    if (rate < 20)
+    if (rate < 30)
       rate = 30
 
     return {
@@ -151,7 +151,7 @@ export default defineEventHandler(async (event) => {
 
   if (_p.gold < needGold) {
     response.status = false
-    response.message = `Bạn cần ${needGold} Vàng để đột phá`
+    response.message = `Bạn cần ${needGold} Tiền tiên để đột phá`
     return response
   }
 

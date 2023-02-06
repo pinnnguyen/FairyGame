@@ -54,7 +54,7 @@ const upgrade = () => {
   }
 
   if (needResource.value.gold > playerInfo.value?.gold) {
-    sendMessage('Đạo hữu không đủ vàng để nâng cấp', 2000, 'bottom')
+    sendMessage('Đạo hữu không đủ Tiền tiên để nâng cấp', 2000, 'bottom')
     loading.value = false
     return
   }

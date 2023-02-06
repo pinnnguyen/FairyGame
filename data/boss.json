@@ -1,15 +1,16 @@
 [
   {
     "id": 1,
-    "name": "10 Cấp",
+    "name": "Ma Hóa Sơn Tiêu",
+    "quality": 1,
     "kind": "daily",
     "level": 10,
     "info": "",
     "sex": "",
     "attribute": {
-      "damage": 150,
-      "def": 20,
-      "hp": 5500,
+      "damage": 250,
+      "def": 50,
+      "hp": 15000,
       "mp": 0,
       "critical": 0,
       "bloodsucking": 0
@@ -17,8 +18,8 @@
     "numberOfTurn": 5,
     "reward": {
       "base": {
-        "exp": 10,
-        "gold": 10
+        "exp": 1000,
+        "gold": 1500
       },
       "equipRates": [
         {
@@ -60,15 +61,16 @@
   },
   {
     "id": 2,
-    "name": "20 Cấp",
+    "name": "Ma Hóa Man Lang",
     "kind": "daily",
+    "quality": 1,
     "level": 20,
     "info": "",
     "sex": "",
     "attribute": {
-      "damage": 300,
-      "def": 20,
-      "hp": 10000,
+      "damage": 500,
+      "def": 300,
+      "hp": 30000,
       "mp": 0,
       "critical": 10,
       "bloodsucking": 10
@@ -76,8 +78,8 @@
     "numberOfTurn": 5,
     "reward": {
       "base": {
-        "exp": 10,
-        "gold": 10
+        "exp": 2000,
+        "gold": 3000
       },
       "equipRates": [
         {
@@ -119,15 +121,16 @@
   },
   {
     "id": 3,
-    "name": "30 Cấp",
+    "name": "Bách Niên Xà",
     "kind": "daily",
+    "quality": 2,
     "level": 30,
     "info": "",
     "sex": "",
     "attribute": {
-      "damage": 600,
-      "def": 50,
-      "hp": 15000,
+      "damage": 750,
+      "def": 450,
+      "hp": 45000,
       "mp": 0,
       "critical": 10,
       "bloodsucking": 10
@@ -135,8 +138,8 @@
     "numberOfTurn": 5,
     "reward": {
       "base": {
-        "exp": 10,
-        "gold": 10
+        "exp": 3000,
+        "gold": 4500
       },
       "equipRates": [
         {
@@ -150,15 +153,16 @@
   },
   {
     "id": 4,
-    "name": "40 Cấp",
+    "name": "Xích Luyện Phúc Xà",
     "kind": "daily",
+    "quality": 2,
     "level": 40,
     "info": "",
     "sex": "",
     "attribute": {
-      "damage": 1000,
-      "def": 50,
-      "hp": 20000,
+      "damage": 2500,
+      "def": 700,
+      "hp": 60000,
       "mp": 0,
       "critical": 10,
       "bloodsucking": 10
@@ -166,8 +170,8 @@
     "numberOfTurn": 5,
     "reward": {
       "base": {
-        "exp": 10,
-        "gold": 10
+        "exp": 5000,
+        "gold": 5500
       },
       "equipRates": [
         {
@@ -181,15 +185,16 @@
   },
   {
     "id": 5,
-    "name": "50 Cấp",
+    "name": "Thanh Cổ Hổ",
     "kind": "daily",
+    "quality": 3,
     "level": 50,
     "info": "",
     "sex": "",
     "attribute": {
-      "damage": 1800,
-      "def": 100,
-      "hp": 30000,
+      "damage": 3500,
+      "def": 2500,
+      "hp": 90000,
       "mp": 0,
       "critical": 10,
       "bloodsucking": 10
@@ -197,8 +202,8 @@
     "numberOfTurn": 5,
     "reward": {
       "base": {
-        "exp": 10,
-        "gold": 10
+        "exp": 6000,
+        "gold": 6500
       },
       "equipRates": [
         {
@@ -212,15 +217,16 @@
   },
   {
     "id": 6,
-    "name": "60 Cấp",
+    "name": "Hắc Diễm Yêu Vương",
     "kind": "daily",
+    "quality": 3,
     "level": 60,
     "info": "",
     "sex": "",
     "attribute": {
-      "damage": 3000,
-      "def": 100,
-      "hp": 40000,
+      "damage": 6500,
+      "def": 3500,
+      "hp": 120000,
       "mp": 0,
       "critical": 20,
       "bloodsucking": 10
@@ -228,8 +234,8 @@
     "numberOfTurn": 5,
     "reward": {
       "base": {
-        "exp": 10,
-        "gold": 10
+        "exp": 7000,
+        "gold": 7500
       },
       "equipRates": [
         {

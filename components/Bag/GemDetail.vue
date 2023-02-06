@@ -24,6 +24,7 @@ const qualityTitle = computed(() => {
   return QUALITY_TITLE[props.gem.quality!]
 })
 
+$io.off('gem:merge:response')
 $io.on('gem:merge:response', (data) => {
   sendMessage(data.message, 2000)
   if (data.success)

@@ -7,7 +7,6 @@ import '@varlet/ui/es/dialog/style/index'
 import { useAppStore } from '~/composables/app'
 
 StyleProvider({
-  '--snackbar-font-size': '12px',
   '--snackbar-content-padding': '6px 16px',
   '--snackbar-background': 'radial-gradient(#4041448c, #191b1e)',
   '--snackbar-border-radius': '0px',
@@ -16,17 +15,20 @@ StyleProvider({
   '--dialog-message-color': 'white',
   '--dialog-background': '#191b1e',
   '--dialog-cancel-button-color': '#d2d2d2',
+  '--input-placeholder-size': '12px',
+  '--snackbar-margin': '1px 24px',
+  '--snackbar-font-size': '10px',
 })
 
 const { loading } = useAppStore()
-useHead({
-  title: 'Tu Tiên giới',
-  link: [
-    {
-      rel: 'icon', type: 'image/png', href: '/logo.png',
-    },
-  ],
-})
+// useHead({
+//   title: 'Tu Tiên giới',
+//   link: [
+//     {
+//       rel: 'icon', type: 'image/png', href: '/logo.png',
+//     },
+//   ],
+// })
 
 const message = ref('')
 // onMounted(() => {

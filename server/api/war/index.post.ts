@@ -56,6 +56,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
   await handleAfterEndWar({ battleRequest, _p, winner, totalDamage })
 
   // Log battle
+  console.log('_enemyObj', _enemyObj.name)
   await new BattleSchema({
     sid: _p.player.sid,
     mid: {
@@ -78,7 +79,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     },
   }).save()
 
-  await addSystemChat('', `Bạn nhận được ${exp} XP ${gold} vàng`)
+  await addSystemChat('', `Bạn nhận được ${exp} XP ${gold} Tiền tiên`)
   return {
     player,
     enemy,

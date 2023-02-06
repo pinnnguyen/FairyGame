@@ -35,7 +35,7 @@ export interface Boss {
     equipments: PlayerEquipment[]
   }
   attribute: BaseAttributes
-  numberOfTurn: number
+  numberOfTurn?: number
   class: number
   startHours: number
   endHours: number

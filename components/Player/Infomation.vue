@@ -26,7 +26,7 @@ const tabs = ref([
 
 <template>
   <div class="rounded bg-primary text-primary border border-white/40 w-full h-[80%] w-[calc(100vw_-_30px)] h-120 relative overflow-hidden">
-    <div class="h-full absolute top-0 w-full p-4">
+    <div class="h-full absolute top-0 w-full">
       <div
         class="m-1 rounded-md text-10 font-semibold h-[calc(100%_-_60px)]"
       >
@@ -38,7 +38,7 @@ const tabs = ref([
         <button
           v-for="t in tabs"
           :key="t.key"
-          class="transition text-12 px-2 opacity-40 transition-opacity mx-2 h-8 leading-3 italic shadow rounded font-bold border-1 text-primary border-white/40"
+          class="transition text-12 px-2 opacity-40 duration-800 transition-opacity mx-2 h-8 leading-3 italic shadow rounded font-bold border-1 text-primary border-white/40"
           :class="{ '!opacity-100': currentTab === t.key }" @click="currentTab = t.key"
         >
           {{ t.name }}

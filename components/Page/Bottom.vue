@@ -38,7 +38,7 @@ const upgradeOptions = ref(false)
 //       })
 //
 //       sendMessage(`+${resources.exp} XP`)
-//       sendMessage(`+${resources.gold} VÀNG`)
+//       sendMessage(`+${resources.gold} Tiền tiên`)
 //
 //       if (playerInfo.value) {
 //         playerInfo.value.exp += resources.exp
@@ -130,7 +130,7 @@ const menuItems = [
   },
   {
     key: 'boss',
-    name: 'Săn Boss',
+    name: 'Boss',
     fn: ontoggleBoss,
   },
 ]
@@ -139,6 +139,7 @@ const tabMarket = computed(() => tab.value === 'market')
 const tabStore = computed(() => tab.value === 'store')
 const tabCharacter = computed(() => tab.value === 'character')
 const tabBag = computed(() => tab.value === 'bag')
+const tabBoss = computed(() => tab.value === 'boss')
 
 const setTab = (t: string) => {
   if (['upgrade'].includes(t)) {
@@ -152,32 +153,30 @@ const setTab = (t: string) => {
 
 <template>
   <var-popup v-model:show="upgradeOptions" position="center">
-    <div class="w-[90vw] bg-[#191b1e] flex flex-col justify-center items-center p-5 rounded border border-white/40">
+    <div class="w-[90vw] bg-[#191b1e] grid grid-cols-2 gap-4 p-5 rounded border border-white/40">
       <div
-        class="bg-[#fff] rounded flex rounded-[150px] items-center justify-center w-[60%] h-[35px] p-1 relative m-3"
+        class="transition transition-opacity text-center mx-2 px-2 py-2 italic shadow rounded font-bold border-1 text-primary border-white/40"
         @click="onToggleUpgrade"
       >
-        <span class="font-semibold">
-          Cường hoá
-        </span>
+        Cường hoá
       </div>
       <div
-        class="bg-[#fff] rounded-[150px] flex items-center justify-center w-[60%] h-[35px] p-1 mt-2 relative m-3"
+        class="transition transition-opacity duration-800 text-center mx-2 px-2 py-2 italic shadow rounded font-bold border-1 text-primary border-white/40"
         @click="onToggleUpStar"
       >
-        <span class="font-semibold">
-          Nâng sao
-        </span>
+        Nâng sao
       </div>
-      <div class="bg-[#fff] rounded-[150px] flex items-center justify-center w-[60%] h-[35px] p-1 mt-2 relative m-3" @click="onToggleUpRank">
-        <span class="font-semibold">
-          Tăng bậc
-        </span>
+      <div
+        class="transition transition-opacity duration-800 text-center mx-2 px-2 py-2 italic shadow rounded font-bold border-1 text-primary border-white/40"
+        @click="onToggleUpRank"
+      >
+        Tăng bậc
       </div>
-      <div class="bg-[#fff] rounded-[150px] flex items-center justify-center w-[60%] h-[35px] p-1 mt-2 relative m-3" @click="onToggleUpGem">
-        <span class="font-semibold">
-          Đá hồn
-        </span>
+      <div
+        class="transition transition-opacity duration-800 text-center mx-2 px-2 py-2 italic shadow rounded font-bold border-1 text-primary border-white/40"
+        @click="onToggleUpGem"
+      >
+        Đá hồn
       </div>
     </div>
   </var-popup>
@@ -186,7 +185,7 @@ const setTab = (t: string) => {
       <button
         v-for="menu in menuItems"
         :key="menu.key"
-        class="mx-2 h-10 w-10 shadow rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
+        class="transition transition-color duration-800 mx-2 h-10 w-10 shadow rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
       >
         <span
           :class="{
@@ -220,6 +219,9 @@ const setTab = (t: string) => {
       </template>
       <template v-if="tabBag">
         <Bag />
+      </template>
+      <template v-if="tabBoss">
+        <Boss />
       </template>
     </div>
   </div>

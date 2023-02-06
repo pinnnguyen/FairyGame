@@ -111,7 +111,7 @@ const handleCritical = (critical: number, inflictDMG: number, criticalDamage: nu
   }
 }
 export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
-  let inflictDMG = 0
+  let inflictDMG: number
   const enemyDMG = (enemy?.attribute.damage as number)
   const playerDef = (player?.attribute?.def as number)
 
@@ -136,7 +136,7 @@ export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   }
 }
 export const inflictDamage = (player: PlayerInfo, enemy: EnemyObject) => {
-  let inflictDMG = 0
+  let inflictDMG: number
   const playerDMG = (player?.attribute?.damage as number)
   const enemyDef = (enemy?.attribute.def as number)
   inflictDMG = Math.round(playerDMG - enemyDef * 0.75)
@@ -328,6 +328,7 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
   let totalDamage = 0
 
   while (!endWar) {
+    console.log('endWar', endWar)
     const { receiveDMG, enemyBloodsucking, enemyCritical, playerCounterAttack, playerAvoid } = receiveDamage(_p, _enemy) // Mục tiêu gây sát thương lên người chơi.
     const { inflictDMG, playerBloodsucking, playerCritical, enemyCounterAttack, enemyAvoid } = inflictDamage(_p, _enemy) // Người chơi gây sát thương lên mục tiêu.
 
@@ -341,32 +342,6 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
     enemyAttribute.hp -= formatHP(enemyAttribute.hp, playerCounterAttack)
     if (enemyAttribute.hp > 0 && enemyBloodsucking)
       enemyAttribute.hp += enemyBloodsucking
-
-    if (enemyAttribute.hp <= 0) {
-      winner = WINNER.youwin
-      endWar = true
-
-      return {
-        player: playerClone,
-        enemy: enemyClone,
-        emulators,
-        winner,
-        totalDamage,
-      } as BattleResponse
-    }
-
-    if (playerAttribute?.hp <= 0) {
-      winner = WINNER.youlose
-      endWar = true
-
-      return {
-        player: playerClone,
-        enemy: enemyClone,
-        emulators,
-        winner,
-        totalDamage,
-      } as BattleResponse
-    }
 
     //  Tốc độ cao hơn sẽ đánh
     if (playerAttribute?.speed < enemyAttribute?.speed) {
@@ -401,6 +376,32 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
         enemyAvoid,
         playerAvoid,
       })[0])
+    }
+
+    if (enemyAttribute.hp <= 0) {
+      winner = WINNER.youwin
+      endWar = true
+
+      return {
+        player: playerClone,
+        enemy: enemyClone,
+        emulators,
+        winner,
+        totalDamage,
+      } as BattleResponse
+    }
+
+    if (playerAttribute?.hp <= 0) {
+      winner = WINNER.youlose
+      endWar = true
+
+      return {
+        player: playerClone,
+        enemy: enemyClone,
+        emulators,
+        winner,
+        totalDamage,
+      } as BattleResponse
     }
 
     if (round >= 30) {

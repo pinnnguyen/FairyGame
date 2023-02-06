@@ -14,15 +14,15 @@ const enemyClassIMG = computed(() => {
 </script>
 
 <template>
-  <!--    :style="{ -->
-  <!--      transform: realTime.player.sureDamage ? 'translate(-20%)' : '', -->
-  <!--    }" -->
   <div
-    class="relative duration-500 transition-transform border-1 border-white/40 rounded-md px-1 h-14"
+    class="relative duration-500 transition-transform border-1 border-white/40 rounded h-12"
+    :style="{
+      transform: realTime.player.sureDamage ? 'translate(-10%)' : '',
+    }"
   >
-    <div class="w-30 italic relative">
+    <div class="w-25 italic relative">
       <div class="flex justify-start items-end">
-        <span class="text-12 ml-1 text-[#34a830] line-clamp-1">{{ state?.enemy?.name ?? '...' }}</span>
+        <span class="text-10 ml-1 text-[#34a830] line-clamp-1">{{ state?.enemy?.name ?? '...' }}</span>
       </div>
       <BattleInfo
         :name="state?.enemy?.name"
@@ -30,10 +30,10 @@ const enemyClassIMG = computed(() => {
         :receiver="receiver"
         :is-enemy="true"
       />
-      <img
-        v-show="realTime.enemy.sureDamage"
-        class="h-20 transform-center absolute" :src="`/battle/player_gif.gif?v=${randomNumber(1, 1000)}`"
-      >
+      <!--      <img -->
+      <!--        v-show="realTime.enemy.sureDamage" -->
+      <!--        class="h-20 transform-center absolute" :src="`/battle/player_gif.gif?v=${randomNumber(1, 1000)}`" -->
+      <!--      > -->
     </div>
     <span
       class="battle-action-bloodsucking whitespace-nowrap"
@@ -49,7 +49,7 @@ const enemyClassIMG = computed(() => {
     </span>
 
     <span
-      class="battle-action whitespace-nowrap"
+      class="battle-action whitespace-nowrap text-green-300"
       :class="{ show: realTime.enemy?.avoid && realTime.enemy.sureDamage }"
     >
       Né tránh

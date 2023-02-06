@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { set } from '@vueuse/core'
+import { QUALITY_TITLE } from '../../constants'
+import { formatCash, qualityPalette } from '~/common'
 import { sendMessage, usePlayerStore } from '#imports'
 import type { PlayerEquipment } from '~/types'
 
@@ -62,25 +64,25 @@ const upgrade = () => {
     return
 
   if (!options.equipSelected._id) {
-    sendMessage('Đạo hữu cần chọn trang bị để nâng cấp')
+    sendMessage('Đạo hữu cần chọn trang bị để nâng cấp', 2000, 'bottom')
     set(loading, false)
     return
   }
 
   if (needResource.value!.gold! > playerInfo.value?.gold) {
-    sendMessage('Đạo hữu không đủ vàng để nâng cấp')
+    sendMessage('Đạo hữu không đủ Tiền tiên để nâng cấp', 2000, 'bottom')
     set(loading, false)
     return
   }
 
   if (needResource.value!.knb! > playerInfo.value?.knb) {
-    sendMessage('Đạo hữu không đủ KNB để nâng cấp')
+    sendMessage('Đạo hữu không đủ KNB để nâng cấp', 2000, 'bottom')
     set(loading, false)
     return
   }
 
   if (currentFood.value.length < needResource.value!.needFoodNumber) {
-    sendMessage('Số lượng trang bị phôi của đạo hữu không đủ')
+    sendMessage('Số lượng trang bị phôi của đạo hữu không đủ', 2000, 'bottom')
     set(loading, false)
     return
   }
@@ -128,48 +130,51 @@ const pickEquipmentFood = (_id?: string) => {
       </Line>
     </template>
   </upgrade-item>
-  <div class="absolute bottom-25 h-20 w-full">
+  <div class="absolute bottom-20 h-50 w-full">
+    <Line>
+      <div class="whitespace-nowrap text-primary">
+        Kho trang bị
+      </div>
+    </Line>
     <div
       v-if="needResource?.playerEquipments && needResource?.playerEquipments?.length > 0"
-      class="grid grid-cols-6 h-full overflow-auto p-4"
+      class="grid grid-cols-2 p-4 h-full overflow-auto gap-4"
     >
-      <lazy-item-rank
-        v-for="equipment in needResource?.playerEquipments" :key="equipment._id"
-        :preview="equipment?.preview"
-        :rank="equipment?.rank"
-        :quality="equipment?.quality"
-        :quantity="0"
-        class="!w-10 pb-2"
-        :class="{ 'filter grayscale': currentFood.includes(equipment._id) }"
+      <div
+        v-for="equipment in needResource?.playerEquipments"
+        :key="equipment?._id"
+        :class="{
+          'border border-green-400': currentFood.includes(equipment._id),
+        }"
+        class="rounded p-2 border border-white/40"
         @click.stop="pickEquipmentFood(equipment._id)"
       >
-        <p class="text-10 font-semibold line-clamp-1">
-          {{ equipment?.name }}
-        </p>
-      </lazy-item-rank>
+        <div
+          class="text-10 font-bold"
+          :style="{
+            color: qualityPalette(equipment.quality),
+          }"
+        >
+          {{ `${QUALITY_TITLE[equipment.quality ?? 1]} -` }} {{ equipment?.name }} (+{{ equipment.enhance }})
+        </div>
+      </div>
     </div>
   </div>
-  <div v-if="needResource" class="absolute bottom-0 w-full duration-500 h-20">
-    <div class="flex items-center justify-center">
-      <div class="flex items-center mx-1">
-        <nuxt-img format="webp" class="w-5 mr-1" src="/items/3_s.png" />
-        <span class="text-12 font-semibold text-[#52648e]">{{ needResource?.gold }}</span>
-      </div>
-      <div class="flex items-center mx-1">
-        <nuxt-img format="webp" class="w-5 mr-1" src="/items/1_s.png" />
-        <span class="text-12 font-semibold text-[#52648e]">{{ needResource?.knb }}</span>
-      </div>
-      <div class="flex items-center mx-1">
-        <span class="text-12 font-semibold text-[#52648e]">Trang bị: {{ currentFood.length }}/{{ needResource?.needFoodNumber }}</span>
-      </div>
+  <div v-if="needResource" class="absolute bottom-0 flex items-center justify-around h-20 w-full text-primary">
+    <div class="flex items-center w-14">
+      <span class="text-12 font-semibold">Tiền tiên: {{ formatCash(needResource?.gold) }}</span>
     </div>
-    <div class="mb-6 mt-2 flex justify-center">
-      <var-button :loading="loading" class="!text-[#333] font-medium font-semibold uppercase" color="#ffd400" size="small" @click.stop="upgrade">
-        TĂNG BẬC
-      </var-button>
+    <div class="flex items-center w-17">
+      <span class="text-12 font-semibold">Tiên duyên: {{ needResource?.knb }}</span>
     </div>
+    <div class="flex items-center w-12">
+      <span class="text-12 font-semibold">Trang bị: {{ currentFood.length }}/{{ needResource?.needFoodNumber }}</span>
+    </div>
+    <var-button loading-size="mini" :loading="loading" class="!text-[#333] font-semibold" color="#ffd400" size="small" @click.stop="upgrade">
+      TĂNG BẬC
+    </var-button>
   </div>
-  <p class="absolute bottom-5 right-5" @click="options.tooltip = true">
-    <Icon name="ri:question-fill" size="20" />
-  </p>
+<!--  <p class="absolute bottom-5 right-5" @click="options.tooltip = true"> -->
+<!--    <Icon name="ri:question-fill" size="20" /> -->
+<!--  </p> -->
 </template>

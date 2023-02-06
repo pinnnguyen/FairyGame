@@ -2,10 +2,10 @@
 import { set } from '@vueuse/core'
 import type { PlayerEquipment } from '~/types'
 import { useFetch } from '#app'
-import { qualityPalette } from '~/common'
-import { QUALITY_TITLE } from '~/constants'
+import { qualityPalette, randomNumber } from '~/common'
+import { QUALITY_TITLE, tips } from '~/constants'
 
-const { data: equipments, pending, refresh } = await useFetch('/api/bag/equipments')
+const { data: equipments, pending, refresh } = useFetch('/api/bag/equipments')
 const equipItemSelected = ref<PlayerEquipment>()
 const show = ref(false)
 const pickEquipItem = (item: PlayerEquipment) => {
@@ -26,12 +26,11 @@ const onchangeEquip = () => {
       :action="true"
       :sell-action="true"
       @refresh="onchangeEquip"
-      @changeEquip="onchangeEquip"
+      @change-equip="onchangeEquip"
     />
   </var-popup>
-  <var-loading :loading="pending" description="Đang tải trang bị" color="#333">
+  <var-loading :loading="pending" :description="tips[Math.round(randomNumber(0, tips.length))]" size="mini" color="#ffffff">
     <div
-      v-if="equipments.length > 0"
       class="grid-cols-3 grid gap-2"
     >
       <div
@@ -49,7 +48,7 @@ const onchangeEquip = () => {
             color: qualityPalette(equipment.quality),
           }"
         >
-          {{ `${QUALITY_TITLE[equipment.quality ?? 1]} -` }} {{ equipment?.name }}
+          {{ `${QUALITY_TITLE[equipment.quality ?? 1]} -` }} {{ equipment?.name }} (+{{ equipment.enhance }})
         </div>
       </div>
     </div>

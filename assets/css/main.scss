@@ -124,6 +124,8 @@
 }
 
 .battle-action {
+    width: 100%;
+    text-align: center;
     position: absolute;
     left: 50%;
     transform: translate(-50%);
@@ -138,6 +140,8 @@
 }
 
 .battle-action-bloodsucking {
+    width: 100%;
+    text-align: center;
     position: absolute;
     left: 50%;
     transform: translate(-50%);
@@ -152,6 +156,8 @@
 }
 
 .battle-damage {
+    width: 100%;
+    text-align: center;
     position: absolute;
     left: 50%;
     transform: translate(-50%);
@@ -324,4 +330,16 @@
 
 .var-snackbar__wrapper {
     //margin-top: 70px !important;
+}
+
+.var-loading__inside {
+    top: 30% !important;
+}
+
+.var-popup {
+    overflow: hidden;
+}
+
+.var-snackbar__wrapper {
+    box-shadow: none !important;
 }

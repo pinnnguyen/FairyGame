@@ -17,10 +17,6 @@ export default defineNuxtConfig({
     },
   },
   vite: {
-    // ssr: {
-    //   noExternal: ['@varlet/ui'],
-    // },
-
     plugins: [
       components({
         resolvers: [VarletUIResolver()],
@@ -32,21 +28,17 @@ export default defineNuxtConfig({
     ],
   },
   auth: {
-    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tienhoi.vercel.app',
+    origin: process.env.NODE_ENV === 'development' ? 'http://192.168.1.5:3000/' : 'https://tienhoi.vercel.app',
     enableGlobalAppMiddleware: false,
   },
   nitro: {
-    // preset: 'vercel',
     plugins: [
       '~/server/index.ts',
     ],
   },
-  // app: {
-  //   buildAssetsDir: '/assets/',
-  //   head: {
-  //     viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
-  //   },
-  // },
+  app: {
+    buildAssetsDir: '/assets/',
+  },
   runtimeConfig: {
     mongoUrl: process.env.MONGO_URL,
     // socketClientURL: process.env.NODE_ENV === 'development' ? 'http://localhost:3005' : 'http://103.82.22.99:3005',
@@ -59,38 +51,41 @@ export default defineNuxtConfig({
     //   port: 3005,
     // },
   },
-  // build: {
-  //   transpile: ['@varlet/ui'],
-  // },
   modules: [
     // '@vite-pwa/nuxt',
-    // '@unocss/nuxt',
     '@vueuse/nuxt',
     '@pinia/nuxt',
     '@nuxt/image-edge',
     'nuxt-windicss',
     'nuxt-icon',
     '@sidebase/nuxt-auth',
-    // '@kevinmarrec/nuxt-pwa',
+    '@kevinmarrec/nuxt-pwa',
   ],
-  // pwa: {
-  //   meta: {
-  //     // appleStatusBarStyle: 'default',
-  //     mobileApp: true,
-  //     mobileAppIOS: true,
-  //     name: 'TTG',
-  //   },
-  //   workbox: {
-  //     enabled: true,
-  //   },
-  // },
+  pwa: {
+    manifest: {
+      name: 'Tự Mình Tu Tiên Bon Studio',
+      short_name: 'Tự Mình Tu Tiên',
+      start_url: '/',
+      lang: 'vi',
+    },
+    meta: {
+      favicon: true,
+      // appleStatusBarStyle: 'black-translucent',
+      theme_color: '#191b1e',
+      mobileApp: true,
+      mobileAppIOS: true,
+      name: 'Tự mình tu tiên',
+      author: 'Bon Studio',
+    },
+    workbox: {
+      enabled: true,
+    },
+  },
   pinia: {
     autoImports: ['storeToRefs'],
   },
   css: [
-    // '@unocss/reset/tailwind.css',
     '~/assets/css/main.scss',
-    // '~/assets/css/toast.css',
     'virtual:windi.css',
   ],
   windicss: {

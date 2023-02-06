@@ -157,7 +157,7 @@ onUnmounted(() => {
             :key="leftS.no"
           >
             <button
-              v-if="leftS.slot"
+              v-if="leftS?.slot"
               class="diamond w-15"
               :class="{
                 'border border-green-500 bg-[#000000]': equipSelected?._id === leftS.slot?._id,
@@ -185,10 +185,10 @@ onUnmounted(() => {
             :key="rightS.no"
           >
             <button
-              v-if="rightS.slot"
+              v-if="rightS?.slot"
               class="diamond w-15"
               :class="{
-                'border border-green-500 bg-green-500': equipSelected?._id === leftS.slot?._id,
+                'border border-green-500 bg-green-500': equipSelected?._id === rightS.slot?._id,
               }"
               :style="{
                 border: `1px solid ${qualityPalette(rightS.slot?.quality)}`,
@@ -237,10 +237,11 @@ onUnmounted(() => {
               :key="i"
               class="flex items-center px-1 p-1 bg-black/40 mb-[1px] border border-white/20 m-2"
             >
-              <img
+              <nuxt-img
                 src="/gem/default.png"
                 class="w-10 h-10 bg-black"
-              >
+                format="webp"
+              />
               <span class="ml-2 text-primary text-8"> (Chưa khảm) </span>
             </div>
           </template>

@@ -2,9 +2,10 @@
 import { set } from '@vueuse/core'
 import type { PlayerItem } from '~/types'
 import { useFetch } from '#app'
-import { qualityPalette } from '~/common'
+import { qualityPalette, randomNumber } from '~/common'
+import { tips } from '~/constants'
 
-const { data: items, pending, refresh } = await useFetch('/api/bag/items')
+const { data: items, pending, refresh } = useFetch('/api/bag/items')
 
 const selectedItem = ref<PlayerItem>()
 const show = ref(false)
@@ -27,9 +28,9 @@ const onSell = () => {
       @refresh="onSell"
     />
   </var-popup>
-  <var-loading :loading="pending" description="Đang tải trang bị" color="#333">
+  <var-loading :loading="pending" :description="tips[Math.round(randomNumber(0, tips.length))]" size="mini" color="#ffffff">
     <div
-      class="grid-cols-3 grid gap-2 "
+      class="grid-cols-3 grid gap-2"
     >
       <div
         v-for="item in items" :key="item.id" class="rounded p-2" :style="{

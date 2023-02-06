@@ -1,8 +1,9 @@
 [
     {
         "id": 7,
-        "name": "Ma hóa chi linh hầu",
+        "name": "Ma Hóa Chi Linh Hầu",
         "kind": "elite",
+        "quality": 3,
         "level": 1,
         "info": "",
         "sex": "",
@@ -17,8 +18,8 @@
         },
         "reward": {
           "base": {
-            "exp": 10,
-            "gold": 10,
+            "exp": 2500,
+            "gold": 5000,
             "bag": 300,
             "kill": 50,
             "top": 50

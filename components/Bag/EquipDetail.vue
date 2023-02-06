@@ -122,19 +122,21 @@ const sell = async () => {
       <div
         class="flex items-center justify-between p-2 pb-0"
       >
-        <div class="mx-2 font-semibold text-12 text-left">
+        <div class="mx-2 font-semibold text-left">
           <div
             :style="{ color: qualityPalette(item.quality) }"
           >
-            {{ qualityTitle }} - {{ item.name }} + <span class="text-14">{{ item.enhance }}</span>
+            {{ qualityTitle }} - {{ item.name }} + <span class="text-[13px]">{{ item.enhance }}</span>
           </div>
           <div class="flex">
             <icon v-for="i of item.star" :key="i" class="text-yellow-300" name="material-symbols:star" size="18" />
           </div>
-          <p>
+          <p class="text-10">
             {{ SLOT_NAME[item.slot] }}
           </p>
-          <p>Bậc {{ item.rank }}</p>
+          <p class="text-10">
+            Bậc {{ item.rank }}
+          </p>
         </div>
       </div>
       <div class="flex flex-col items-start justify-start p-2">
@@ -169,7 +171,7 @@ const sell = async () => {
             Đá hồn
           </div>
         </Line>
-        <div v-if="item?.gems.length > 0" class="mx-2 max-h-[250px] overflow-auto">
+        <div v-if="item?.gems?.length > 0" class="mx-2 max-h-[250px] overflow-auto w-full">
           <div v-for="(gem, i) in item?.gems" :key="i" class="flex items-center px-1 p-1 bg-black/40 mb-1 relative">
             <gem-item :gem="gem" />
           </div>

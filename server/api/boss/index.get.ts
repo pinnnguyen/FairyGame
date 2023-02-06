@@ -8,29 +8,29 @@ import { cloneDeep } from '~/helpers'
 
 const getBossDaily = async (player: Player) => {
   const today = moment().startOf('day')
-  const bossNe = await BossDataSchema.find({ kind: 'daily' }).sort({ level: 1 })
+  const bossDailys = await BossDataSchema.find({ kind: 'daily' }).sort({ level: 1 })
 
-  for (let i = 0; i < bossNe.length; i++) {
-    const equipIds = bossNe[i].reward.equipRates.map((i: { id: number }) => i.id)
+  for (let i = 0; i < bossDailys.length; i++) {
+    const equipIds = bossDailys[i].reward.equipRates.map((i: { id: number }) => i.id)
     const numberOfBattle = await BattleSchema.find({
       sid: player.sid,
       kind: BATTLE_KIND.BOSS_DAILY,
-      targetId: bossNe[i].id,
+      targetId: bossDailys[i]._id,
       createdAt: {
         $gte: moment().startOf('day'),
         $lte: moment(today).endOf('day').toDate(),
       },
     }).count()
 
-    bossNe[i].numberOfTurn -= numberOfBattle
-    bossNe[i].reward.equipments = await EquipmentSchema.find({
+    bossDailys[i].numberOfTurn -= numberOfBattle
+    bossDailys[i].reward.equipments = await EquipmentSchema.find({
       id: {
         $in: equipIds,
       },
     })
   }
 
-  return bossNe
+  return bossDailys
 }
 
 const getBossFrameTime = async (player: Player) => {

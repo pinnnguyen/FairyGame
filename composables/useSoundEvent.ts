@@ -15,8 +15,13 @@ import reward from '~/assets/sound/reward.mp3'
 const audioHome = new Audio(bg_music_home)
 
 export const useSoundRewardEvent = async () => {
-  const audio = new Audio(reward)
-  await audio.play()
+  try {
+    const audio = new Audio(reward)
+    await audio.play()
+  }
+  catch (e) {
+    console.warn(e)
+  }
 }
 
 export const useSoundClickEvent = async () => {

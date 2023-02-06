@@ -1,17 +1,19 @@
-export const KIND = {
-  SOLO: 'solo',
-}
-
-export const TARGET_MONSTER = 'monster'
-export const TARGET_BOSS_DAILY = 'boss-daily'
-export const TARGET_BOSS_FRAME = 'boss-frame-time'
-export const TARGET_BOSS_ELITE = 'elite'
-
+export const tips = [
+  'Trang bị ngẫu nhiên từ nhất phẩm đến cửu phẩm thuộc tính tăng cực mạnh',
+  'Cường hoá trang bị tăng thuộc tính cực mạnh',
+  'Nâng bậc trang bị tăng thuộc tính cực mạnh',
+  'Nâng bậc trang bị tăng thuộc tính cực mạnh',
+  'Build đá hồn phù hợp giúp thắng dễ dàng trước đối thủ',
+  'Boss thế giới sẽ rớt đá hồn',
+  'Đấu giá sẽ xuất hiện sau mỗi lần đánh boss',
+  'Dương Khai là thí luyện đệ tử, kiêm công việc quét rác tại Lăng Tiêu Các',
+  'Dương Khai là thí luyện đệ tử, kiêm công việc quét rác tại Lăng Tiêu Các là ai?',
+]
 export const TARGET_TYPE = {
   MONSTER: 'monster',
-  BOSS_DAILY: 'boss-daily',
-  BOSS_FRAME_TIME: 'boss-frame-time',
-  BOSS_ELITE: 'elite',
+  BOSS_DAILY: 'boss_daily',
+  BOSS_FRAME_TIME: 'boss_frame_time',
+  BOSS_ELITE: 'boss_elite',
 }
 
 export const WINNER = {

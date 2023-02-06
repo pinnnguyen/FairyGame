@@ -8,7 +8,9 @@ const classTitle = computed(() => ROLE_NAME[playerInfo!.class])
 
 <template>
   <Line class="py-2">
-    <div>Nhân vật</div>
+    <div class="text-10">
+      Nhân vật
+    </div>
   </Line>
   <div class="justify-between flex items-start mx-4">
     <div class="whitespace-normal w-5">

@@ -7,16 +7,13 @@ const props = defineProps({
 
 const emits = defineEmits(['refreshFinished'])
 const endTime = ref(props.refreshTime)
-
-onMounted(() => {
-  const time = setInterval(() => {
-    endTime.value = endTime.value! - 1000
-    if (endTime.value <= 1) {
-      emits('refreshFinished')
-      clearInterval(time)
-    }
-  }, 1000)
-})
+const time = setInterval(() => {
+  endTime.value = endTime.value! - 1000
+  if (endTime.value <= 1) {
+    emits('refreshFinished')
+    clearInterval(time)
+  }
+}, 1000)
 </script>
 
 <template>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { set } from '@vueuse/core'
 import type { PlayerGem } from '~/types'
-import { qualityPalette } from '~/common'
+import { qualityPalette, randomNumber } from '~/common'
+import { tips } from '~/constants'
 
-const { data: gems, pending, refresh: refreshGems } = await useFetch('/api/bag/gems')
+const { data: gems, pending, refresh: refreshGems } = useFetch('/api/bag/gems')
 const gemSelected = ref<PlayerGem>()
 const show = ref(false)
 
@@ -19,16 +20,16 @@ const onmergeGems = () => {
 </script>
 
 <template>
-  <var-loading :loading="pending" description="Đang tải đá hồn" color="#333">
+  <var-popup v-model:show="show" position="center">
+    <bag-gem-detail
+      :gem="gemSelected"
+      :sell-action="true"
+      @refresh="onmergeGems"
+      @mergegem="onmergeGems"
+    />
+  </var-popup>
+  <var-loading :loading="pending" :description="tips[Math.round(randomNumber(0, tips.length))]" size="mini" color="#ffffff">
     <div class="grid-cols-6 grid gap-2">
-      <var-popup v-model:show="show" position="center">
-        <bag-gem-detail
-          :gem="gemSelected"
-          :sell-action="true"
-          @refresh="onmergeGems"
-          @mergegem="onmergeGems"
-        />
-      </var-popup>
       <div
         v-for="gem in gems" :key="gem._id"
         @click="pickGemItem(gem)"

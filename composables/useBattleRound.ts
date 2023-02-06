@@ -4,7 +4,7 @@ import { sleep } from '~/common'
 import { BATTLE_TURN } from '~/constants/war'
 import type { BasicItem, PlayerEquipment } from '~/types'
 import type { BaseProperties, BaseReward, BattleResponse } from '~/types/war'
-import { useSoundEventAttack } from '~/composables/useSoundEvent'
+// import { useSoundEventAttack } from '~/composables/useSoundEvent'
 
 export const useBattleRoundStore = defineStore('battleRound', () => {
   const loading = ref(true)
@@ -75,7 +75,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   const speed = useLocalStorage('speed', 1)
   const SKIP = ref(false)
   const TURN_DELAY = computed(() => 2000 / speed.value)
-  const DAMAGE_DELAY = 1200
+  const DAMAGE_DELAY = 500
   const SHOULD_WIN_DELAY = 1000
 
   const battleResult = ref({
@@ -83,11 +83,10 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     win: '',
   })
 
-  const setSKIP = (boo: boolean) => {
+  const onSkip = (boo: boolean) => {
     set(SKIP, boo)
   }
   const startBattle = async (war: BattleResponse, cb: Function) => {
-    console.log('war', war)
     if (!war)
       return
 
@@ -100,12 +99,14 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     set(reward, null)
     set(rankDMG, war.rankDMG)
     set(reward, war?.reward)
+    set(SKIP, false)
     // set(receiver, {})
     // set(state, {})
     set(battleResult, {
       show: false,
       win: '',
     })
+
     state.value.player = war.player
     state.value.enemy = war.enemy
 
@@ -150,14 +151,16 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
         const DMG = emuT?.state?.damage
 
         if (emuT.action) {
-          await sleep(TURN_DELAY.value)
+          if (roundNum.value > 2)
+            await sleep(TURN_DELAY.value)
+
           set(playerEffect, _turn)
-          try {
-            useSoundEventAttack()
-          }
-          catch (e) {
-            console.log('e', e)
-          }
+          // try {
+          //   useSoundEventAttack()
+          // }
+          // catch (e) {
+          //   console.log('e', e)
+          // }
           realTime.value[__turn].sureDamage = true
 
           receiver.value[__turn].hp = emuT.now.hp[__turn]
@@ -180,10 +183,28 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
             realTime.value[__turn].sureDamage = false
           }, DAMAGE_DELAY)
 
+          if ((receiver.value[__turn].hp as number) <= 0) {
+            setTimeout(() => {
+              cb()
+              battleResult.value = {
+                show: true,
+                win: war.winner,
+              }
+            }, SHOULD_WIN_DELAY)
+
+            return
+          }
+
           if (roundNum.value === (war.emulators.length * 2)) {
             setTimeout(() => {
               cb()
+              battleResult.value = {
+                show: true,
+                win: war.winner,
+              }
             }, SHOULD_WIN_DELAY)
+
+            return
           }
 
           // (receiver.value[__turn].hp as number) <= 0
@@ -201,7 +222,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     }
   }
 
-  const onStop = () => {
+  const onStopBattle = () => {
     set(stop, true)
   }
 
@@ -224,8 +245,8 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     battleResult,
     rankDMG,
     speed,
-    setSKIP,
-    onStop,
+    onSkip,
+    onStopBattle,
     roundNum,
   }
 })

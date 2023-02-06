@@ -40,7 +40,7 @@ export const handleEquipUpRank = async (io: any, socket: any) => {
 
     if (playerInfo!.gold < needRss.gold) {
       return {
-        message: 'Đạo hữu không đủ Vàng để nâng cấp',
+        message: 'Đạo hữu không đủ Tiền tiên để nâng cấp',
       }
     }
 

@@ -89,7 +89,7 @@ const addAttribute = async (target: string) => {
       Điểm thuộc tính {{ playerInfo?.ofAttribute ?? 0 }}
     </div>
   </Line>
-  <div class="flex items-start justify-between gap-4">
+  <div class="flex items-start justify-between gap-4 p-4">
     <div class="flex justify-between items-start gap-3">
       <div class="w-4">
         Sức mạnh <strong class="text-yellow-500">{{ playerInfo?.coreAttribute?.ofPower ?? 0 }}</strong>

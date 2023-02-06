@@ -34,6 +34,7 @@ const mailUnread = computed(() => {
 
 $io.off('get:chat:response')
 $io.on('get:chat:response', (data: any) => {
+  console.log('data', data)
   contents.value.push(...data)
 })
 
@@ -45,10 +46,12 @@ $io.on('send:chat:response', (data: any) => {
 
 $io.off('chat:system')
 $io.on('chat:system', (data: any) => {
-  if (!contents.value.find((i: any) => data._id === i._id))
+  // console.log('chat system', data)
+  // console.log('contents.value', contents.value)
+  if (!contents.value.find((i: any) => data._id === i._id)) {
     contents.value.unshift(data)
-
-  contents.value.splice(contents.value.length - 1, 1)
+    contents.value.splice(contents.value.length - 1, 1)
+  }
 })
 
 const typeContents = computed(() => {
@@ -70,13 +73,13 @@ const openMail = () => {
 
 <template>
   <var-popup v-model:show="toggle.chat" position="bottom">
-    <div class="bg-[#191b1e]">
+    <div class="bg-[#000000]">
       <div class="py-2 text-center">
         <span
           :class="{
             '!opacity-100': tab === 'general',
           }"
-          class="transition transition-opacity bg-[#ffffff] text-[#333] opacity-40 text-white px-2 m-2 p-1 text-14 uppercase"
+          class="transition transition-opacity duration-800 bg-[#ffffff] text-[#333] opacity-40 text-white px-2 m-2 p-1 text-12 uppercase"
           @click="tab = 'general'"
         >
           Chung
@@ -85,7 +88,7 @@ const openMail = () => {
           :class="{
             '!opacity-100': tab !== 'general',
           }"
-          class="transition transition-opacity bg-[#ffffff] text-[#333] opacity-40 text-white px-2 m-2 p-1 text-14 uppercase"
+          class="transition transition-opacity duration-800 bg-[#ffffff] text-[#333] opacity-40 text-white px-2 m-2 p-1 text-12 uppercase"
           @click="tab = 'system'"
         >
           Hệ thống
@@ -95,26 +98,26 @@ const openMail = () => {
         <div
           v-for="(content, index) in typeContents"
           :key="index"
-          class="relative mb-7 flex justify-start items-center bg-[#332d27] m-2 p-2"
+          class="relative mb-5 flex justify-start items-center bg-primary m-2 p-2"
         >
           <div
-            class="text-white font-bold h-5 text-14 text-left mr-2 whitespace-nowrap"
+            class="text-[#6ce8d4] font-bold text-10 text-left mr-2 whitespace-nowrap"
             :class="{
               'text-[#f44336]': content.type === 'system',
             }"
           >
             [{{ content.name }}]
           </div>
-          <span class="text-left text-12 text-white">
+          <div class="text-left text-10 text-white">
             {{ content.content }}
-          </span>
-          <p class="absolute bottom-[-10px] right-0 bg-black/60 rounded-lg text-10 px-2 text-white">
+          </div>
+          <p class="absolute bottom-[-10px] right-0 bg-black/60 rounded-lg text-8 px-2 text-white">
             {{ fromNow(new Date(content.createdAt).getTime()) }}
           </p>
         </div>
       </div>
       <div class="flex items-center justify-center p-4 pb-4">
-        <var-input v-model="chatContent" class="mb-4" placeholder="Nhận cái gì đó.." />
+        <var-input v-model="chatContent" class="mb-4" placeholder="Nhập nội dung..." focus-color="#fff" />
         <icon class="text-white" name="ic:baseline-send" size="25" @click="sendChat" />
       </div>
     </div>
@@ -122,21 +125,21 @@ const openMail = () => {
   <var-popup v-model:show="toggle.mail" position="center">
     <Mail :mails="mails" />
   </var-popup>
-  <div class="h-12 bg-black/80 text-12 w-full flex items-center justify-between gap-2 p-2 fixed bottom-0 border-t border-white/10">
+  <div class="max-w-[70vh] h-12 bg-[#000000] text-12 w-full flex items-center justify-between gap-2 p-2 fixed bottom-0 border-t border-white/10">
     <button class="h-8 w-8 rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu" @click="toggle.chat = true">
       <span class="">Giao lưu</span>
     </button>
-    <div class="h-12 overflow-auto text-left">
+    <div class="h-12 w-full overflow-auto text-left">
       <div v-for="content in typeContents" :key="content._id">
         <span
-          class="font-bold" :class="{
+          class="font-bold text-10 text-[#6ce8d4]" :class="{
             'text-[#f44336]': content.type === 'system',
           }"
         >
           [{{ content.name }}]
         </span>
         :
-        <span class="text-white">
+        <span class="text-white text-10">
           {{ content.content }}
         </span>
       </div>

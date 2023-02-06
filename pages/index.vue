@@ -56,8 +56,8 @@ onMounted(async () => {
     <UpgradeGem />
   </var-popup>
   <PageSection class="flex-1 flex items-center relative justify-center z-9">
-    <div class="w-full absolute top-0 h-[40%]">
-      <div class="relative h-full border-b border-white/10">
+    <div class="w-full absolute top-[40px] h-[34%]">
+      <div class="relative h-full border-b border-white/10 bg-primary">
         <Battle />
       </div>
     </div>

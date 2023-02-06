@@ -5,6 +5,6 @@ export const sendMessage = (message: string, duration?: number, position?: Snack
   Snackbar({
     content: message,
     position: position ?? 'bottom',
-    duration: duration ?? 700,
+    duration: duration ?? 2000,
   })
 }

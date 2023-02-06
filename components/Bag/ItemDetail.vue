@@ -82,7 +82,6 @@ const sell = async () => {
       <var-input v-model="sellOptions.price" type="number" placeholder="Nhập giá bán" />
       <var-input v-model="sellOptions.quantity" type="number" placeholder="Nhập số lượng" />
     </div>
-
     <div class="text-center my-4">
       <var-button
         class="!text-[#333] font-medium mx-2"
@@ -96,10 +95,10 @@ const sell = async () => {
   <div
     class="rounded p-2 bg-primary"
     :style="{
-      border: `1px solid ${qualityPalette(item.props?.quality)}`,
+      border: `2px solid ${qualityPalette(item.props?.quality)}`,
     }"
   >
-    <div class="flex flex-col items-start justify-start mb-4">
+    <div class="mb-4">
       <div class="mt-2">
         <div
           class="text-12 font-bold uppercase text-left" :style="{
@@ -113,7 +112,7 @@ const sell = async () => {
         </div>
       </div>
     </div>
-    <div class="flex justify-center">
+    <div class="text-center">
       <var-button
         v-if="sellAction"
         class="!text-[#333] font-semibold mx-2 italic"

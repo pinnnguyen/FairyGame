@@ -36,17 +36,23 @@ export const battleJoinHandler = async (io: any, socket: any) => {
     // socket.broadcast.emit('send-battle:log', topDMG)
   })
 
-  socket.on('battle:join', async (warRequest: BattleRequest) => {
+  socket.on('battle:join:pve', async (warRequest: BattleRequest) => {
     // socket.join(_channel)
+    // console.log('hehehe')
     const response = await handleWars(warRequest)
-    socket.emit('battle:start', response)
+    socket.emit('battle:start:pve', response)
 
-    socket.on('battle:refresh', async (request: {
-      skip: boolean
-    }) => {
-      warRequest.skip = request.skip ?? false
-      const battle = await handleWars(warRequest)
-      socket.emit('battle:start', battle)
-    })
+    // socket.on('battle:refresh', async (request: {
+    //   skip: boolean
+    // }) => {
+    //   warRequest.skip = request.skip ?? false
+    //   const battle = await handleWars(warRequest)
+    //   socket.emit('battle:start:pve', battle)
+    // })
+  })
+
+  socket.on('battle:join:boss', async (warRequest: BattleRequest) => {
+    const response = await handleWars(warRequest)
+    socket.emit('battle:start:boss', response)
   })
 }

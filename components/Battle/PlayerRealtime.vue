@@ -8,15 +8,15 @@ const props = defineProps<{
 </script>
 
 <template>
-  <!--  :style="{ -->
-  <!--  transform: realTime.enemy.sureDamage ? 'translate(20%)' : '', -->
-  <!--  }" -->
   <div
-    class="relative duration-500 transition-transform border-1 border-white/40 rounded-md px-1 h-14"
+    class="relative duration-500 transition-transform border-1 border-white/40 rounded h-12"
+    :style="{
+      transform: realTime.enemy.sureDamage ? 'translate(10%)' : '',
+    }"
   >
-    <div class="w-30 italic relative">
+    <div class="w-25 italic relative">
       <div class="flex justify-start items-end">
-        <span class="text-12 ml-1 text-[#6ce8d4] line-clamp-1">{{ state?.player?.name ?? '...' }}</span>
+        <span class="text-10 ml-1 text-[#6ce8d4] line-clamp-1">{{ state?.player?.name ?? '...' }}</span>
       </div>
       <BattleInfo
         :name="state?.player?.name"
@@ -24,11 +24,11 @@ const props = defineProps<{
         :receiver="receiver"
         :is-enemy="false"
       />
-      <img
-        v-show="realTime.player.sureDamage"
-        class="h-20 transform-center absolute"
-        :src="`/battle/enemy_gif.gif?v=${randomNumber(1, 1000)}`"
-      >
+      <!--      <img -->
+      <!--        v-show="realTime.player.sureDamage" -->
+      <!--        class="h-20 transform-center absolute" -->
+      <!--        :src="`/battle/enemy_gif.gif?v=${randomNumber(1, 1000)}`" -->
+      <!--      > -->
     </div>
     <span
       class="battle-action-bloodsucking whitespace-nowrap"
@@ -44,7 +44,7 @@ const props = defineProps<{
     </span>
 
     <span
-      class="battle-action whitespace-nowrap"
+      class="battle-action whitespace-nowrap text-green-300"
       :class="{ show: realTime.player?.avoid && realTime.player.sureDamage }"
     >
       Né tránh

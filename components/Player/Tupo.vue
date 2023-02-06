@@ -26,10 +26,12 @@ const doUpgrade = async () => {
     if (tupoResponse.value?.playerBefore)
       loadPlayer(tupoResponse.value?.playerBefore)
 
+    if (tupoResponse.value.status)
+      set(change, true)
+
     sendMessage(tupoResponse.value.message, 3000)
     set(playerBefore, tupoResponse.value?.playerBefore)
     set(playerAfter, tupoResponse.value?.playerAfter)
-    set(change, true)
   }
   catch (err) {
     sendMessage(err.message)
@@ -52,24 +54,24 @@ const cPlayerTitle = computed(() => {
       <div class="flex items-center justify-between leading-5">
         <div class="flex flex-col">
           <span>
-            Công kích {{ playerAfter.attribute.damage }}
+            Công kích {{ playerAfter?.attribute?.damage }}
           </span>
           <span>
-            HP {{ playerAfter.attribute.hp }}
+            HP {{ playerAfter?.attribute?.hp }}
           </span>
           <span>
-            Thủ {{ playerAfter.attribute.def }}
+            Thủ {{ playerAfter?.attribute?.def }}
           </span>
         </div>
         <div class="flex flex-col text-green-400">
           <span>
-            Công kích {{ playerBefore.attribute.damage }}
+            Công kích {{ playerBefore?.attribute?.damage }}
           </span>
           <span>
-            HP {{ playerBefore.attribute.hp }}
+            HP {{ playerBefore?.attribute?.hp }}
           </span>
           <span>
-            Thủ {{ playerBefore.attribute.def }}
+            Thủ {{ playerBefore?.attribute?.def }}
           </span>
         </div>
       </div>
