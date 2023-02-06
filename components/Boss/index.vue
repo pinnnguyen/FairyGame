@@ -50,6 +50,7 @@ const tabItems = [
   </div>
   <div class="h-[calc(100%_-_47px)] overflow-scroll">
     <var-loading :description="tips[Math.round(randomNumber(0, tips.length))]" size="mini" color="#ffffff" type="circle" :loading="pending">
+      <div v-if="pending" h="50" w="50" />
       <template v-if="tab === 'elite'">
         <LazyBossElite
           v-for="boss in bossElites"

@@ -32,6 +32,7 @@ const onSell = () => {
     <div
       class="grid-cols-3 grid gap-2"
     >
+      <div v-if="pending" h="50" w="50" />
       <div
         v-for="item in items" :key="item.id" class="rounded p-2" :style="{
           border: `1px solid ${qualityPalette(item.props.quality)}`,

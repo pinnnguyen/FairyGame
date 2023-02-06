@@ -30,6 +30,7 @@ const onchangeEquip = () => {
     />
   </var-popup>
   <var-loading :loading="pending" :description="tips[Math.round(randomNumber(0, tips.length))]" size="mini" color="#ffffff">
+    <div v-if="pending" h="50" w="50" />
     <div
       class="grid-cols-3 grid gap-2"
     >

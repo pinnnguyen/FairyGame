@@ -167,8 +167,8 @@ const startWar = (boss: BossElite) => {
         <var-button
           :disabled="revive > 0"
           font="semibold italic"
-          class="!text-[#333] !bg-[#ffffff]"
           size="mini"
+          color="#333"
           @click.stop="startWar(boss)"
         >
           Diệt tận

@@ -28,7 +28,7 @@ export default defineNuxtConfig({
     ],
   },
   auth: {
-    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tienhoi.vercel.app',
+    origin: process.env.NODE_ENV === 'development' ? 'http://192.168.1.5:3000/' : 'https://tienhoi.vercel.app',
     enableGlobalAppMiddleware: false,
   },
   nitro: {
@@ -37,6 +37,7 @@ export default defineNuxtConfig({
     ],
   },
   app: {
+    keepalive: true,
     buildAssetsDir: '/assets/',
   },
   runtimeConfig: {

@@ -17,5 +17,5 @@ export default defineEventHandler(async (event) => {
     sum: {
       $gte: 1,
     },
-  })
+  }).limit(15)
 })

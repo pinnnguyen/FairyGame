@@ -132,7 +132,9 @@ const startWar = (boss: Boss) => {
     <div class="mt-2 absolute top-[20%] right-2">
       <i class="underline text-[#afc671] mr-2" @click.stop="options.showReward = true">Xem thưởng</i>
       <var-button
-        class="!text-[#333] font-semibold italic !bg-[#ffffff]"
+        :disabled="boss.numberOfTurn! <= 0"
+        class="font-semibold italic"
+        color="#333"
         size="mini"
         @click.stop="startWar(boss)"
       >

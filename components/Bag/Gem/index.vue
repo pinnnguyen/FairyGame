@@ -34,6 +34,7 @@ const onmergeGems = () => {
     size="mini"
     color="#ffffff"
   >
+    <div v-if="pending" h="50" w="50" />
     <div
       grid="~ cols-6"
       gap="2"

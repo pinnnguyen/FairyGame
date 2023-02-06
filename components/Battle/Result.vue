@@ -18,7 +18,6 @@ const props = defineProps<{
 const emits = defineEmits(['close', 'onRefresh'])
 const isYouWin = computed(() => props.battleResult.win === WINNER.youwin)
 const isYouLose = computed(() => props.battleResult.win === WINNER.youlose)
-console.log('props', props.battleResult)
 
 const selected = reactive({
   equipment: {},
@@ -47,7 +46,7 @@ const close = () => {
   <var-popup v-model:show="options.showEquipment">
     <bag-equipment-detail :item="selected.equipment" />
   </var-popup>
-  <var-popup v-model:show="isYouLose">
+  <var-popup v-model:show="isYouLose" @close="close">
     <div
       bg="primary"
       m="auto"
@@ -73,7 +72,7 @@ const close = () => {
       </div>
     </div>
   </var-popup>
-  <var-popup v-model:show="isYouWin">
+  <var-popup v-model:show="isYouWin" :overlay="true">
     <div
       bg="primary"
       m="auto"

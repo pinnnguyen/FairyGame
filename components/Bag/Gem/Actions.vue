@@ -83,9 +83,9 @@ const sell = async () => {
       p="y-4"
     >
       <var-button
-        font="medium"
+        font="semibold"
         m="x-2"
-        class="!text-[#333]"
+        color="#333"
         size="small"
         @click.stop="sell"
       >
@@ -101,7 +101,7 @@ const sell = async () => {
       v-if="sellAction"
       font="semibold italic"
       m="x-2"
-      class="!text-[#333]"
+      color="#333"
       size="small"
       @click.stop="emits('sell')"
     >
@@ -111,7 +111,7 @@ const sell = async () => {
       v-if="selectAction"
       font="semibold italic"
       m="x-2"
-      class="!text-[#333]"
+      color="#333"
       size="small"
       @click.stop="emits('selected')"
     >
@@ -121,7 +121,7 @@ const sell = async () => {
       v-if="gem.sum! >= 3 && mergeAction"
       font="semibold italic"
       m="x-2"
-      class="!text-[#333]"
+      color="#333"
       size="small"
       @click.stop="mergeGems"
     >

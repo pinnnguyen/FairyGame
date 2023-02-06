@@ -85,7 +85,15 @@ const handleBloodsucking = (inflictDMG: number, bloodsucking: number, reductionB
     blood,
   }
 }
+
 const handleCritical = (critical: number, inflictDMG: number, criticalDamage: number, reductionCriticalDamage: number) => {
+  if (inflictDMG <= 0) {
+    return {
+      hasCritical: false,
+      inflictDMG,
+    }
+  }
+
   if (critical <= 0) {
     return {
       hasCritical: false,
@@ -110,21 +118,25 @@ const handleCritical = (critical: number, inflictDMG: number, criticalDamage: nu
     inflictDMG,
   }
 }
+
 export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   let inflictDMG: number
   const enemyDMG = (enemy?.attribute.damage as number)
   const playerDef = (player?.attribute?.def as number)
 
   inflictDMG = Math.round(enemyDMG - playerDef * 0.75)
+  console.log('inflictDMG', inflictDMG)
   if (inflictDMG < 0)
     inflictDMG = 0
 
+  console.log('ffinflictDMG', inflictDMG)
   const { blood } = handleBloodsucking(inflictDMG, enemy?.attribute?.bloodsucking, player.attribute.reductionBloodsucking)
   const { recovery } = handleRecoveryPerformance(blood, enemy.attribute.recoveryPerformance, player.attribute.reductionRecoveryPerformance)
   const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(enemy?.attribute?.critical, inflictDMG, enemy?.attribute?.criticalDamage, player?.attribute?.reductionCriticalDamage)
   if (hasCritical)
     inflictDMG = inflictDMGAfter
 
+  console.log('2ff', inflictDMG)
   const { counterDamage } = handleCounterAttack(inflictDMG, enemy.attribute.reductionCounterAttack, player.attribute.counterAttack)
   const { hasAvoid } = handleAvoid(player.attribute.avoid, enemy.attribute.reductionAvoid)
   if (hasAvoid)
@@ -138,6 +150,7 @@ export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
     playerAvoid: hasAvoid,
   }
 }
+
 export const inflictDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   let inflictDMG: number
 

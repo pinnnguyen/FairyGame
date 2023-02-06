@@ -41,7 +41,7 @@ const tabItems = [
         w="16"
         h="8"
         font="leading-3 italic bold"
-        border="1 white/40"
+        border="1 white/40 rounded"
         text="primary"
         opacity="40"
         @click.stop="tab = tabItem.key"

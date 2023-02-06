@@ -148,10 +148,8 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
 
         if (emuT.action) {
           roundNum.value++
-          // if (roundNum.value > 1)
           await sleep(TURN_DELAY.value)
 
-          // set(playerEffect, _turn)
           realTime.value[__turn].sureDamage = true
           setTimeout(() => {
             realTime.value[__turn].sureDamage = false

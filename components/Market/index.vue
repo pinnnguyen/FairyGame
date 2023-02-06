@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { startTimeEvent, timeOffset } from '~/common'
-import type { AuctionItem } from '~/types'
-import { sendMessage, usePlayerStore } from '#imports'
+// import { storeToRefs } from 'pinia'
+// import { startTimeEvent, timeOffset } from '~/common'
+import { usePlayerStore } from '#imports'
+import { randomNumber } from '~~/common'
+import { tips } from '~/constants'
 
 const emits = defineEmits(['close'])
 const { sid } = storeToRefs(usePlayerStore())
@@ -27,7 +28,7 @@ const typeTabItems = [
   },
 ]
 
-const { data: marketItems, refresh } = useFetch('/api/market')
+const { data: marketItems, pending, refresh } = useFetch('/api/market')
 
 const markets = computed(() => {
   if (!marketItems.value)
@@ -61,14 +62,17 @@ const equipTab = computed(() => typeTab.value === 'equipment')
         {{ n.name }}
       </button>
     </div>
-    <MarketGems
-      v-if="gemTab" :gems="markets" @buy="callBackBuy"
-    />
-    <MarketItems
-      v-if="itemTab" :items="markets" @buy="callBackBuy"
-    />
-    <MarketEquipments
-      v-if="equipTab" :equipments="markets" @buy="callBackBuy"
-    />
+    <var-loading :loading="pending" :description="tips[Math.round(randomNumber(0, tips.length))]" size="mini" color="#ffffff">
+      <div v-if="pending" h="50" w="50" />
+      <MarketGems
+        v-if="gemTab" :gems="markets" @buy="callBackBuy"
+      />
+      <MarketItems
+        v-if="itemTab" :items="markets" @buy="callBackBuy"
+      />
+      <MarketEquipments
+        v-if="equipTab" :equipments="markets" @buy="callBackBuy"
+      />
+    </var-loading>
   </div>
 </template>
