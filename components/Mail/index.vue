@@ -44,7 +44,7 @@ const read = (mail: any) => {
       </div>
     </div>
   </var-popup>
-  <div class="h-[55vh] w-[calc(100vw_-_70px)] m-auto bg-primary p-2 border-1 border-white/40 rounded">
+  <div class="h-[55vh] w-[calc(100vw_-_70px)] m-auto bg-primary p-2 border-box">
     <Line class="py-2">
       <span class="text-white">Thư</span>
     </Line>

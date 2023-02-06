@@ -59,7 +59,7 @@ const MyTheme = {
 
 export default defineConfig({
   darkMode: 'class',
-  attributify: false,
+  attributify: true,
   extract: {
     include: [
       './components/**/*.{vue,js}',
@@ -85,6 +85,7 @@ export default defineConfig({
     },
     backgroundColor: {
       primary: '#191b1e',
+      base: '#000000',
     },
     backgroundImage: {
       bg_aution: 'url("/common/bg-aution.png")',
@@ -121,6 +122,11 @@ export default defineConfig({
   shortcuts: {
     'light-img': 'block dark:hidden',
     'dark-img': 'hidden dark:block',
+    'flex-center': 'flex items-center justify-center',
+    'border-full-box': 'border-1 text-primary rounded-full border-white/40',
+    'border-box': 'border-1 border-white/40 rounded text-primary',
+    'flex-item-w-full': 'flex items-center w-full',
+    'ab-flex-w-full': 'absolute flex w-full',
   },
   plugins: [
     // filters plugin require for navbar blur

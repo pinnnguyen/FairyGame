@@ -163,7 +163,7 @@ const parseEquipments = (equipments: Equipment[]) => {
         </p>
       </div>
     </div>
-    <div class="flex items-center justify-center ">
+    <div class="flex-center ">
       <Lazyitem-rank
         v-for="equipment in parseEquipments(boss.reward.equipments)"
         :key="equipment.name"

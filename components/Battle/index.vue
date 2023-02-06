@@ -2,9 +2,9 @@
 import { Snackbar } from '@varlet/ui'
 import { set } from '@vueuse/core'
 import { sendMessage, useBattleRoundStore, usePlayerStore, useSoundRewardEvent } from '#imports'
-import { BATTLE_KIND, ITEMS_NAME, ITEMS_QUALITY, TARGET_TYPE, tips } from '~/constants'
+import { BATTLE_KIND, TARGET_TYPE, tips } from '~/constants'
 import type { BattleResponse } from '~/types'
-import { randomNumber } from '~/common'
+import { randomNumber, sleep } from '~/common'
 
 const {
   loading,
@@ -31,8 +31,10 @@ const battleRequest = useState<{
   target: string
 }>('battleRequest')
 
+const isLoadBattle = ref(false)
 const isPve = computed(() => battleWarResult.value?.kind === 'pve')
 const showBattleResult = computed(() => battleResult.value.show && !isPve.value)
+
 const startPve = (skip: boolean) => {
   $io.emit('battle:join:pve', {
     skip,
@@ -51,13 +53,14 @@ const onRefresh = () => {
   startPve(false)
 }
 
-const resultRefresh = () => {
+const resultRefresh = async () => {
+  // await sleep(2000)
   startPve(false)
   console.log('resultRefresh')
 }
 
 const handleStartBattle = async (war: BattleResponse) => {
-  console.log('war', war)
+  set(isLoadBattle, false)
   set(battleWarResult, war)
   await startBattle(war, async () => {
     if (playerInfo.value) {
@@ -91,20 +94,20 @@ $io.on('battle:start:boss', async (war: BattleResponse) => {
   await handleStartBattle(war)
 })
 
-watch(battleRequest, (request) => {
+watch(battleRequest, async (request) => {
+  set(isLoadBattle, true)
   onStopBattle()
-  set(loading, true)
-  setTimeout(() => {
-    $io.emit('battle:join:boss', {
-      kind: request.target,
-      player: {
-        userId: playerInfo.value?.userId,
-      },
-      target: {
-        type: request.target,
-        id: request.id,
-      },
-    }, 2000)
+  await sleep(2000)
+  // set(loading, true)
+  $io.emit('battle:join:boss', {
+    kind: request.target,
+    player: {
+      userId: playerInfo.value?.userId,
+    },
+    target: {
+      type: request.target,
+      id: request.id,
+    },
   })
 })
 
@@ -148,10 +151,31 @@ const changeBattle = async () => {
     color="#f5f5f5"
   >
     <div
-      class="flex justify-around relative w-full h-full duration-800 transition transition-color"
-      :class="{ 'bg-[#053034]': !inRefresh && !isPve && battleWarResult }"
+      display="flex"
+      justify="around"
+      position="relative"
+      w="full"
+      h="full"
+      :class="{ 'bg-[#163334]': (!inRefresh && !isPve && battleWarResult || isLoadBattle) }"
     >
-      <div class="flex absolute top-[30%] items-center justify-around w-full">
+      <nuxt-img
+        v-if="isLoadBattle"
+        format="webp"
+        src="/battle/loading.png"
+        w="35" h="35"
+        position="absolute"
+        class="transform-center"
+        object="cover"
+      />
+      <div
+        v-if="!isLoadBattle"
+        display="flex"
+        position="absolute"
+        align="items-center"
+        justify="around"
+        w="full"
+        class="top-[30%]"
+      >
         <BattlePlayerRealtime
           :player-effect="playerEffect"
           :state="state"
@@ -167,29 +191,73 @@ const changeBattle = async () => {
       </div>
       <BattleRevice
         v-if="inRefresh"
-        class="absolute top-0 text-primary"
+        top="0"
+        text="primary"
+        position="absolute"
         :refresh-time="refreshTime"
         @refresh-finished="onRefresh"
       />
     </div>
-    <div class="h-10 absolute bottom-11 w-full flex items-center justify-end italic">
-      <button v-show="speed === 1" class="text-8 mx-2 h-6 w-6 rounded italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu" @click="speed = 1.5">
+    <div
+      h="10"
+      position="absolute"
+      bottom="11"
+      w="full"
+      display="flex"
+      align="items-enter"
+      justify="end"
+      font="italic"
+    >
+      <button
+        v-show="speed === 1"
+        text="8"
+        m="x-2"
+        h="6"
+        w="6"
+        font="italic semibold"
+        class="border-full-box bg-button-menu"
+        @click="speed = 1.5"
+      >
         Tăng tốc
       </button>
-      <button v-show="speed === 1.5" class="text-8 mx-2 h-6 w-6 rounded italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu" @click="speed = 1">
+      <button
+        v-show="speed === 1.5"
+        text="8"
+        m="x-2"
+        h="6"
+        w="6"
+        font="italic semibold"
+        class="border-full-box"
+        @click="speed = 1"
+      >
         Giảm tốc
       </button>
       <button
         v-if="roundNum > 3"
-        class="mx-2 text-8 h-6 w-6 rounded italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
-        @click.stop="onSkip"
+        text="8"
+        m="x-2"
+        h="6"
+        w="6"
+        font="italic semibold"
+        class="border-full-box"
+        @click.stop="onSkip()"
       >
         Bỏ qua
       </button>
     </div>
     <div
       :class="{ 'bg-[#540905]': !inRefresh }"
-      class="transition transition-color duration-800 h-10 absolute text-[#f5f5f5] bottom-0 bg-[#000000] w-full flex items-center justify-between italic"
+      transition="~ colors duration-800"
+      h="10"
+      position="absolute"
+      bottom="0"
+      w="full"
+      display="flex"
+      align="items-center"
+      justify="between"
+      text="gray-100"
+      font="italic"
+      bg="base"
     >
       <var-loading size="mini" color="#ffffff" :loading="!battleWarResult?.enemy?.name">
         <div class="text-12 ml-2">
@@ -197,10 +265,24 @@ const changeBattle = async () => {
         </div>
       </var-loading>
       <var-loading v-if="isPve" size="mini" color="#ffffff" :loading="!playerInfo?.midId">
-        <div class="text-12 flex items-center">
-          <span class="mx-2">Hiện tại: thứ {{ playerInfo?.midId }} Ải</span>
+        <div
+          text="12"
+          display="flex"
+          align="items-center"
+        >
+          <span
+            m="x-2"
+          >
+            Hiện tại: thứ {{ playerInfo?.midId }} Ải
+          </span>
           <button
-            class="h-6 px-2 ml-1 shadow rounded mx-2 text-10 font-semibold text-white bg-[#841919] shadow italic"
+            h="6"
+            p="x-2"
+            m="l-1 x-2"
+            border="rounded"
+            text="10 white"
+            font="semibold italic"
+            class="bg-[#841919]"
             @click.stop="changeBattle"
           >
             Khiêu chiến

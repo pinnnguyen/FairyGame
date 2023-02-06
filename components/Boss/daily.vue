@@ -93,7 +93,7 @@ const startWar = (boss: Boss) => {
         {{ boss.name }}
       </div>
       <div>
-        HP quái: 100%
+        HP boss: 100%
       </div>
       <div class="flex max-w-[calc(100vw_-_40px)]">
         Thưởng:

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-const emits = defineEmits(['close'])
-const currentTab = ref<'equip' | 'gem' | 'item'>('item')
+const tab = ref<string>('item')
 const tabItems = [
   {
     key: 'item',
@@ -18,25 +17,58 @@ const tabItems = [
 </script>
 
 <template>
-  <div class="relative flex items-center justify-center h-full">
-    <div class="absolute top-0 flex items-start w-full p-2">
+  <div
+    position="relative"
+    h="full"
+    class="flex-center"
+  >
+    <div
+      position="absolute"
+      top="0"
+      display="flex"
+      align="items-center"
+      w="full"
+      p="2"
+    >
       <button
         v-for="tabItem in tabItems"
         :key="tabItem.key"
         :class="{
-          '!opacity-100': currentTab === tabItem.key,
+          '!opacity-100': tab === tabItem.key,
         }"
-        class="transition opacity-40 transition-opacity duration-800 mx-2 w-16 h-8 leading-3 italic shadow rounded font-bold border-1 text-primary border-white/40"
-        @click.stop="currentTab = tabItem.key"
+        transition="~ opacity duration-700"
+        m="x-2"
+        w="16"
+        h="8"
+        font="leading-3 italic bold"
+        border="1 white/40"
+        text="primary"
+        opacity="40"
+        @click.stop="tab = tabItem.key"
       >
         {{ tabItem.name }}
       </button>
     </div>
-
-    <div class="absolute top-10 w-full flex flex-col items-center p-4 h-[calc(100%_-_47px)] overflow-auto">
-      <BagEquipments v-if="currentTab === 'equip' " />
-      <BagItems v-if="currentTab === 'item' " />
-      <BagGems v-if="currentTab === 'gem' " />
+    <div
+      position="absolute"
+      top="10"
+      w="full"
+      display="flex"
+      flex="col"
+      align="items-center"
+      p="4"
+      overflow="auto"
+      class="h-[calc(100%_-_47px)]"
+    >
+      <BagEquipments
+        v-if="tab === 'equip' "
+      />
+      <BagItems
+        v-if="tab === 'item' "
+      />
+      <BagGems
+        v-if="tab === 'gem' "
+      />
     </div>
   </div>
 </template>

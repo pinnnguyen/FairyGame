@@ -15,7 +15,7 @@ const enemyClassIMG = computed(() => {
 
 <template>
   <div
-    class="relative duration-500 transition-transform border-1 border-white/40 rounded h-12"
+    class="relative duration-500 transition-transform border-box h-12"
     :style="{
       transform: realTime.player.sureDamage ? 'translate(-10%)' : '',
     }"

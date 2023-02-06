@@ -116,7 +116,7 @@ const sell = async () => {
     </div>
   </var-popup>
   <div
-    class="relative text-white bg-primary leading-[23px] p-0 w-[85vw] m-auto overflow-hidden rounded border border-white/40"
+    class="relative text-white bg-primary leading-[23px] p-0 w-[85vw] m-auto overflow-hidden border-box"
   >
     <div class="text-12 font-medium">
       <div

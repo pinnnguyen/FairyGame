@@ -34,7 +34,7 @@ watch(options, (value) => {
       :action="false"
     />
   </var-popup>
-  <div class="flex items-center justify-center w-[95vw] h-[70vh] bg-[#191b1e]">
+  <div class="flex-center w-[95vw] h-[70vh] bg-[#191b1e]">
     <div class="w-full h-full relative border border-white/40">
       <span class="font-bold absolute left-[calc(50%_-_50px)] top-[4px] text-white text-12 w-25 flex justify-center">
         <slot name="title" />

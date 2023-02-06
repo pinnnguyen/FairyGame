@@ -94,12 +94,12 @@ const handleCreateFigure = async () => {
         <div class="absolute bottom-0 left-0 mb-4 flex w-full justify-center items-center">
           <div>
             <p>
-              <input v-model="name" placeholder="Tên nhân vật" class="w-[160px] border border-[#dcc18d] focus:border-[#dcc18d] bg-[#2d251d] rounded h-[30px] leading-[35px] text-center flex items-center justify-center" type="text" name="username" maxlength="16">
+              <input v-model="name" placeholder="Tên nhân vật" class="w-[160px] border border-[#dcc18d] focus:border-[#dcc18d] bg-[#2d251d] rounded h-[30px] leading-[35px] text-center flex-center" type="text" name="username" maxlength="16">
             </p>
           </div>
 
           <div class="ml-2">
-            <button class="bg-[#ffd400] text-base border-none leading-8 h-[30px] text-black flex items-center justify-center !w-[70px] !m-0 !rounded" type="submit" value="Tạo">
+            <button class="bg-[#ffd400] text-base border-none leading-8 h-[30px] text-black flex-center !w-[70px] !m-0 !rounded" type="submit" value="Tạo">
               Tạo
             </button>
           </div>

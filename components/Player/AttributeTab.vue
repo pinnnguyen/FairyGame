@@ -27,7 +27,7 @@ const addAttribute = async (target: string) => {
 
 <template>
   <var-popup v-model:show="tooltip" position="center">
-    <div class="w-80 p-4 border border-white/40 bg-[#000000] text-primary rounded">
+    <div class="w-80 p-4 border-box">
       Lên 1 level sẽ được thêm 2 điểm thuộc tính
       <p class="flex flex-col">
         <span>
@@ -196,7 +196,7 @@ const addAttribute = async (target: string) => {
       Chưa được mở khoá
     </div>
     <p class="absolute bottom-2 right-0" @click="tooltip = true">
-      <button class="mx-2 h-6 w-6 shadow rounded text-8 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu">
+      <button class="mx-2 h-6 w-6 shadow rounded text-8 italic font-semibold border-full-box bg-button-menu">
         Gợi ý
       </button>
     </p>

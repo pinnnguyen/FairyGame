@@ -204,7 +204,7 @@ const setTab = (t: string) => {
         <Line class="mb-4">
           Thuộc tính nhân vật
         </Line>
-        <div class="flex items-center justify-center">
+        <div class="flex-center">
           <div class="flex w-full justify-around">
             <PlayerShortView />
             <div>

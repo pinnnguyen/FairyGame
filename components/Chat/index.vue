@@ -116,7 +116,7 @@ const openMail = () => {
           </p>
         </div>
       </div>
-      <div class="flex items-center justify-center p-4 pb-4">
+      <div class="flex-center p-4 pb-4">
         <var-input v-model="chatContent" class="mb-4" placeholder="Nhập nội dung..." focus-color="#fff" />
         <icon class="text-white" name="ic:baseline-send" size="25" @click="sendChat" />
       </div>
@@ -126,7 +126,7 @@ const openMail = () => {
     <Mail :mails="mails" />
   </var-popup>
   <div class="max-w-[70vh] h-12 bg-[#000000] text-12 w-full flex items-center justify-between gap-2 p-2 fixed bottom-0 border-t border-white/10">
-    <button class="h-8 w-8 rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu" @click="toggle.chat = true">
+    <button class="h-8 w-8 rounded text-12 italic font-semibold components/Chat/index.vue bg-button-menu" @click="toggle.chat = true">
       <span class="">Giao lưu</span>
     </button>
     <div class="h-12 w-full overflow-auto text-left">
@@ -145,7 +145,7 @@ const openMail = () => {
       </div>
     </div>
     <div class="relative">
-      <button class="h-8 w-8 rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu" @click="openMail">
+      <button class="h-8 w-8 text-12 italic font-semibold border-full-box bg-button-menu" @click="openMail">
         <span class="">Thư <span class="text-10">({{ mailUnread.length }})</span></span>
       </button>
     </div>

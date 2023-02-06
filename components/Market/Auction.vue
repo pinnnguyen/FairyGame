@@ -50,7 +50,7 @@ const doAuction = (auctionItem: AuctionItem) => {
       Đấu giá
     </p>
     <div class="absolute w-full h-full">
-      <div v-if="!startEvent" class="h-full flex items-center justify-center text-white">
+      <div v-if="!startEvent" class="h-full flex-center text-white">
         Đấu giá chưa được mở
       </div>
       <div v-else class="grid grid-cols-2 m-auto w-[84%] h-[87%] overflow-auto mt-10 gap-2">

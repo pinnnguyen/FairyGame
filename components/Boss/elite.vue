@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { set } from '@vueuse/core'
 import { usePlayerStore } from '~/composables/usePlayer'
 import { sendMessage } from '~/composables/useMessage'
 import type { BossElite } from '~/types'
@@ -12,7 +13,7 @@ const props = defineProps<{
 
 const { playerInfo } = storeToRefs(usePlayerStore())
 const now = new Date().getTime()
-const tooltip = ref(false)
+const battleRequest = useState('battleRequest')
 
 const revive = ref((props.boss.revive - now) / 1000)
 const options = reactive({
@@ -29,18 +30,12 @@ const startWar = (boss: BossElite) => {
     return
   }
 
-  if (revive.value > 0) {
+  if (revive.value > 0)
     sendMessage('Boss đang hồi sinh')
-    return
-  }
 
-  navigateTo({
-    path: `/battle/${new Date().getTime()}`,
-    replace: true,
-    query: {
-      target: TARGET_TYPE.BOSS_ELITE,
-      id: boss._id,
-    },
+  set(battleRequest, {
+    id: boss._id,
+    target: TARGET_TYPE.BOSS_ELITE,
   })
 }
 </script>
@@ -111,23 +106,23 @@ const startWar = (boss: BossElite) => {
   <!--            {{ boss.name }} -->
   <!--          </div> -->
   <!--          <div class="mt-2 flex gap-2"> -->
-  <!--            <div class="flex items-center justify-center"> -->
+  <!--            <div class="flex-center"> -->
   <!--              <Icon name="fa6-solid:sack-dollar" size="12" /> -->
-  <!--              <span class="flex items-center justify-center ml-1"> -->
+  <!--              <span class="flex-center ml-1"> -->
   <!--                <span class="text-10 text-gray-200">{{ boss.reward?.base?.bag }}</span> -->
   <!--                <nuxt-img format="webp" class="w-3 h-3 ml-[1px]" src="/items/1_s.png" /> -->
   <!--              </span> -->
   <!--            </div> -->
-  <!--            <div class="flex items-center justify-center"> -->
+  <!--            <div class="flex-center"> -->
   <!--              <Icon name="noto:trophy" size="12" /> -->
-  <!--              <span class="flex items-center justify-center ml-1"> -->
+  <!--              <span class="flex-center ml-1"> -->
   <!--                <span class="text-10 text-gray-200">{{ boss.reward?.base?.top }}</span> -->
   <!--                <nuxt-img format="webp" class="w-3 h-3 ml-[1px]" src="/items/1_s.png" /> -->
   <!--              </span> -->
   <!--            </div> -->
-  <!--            <div class="flex items-center justify-center"> -->
+  <!--            <div class="flex-center"> -->
   <!--              <Icon name="game-icons:ancient-sword" size="12" /> -->
-  <!--              <span class="flex items-center justify-center ml-1"> -->
+  <!--              <span class="flex-center ml-1"> -->
   <!--                <span class="text-10 text-gray-200">{{ boss.reward?.base?.kill }}</span> -->
   <!--                <nuxt-img format="webp" class="w-3 h-3 ml-[1px]" src="/items/1_s.png" /> -->
   <!--              </span> -->
@@ -183,11 +178,11 @@ const startWar = (boss: BossElite) => {
 
   <div class="relative flex border border-white/40 rounded p-2 m-2">
     <div class="p-1">
-      <div class="text-12 font-bold" :style="{ color: qualityPalette(boss.quality) }">
+      <div class="text-12 font-bold" :style="{ color: qualityPalette(boss?.quality) }">
         {{ boss.name }}
       </div>
       <div>
-        HP quái: 100%
+        HP boss: {{ Math.round((boss.attribute.hp / boss.hp) * 100) }}%
       </div>
       <div class="flex max-w-[calc(100vw_-_40px)]">
         Thưởng:

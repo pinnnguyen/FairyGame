@@ -95,7 +95,7 @@ const refreshFinished = () => {
   <LoadingScreen v-if="loading" />
   <div class="h-screen bg-white">
     <div class="h-[54%] relative">
-      <div class="bg-[#41466e] text-center py-2 text-base font-semibold flex items-center justify-center">
+      <div class="bg-[#41466e] text-center py-2 text-base font-semibold flex-center">
         <span class="text-white rounded text-12">
           [{{ state?.enemy?.name }} Map {{ playerInfo?.midId }}]
         </span>

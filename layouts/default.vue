@@ -2,7 +2,14 @@
 </script>
 
 <template>
-  <div class="flex flex-col overflow-hidden font-san game-center h-full">
+  <div
+    display="flex"
+    flex="col"
+    overflow="hidden"
+    font="san"
+    h="full"
+    class="game-center"
+  >
     <slot name="header">
       <PageNavbar />
     </slot>
@@ -11,10 +18,6 @@
 </template>
 
 <style lang="scss">
-.body {
-  background: #9e9e9e;
-}
-
 .game-center {
   max-width: calc(100vh * 0.7);
   margin: 0 auto;
@@ -26,9 +29,5 @@
   font-weight: 600;
   touch-action: none;
   font-style: italic;
-}
-
-.footer {
-  max-width: calc(100vh * 0.7);
 }
 </style>

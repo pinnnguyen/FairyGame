@@ -6,7 +6,7 @@ const close = () => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center h-full w-full fixed z-99" style="background: url('/common/bg_5.jpg'); background-size: cover">
+  <div class="flex-center h-full w-full fixed z-99" style="background: url('/common/bg_5.jpg'); background-size: cover">
     <div class="w-[90%] h-[70%] absolute top-10">
       <div class="w-full h-full relative">
         <span class="font-semibold absolute w-[40px] left-[calc(50%_-_15px)] top-[-1px] text-[#656f99]">BOSS</span>
@@ -19,7 +19,7 @@ const close = () => {
                 <nuxt-img class="w-10 h-3 object-cover absolute bottom-0 left-[calc(50%_-_20px)]" format="webp" src="/panel/common_2.png" />
               </div>
             </div>
-            <div class="flex items-center justify-center">
+            <div class="flex-center">
               <div class="bg-iconbg_3 h-10 w-10 bg-contain bg-no-repeat" />
               <div class="bg-iconbg_3 h-10 w-10 bg-contain bg-no-repeat" />
               <div class="bg-iconbg_3 h-10 w-10 bg-contain bg-no-repeat" />

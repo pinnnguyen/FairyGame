@@ -143,7 +143,6 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
           return
         }
 
-        roundNum.value++
         const _turn = turn.replace(/1_|2_/g, '') // replace '1_player' -> player
         const __turn: string = _turn === BATTLE_TURN.PLAYER ? BATTLE_TURN.ENEMY : BATTLE_TURN.PLAYER // Đảo ngược key
 
@@ -151,7 +150,9 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
         const DMG = emuT?.state?.damage
 
         if (emuT.action) {
-          if (roundNum.value > 2)
+          roundNum.value++
+
+          if (roundNum.value > 4)
             await sleep(TURN_DELAY.value)
 
           set(playerEffect, _turn)

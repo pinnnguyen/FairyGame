@@ -15,7 +15,7 @@ const emits = defineEmits(['selected', 'mergegem', 'refresh'])
 const { sid } = usePlayerStore()
 const { $io } = useNuxtApp()
 const sellPopup = ref(false)
-const sellOptions = ref({
+const sellOptions = ref<any>({
   price: 0,
   quantity: 0,
 })
@@ -77,14 +77,25 @@ const sell = async () => {
 </script>
 
 <template>
-  <var-popup v-model:show="sellPopup" position="bottom">
-    <div class="p-4">
+  <var-popup
+    v-if="sellPopup"
+    v-model:show="sellPopup"
+    position="bottom"
+  >
+    <div
+      p="4"
+    >
       <var-input v-model="sellOptions.price" type="number" placeholder="Nhập giá bán" />
       <var-input v-model="sellOptions.quantity" type="number" placeholder="Nhập số lượng" />
     </div>
-    <div class="text-center my-4">
+    <div
+      text="center"
+      p="y-4"
+    >
       <var-button
-        class="!text-[#333] font-medium mx-2"
+        font="medium"
+        m="x-2"
+        class="!text-[#333]"
         size="small"
         @click.stop="sell"
       >
@@ -93,43 +104,97 @@ const sell = async () => {
     </div>
   </var-popup>
   <div
-    class="relative text-xs leading-6 text-white rounded shadow-md p-0 bg-primary border border-white/30 w-[90%] m-auto"
+    position="relative"
+    text="white"
+    bg="primary"
+    p="0"
+    m="auto"
+    border="white/40 1 rounded"
+    w="11/12"
+    font="leading-6"
   >
     <div
-      class="flex flex-col items-center justify-between px-3 pt-4 leading-5"
+      display="flex"
+      flex="col"
+      align="items-center"
+      justify="between"
+      p="x-3 t-4"
+      font="leading-5"
     >
-      <div class="flex w-full">
-        <div class="relative w-15 h-15 mr-2">
-          <nuxt-img class="absolute top-0" format="webp" :src="`/quality_bg/iconbg_${gem.quality}.png`" />
-          <nuxt-img class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" format="webp" :src="`/gem/${gem.gemId}.png`" />
+      <div
+        display="flex"
+        w="full"
+      >
+        <div
+          position="relative"
+          w="15"
+          h="15"
+          m="r-2"
+        >
+          <nuxt-img
+            position="absolute"
+            top="0"
+            format="webp"
+            :src="`/quality_bg/iconbg_${gem.quality}.png`"
+          />
+          <nuxt-img
+            position="absolute"
+            border="rounded-full"
+            object="cover"
+            class="transform-center w-[80%] h-[80%]"
+            format="webp"
+            :src="`/gem/${gem.gemId}.png`"
+          />
         </div>
         <div class="text-left">
           <p
-            class="text-12 font-bold"
+            text="12"
+            font="bold"
             :style="{ color: qualityPalette(gem.quality) }"
           >
             {{ gem.name }}
           </p>
-          <p v-if="gem.sum > 0" class="text-10 font-bold">
+          <p
+            v-if="gem.sum > 0"
+            text="10"
+            font="bold"
+          >
             Hiện có: {{ gem.sum }}
           </p>
         </div>
       </div>
     </div>
-    <div class="text-12 border-t border-white/40 m-4 p-2">
-      <div class="flex">
-        <div class="w-25">
+    <div
+      text="12"
+      border="t white/40"
+      m="4"
+      p="2"
+    >
+      <div
+        display="flex"
+      >
+        <div
+          w="25"
+        >
           Vị trí:
         </div> {{ SLOT_NAME[gem.slot] }}
       </div>
-      <div class="flex">
-        <div class="w-25">
+      <div
+        display="flex"
+      >
+        <div
+          w="25"
+        >
           Trưởng Thành:
         </div>
         {{ gem.rateOnLevel }}%
       </div>
-      <div class="flex">
-        <div class="w-25">
+      <div
+        display="flex"
+      >
+        <div
+          w="25"
+        >
           Phẩm đá hồn :
         </div>
         <span
@@ -140,63 +205,168 @@ const sell = async () => {
           {{ qualityTitle }}
         </span>
       </div>
-      <div class="flex">
-        <div class="w-25">
+      <div
+        display="flex"
+      >
+        <div
+          w="25"
+        >
           Thuộc tính:
         </div>
-        <div class="flex flex-col">
+        <div
+          display="flex"
+          flex="col"
+        >
           <gem-values :gem="gem" />
         </div>
       </div>
-      <Line class="py-2">
-        <div class="whitespace-nowrap">
+      <Line
+        p="y-2"
+      >
+        <div
+          white-space="nowrap"
+        >
           Ghép Đá Hồn
         </div>
       </Line>
-      <div class="mt-2 flex justify-between items-center gap-2 mb-2">
-        <div class="flex items-center border border-white/20 p-2">
-          <div class="relative w-10 h-10 mr-2">
-            <nuxt-img class="absolute top-0" format="webp" :src="`/quality_bg/iconbg_${gem.quality}.png`" />
-            <nuxt-img class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" format="webp" :src="`/gem/${gem.gemId}.png`" />
+      <div
+        m="t-2 b-2"
+        display="flex"
+        justify="between"
+        align="items-center"
+        gap="2"
+      >
+        <div
+          display="flex"
+          align="items-center"
+          border="white/20 1"
+          p="2"
+        >
+          <div
+            position="relative"
+            w="10"
+            h="10"
+            m="r-2"
+          >
+            <nuxt-img
+              position="absolute"
+              top="0"
+              format="webp"
+              :src="`/quality_bg/iconbg_${gem.quality}.png`"
+            />
+            <nuxt-img
+              position="absolute"
+              border="rounded-full"
+              object="cover"
+              class=" transform-center w-[80%] h-[80%]"
+              format="webp"
+              :src="`/gem/${gem.gemId}.png`"
+            />
           </div>
-          <span class="text-8 w-[25px]" :style="colorQuality(gem.quality)">
+          <span
+            text="8"
+            w="2"
+            :style="colorQuality(gem.quality)"
+          >
             {{ qualityTitle }}
             <br>
             x3
           </span>
         </div>
-        <icon name="mdi:arrow-right-bold-outline" size="20" class="text-blue-300" />
-        <div class="flex items-center border border-white/20 p-2">
-          <div class="relative w-10 h-10 mr-2">
-            <nuxt-img class="absolute top-0" format="webp" :src="`/quality_bg/iconbg_${gem.quality}.png`" />
-            <nuxt-img class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" format="webp" :src="`/gem/${gem.gemId}.png`" />
+        <icon
+          name="mdi:arrow-right-bold-outline"
+          size="20"
+          text="blue-300"
+        />
+        <div
+          display="flex"
+          align="items-center"
+          border="white/20 1"
+          p="2"
+        >
+          <div
+            position="relative"
+            w="10"
+            h="10"
+            m="r-2"
+          >
+            <nuxt-img
+              position="absolute"
+              top="0"
+              format="webp"
+              :src="`/quality_bg/iconbg_${gem.quality}.png`"
+            />
+            <nuxt-img
+              position="absolute"
+              border="rounded-full"
+              object="cover"
+              class="transform-center w-[80%] h-[80%]"
+              format="webp"
+              :src="`/gem/${gem.gemId}.png`"
+            />
           </div>
-          <span class="text-8 w-[25px]" :style="colorQuality(gem.quality + 1)">
+          <span
+            text="8"
+            class="w-[25px]"
+            :style="colorQuality(gem.quality + 1)"
+          >
             {{ QUALITY_TITLE[gem.quality + 1] }}
             <br>
             x3
           </span>
         </div>
         <icon name="mdi:arrow-right-bold-outline" size="20" class="text-blue-300" />
-        <div class="flex items-center border border-white/20 p-2">
-          <div class="relative w-10 h-10 mr-2">
-            <nuxt-img class="absolute top-0" format="webp" :src="`/quality_bg/iconbg_${gem.quality}.png`" />
-            <nuxt-img class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" format="webp" :src="`/gem/${gem.gemId}.png`" />
+        <div
+          display="flex"
+          align="items-center"
+          border="white/20 1"
+          p="2"
+        >
+          <div
+            position="relative"
+            w="10"
+            h="10"
+            m="r-2"
+          >
+            <nuxt-img
+              position="absolute"
+              top="0"
+              format="webp"
+              :src="`/quality_bg/iconbg_${gem.quality}.png`"
+            />
+            <nuxt-img
+              position="absolute"
+              border="rounded-full"
+              object="cover"
+              class="transform-center w-[80%] h-[80%]"
+              format="webp"
+              :src="`/gem/${gem.gemId}.png`"
+            />
           </div>
-          <span class="text-8 w-[25px]" :style="colorQuality(gem.quality + 2)">
+          <span
+            text="8"
+            class="w-[25px]" :style="colorQuality(gem.quality + 2)"
+          >
             {{ QUALITY_TITLE[gem.quality + 2] }}
             <br>
             x3
           </span>
         </div>
       </div>
-      <div class="text-center text-10">
+      <div
+        text="center 10"
+      >
         (Chỉ được khảm 1 đá hồn này lên trang bị)
       </div>
-      <div class="text-center py-2">
+      <div
+        text="center"
+        p="y-2"
+      >
         <var-button
           v-if="sellAction"
-          class="!text-[#333] font-semibold mx-2 italic"
+          font="semibold italic"
+          m="x-2"
+          class="!text-[#333]"
           size="small"
           @click.stop="sellPopup = true"
         >
@@ -204,7 +374,9 @@ const sell = async () => {
         </var-button>
         <var-button
           v-if="selectAction"
-          class="!text-[#333] mx-2 italic font-semibold"
+          font="semibold italic"
+          m="x-2"
+          class="!text-[#333]"
           size="small"
           @click.stop="emits('selected', gem)"
         >
@@ -212,7 +384,9 @@ const sell = async () => {
         </var-button>
         <var-button
           v-if="gem.sum >= 3"
-          class="font-semibold mx-2 !text-[#333] italic"
+          font="semibold italic"
+          m="x-2"
+          class="!text-[#333]"
           size="small"
           @click.stop="onmergeGems(gem)"
         >

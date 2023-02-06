@@ -54,7 +54,7 @@ const take = async () => {
 
   <div
     v-for="record in records" :key="record._id"
-    class="absolute bottom-0 transform-center w-25 flex items-center justify-center"
+    class="absolute bottom-0 transform-center w-25 flex-center"
     @click.stop="onSelectedGem(record)"
   >
     <div class="text-center">

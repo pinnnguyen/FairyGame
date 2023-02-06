@@ -98,7 +98,7 @@ onUnmounted(() => {
     </template>
   </upgrade-item>
   <div v-if="needResource" class="absolute bottom-0 w-full duration-500">
-    <div class="flex items-center justify-center">
+    <div class="flex-center">
       <div class="flex items-center mx-1">
         <nuxt-img format="webp" class="w-5 mr-1" src="/items/3_s.png" />
         <span class="text-12 font-semibold text-[#52648e]">{{ needResource?.gold }}</span>

@@ -28,21 +28,57 @@ const onmergeGems = () => {
       @mergegem="onmergeGems"
     />
   </var-popup>
-  <var-loading :loading="pending" :description="tips[Math.round(randomNumber(0, tips.length))]" size="mini" color="#ffffff">
-    <div class="grid-cols-6 grid gap-2">
+  <var-loading
+    :loading="pending"
+    :description="tips[Math.round(randomNumber(0, tips.length))]"
+    size="mini"
+    color="#ffffff"
+  >
+    <div
+      grid="~ cols-6"
+      gap="2"
+    >
       <div
         v-for="gem in gems" :key="gem._id"
         @click="pickGemItem(gem)"
       >
-        <div class="relative w-12 h-12">
-          <nuxt-img class="absolute top-0" format="webp" :src="`/quality_bg/iconbg_${gem.quality}.png`" />
-          <nuxt-img class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" format="webp" :src="`/gem/${gem.gemId}.png`" />
-          <div class="absolute bg-black/60 text-8 font-bold text-white bottom-1 right-1 px-1 rounded-2xl text-yellow-300">
+        <div
+          position="relative"
+          w="12"
+          h="12"
+        >
+          <nuxt-img
+            position="absolute"
+            top="0"
+            class="absolute top-0"
+            :src="`/quality_bg/iconbg_${gem.quality}.png`"
+          />
+          <nuxt-img
+            position="absolute"
+            border="rounded-full"
+            object="cover"
+            class=" w-[80%] h-[80%] transform-center"
+            format="webp"
+            :src="`/gem/${gem.gemId}.png`"
+          />
+          <div
+            border="rounded-2xl"
+            position="absolute"
+            text="8 yellow-300"
+            bg="black/60"
+            font="bold"
+            bottom="1"
+            right="1"
+            p="x-1"
+          >
             {{ gem.sum }}
           </div>
         </div>
         <p
-          class="text-10 font-semibold line-clamp-1" :style="{
+          text="10"
+          font="semibold"
+          class="line-clamp-1"
+          :style="{
             color: qualityPalette(gem.quality),
           }"
         >

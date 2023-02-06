@@ -2,18 +2,8 @@
 import { usePlayerStore } from '#imports'
 
 const { $io } = useNuxtApp()
-const { playerInfo, loadPlayer } = usePlayerStore()
+const { loadPlayer } = usePlayerStore()
 
-const toggleUpgrade = useState('toggleUpgrade')
-
-const toggleUpStar = useState('toggleUpStar')
-const toggleUpRank = useState('toggleUpRank')
-
-const toggleUpGem = useState('toggleUpGem')
-const togglePlayerInfo = useState('togglePlayerInfo')
-const toggleBoss = useState('toggleBoss')
-
-// activeSound.play()
 definePageMeta({
   middleware: ['game'],
   auth: false,
@@ -22,47 +12,42 @@ definePageMeta({
 $io.on('fetch:player:response', (data: any) => {
   loadPlayer(data)
 })
-
-onMounted(async () => {
-  // setTimeout(async () => {
-  //   await useSoundHomeEvent().play()
-  // }, 10000)
-  // shouldTupo({
-  //   level: playerInfo.value?.level,
-  //   floor: playerInfo.value?.floor,
-  //   levelTitle: playerInfo.value?.levelTitle,
-  // })
-})
 </script>
 
 <template>
-  <TheRight />
-  <var-popup v-model:show="toggleBoss" position="center">
-    <Boss />
-  </var-popup>
-  <var-popup v-model:show="togglePlayerInfo" position="center">
-    <PlayerInfomation />
-  </var-popup>
-  <var-popup v-model:show="toggleUpgrade" position="center">
-    <Upgrade v-if="toggleUpgrade" />
-  </var-popup>
-  <var-popup v-model:show="toggleUpStar" position="center">
-    <UpgradeUpStar />
-  </var-popup>
-  <var-popup v-model:show="toggleUpRank" position="center">
-    <UpgradeUpRank />
-  </var-popup>
-  <var-popup v-model:show="toggleUpGem" position="center">
-    <UpgradeGem />
-  </var-popup>
-  <PageSection class="flex-1 flex items-center relative justify-center z-9">
-    <div class="w-full absolute top-[40px] h-[34%]">
-      <div class="relative h-full border-b border-white/10 bg-primary">
+  <Menu />
+  <PageSection
+    display="flex"
+    flex="1"
+    position="relative"
+    justify="center"
+    align="items-center"
+    z="9"
+  >
+    <div
+      w="full"
+      position="absolute"
+      class="top-[40px] h-[34%]"
+    >
+      <div
+        position="relative"
+        h="full"
+        border="b white/10"
+        bg="primary"
+      >
         <Battle />
       </div>
     </div>
-    <div class="absolute bottom-0 w-full h-[60%]">
-      <div class="relative h-full">
+    <div
+      position="absolute"
+      bottom="0"
+      w="full"
+      class="h-[60%]"
+    >
+      <div
+        position="relative"
+        h="full"
+      >
         <PageBottom />
       </div>
     </div>
