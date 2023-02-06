@@ -16,7 +16,7 @@ const props = defineProps<{
     >
       <nuxt-img class="absolute top-0" format="webp" :src="`/quality_bg/iconbg_${gem.quality}.png`" />
       <nuxt-img class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" format="webp" :src="`/gem/${gem.gemId}.png`" />
-      <div class="absolute bg-black/60 text-8 font-bold text-white bottom-0 right-0 px-1 rounded-2xl text-yellow-300">
+      <div class="absolute bg-[#00000040] text-8 font-bold text-white bottom-0 right-0 px-1 rounded-2xl text-yellow-300">
         {{ gem.sum }}
       </div>
     </div>

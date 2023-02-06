@@ -59,7 +59,7 @@ export default defineNuxtConfig({
     'nuxt-windicss',
     'nuxt-icon',
     '@sidebase/nuxt-auth',
-    '@kevinmarrec/nuxt-pwa',
+    // '@kevinmarrec/nuxt-pwa',
   ],
   pwa: {
     manifest: {

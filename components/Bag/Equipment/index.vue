@@ -21,7 +21,7 @@ const onchangeEquip = () => {
 
 <template>
   <var-popup v-model:show="show" position="center">
-    <bag-equip-detail
+    <bag-equipment-detail
       :item="equipItemSelected"
       :action="true"
       :sell-action="true"

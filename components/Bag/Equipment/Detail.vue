@@ -172,12 +172,12 @@ const sell = async () => {
           </div>
         </Line>
         <div v-if="item?.gems?.length > 0" class="mx-2 max-h-[250px] overflow-auto w-full">
-          <div v-for="(gem, i) in item?.gems" :key="i" class="flex items-center px-1 p-1 bg-black/40 mb-1 relative">
+          <div v-for="(gem, i) in item?.gems" :key="i" class="flex items-center px-1 p-1 bg-[#00000040] mb-1 relative">
             <gem-item :gem="gem" />
           </div>
           <template v-if="gemReduceSlot > 0">
             <div v-for="i in gemReduceSlot" :key="i" class="flex items-center mb-2">
-              <nuxt-img src="/gem/default.png" format="webp" class="w-12 h-12 bg-black" />
+              <nuxt-img src="/gem/default.png" format="webp" class="w-12 h-12 bg-[#000000]" />
               <span class="ml-2 text-10">
                 (Chưa khảm)
               </span>

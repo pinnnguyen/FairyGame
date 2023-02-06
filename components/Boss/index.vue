@@ -1,11 +1,11 @@
 <script setup>
 import { tips } from '~/constants'
-import { randomNumber } from '~/common'
+import { randomNumber, sleep } from '~/common'
 
 const emits = defineEmits(['close'])
 
 const tab = ref('daily')
-const { data: dataResponse, pending } = useFetch('/api/boss', {
+const { data: dataResponse, pending, refresh } = useFetch('/api/boss', {
   params: {
     kind: tab.value,
   },
@@ -14,6 +14,11 @@ const { data: dataResponse, pending } = useFetch('/api/boss', {
 const bossElites = computed(() => dataResponse.value?.elites)
 const bossDaily = computed(() => dataResponse.value?.daily)
 const bossFrameTime = computed(() => dataResponse.value?.frameTime)
+
+const beforeWar = async () => {
+  await sleep(3000)
+  refresh()
+}
 
 const tabItems = [
   {
@@ -50,6 +55,7 @@ const tabItems = [
           v-for="boss in bossElites"
           :key="boss._id"
           :boss="boss"
+          @war="beforeWar"
         />
       </template>
       <template v-if="tab === 'daily' ">
@@ -57,6 +63,7 @@ const tabItems = [
           v-for="boss in bossDaily"
           :key="boss._id"
           :boss="boss"
+          @war="beforeWar"
         />
       </template>
       <template v-if="tab === 'frameTime' ">

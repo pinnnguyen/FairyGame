@@ -1,4 +1,4 @@
-export const SLOT_NAME = {
+export const SLOT_NAME: Record<string, string> = {
   1: 'Vũ Khí',
   2: 'Trang Phục',
   3: 'Khôi',

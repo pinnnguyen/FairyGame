@@ -95,7 +95,6 @@ export const receivedItems = async (sid: string, _enemyObj: EnemyObject, winner:
     }
   }
 
-  console.log('take', itemResponse)
   return {
     itemDrafts: itemResponse,
   }

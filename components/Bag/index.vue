@@ -60,13 +60,13 @@ const tabItems = [
       overflow="auto"
       class="h-[calc(100%_-_47px)]"
     >
-      <BagEquipments
+      <BagEquipment
         v-if="tab === 'equip' "
       />
-      <BagItems
+      <BagItem
         v-if="tab === 'item' "
       />
-      <BagGems
+      <BagGem
         v-if="tab === 'gem' "
       />
     </div>

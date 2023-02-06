@@ -21,7 +21,7 @@ const buy = (item: any) => {
     confirmButtonText: 'Chắc chắn',
     cancelButtonText: 'Không chắc',
     closeOnClickOverlay: false,
-    dialogClass: '!bg-black/80 text-white border border-white/10 italic',
+    dialogClass: '!bg-[#00000040] text-white border border-white/10 italic',
     confirmButtonColor: '#FFF',
     confirmButtonTextColor: '#333',
     cancelButtonTextColor: '#d2d2d2',

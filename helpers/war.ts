@@ -116,6 +116,9 @@ export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   const playerDef = (player?.attribute?.def as number)
 
   inflictDMG = Math.round(enemyDMG - playerDef * 0.75)
+  if (inflictDMG < 0)
+    inflictDMG = 0
+
   const { blood } = handleBloodsucking(inflictDMG, enemy?.attribute?.bloodsucking, player.attribute.reductionBloodsucking)
   const { recovery } = handleRecoveryPerformance(blood, enemy.attribute.recoveryPerformance, player.attribute.reductionRecoveryPerformance)
   const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(enemy?.attribute?.critical, inflictDMG, enemy?.attribute?.criticalDamage, player?.attribute?.reductionCriticalDamage)
@@ -128,7 +131,7 @@ export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
     inflictDMG = 0
 
   return {
-    receiveDMG: inflictDMG < 0 ? 0 : inflictDMG,
+    receiveDMG: inflictDMG ?? 0,
     enemyBloodsucking: recovery,
     enemyCritical: hasCritical,
     playerCounterAttack: counterDamage,
@@ -137,9 +140,13 @@ export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
 }
 export const inflictDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   let inflictDMG: number
+
   const playerDMG = (player?.attribute?.damage as number)
   const enemyDef = (enemy?.attribute.def as number)
   inflictDMG = Math.round(playerDMG - enemyDef * 0.75)
+
+  if (inflictDMG < 0)
+    inflictDMG = 0
 
   const { blood } = handleBloodsucking(inflictDMG, player?.attribute?.bloodsucking, enemy.attribute.reductionBloodsucking)
   const { recovery } = handleRecoveryPerformance(blood, player.attribute.recoveryPerformance, enemy.attribute.reductionRecoveryPerformance)
@@ -328,7 +335,45 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
   let totalDamage = 0
 
   while (!endWar) {
-    console.log('endWar', endWar)
+    if (enemyAttribute.hp <= 0) {
+      winner = WINNER.youwin
+      endWar = true
+
+      return {
+        player: playerClone,
+        enemy: enemyClone,
+        emulators,
+        winner,
+        totalDamage,
+      } as BattleResponse
+    }
+
+    if (playerAttribute?.hp <= 0) {
+      winner = WINNER.youlose
+      endWar = true
+
+      return {
+        player: playerClone,
+        enemy: enemyClone,
+        emulators,
+        winner,
+        totalDamage,
+      } as BattleResponse
+    }
+
+    if (round >= 30) {
+      winner = WINNER.youlose
+      endWar = true
+
+      return {
+        player: playerClone,
+        enemy: enemyClone,
+        emulators,
+        winner,
+        totalDamage,
+      } as BattleResponse
+    }
+
     const { receiveDMG, enemyBloodsucking, enemyCritical, playerCounterAttack, playerAvoid } = receiveDamage(_p, _enemy) // Mục tiêu gây sát thương lên người chơi.
     const { inflictDMG, playerBloodsucking, playerCritical, enemyCounterAttack, enemyAvoid } = inflictDamage(_p, _enemy) // Người chơi gây sát thương lên mục tiêu.
 
@@ -376,45 +421,6 @@ export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
         enemyAvoid,
         playerAvoid,
       })[0])
-    }
-
-    if (enemyAttribute.hp <= 0) {
-      winner = WINNER.youwin
-      endWar = true
-
-      return {
-        player: playerClone,
-        enemy: enemyClone,
-        emulators,
-        winner,
-        totalDamage,
-      } as BattleResponse
-    }
-
-    if (playerAttribute?.hp <= 0) {
-      winner = WINNER.youlose
-      endWar = true
-
-      return {
-        player: playerClone,
-        enemy: enemyClone,
-        emulators,
-        winner,
-        totalDamage,
-      } as BattleResponse
-    }
-
-    if (round >= 30) {
-      winner = WINNER.youlose
-      endWar = true
-
-      return {
-        player: playerClone,
-        enemy: enemyClone,
-        emulators,
-        winner,
-        totalDamage,
-      } as BattleResponse
     }
 
     round++

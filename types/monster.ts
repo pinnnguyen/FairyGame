@@ -24,6 +24,7 @@ export interface Boss {
   kind: 'daily' | 'only_time' | 'elite'
   name: any // type unknown;
   level: number
+  quality: number
   info: any // type unknown;
   sex: any // type unknown;
   avatar: string
@@ -47,6 +48,7 @@ export interface BossElite {
   bossId: number
   kind: 'daily' | 'only_time' | 'elite'
   name: string
+  quality: number
   level: number
   info: string
   sex: string

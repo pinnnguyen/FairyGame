@@ -19,7 +19,7 @@ const buy = (gem: any) => {
     message: `Bạn có chắc muốn mua ${gem.record.name}`,
     confirmButtonText: 'Chắc chắn',
     cancelButtonText: 'Không chắc',
-    dialogClass: '!bg-black/80 text-white border border-white/10 italic',
+    dialogClass: '!bg-[#00000040] text-white border border-white/10 italic',
     confirmButtonColor: '#FFF',
     confirmButtonTextColor: '#333',
     cancelButtonTextColor: '#d2d2d2',
@@ -49,6 +49,7 @@ const buy = (gem: any) => {
   <var-popup v-model:show="show" position="center">
     <bag-gem-detail
       :gem="gemSelected"
+      target="preview"
     />
   </var-popup>
 
@@ -74,7 +75,7 @@ const buy = (gem: any) => {
               :src="`/gem/${gem?.record?.gemId}.png`"
               class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover"
             />
-            <div class="absolute bg-black/60 text-8 font-bold text-white bottom-1 right-1 px-1 rounded-2xl text-yellow-300">
+            <div class="absolute bg-[#00000040] text-8 font-bold text-white bottom-1 right-1 px-1 rounded-2xl text-yellow-300">
               {{ gem?.record?.sum }}
             </div>
           </div>

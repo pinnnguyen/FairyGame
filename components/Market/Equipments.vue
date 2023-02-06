@@ -21,7 +21,7 @@ const buy = (equipment: any) => {
     message: `Bạn có chắc muốn mua ${equipment.record.name}`,
     confirmButtonText: 'Chắc chắn',
     cancelButtonText: 'Không chắc',
-    dialogClass: '!bg-black/80 text-white border border-white/10 italic',
+    dialogClass: '!bg-[#00000040] text-white border border-white/10 italic',
     confirmButtonColor: '#FFF',
     confirmButtonTextColor: '#333',
     cancelButtonTextColor: '#d2d2d2',
@@ -49,7 +49,7 @@ const buy = (equipment: any) => {
 
 <template>
   <var-popup v-model:show="show" position="center">
-    <bag-equip-detail
+    <bag-equipment-detail
       :item="equipItemSelected"
     />
   </var-popup>

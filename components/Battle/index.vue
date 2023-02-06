@@ -54,20 +54,21 @@ const onRefresh = () => {
 }
 
 const resultRefresh = async () => {
-  // await sleep(2000)
+  await sleep(2000)
   startPve(false)
-  console.log('resultRefresh')
 }
 
 const handleStartBattle = async (war: BattleResponse) => {
   set(isLoadBattle, false)
   set(battleWarResult, war)
+
   await startBattle(war, async () => {
     if (playerInfo.value) {
       playerInfo.value.gold += reward.value?.base.gold ?? 0
       playerInfo.value.exp += reward.value?.base.exp ?? 0
     }
 
+    console.log('hehehe')
     if (isPve.value) {
       Snackbar.allowMultiple(true)
       sendMessage(`Nhận Tiền Tiên x${reward.value?.base.gold}`, 3000, 'top')
@@ -90,7 +91,13 @@ $io.on('battle:start:pve', async (war: BattleResponse) => {
   await handleStartBattle(war)
 })
 
-$io.on('battle:start:boss', async (war: BattleResponse) => {
+$io.on('battle:start:daily', async (war: BattleResponse) => {
+  console.log('boss daily: ', war)
+  await handleStartBattle(war)
+})
+
+$io.on('battle:start:elite', async (war: BattleResponse) => {
+  console.log('boss elite: ', war)
   await handleStartBattle(war)
 })
 
@@ -98,8 +105,8 @@ watch(battleRequest, async (request) => {
   set(isLoadBattle, true)
   onStopBattle()
   await sleep(2000)
-  // set(loading, true)
-  $io.emit('battle:join:boss', {
+
+  const warRequest = {
     kind: request.target,
     player: {
       userId: playerInfo.value?.userId,
@@ -108,14 +115,25 @@ watch(battleRequest, async (request) => {
       type: request.target,
       id: request.id,
     },
-  })
+  }
+
+  switch (request.target) {
+    case 'boss_daily':
+      $io.emit('battle:join:daily', warRequest)
+
+      break
+
+    case 'boss_elite':
+      $io.emit('battle:join:elite', warRequest)
+
+      break
+  }
 })
 
 onUnmounted(async () => {
   $io.off('battle:start')
 })
 
-// const isWinner = computed(() => warResult.value?.winner === WINNER.youwin)
 const changeBattle = async () => {
   try {
     set(loading, true)
@@ -125,9 +143,9 @@ const changeBattle = async () => {
 
     onStopBattle()
     loadPlayer(player)
+    startPve(true)
     set(loading, false)
     sendMessage('Qua ải thành công', 2000)
-    startPve(true)
   }
   catch (e) {
     sendMessage('Hãy vượt ải trước đó để tiếp tục', 2000)
@@ -240,7 +258,7 @@ const changeBattle = async () => {
         w="6"
         font="italic semibold"
         class="border-full-box"
-        @click.stop="onSkip()"
+        @click.stop="onSkip"
       >
         Bỏ qua
       </button>

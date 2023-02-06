@@ -23,7 +23,7 @@ const setSlot = (slot: PlayerEquipment) => {
 
 <template>
   <var-popup v-model:show="options.equipDetail" position="center">
-    <lazy-bag-equip-detail
+    <bag-equipment-detail
       :item="options.equipSelected"
       :action="false"
     />

@@ -29,7 +29,7 @@ defineProps<{
         <span class="text-10">
           {{ state?.enemy?.name }}
         </span>
-        <nuxt-img format="webp" class="h-[35px] bg-black border border-[#d0d0d0] bg-[#d0d0d0] rounded-full" src="/pve/monter-avatar.png" />
+        <nuxt-img format="webp" class="h-[35px] bg-[#000000] border border-[#d0d0d0] bg-[#d0d0d0] rounded-full" src="/pve/monter-avatar.png" />
       </div>
       <BattleInfo
         :name="state?.enemy?.name"

@@ -78,7 +78,7 @@ const punchahole = () => {
       confirmButtonText: 'Chắc chắn',
       cancelButtonText: 'Không chắc',
       closeOnClickOverlay: false,
-      dialogClass: '!bg-black/70 text-white',
+      dialogClass: '!bg-[#00000040] text-white',
       confirmButtonColor: '#5388c1',
       confirmButtonTextColor: 'white',
       cancelButtonTextColor: '#5388c1',
@@ -100,7 +100,7 @@ const unmosaic = (gem: PlayerGem, index: number) => {
     confirmButtonText: 'Chắc chắn',
     cancelButtonText: 'Không chắc',
     closeOnClickOverlay: false,
-    dialogClass: '!bg-black/70 text-white',
+    dialogClass: '!bg-[#00000040] text-white',
     confirmButtonColor: '#5388c1',
     confirmButtonTextColor: 'white',
     cancelButtonTextColor: '#5388c1',
@@ -223,7 +223,7 @@ onUnmounted(() => {
             <gem-item
               v-for="(gem, i) in equipSelected.gems"
               :key="i"
-              class="px-1 p-1 bg-black/40 mb-[1px]"
+              class="px-1 p-1 bg-[#00000040] mb-[1px]"
               bg-class="!w-10 !h-10"
               :gem="gem"
               @click="showGemNormal(gem)"
@@ -235,11 +235,11 @@ onUnmounted(() => {
             <div
               v-for="i in reduceGemSlot"
               :key="i"
-              class="flex items-center px-1 p-1 bg-black/40 mb-[1px] border border-white/20 m-2"
+              class="flex items-center px-1 p-1 bg-[#00000040] mb-[1px] border border-white/20 m-2"
             >
               <nuxt-img
                 src="/gem/default.png"
-                class="w-10 h-10 bg-black"
+                class="w-10 h-10 bg-[#000000]"
                 format="webp"
               />
               <span class="ml-2 text-primary text-8"> (Chưa khảm) </span>
@@ -266,7 +266,7 @@ onUnmounted(() => {
             <gem-item
               v-for="(gem, i) in gems"
               :key="i"
-              class="px-1 m-1 p-1 bg-black/40 mb-[1px] border border-white/20"
+              class="px-1 m-1 p-1 bg-[#00000040] mb-[1px] border border-white/20"
               bg-class="!w-10 !h-10"
               :gem="gem"
               @click="showGemWithAction(gem)"

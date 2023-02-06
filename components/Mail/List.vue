@@ -46,7 +46,7 @@ const take = async () => {
       v-if="recordType === 'gem'"
       :gem="gemSelected"
     />
-    <bag-equip-detail
+    <bag-equipment-detail
       v-if="recordType === 'equipment'"
       :item="gemSelected"
     />
@@ -62,7 +62,7 @@ const take = async () => {
         <nuxt-img format="webp" :src="`/quality_bg/iconbg_${record.quality || record.rank}.png`" class="absolute top-0" />
         <nuxt-img v-if="recordType === 'gem'" format="webp" :src="`gem/${record.gemId}.png`" class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" />
         <nuxt-img v-else format="webp" :src="record.preview" class="absolute transform-center w-[80%] h-[80%] rounded-full object-cover" />
-        <div class="absolute bg-black/60 text-8 font-bold text-white bottom-1 right-1 px-1 rounded-2xl text-yellow-300">
+        <div class="absolute bg-[#00000040] text-8 font-bold text-white bottom-1 right-1 px-1 rounded-2xl text-yellow-300">
           {{ record.sum }}
         </div>
       </div>

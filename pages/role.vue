@@ -69,9 +69,9 @@ const handleCreateFigure = async () => {
 </script>
 
 <template>
-  <div class="h-[95vh] relative bg-black/70">
+  <div class="h-[95vh] relative bg-[#00000040]">
     <div class="text-white p-2 h-full">
-      <form class="h-full bg-black p-2 relative" @submit.prevent="handleCreateFigure">
+      <form class="h-full bg-[#000000] p-2 relative" @submit.prevent="handleCreateFigure">
         <div>
           <p class="text-center text-base font-semibold uppercase mb-1">
             Hệ phái

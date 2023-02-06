@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { randomNumber } from '~/common'
-const props = defineProps<{
+defineProps<{
   realTime: any
   state: any
   receiver: any
@@ -9,7 +8,7 @@ const props = defineProps<{
 
 <template>
   <div
-    class="relative duration-500 transition-transform border-box h-12"
+    class="relative duration-800 transition-transform border-box h-12"
     :style="{
       transform: realTime.enemy.sureDamage ? 'translate(10%)' : '',
     }"
@@ -24,11 +23,6 @@ const props = defineProps<{
         :receiver="receiver"
         :is-enemy="false"
       />
-      <!--      <img -->
-      <!--        v-show="realTime.player.sureDamage" -->
-      <!--        class="h-20 transform-center absolute" -->
-      <!--        :src="`/battle/enemy_gif.gif?v=${randomNumber(1, 1000)}`" -->
-      <!--      > -->
     </div>
     <span
       class="battle-action-bloodsucking whitespace-nowrap"
@@ -59,11 +53,5 @@ const props = defineProps<{
       </span>
       <span v-else>-{{ realTime.player.dmg }}</span>
     </span>
-    <!--    <nuxt-img -->
-    <!--      :class="{ -->
-    <!--        'filter grayscale': realTime.player.sureDamage, -->
-    <!--      }" format="webp" class="h-[120px]" -->
-    <!--      src="/pve/player.png" -->
-    <!--    /> -->
   </div>
 </template>

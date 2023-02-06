@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { qualityPalette } from '~/common'
-import { WINNER } from '~/constants/war'
 import type { BaseReward, BasicItem, PlayerEquipment } from '~/types'
-import { ITEMS_NAME, ITEMS_QUALITY } from '~/constants'
+import { ITEMS_NAME, ITEMS_QUALITY, WINNER } from '~/constants'
 
-interface Props {
+const props = defineProps<{
   battleResult: {
     show: boolean
     win: string
@@ -14,12 +13,12 @@ interface Props {
     items: BasicItem[]
     equipments?: PlayerEquipment[]
   }
-}
+}>()
 
-const props = defineProps<Props>()
 const emits = defineEmits(['close', 'onRefresh'])
 const isYouWin = computed(() => props.battleResult.win === WINNER.youwin)
 const isYouLose = computed(() => props.battleResult.win === WINNER.youlose)
+console.log('props', props.battleResult)
 
 const selected = reactive({
   equipment: {},
@@ -46,7 +45,7 @@ const close = () => {
 
 <template>
   <var-popup v-model:show="options.showEquipment">
-    <bag-equip-detail :item="selected.equipment" />
+    <bag-equipment-detail :item="selected.equipment" />
   </var-popup>
   <var-popup v-model:show="isYouLose">
     <div
@@ -58,13 +57,20 @@ const close = () => {
     >
       <Line
         m="b-2"
-        text="12 white"
-        white-space="nowrap"
+        text="12 white space-nowrap"
       >
         Phần thưởng
       </Line>
 
-      <span>Khiêu chiến thất bại</span>
+      <div text="center white">
+        Khiêu chiến thất bại
+      </div>
+      <div
+        class="text-center text-primary underline text-10 mt-4"
+        @click.stop="close"
+      >
+        Đóng
+      </div>
     </div>
   </var-popup>
   <var-popup v-model:show="isYouWin">
@@ -77,13 +83,12 @@ const close = () => {
     >
       <Line
         m="b-2"
-        text="12 white"
-        white-space="nowrap"
+        text="12 white space-nowrap"
       >
         Phần thưởng
       </Line>
       <div class="grid grid-cols-4 gap-4 text-10">
-        <div v-for="(value, key) in reward.base" :key="key">
+        <div v-for="(value, key) in reward?.base" :key="key">
           <div
             class="border border-white/40 p-2 "
             :style="{ color: qualityPalette(ITEMS_QUALITY[key]) }"
@@ -94,17 +99,17 @@ const close = () => {
       </div>
       <div class="grid grid-cols-4 gap-4 text-10 mt-2">
         <div
-          v-for="(value, key) in reward.items"
+          v-for="(value, key) in reward?.items"
           :key="key"
           class="underline pl-1 border border-white/40 p-2"
-          :style="{ color: qualityPalette(value.quality) }"
+          :style="{ color: qualityPalette(value.quality!) }"
         >
           {{ value.name }}
         </div>
       </div>
       <div class="grid grid-cols-4 gap-4 text-10 mt-2">
         <div
-          v-for="(value, key) in reward.equipments"
+          v-for="(value, key) in reward?.equipments"
           :key="key"
           class="underline pl-1 border border-white/40 p-2"
           :style="{ color: qualityPalette(value.quality) }"

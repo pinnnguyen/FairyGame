@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { set } from '@vueuse/core'
-import { usePlayerStore } from '~/composables/usePlayer'
-import { sendMessage } from '~/composables/useMessage'
+import { sendMessage, usePlayerStore } from '#imports'
 import type { Boss, PlayerEquipment } from '~/types'
 import { qualityPalette } from '~/common'
 import { ITEMS_NAME, ITEMS_QUALITY, TARGET_TYPE } from '~/constants'
@@ -11,6 +10,7 @@ defineProps<{
   boss: Boss
 }>()
 
+const emits = defineEmits(['war'])
 const { playerInfo } = storeToRefs(usePlayerStore())
 const battleRequest = useState('battleRequest')
 
@@ -45,14 +45,16 @@ const startWar = (boss: Boss) => {
     id: boss.id,
     target: TARGET_TYPE.BOSS_DAILY,
   })
+
+  emits('war')
 }
 </script>
 
 <template>
-  <var-popup v-model:show="options.showEquipment">
-    <bag-equip-detail :item="selected.equipment" />
+  <var-popup v-if="options.showEquipment" v-model:show="options.showEquipment">
+    <bag-equipment-detail :item="selected.equipment" />
   </var-popup>
-  <var-popup v-model:show="options.showReward">
+  <var-popup v-if="options.showReward" v-model:show="options.showReward">
     <div class="w-[90%] bg-primary m-auto p-2 rounded border border-white/20">
       <Line class="mb-2 text-10">
         Phần thưởng

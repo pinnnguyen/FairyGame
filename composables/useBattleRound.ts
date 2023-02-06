@@ -4,11 +4,10 @@ import { sleep } from '~/common'
 import { BATTLE_TURN } from '~/constants/war'
 import type { BasicItem, PlayerEquipment } from '~/types'
 import type { BaseProperties, BaseReward, BattleResponse } from '~/types/war'
-// import { useSoundEventAttack } from '~/composables/useSoundEvent'
 
 export const useBattleRoundStore = defineStore('battleRound', () => {
   const loading = ref(true)
-  const playerEffect = ref('')
+  // const playerEffect = ref('')
 
   const battleRounds: any = ref([])
   const rankDMG = ref<{
@@ -100,8 +99,6 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     set(rankDMG, war.rankDMG)
     set(reward, war?.reward)
     set(SKIP, false)
-    // set(receiver, {})
-    // set(state, {})
     set(battleResult, {
       show: false,
       win: '',
@@ -151,18 +148,14 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
 
         if (emuT.action) {
           roundNum.value++
+          // if (roundNum.value > 1)
+          await sleep(TURN_DELAY.value)
 
-          if (roundNum.value > 4)
-            await sleep(TURN_DELAY.value)
-
-          set(playerEffect, _turn)
-          // try {
-          //   useSoundEventAttack()
-          // }
-          // catch (e) {
-          //   console.log('e', e)
-          // }
+          // set(playerEffect, _turn)
           realTime.value[__turn].sureDamage = true
+          setTimeout(() => {
+            realTime.value[__turn].sureDamage = false
+          }, DAMAGE_DELAY)
 
           receiver.value[__turn].hp = emuT.now.hp[__turn]
           receiver.value[__turn].mp = emuT.now.mp[_turn]
@@ -179,10 +172,6 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
             damage: DMG,
             roundNum: roundNum.value,
           })
-
-          setTimeout(() => {
-            realTime.value[__turn].sureDamage = false
-          }, DAMAGE_DELAY)
 
           if ((receiver.value[__turn].hp as number) <= 0) {
             setTimeout(() => {
@@ -207,17 +196,6 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
 
             return
           }
-
-          // (receiver.value[__turn].hp as number) <= 0
-          // if ((receiver.value[__turn].hp as number) <= 0) {
-          //   setTimeout(() => {
-          //     battleResult.value = {
-          //       show: true,
-          //       win: war.winner,
-          //     }
-          //   }, SHOULD_WIN_DELAY)
-          //   return
-          // }
         }
       }
     }
@@ -241,7 +219,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     startBattle,
     // queryTarget,
     refreshTime,
-    playerEffect,
+    // playerEffect,
     battleRounds,
     battleResult,
     rankDMG,

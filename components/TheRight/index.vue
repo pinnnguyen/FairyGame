@@ -11,7 +11,7 @@ const gold = computed(() => Math.round(BASE_EXP() * mids.value.current?.reward?.
 </script>
 
 <template>
-<!--  <div class="text-10 mb-1 flex justify-end flex-col items-end text-white p-2 absolute bg-black top-10 right-0 z-99"> -->
+<!--  <div class="text-10 mb-1 flex justify-end flex-col items-end text-white p-2 absolute bg-[#000000] top-10 right-0 z-99"> -->
 <!--    <div class="flex-center my-1"> -->
 <!--      <nuxt-img class="w-[20px] pr-1" format="webp" src="/items/4_s.png" /> -->
 <!--      {{ exp }}/Phút -->

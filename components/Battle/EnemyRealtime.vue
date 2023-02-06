@@ -15,7 +15,7 @@ const enemyClassIMG = computed(() => {
 
 <template>
   <div
-    class="relative duration-500 transition-transform border-box h-12"
+    class="relative duration-800 transition-transform border-box h-12"
     :style="{
       transform: realTime.player.sureDamage ? 'translate(-10%)' : '',
     }"
@@ -30,10 +30,6 @@ const enemyClassIMG = computed(() => {
         :receiver="receiver"
         :is-enemy="true"
       />
-      <!--      <img -->
-      <!--        v-show="realTime.enemy.sureDamage" -->
-      <!--        class="h-20 transform-center absolute" :src="`/battle/player_gif.gif?v=${randomNumber(1, 1000)}`" -->
-      <!--      > -->
     </div>
     <span
       class="battle-action-bloodsucking whitespace-nowrap"
@@ -47,14 +43,12 @@ const enemyClassIMG = computed(() => {
     >
       Phản đòn -{{ realTime.enemy.counterDamage }}
     </span>
-
     <span
       class="battle-action whitespace-nowrap text-green-300"
       :class="{ show: realTime.enemy?.avoid && realTime.enemy.sureDamage }"
     >
       Né tránh
     </span>
-
     <span
       class="battle-damage"
       :class="{ show: realTime.enemy.sureDamage && !realTime.enemy?.avoid }"

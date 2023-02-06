@@ -111,7 +111,7 @@ const openMail = () => {
           <div class="text-left text-10 text-white">
             {{ content.content }}
           </div>
-          <p class="absolute bottom-[-10px] right-0 bg-black/60 rounded-lg text-8 px-2 text-white">
+          <p class="absolute bottom-[-10px] right-0 bg-[#00000040] rounded-lg text-8 px-2 text-white">
             {{ fromNow(new Date(content.createdAt).getTime()) }}
           </p>
         </div>
