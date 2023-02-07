@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { Dialog } from '@varlet/ui'
 import { set } from '@vueuse/core'
-import { SLOT_NAME } from '../../constants'
+import { slotToName } from '../../constants'
 import { usePlayerSlot } from '~/composables/usePlayerSlot'
 import type { PlayerEquipment, PlayerGem } from '~/types'
 import { sendMessage, usePlayerStore } from '#imports'
@@ -173,7 +173,7 @@ onUnmounted(() => {
               class="diamond w-15"
             >
               <div class="text-10 font-bold italic">
-                {{ SLOT_NAME[leftS.no] }}
+                {{ slotToName[leftS.no] }}
                 <div class="text-8 whitespace-nowrap">
                   (Trống)
                 </div>
@@ -204,7 +204,7 @@ onUnmounted(() => {
               class="diamond w-15"
             >
               <div class="text-10 font-bold italic">
-                {{ SLOT_NAME[rightS.no] }}
+                {{ slotToName[rightS.no] }}
                 <div class="text-8 whitespace-nowrap">
                   (Trống)
                 </div>

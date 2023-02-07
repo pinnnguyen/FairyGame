@@ -167,7 +167,7 @@
     background: -webkit-linear-gradient(#fccb61, #fd733d);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 26px;
+    font-size: 18px;
     font-family: monospace;
 }
 
@@ -319,17 +319,10 @@
     font-weight: 700 !important;
 }
 
-.var-dialog {
-
-}
 
 .var-button__content {
     font-style: italic;
     font-weight: 600;
-}
-
-.var-snackbar__wrapper {
-    //margin-top: 70px !important;
 }
 
 .var-loading__inside {

@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { usePlayerSlot } from '~/composables/usePlayerSlot'
 import type { PlayerEquipment } from '~/types'
-import { SLOT_NAME } from '~/constants'
+import { slotToName } from '~/constants'
 import { qualityPalette } from '~/common'
 
 const emits = defineEmits(['onselected'])
@@ -58,7 +58,7 @@ watch(options, (value) => {
               class="diamond w-20 h-13"
             >
               <span class="text-10 font-bold italic">
-                {{ SLOT_NAME[leftS.no] }}
+                {{ slotToName[leftS.no] }}
                 <span class="text-8">
                   (Trống)
                 </span>
@@ -98,7 +98,7 @@ watch(options, (value) => {
               class="diamond w-20 h-13"
             >
               <span class="text-10 font-bold italic">
-                {{ SLOT_NAME[rightS.no] }}
+                {{ slotToName[rightS.no] }}
                 <span class="text-8">
                   (Trống)
                 </span>

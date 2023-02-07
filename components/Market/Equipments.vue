@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Dialog } from '@varlet/ui'
-import { QUALITY_TITLE } from '../../constants'
+import { qualityToName } from '../../constants'
 import { qualityPalette } from '~/common'
 
 defineProps<{
@@ -64,19 +64,15 @@ const buy = (equipment: any) => {
         }"
         @click.stop="onItemSelected(equipment)"
       >
-        <div
-          :style="{
-            color: qualityPalette(equipment?.record?.quality),
-          }"
-        >
-          {{ QUALITY_TITLE[equipment?.record?.quality] }} - {{ equipment?.record?.name }}
-        </div>
-        <div class="text-10 my-1 text-primary">
+        <market-name :quality="equipment?.record?.quality">
+          {{ qualityToName[equipment?.record?.quality] }} - {{ equipment?.record?.name }}
+        </market-name>
+        <market-owner>
           (NB: {{ equipment.player.name }})
-        </div>
-        <div class="my-1 text-primary">
-          Giá bán: {{ equipment.price }}
-        </div>
+        </market-owner>
+        <market-price>
+          {{ equipment.price }}
+        </market-price>
         <div class="text-center">
           <button
             class="px-2 py-[2px] shadow rounded text-10 font-semibold !text-white bg-[#841919] italic w-full"

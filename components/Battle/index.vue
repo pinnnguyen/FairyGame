@@ -55,6 +55,7 @@ $io.emit('battle:join:pve', {
 })
 
 const onRefresh = () => {
+  console.log('battleRequest', battleRequest.value)
   $io.emit('battle:join:pve', {
     skip: false,
     kind: BATTLE_KIND.PVE,
@@ -125,6 +126,11 @@ $io.on('battle:start:pve', async (war: BattleResponse) => {
 })
 
 watch(battleRequest, async (request) => {
+  $io.off('battle:start:pve')
+  $io.off('battle:start:daily')
+  $io.off('battle:start:elite')
+
+  console.log('request', request)
   set(isLoadBattle, true)
   // set(loading, true)
 
@@ -143,12 +149,9 @@ watch(battleRequest, async (request) => {
   switch (request.target) {
     case 'boss_daily':
       setTimeout(() => {
-        $io.off('battle:start:pve')
-        $io.off('battle:start:daily')
-        $io.off('battle:join:elite')
-
         $io.emit('battle:join:daily', warRequest)
         $io.on('battle:start:daily', async (war: BattleResponse) => {
+          console.log('war', war)
           await handleStartBattle(war)
         })
       }, 1000)
@@ -157,12 +160,9 @@ watch(battleRequest, async (request) => {
 
     case 'boss_elite':
       setTimeout(() => {
-        $io.off('battle:start:pve')
-        $io.off('battle:start:daily')
-        $io.off('battle:join:elite')
-
         $io.emit('battle:join:elite', warRequest)
         $io.on('battle:start:elite', async (war: BattleResponse) => {
+          console.log('war', war)
           await handleStartBattle(war)
         })
       }, 1000)
@@ -210,9 +210,9 @@ const changeBattle = async () => {
     color="#f5f5f5"
   >
     <div
-      display="flex"
+      flex="~ "
       justify="around"
-      position="relative"
+      pos="relative"
       w="full"
       h="full"
       :class="{ 'bg-[#163334]': (!inRefresh && !isPve || isLoadBattle) }"
@@ -228,8 +228,8 @@ const changeBattle = async () => {
       />
       <div
         v-if="!isLoadBattle"
-        display="flex"
-        position="absolute"
+        flex="~ "
+        pos="absolute"
         align="items-center"
         justify="around"
         w="full"
@@ -250,17 +250,17 @@ const changeBattle = async () => {
         v-if="inRefresh"
         top="0"
         text="primary"
-        position="absolute"
+        pos="absolute"
         :refresh-time="refreshTime"
         @refresh-finished="onRefresh"
       />
     </div>
     <div
       h="10"
-      position="absolute"
+      pos="absolute"
       bottom="11"
       w="full"
-      display="flex"
+      flex="~ "
       align="items-enter"
       justify="end"
       font="italic"
@@ -284,7 +284,7 @@ const changeBattle = async () => {
         h="6"
         w="6"
         font="italic semibold"
-        class="border-full-box"
+        class="border-full-box bg-button-menu"
         @click="speed = 1"
       >
         Giảm tốc
@@ -306,10 +306,10 @@ const changeBattle = async () => {
       :class="{ '!bg-[#540905]': !inRefresh }"
       transition="~ colors duration-800"
       h="10"
-      position="absolute"
+      pos="absolute"
       bottom="0"
       w="full"
-      display="flex"
+      flex="~ "
       align="items-center"
       justify="between"
       text="gray-100"
@@ -324,7 +324,7 @@ const changeBattle = async () => {
       <var-loading v-if="isPve" size="mini" color="#ffffff" :loading="!playerInfo?.midId">
         <div
           text="12"
-          display="flex"
+          flex="~ "
           align="items-center"
         >
           <span

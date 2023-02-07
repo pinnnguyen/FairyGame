@@ -24,8 +24,6 @@ const schema = new mongoose.Schema<BossElite>(
     avatar: String,
     revive: Number,
     death: Boolean,
-    // topDamage: [],
-    // topPoint: [],
     killer: {
       avatar: String,
       name: String,

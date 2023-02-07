@@ -31,6 +31,7 @@ export interface EmulatorBattle {
 
 export type Emulator = Record<string | 'player' | 'enemy', EmulatorBattle>
 export interface BaseProperties extends BaseAttributes {
+  _id?: string
   name: string
   level: number
   levelTitle?: string
@@ -46,17 +47,19 @@ export interface BaseReward {
   top: number
 }
 
+export interface RewardList {
+  base: BaseReward
+  items: BasicItem[]
+  equipments?: PlayerEquipment[]
+}
+
 export interface BattleResponse extends BattleInRefresh {
   player: BaseProperties
   enemy: BaseProperties
   winner: string
   emulators: Emulator[]
   kind: string
-  reward: {
-    base: BaseReward
-    items: BasicItem[]
-    equipments?: PlayerEquipment[]
-  }
+  reward: RewardList
   rankDMG: any
   totalDamage?: number
 }

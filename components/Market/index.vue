@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// import { storeToRefs } from 'pinia'
-// import { startTimeEvent, timeOffset } from '~/common'
 import { usePlayerStore } from '#imports'
 import { randomNumber } from '~~/common'
 import { tips } from '~/constants'

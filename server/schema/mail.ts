@@ -29,7 +29,31 @@ schema.index({ isRead: -1 })
 schema.index({ deleted: -1 })
 export const MailSchema = mongoose.model('MailSchema', schema, 'gl_mails')
 
-export const sendKNBSystemMail = async (sid?: string, sum?: number, name?: string) => {
+export const SendKnbRewardSystemMail = async (sid?: string, sum?: number, options?: {
+  note: string
+  title: string
+}) => {
+  const item = await ItemSchema.findOne({ id: 8 }, { _id: false, __v: false })
+  const cloneItem = cloneDeep(item)
+  await MailSchema.create({
+    sid,
+    kind: 'system',
+    title: options?.title,
+    note: options?.note,
+    isRead: false,
+    deleted: false,
+    recordType: 'item',
+    records: [
+      {
+        sum,
+        itemId: cloneItem?.id,
+        ...cloneItem,
+      },
+    ],
+  })
+}
+
+export const SendKnbMarketSystemMail = async (sid?: string, sum?: number, name?: string) => {
   const item = await ItemSchema.findOne({ id: 8 }, { _id: false, __v: false })
   const cloneItem = cloneDeep(item)
   await MailSchema.create({
@@ -50,7 +74,7 @@ export const sendKNBSystemMail = async (sid?: string, sum?: number, name?: strin
   })
 }
 
-export const sendSystemMail = async (sid: string, recordType?: string, records?: any, name?: string) => {
+export const SendMarketSystemMail = async (sid: string, recordType?: string, records?: any, name?: string) => {
   await MailSchema.create({
     sid,
     kind: 'system',

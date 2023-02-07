@@ -89,21 +89,20 @@ const upgrade = () => {
       </Line>
     </template>
   </upgrade-item>
-  <div v-if="needResource" class="absolute bottom-0 w-full duration-500">
-    <div class="flex items-center flex-col justify-center">
-      <div class="flex items-center mx-1 font-semibold text-primary text-12">
+  <div v-if="needResource" class="absolute bottom-0 w-full duration-500 text-10">
+    <div class="flex items-center flex-col justify-center text-primary">
+      <div class="flex items-center mx-1">
         <span class="">Tiền tiên: {{ needResource?.gold }}</span>
       </div>
-      <div class="flex items-center text-primary font-semibold text-12 mx-2">
+      <div class="flex items-center mx-2">
         <span class=""> Đá cường hoá: {{ needResource?.cuongHoaThach }}/{{ needResource?.totalCuongHoaThach }}</span>
       </div>
     </div>
     <div class="mb-6 mt-2 flex justify-center">
       <var-button
         :loading="loading"
-        class="italic font-semibold"
-        color="#ffd400"
-        size="small"
+        color="white"
+        size="mini"
         @click.stop="upgrade"
       >
         Cường hoá

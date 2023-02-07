@@ -1,6 +1,6 @@
 import { PlayerEquipmentSchema, PlayerGemSchema, PlayerSchema, addPlayerGem, addSystemChat } from '~/server/schema'
 import type { PlayerGem } from '~/types'
-import { QUALITY_TITLE } from '~/constants'
+import { qualityToName } from '~/constants'
 import { randomNumber } from '~/common'
 
 export const handleEventUpGem = async (io: any, socket: any) => {
@@ -62,7 +62,7 @@ export const handleEventUpGem = async (io: any, socket: any) => {
       upsert: true,
     })
 
-    await addSystemChat('', `Chúc mừng đạo hữu ${playerInfo.name} hợp nhất thành công đá hồn ${gem.name} lên ${QUALITY_TITLE[gem.quality!]}`)
+    await addSystemChat('', `Chúc mừng đạo hữu ${playerInfo.name} hợp nhất thành công đá hồn ${gem.name} lên ${qualityToName[gem.quality!]}`)
     socket.emit('gem:merge:response', {
       success: true,
       message: 'Ghép đá hồn thành công',

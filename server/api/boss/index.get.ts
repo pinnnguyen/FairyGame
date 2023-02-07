@@ -1,36 +1,36 @@
 import moment from 'moment'
-import type { Player } from '~/types'
 import { getServerSession } from '#auth'
-import { BattleSchema, BossDataSchema, BossEliteSchema, EquipmentSchema, PlayerSchema } from '~/server/schema'
-import { BATTLE_KIND } from '~/constants'
 import { startEndHoursBossFrameTime, startTimeEvent } from '~/common'
+import { BATTLE_KIND } from '~/constants'
 import { cloneDeep } from '~/helpers'
+import { BattleSchema, BossDataSchema, BossEliteSchema, EquipmentSchema, PlayerSchema } from '~/server/schema'
+import type { Player } from '~/types'
 
 const getBossDaily = async (player: Player) => {
   const today = moment().startOf('day')
-  const bossDailys = await BossDataSchema.find({ kind: 'daily' }).sort({ level: 1 })
+  const bossDaily = await BossDataSchema.find({ kind: 'daily' }).sort({ level: 1 })
 
-  for (let i = 0; i < bossDailys.length; i++) {
-    const equipIds = bossDailys[i].reward.equipRates.map((i: { id: number }) => i.id)
+  for (let i = 0; i < bossDaily.length; i++) {
+    const equipIds = bossDaily[i].reward.equipRates.map((i: { id: number }) => i.id)
     const numberOfBattle = await BattleSchema.find({
       sid: player.sid,
       kind: BATTLE_KIND.BOSS_DAILY,
-      targetId: bossDailys[i]._id,
+      targetId: bossDaily[i]._id,
       createdAt: {
         $gte: moment().startOf('day'),
         $lte: moment(today).endOf('day').toDate(),
       },
     }).count()
 
-    bossDailys[i].numberOfTurn -= numberOfBattle
-    bossDailys[i].reward.equipments = await EquipmentSchema.find({
+    bossDaily[i].numberOfTurn! -= numberOfBattle
+    bossDaily[i].reward.equipments = await EquipmentSchema.find({
       id: {
         $in: equipIds,
       },
     })
   }
 
-  return bossDailys
+  return bossDaily
 }
 
 const getBossFrameTime = async (player: Player) => {
@@ -49,7 +49,7 @@ const getBossFrameTime = async (player: Player) => {
       },
     }).count()
 
-    bossNe[i].numberOfTurn -= numberOfBattle
+    bossNe[i].numberOfTurn! -= numberOfBattle
     bossNe[i].reward.equipments = await EquipmentSchema.find({
       id: {
         $in: equipIds,
@@ -74,7 +74,7 @@ const getBossElite = async () => {
 
   const bossData = await BossDataSchema.find({ kind: 'elite' })
   const bossClone = cloneDeep(bossData)
-  const bossElite = await BossEliteSchema.insertMany(bossClone.map(b => ({
+  return await BossEliteSchema.insertMany(bossClone.map(b => ({
     ...b,
     bossId: b.id,
     hp: b.attribute.hp,
@@ -82,11 +82,9 @@ const getBossElite = async () => {
     killer: null,
     revive: 0,
   })))
-
-  return bossElite
 }
 
-export default defineEventHandler(async (event) => {
+const handle = defineEventHandler(async (event) => {
   const uServer = await getServerSession(event)
   if (!uServer) {
     return createError({
@@ -109,3 +107,5 @@ export default defineEventHandler(async (event) => {
     frameTime: await getBossFrameTime(player),
   }
 })
+
+export default handle

@@ -64,22 +64,25 @@ const buy = (item: any) => {
         }"
         @click.stop="onSelectedItem(item)"
       >
-        <div
-          class="text-12"
-          :style="{
-            color: qualityPalette(item.props?.quality),
-          }"
-        >
+        <market-name :quality="item.props?.quality">
           {{ item.props.name }}
-        </div>
-        <div class="text-primary my-1">
+        </market-name>
+        <market-owner>
           (NB: {{ item.player.name }})
-        </div>
-        <div class="flex justify-between text-primary mb-1 text-8">
-          <span>
-            Giá bán: {{ item.price }}
-          </span>
-          <span>SL: {{ item.record.sum }}</span>
+        </market-owner>
+        <div
+          flex="~ "
+          text="primary 8"
+          m="b-1"
+          justify="between"
+          align="items-center"
+        >
+          <market-price>
+            {{ item.price }}
+          </market-price>
+          <market-quantity>
+            {{ item.record.sum }}
+          </market-quantity>
         </div>
         <div class="text-center">
           <button

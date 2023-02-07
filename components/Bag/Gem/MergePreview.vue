@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { QUALITY_TITLE } from '~/constants'
+import { qualityToName } from '~/constants'
 import { colorQuality } from '~/common'
 
 const props = defineProps<{
@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 
 const qualityTitle = computed(() => {
-  return QUALITY_TITLE[props.quality!]
+  return qualityToName[props.quality!]
 })
 </script>
 
@@ -103,7 +103,7 @@ const qualityTitle = computed(() => {
         w="5"
         :style="colorQuality(quality! + 1)"
       >
-        {{ QUALITY_TITLE[quality! + 1] }}
+        {{ qualityToName[quality! + 1] }}
         <br>
         x3
       </span>
@@ -141,7 +141,7 @@ const qualityTitle = computed(() => {
         w="5"
         :style="colorQuality(quality! + 2)"
       >
-        {{ QUALITY_TITLE[quality! + 2] }}
+        {{ qualityToName[quality! + 2] }}
         <br>
         x3
       </span>

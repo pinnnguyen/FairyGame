@@ -80,13 +80,15 @@ const buy = (gem: any) => {
             </div>
           </div>
           <div>
-            <div
-              class="text-10 font-semibold"
-              :style="{ color: qualityPalette(gem?.record?.quality) }"
-            >
+            <market-name :quality="gem?.record?.quality">
               {{ gem?.record?.name }}
-            </div>
-            <span class="text-primary">(NB: {{ gem.player?.name }})</span>
+            </market-name>
+            <market-owner>
+              (NB: {{ gem.player?.name }})
+            </market-owner>
+            <market-price>
+              {{ gem.price }}
+            </market-price>
           </div>
         </div>
         <button

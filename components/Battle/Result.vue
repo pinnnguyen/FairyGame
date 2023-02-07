@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { qualityPalette } from '~/common'
 import type { BaseReward, BasicItem, PlayerEquipment } from '~/types'
-import { ITEMS_NAME, ITEMS_QUALITY, WINNER } from '~/constants'
+import { ItemToName, ItemToQuality, WINNER } from '~/constants'
 
 const props = defineProps<{
   battleResult: {
@@ -90,9 +90,9 @@ const close = () => {
         <div v-for="(value, key) in reward?.base" :key="key">
           <div
             class="border border-white/40 p-2 "
-            :style="{ color: qualityPalette(ITEMS_QUALITY[key]) }"
+            :style="{ color: qualityPalette(ItemToQuality[key]) }"
           >
-            {{ ITEMS_NAME[key] }} x{{ value }}
+            {{ ItemToName[key] }} x{{ value }}
           </div>
         </div>
       </div>

@@ -4,8 +4,8 @@ import {
   MarketSchema,
   PlayerItemSchema,
   PlayerSchema,
-  sendKNBSystemMail,
-  sendSystemMail,
+  SendKnbMarketSystemMail,
+  SendMarketSystemMail,
 } from '~/server/schema'
 import { cloneDeep } from '~/helpers'
 
@@ -54,7 +54,7 @@ export default defineEventHandler(async (event) => {
   }
 
   await MarketSchema.findByIdAndDelete(market._id)
-  await sendKNBSystemMail(market.sid, market.price, body.name)
+  await SendKnbMarketSystemMail(market.sid, market.price, body.name)
   // Tru tien nguoi mua
   await PlayerSchema.findOneAndUpdate({ sid: player.sid }, {
     $inc: {
@@ -66,16 +66,16 @@ export default defineEventHandler(async (event) => {
   const record = market.record
 
   if (recordType === 'gem')
-    await sendSystemMail(player.sid, 'gem', record, body.name)
+    await SendMarketSystemMail(player.sid, 'gem', record, body.name)
 
   if (recordType === 'equipment')
-    await sendSystemMail(player.sid, 'equipment', record, body.name)
+    await SendMarketSystemMail(player.sid, 'equipment', record, body.name)
 
   if (recordType === 'item') {
     const item = await ItemSchema.findOne({ id: record.itemId }, { _id: false, __v: false })
     const cloneItem = cloneDeep(item)
 
-    await sendSystemMail(player.sid, 'item', {
+    await SendMarketSystemMail(player.sid, 'item', {
       sum: record.sum,
       itemId: cloneItem?.id,
       ...cloneItem,

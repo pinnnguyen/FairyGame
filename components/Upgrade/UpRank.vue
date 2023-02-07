@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { set } from '@vueuse/core'
-import { QUALITY_TITLE } from '../../constants'
+import { qualityToName } from '../../constants'
 import { formatCash, qualityPalette } from '~/common'
 import { sendMessage, usePlayerStore } from '#imports'
 import type { PlayerEquipment } from '~/types'
@@ -130,15 +130,21 @@ const pickEquipmentFood = (_id?: string) => {
       </Line>
     </template>
   </upgrade-item>
-  <div class="absolute bottom-20 h-50 w-full">
+  <div class="absolute bottom-20 h-20 w-full">
     <Line>
-      <div class="whitespace-nowrap text-primary">
+      <div
+        text="space-nowrap primary 8"
+      >
         Kho trang bị
       </div>
     </Line>
     <div
       v-if="needResource?.playerEquipments && needResource?.playerEquipments?.length > 0"
-      class="grid grid-cols-2 p-4 h-full overflow-auto gap-4"
+      p="2"
+      h="full"
+      overflow="scroll"
+      gap="2"
+      class="grid grid-cols-2"
     >
       <div
         v-for="equipment in needResource?.playerEquipments"
@@ -146,35 +152,60 @@ const pickEquipmentFood = (_id?: string) => {
         :class="{
           'border border-green-400': currentFood.includes(equipment._id),
         }"
-        class="rounded p-2 border border-white/40"
+        class="rounded p-1 border border-white/40"
         @click.stop="pickEquipmentFood(equipment._id)"
       >
         <div
-          class="text-10 font-bold"
+          class="text-8 font-bold"
           :style="{
             color: qualityPalette(equipment.quality),
           }"
         >
-          {{ `${QUALITY_TITLE[equipment.quality ?? 1]} -` }} {{ equipment?.name }} (+{{ equipment.enhance }})
+          {{ `${qualityToName[equipment.quality ?? 1]} -` }} {{ equipment?.name }} (+{{ equipment.enhance }})
         </div>
       </div>
     </div>
   </div>
-  <div v-if="needResource" class="absolute bottom-0 flex items-center justify-around h-20 w-full text-primary">
-    <div class="flex items-center w-14">
-      <span class="text-12 font-semibold">Tiền tiên: {{ formatCash(needResource?.gold) }}</span>
+  <div
+    v-if="needResource"
+    pos="absolute"
+    text="8 semibold primary"
+    bottom="0"
+    flex="~ "
+    align="items-center"
+    h="20"
+    w="full"
+    justify="around"
+  >
+    <div
+      flex="~ "
+      align="items-center"
+      w="14"
+    >
+      <span>Tiền tiên: {{ formatCash(needResource?.gold) }}</span>
     </div>
-    <div class="flex items-center w-17">
-      <span class="text-12 font-semibold">Tiên duyên: {{ needResource?.knb }}</span>
+    <div
+      flex="~ "
+      align="items-center"
+      w="17"
+    >
+      <span>Tiên duyên: {{ needResource?.knb }}</span>
     </div>
-    <div class="flex items-center w-12">
-      <span class="text-12 font-semibold">Trang bị: {{ currentFood.length }}/{{ needResource?.needFoodNumber }}</span>
+    <div
+      flex="~ "
+      align="items-center"
+      w="12"
+    >
+      <span>Trang bị: {{ currentFood.length }}/{{ needResource?.needFoodNumber }}</span>
     </div>
-    <var-button loading-size="mini" :loading="loading" class="!text-[#333] font-semibold" color="#ffd400" size="small" @click.stop="upgrade">
+    <var-button
+      loading-size="mini"
+      :loading="loading"
+      color="white"
+      size="mini"
+      @click.stop="upgrade"
+    >
       TĂNG BẬC
     </var-button>
   </div>
-<!--  <p class="absolute bottom-5 right-5" @click="options.tooltip = true"> -->
-<!--    <Icon name="ri:question-fill" size="20" /> -->
-<!--  </p> -->
 </template>

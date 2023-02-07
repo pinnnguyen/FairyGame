@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePlayerSlot } from '#imports'
-import { SLOT_NAME } from '~/constants'
+import { slotToName } from '~/constants'
 import type { PlayerEquipment } from '~/types'
 import { qualityPalette } from '~/common'
 
@@ -50,7 +50,7 @@ const setSlot = (slot: PlayerEquipment) => {
         class="diamond w-20 h-12"
       >
         <span class="text-10 font-bold italic">
-          {{ SLOT_NAME[leftS.no] }}
+          {{ slotToName[leftS.no] }}
           <div class="text-8 whitespace-nowrap">
             (Trống)
           </div>
@@ -78,7 +78,7 @@ const setSlot = (slot: PlayerEquipment) => {
         class="diamond w-20 h-12"
       >
         <span class="text-10 font-bold italic">
-          {{ SLOT_NAME[rightS.no] }}
+          {{ slotToName[rightS.no] }}
           <span class="text-8 whitespace-nowrap">
             (Trống)
           </span>

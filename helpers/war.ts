@@ -125,18 +125,15 @@ export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
   const playerDef = (player?.attribute?.def as number)
 
   inflictDMG = Math.round(enemyDMG - playerDef * 0.75)
-  console.log('inflictDMG', inflictDMG)
   if (inflictDMG < 0)
     inflictDMG = 0
 
-  console.log('ffinflictDMG', inflictDMG)
   const { blood } = handleBloodsucking(inflictDMG, enemy?.attribute?.bloodsucking, player.attribute.reductionBloodsucking)
   const { recovery } = handleRecoveryPerformance(blood, enemy.attribute.recoveryPerformance, player.attribute.reductionRecoveryPerformance)
   const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(enemy?.attribute?.critical, inflictDMG, enemy?.attribute?.criticalDamage, player?.attribute?.reductionCriticalDamage)
   if (hasCritical)
     inflictDMG = inflictDMGAfter
 
-  console.log('2ff', inflictDMG)
   const { counterDamage } = handleCounterAttack(inflictDMG, enemy.attribute.reductionCounterAttack, player.attribute.counterAttack)
   const { hasAvoid } = handleAvoid(player.attribute.avoid, enemy.attribute.reductionAvoid)
   if (hasAvoid)
@@ -192,6 +189,7 @@ export const enemyDeep = (enemy: EnemyObject) => {
   const { levelTitle, floor } = playerTitle(enemy.level, enemy.level + 1)
 
   return {
+    _id: enemy._id,
     levelTitle,
     floor,
     level: enemy?.level,
@@ -207,6 +205,7 @@ export const enemyDeep = (enemy: EnemyObject) => {
 
 export const playerDeep = (params: PlayerInfo) => {
   return {
+    _id: params.player._id,
     levelTitle: params.player.levelTitle,
     floor: params.player.floor,
     level: params?.player?.level,

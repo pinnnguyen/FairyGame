@@ -97,23 +97,28 @@ onUnmounted(() => {
       </Line>
     </template>
   </upgrade-item>
-  <div v-if="needResource" class="absolute bottom-0 w-full duration-500">
+  <div v-if="needResource" class="absolute bottom-0 w-full duration-500 text-10 font-semibold ">
     <div class="flex-center">
       <div class="flex items-center mx-1">
         <nuxt-img format="webp" class="w-5 mr-1" src="/items/3_s.png" />
-        <span class="text-12 font-semibold text-[#52648e]">{{ needResource?.gold }}</span>
+        <span class="text-[#52648e]">{{ needResource?.gold }}</span>
       </div>
       <div class="flex items-center mx-1">
         <nuxt-img format="webp" class="w-5 mr-1" src="/items/1_s.png" />
-        <span class="text-12 font-semibold text-[#52648e]">{{ needResource?.knb }}</span>
+        <span class="text-[#52648e]">{{ needResource?.knb }}</span>
       </div>
       <div class="flex items-center mx-1">
         <nuxt-img format="webp" class="w-5 mr-1" src="/items/17.png" />
-        <span class="text-12 font-semibold text-[#52648e]"> {{ needResource?.daNangSao }}/{{ needResource?.totalDaNangSao }}</span>
+        <span class="text-[#52648e]"> {{ needResource?.daNangSao }}/{{ needResource?.totalDaNangSao }}</span>
       </div>
     </div>
     <div class="mb-6 mt-2 flex justify-center">
-      <var-button :loading="loading" class="!text-[#333] font-medium font-semibold uppercase" color="#ffd400" size="small" @click.stop="upgrade">
+      <var-button
+        :loading="loading"
+        color="white"
+        size="mini"
+        @click.stop="upgrade"
+      >
         Nâng sao
       </var-button>
     </div>

@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@varlet/ui": "^2.7.1",
-    "@vite-pwa/nuxt": "^0.0.3"
+    "@vite-pwa/nuxt": "^0.0.3",
+    "unimport": "^2.1.0"
   }
 }

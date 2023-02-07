@@ -118,14 +118,15 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
       },
     }
 
+    console.log('receiver', receiver.value)
+    console.log('state', state.value)
+    set(loading, false)
     if (war.inRefresh) {
-      set(loading, false)
       set(inRefresh, war.inRefresh)
       set(refreshTime, war.refreshTime)
       return
     }
 
-    set(loading, false)
     for (const emulator of war.emulators) {
       for (const turn in emulator) {
         if (stop.value)
@@ -171,6 +172,8 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
             roundNum: roundNum.value,
           })
 
+          // console.log('receiver.value[__turn].hp', receiver.value[__turn].hp)
+          // console.log('roundNum.value', roundNum.value)
           if ((receiver.value[__turn].hp as number) <= 0) {
             setTimeout(() => {
               cb()

@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { SendKnbRewardSystemMail } from './../schema/mail'
 import { WINNER } from '~/constants/war'
 import {
   BattleSchema,
@@ -216,7 +217,6 @@ export const handleAfterEndWar = async (request: {
   const { battleRequest, _p, winner, totalDamage } = request
   const bossFrameTime = battleRequest.target.type === TARGET_TYPE.BOSS_FRAME_TIME
   const elite = battleRequest.target.type === TARGET_TYPE.BOSS_ELITE
-  // const normal = battleRequest.target.type === TARGET_TYPE.MONSTER
   const isWinner = winner === WINNER.youwin
 
   // if (normal && isWinner) {
@@ -244,25 +244,30 @@ export const handleAfterEndWar = async (request: {
       },
     })
 
-    if (isWinner) {
-      const eliteBossUpdated = await BossEliteSchema.findOneAndUpdate({ _id: battleRequest.target.id }, {
-        death: true,
-        killer: {
-          avatar: '',
-          name: _p.player.name,
-          sid: _p.player.sid,
-        },
-      })
+    if (!isWinner)
+      return
 
-      const topDMG = await BattleSchema.aggregate(
-        [
-          {
-            $match: {
-              targetId: eliteBossUpdated?._id,
-            },
+    const eliteBossUpdated = await BossEliteSchema.findOneAndUpdate({ _id: battleRequest.target.id }, {
+      death: true,
+      killer: {
+        // avatar: '',
+        name: _p.player.name,
+        sid: _p.player.sid,
+      },
+    })
+
+    const bossHPmax = eliteBossUpdated?.hp
+    const baseReward = eliteBossUpdated?.reward?.base
+
+    const topDMG = await BattleSchema.aggregate(
+      [
+        {
+          $match: {
+            targetId: eliteBossUpdated?._id,
           },
-          {
-            $group:
+        },
+        {
+          $group:
                   {
                     _id: '$sid',
                     totalDamage: { $sum: { $multiply: ['$damage'] } },
@@ -273,95 +278,95 @@ export const handleAfterEndWar = async (request: {
                       $first: '$player.name',
                     },
                   },
-          },
-          {
-            $sort: {
-              totalDamage: -1,
-            },
-          },
-          {
-            $limit: 1,
-          },
-        ],
-      )
-
-      // Thưởng kích sát boss
-      await PlayerSchema.findOneAndUpdate({ sid: _p.player.sid }, {
-        $inc: {
-          knb: eliteBossUpdated?.reward?.base.kill,
         },
+        {
+          $sort: {
+            totalDamage: -1,
+          },
+        },
+        {
+          $limit: 1,
+        },
+      ],
+    )
+
+    await SendKnbRewardSystemMail(_p.player.sid, baseReward?.kill, {
+      note: `Đạo hữu thành công trở thành người ra đòn kết liễu boss ${eliteBossUpdated?.name}`,
+      title: 'Thưởng kích sát boss',
+    })
+
+    await RewardLogSchema.findOneAndUpdate({ targetId: eliteBossUpdated?._id, sid: _p.player.sid }, {
+      $inc: {
+        'reward.kill': baseReward?.kill,
+        'reward.bag': 0,
+        'reward.top': 0,
+      },
+    }, {
+      new: true,
+      upsert: true,
+    })
+
+    if (topDMG.length > 0) {
+      // await PlayerSchema.findOneAndUpdate({ sid: topDMG[0].sid }, {
+      //   $inc: {
+      //     knb: baseReward?.top,
+      //   },
+      // })
+
+      await SendKnbRewardSystemMail(topDMG[0].sid, baseReward?.top, {
+        note: `Đạo hữu thành công trở thành người gây sát thương nhiều nhất lên boss ${eliteBossUpdated?.name} với sát thương ${topDMG[0].totalDamage}`,
+        title: 'Thưởng kích sát boss',
       })
 
-      await RewardLogSchema.findOneAndUpdate({ targetId: eliteBossUpdated?._id, sid: _p.player.sid }, {
+      // Thưởng sát thương cao nhất
+      await RewardLogSchema.findOneAndUpdate({ targetId: eliteBossUpdated?._id, sid: topDMG[0].sid }, {
         $inc: {
-          'reward.kill': eliteBossUpdated?.reward?.base.kill,
+          'reward.kill': 0,
           'reward.bag': 0,
-          'reward.top': 0,
+          'reward.top': eliteBossUpdated?.reward?.base.top,
         },
       }, {
         new: true,
         upsert: true,
       })
 
-      const BossHPmax = eliteBossUpdated?.hp
-      const baseReward = eliteBossUpdated?.reward?.base
+      // Chia đều phần thưởng dựa theo sát thương gây ra
+      for (let i = 0; i < topDMG.length; i++) {
+        const damage = topDMG[i].totalDamage
+        const sid = topDMG[i].sid
 
-      if (topDMG.length > 0) {
-        await PlayerSchema.findOneAndUpdate({ sid: topDMG[0].sid }, {
-          $inc: {
-            knb: eliteBossUpdated?.reward?.base.top,
-          },
-        })
+        const perDamage = (damage / bossHPmax!) * 100
+        if (perDamage > 2) {
+          const selfReward = (baseReward!.bag * perDamage) / 100
 
-        // Thưởng sát thương cao nhất
-        await RewardLogSchema.findOneAndUpdate({ targetId: eliteBossUpdated?._id, sid: topDMG[0].sid }, {
-          $inc: {
-            'reward.kill': 0,
-            'reward.bag': 0,
-            'reward.top': eliteBossUpdated?.reward?.base.top,
-          },
-        }, {
-          new: true,
-          upsert: true,
-        })
+          if (selfReward <= 0)
+            continue
 
-        // Chia đều phần thưởng dựa theo sát thương gây ra
-        for (let i = 0; i < topDMG.length; i++) {
-          const damage = topDMG[i].totalDamage
-          const sid = topDMG[i].sid
+          await SendKnbRewardSystemMail(sid, Math.round(selfReward), {
+            note: `Tham gia kích sát boss ${eliteBossUpdated?.name} với sát thương ${damage}`,
+            title: 'Thưởng kích sát boss',
+          })
 
-          const perDamage = (damage / BossHPmax!) * 100
-          if (perDamage > 2) {
-            const selfReward = (baseReward!.bag * perDamage) / 100
+          // await PlayerSchema.findOneAndUpdate({ sid }, {
+          //   $inc: {
+          //     knb: selfReward,
+          //   },
+          // })
 
-            if (selfReward <= 0)
-              continue
-
-            await PlayerSchema.findOneAndUpdate({ sid }, {
-              $inc: {
-                knb: selfReward,
-              },
-            })
-
-            await RewardLogSchema.findOneAndUpdate({ targetId: eliteBossUpdated?._id, sid }, {
-              $inc: {
-                'reward.kill': 0,
-                'reward.bag': Math.round(selfReward),
-                'reward.top': 0,
-              },
-            }, {
-              new: true,
-              upsert: true,
-            })
-          }
+          await RewardLogSchema.findOneAndUpdate({ targetId: eliteBossUpdated?._id, sid }, {
+            $inc: {
+              'reward.kill': 0,
+              'reward.bag': Math.round(selfReward),
+              'reward.top': 0,
+            },
+          }, {
+            new: true,
+            upsert: true,
+          })
         }
       }
-
-      await reviveBossElite(eliteBossUpdated?.bossId)
-
-      return {
-        kill: eliteBossUpdated?.reward?.base?.kill,
-      }
     }
+
+    await reviveBossElite(eliteBossUpdated?.bossId)
   }
 }

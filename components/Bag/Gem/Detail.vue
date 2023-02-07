@@ -2,7 +2,7 @@
 import { sendMessage } from '#imports'
 import type { PlayerGem } from '~/types'
 import { qualityPalette } from '~/common'
-import { QUALITY_TITLE, SLOT_NAME } from '~/constants'
+import { slotToName, qualityToName } from '~/constants'
 
 const props = defineProps<{
   gem: PlayerGem
@@ -14,7 +14,7 @@ const props = defineProps<{
 const emits = defineEmits(['selected', 'mergegem', 'refresh'])
 const { $io } = useNuxtApp()
 const qualityTitle = computed(() => {
-  return QUALITY_TITLE[props.gem.quality!]
+  return qualityToName[props.gem.quality!]
 })
 
 $io.off('gem:merge:response')
@@ -100,7 +100,7 @@ $io.on('gem:merge:response', (data) => {
           w="25"
         >
           Vị trí:
-        </div> {{ SLOT_NAME[gem.slot] }}
+        </div> {{ slotToName[gem.slot] }}
       </div>
       <div
         display="flex"

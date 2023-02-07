@@ -3,7 +3,7 @@ import { set } from '@vueuse/core'
 import type { PlayerEquipment } from '~/types'
 import { useFetch } from '#app'
 import { qualityPalette, randomNumber } from '~/common'
-import { QUALITY_TITLE, tips } from '~/constants'
+import { qualityToName, tips } from '~/constants'
 
 const { data: equipments, pending, refresh } = useFetch('/api/bag/equipments')
 const equipItemSelected = ref<PlayerEquipment>()
@@ -49,7 +49,7 @@ const onchangeEquip = () => {
             color: qualityPalette(equipment.quality),
           }"
         >
-          {{ `${QUALITY_TITLE[equipment.quality ?? 1]} -` }} {{ equipment?.name }} (+{{ equipment.enhance }})
+          {{ `${qualityToName[equipment.quality ?? 1]} -` }} {{ equipment?.name }} (+{{ equipment.enhance }})
         </div>
       </div>
     </div>

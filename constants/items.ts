@@ -3,7 +3,7 @@ export const ITEMS_ICON = {
   gold: '/items/3.png',
 }
 
-export const ITEMS_NAME: Record<string, string> = {
+export const ItemToName: Record<string, string> = {
   exp: 'Tu Vi',
   gold: 'Tiền Tiên',
   knb: 'Tiên Duyên',
@@ -12,7 +12,7 @@ export const ITEMS_NAME: Record<string, string> = {
   top: 'ST Cao Nhất',
 }
 
-export const ITEMS_QUALITY = {
+export const ItemToQuality: Record<string, number> = {
   exp: 1,
   gold: 2,
   knb: 3,

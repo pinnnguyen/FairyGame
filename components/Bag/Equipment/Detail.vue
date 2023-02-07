@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PlayerEquipment } from '~/types'
-import { ATTRIBUTE_NAME, QUALITY_TITLE, SLOT_NAME } from '~/constants'
+import { attributeToName, slotToName, qualityToName } from '~/constants'
 import { usePlayerStore } from '~/composables/usePlayer'
 import { backgroundQuality, qualityPalette } from '~/common'
 import { sendMessage } from '~/composables/useMessage'
@@ -28,7 +28,7 @@ const styles = computed(() => {
 })
 
 const qualityTitle = computed(() => {
-  return QUALITY_TITLE[props.item.quality]
+  return qualityToName[props.item.quality]
 })
 
 const gemReduceSlot = computed(() => {
@@ -132,7 +132,7 @@ const sell = async () => {
             <icon v-for="i of item.star" :key="i" class="text-yellow-300" name="material-symbols:star" size="18" />
           </div>
           <p class="text-10">
-            {{ SLOT_NAME[item.slot] }}
+            {{ slotToName[item.slot] }}
           </p>
           <p class="text-10">
             Bậc {{ item.rank }}
@@ -155,7 +155,7 @@ const sell = async () => {
               :key="key"
             >
               <div v-if="value.main > 0 && value" class="flex justify-between">
-                <span> {{ ATTRIBUTE_NAME[key] }}: {{ Math.round(value.main) }}</span>
+                <span> {{ attributeToName[key] }}: {{ Math.round(value.main) }}</span>
                 <span v-if="value.enhance" class="text-green-300 px-2">
                   (Cường hoá + {{ Math.round(value.enhance) }})
                   <span v-if="value.star > 0" class="text-yellow-300">

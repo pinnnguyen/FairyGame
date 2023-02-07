@@ -1,4 +1,4 @@
-export const SLOT_NAME: Record<string, string> = {
+export const slotToName: Record<string, string> = {
   1: 'Vũ Khí',
   2: 'Trang Phục',
   3: 'Khôi',
@@ -9,7 +9,7 @@ export const SLOT_NAME: Record<string, string> = {
   8: 'Đai',
 }
 
-export const QUALITY_TITLE: Record<number, string> = {
+export const qualityToName: Record<number, string> = {
   1: 'Nhất Phẩm',
   2: 'Nhị Phẩm',
   3: 'Tam Phẩm',
@@ -21,7 +21,7 @@ export const QUALITY_TITLE: Record<number, string> = {
   9: 'Cửu Phẩm',
 }
 
-export const ATTRIBUTE_NAME: Record<string, string> = {
+export const attributeToName: Record<string, string> = {
   speed: 'Tốc độ',
   damage: 'Công kích',
   hp: 'Sinh lực',

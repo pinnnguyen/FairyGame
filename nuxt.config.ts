@@ -2,22 +2,25 @@ import components from 'unplugin-vue-components/vite'
 import autoImport from 'unplugin-auto-import/vite'
 import { VarletUIResolver } from 'unplugin-vue-components/resolvers'
 import { defineNuxtConfig } from 'nuxt/config'
+import Unimport from 'unimport/unplugin'
 
 export default defineNuxtConfig({
   ssr: false,
-  routeRules: {
-    '/': {
-      static: true,
-    },
-    '/login': {
-      static: true,
-    },
-    '/register': {
-      static: true,
-    },
-  },
+  // routeRules: {
+  //   '/**': { swr: true },
+  // },
   vite: {
     plugins: [
+      Unimport.vite({
+        presets: [
+          {
+            from: '@vueuse/core',
+            imports: [
+              'set',
+            ],
+          },
+        ],
+      }),
       components({
         resolvers: [VarletUIResolver()],
       }),
@@ -28,7 +31,7 @@ export default defineNuxtConfig({
     ],
   },
   auth: {
-    origin: process.env.NODE_ENV === 'development' ? 'http://192.168.1.5:3000/' : 'https://tienhoi.vercel.app',
+    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://tienhoi.vercel.app',
     enableGlobalAppMiddleware: false,
   },
   nitro: {
@@ -42,18 +45,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     mongoUrl: process.env.MONGO_URL,
-    // socketClientURL: process.env.NODE_ENV === 'development' ? 'http://localhost:3005' : 'http://103.82.22.99:3005',
-    // socketIO: {
-    //   cors: {
-    //     origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://103.82.22.99:3000',
-    //     allowedHeaders: ['gl'],
-    //     credentials: true,
-    //   },
-    //   port: 3005,
-    // },
   },
   modules: [
-    // '@vite-pwa/nuxt',
     '@vueuse/nuxt',
     '@pinia/nuxt',
     '@nuxt/image-edge',
@@ -94,7 +87,6 @@ export default defineNuxtConfig({
       analysis: {
         interpretUtilities: false,
       },
-      // see https://github.com/unjs/listhen#options
       server: {
         port: 4444,
         open: false,

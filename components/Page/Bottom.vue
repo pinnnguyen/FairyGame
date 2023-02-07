@@ -153,8 +153,18 @@ const setTab = (t: string) => {
 
 <template>
   <var-popup v-model:show="upgradeOptions" position="center">
-    <div class="w-[90vw] bg-[#191b1e] grid grid-cols-2 gap-4 p-5 rounded border border-white/40">
+    <div
+      w="[90vw]"
+      bg="primary"
+      grid="~ cols-2"
+      gap="4"
+      p="5"
+      border="rounded 1 white/40"
+    >
       <div
+        text="center italic"
+        m="x-2"
+        p="x-2 y-2"
         class="transition transition-opacity text-center mx-2 px-2 py-2 italic shadow rounded font-bold border-1 text-primary border-white/40"
         @click="onToggleUpgrade"
       >
