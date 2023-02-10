@@ -2,7 +2,7 @@
 import { set } from '@vueuse/core'
 import { fromNow } from '~/common'
 
-defineProps<{
+const props = defineProps<{
   mails: any
 }>()
 
@@ -11,68 +11,109 @@ const toggle = reactive({
 })
 
 const readMail = ref({})
+
+const gemReward = computed(() => {
+  return props.mails.filter((m: any) => {
+    return m.recordType === 'gem'
+  })
+})
+
+const equipmentReward = computed(() => {
+  return props.mails.filter((m: any) => {
+    return m.recordType === 'equipment'
+  })
+})
+
+const itemReward = computed(() => {
+  return props.mails.filter((m: any) => {
+    return m.recordType === 'item'
+  })
+})
+
 const read = (mail: any) => {
   set(readMail, mail)
   toggle.mail = true
 }
+
+const take = async (mail: any) => {
+  if (mail.isRead) {
+    sendMessage('Phần thưởng đã được nhận trước đó', 2500)
+    return
+  }
+
+  try {
+    const takeRes: any = await $fetch('/api/mail/take', {
+      method: 'POST',
+      body: {
+        _mailId: mail._id,
+      },
+    })
+
+    sendMessage(takeRes.message, 2500)
+  }
+  catch (e: any) {
+    sendMessage(e.statusMessage)
+  }
+}
 </script>
 
 <template>
-  <var-popup v-model:show="toggle.mail">
+  <div
+    p="2"
+    h="full"
+    overflow="auto"
+  >
     <div
-      class="h-[40vh] border-1 border-white/40 w-[calc(100vw_-_70px)] m-auto bg-primary p-2 rounded text-10 text-white/80"
+      v-for="mail in mails"
+      :key="mail?._id"
+      flex="~ "
+      pos="relative"
+      align="items-center"
+      border="1 white/40 rounded"
+      p="2"
+      m="1"
+      gap="2"
+      @click.stop="read(mail)"
     >
-      <div class="h-full p-2">
-        <div class="h-[40%]">
-          <div class="text-12 pt-2 text-white">
-            {{ readMail?.title }}
-          </div>
-          <div class="whitespace-pre-line pt-2 text-left">
-            {{ readMail?.note }}
-          </div>
-          <div class="text-right pr-2 pt-2">
-            <span class="text-yellow-400">{{ readMail?.kind === 'system' ? 'Hệ thống' : 'Cá nhân' }}</span>
-            <p>{{ fromNow(new Date(readMail.createdAt).getTime()) }}</p>
-          </div>
-        </div>
-        <div v-if="readMail?.records.length > 0" class="relative mt-2 h-35">
-          <div class="mb-10 text-center">
-            Phần thưởng
-          </div>
-          <MailList :mail="readMail" :_mail-id="readMail._id" :record-type="readMail.recordType" :records="readMail.records" />
-        </div>
-      </div>
-    </div>
-  </var-popup>
-  <div class="h-[55vh] w-[calc(100vw_-_70px)] m-auto bg-primary p-2 border-box">
-    <Line class="py-2">
-      <span class="text-white">Thư</span>
-    </Line>
-    <div class="h-[90%] overflow-scroll scrollbar-hide">
       <div
-        v-for="mail in mails"
-        :key="mail?._id"
-        class="flex items-center border border-white/40 p-2 m-1 gap-2 rounded"
-        @click.stop="read(mail)"
+        flex="~ col"
+        align="items-start"
+        text="[#b86f4e] normal"
       >
-        <div v-if="!mail.isRead" class="text-10 text-primary">
-          (Chưa nhận)
+        <div font="bold">
+          {{ mail?.title }}
         </div>
-        <div v-else class="text-10 text-primary">
-          (Đã nhận)
+        <div text="10 white" class="w-[calc(100%_-_100px)]">
+          {{ mail.note }}
         </div>
-        <div class="flex flex-col items-start text-white">
-          <div>{{ mail?.title }}</div>
-          <div
-            v-if="mail?.records.length > 0 && !mail.isRead"
-            class="text-10 text-green-300"
+        <div m="t-2">
+          <reward-list-item-horizontal v-if="mail.recordType === 'item'" :rewards="mail.records" />
+          <reward-list-gem-horizontal v-if="mail.recordType === 'gem'" :rewards="mail.records" />
+          <reward-list-equipment-horizontal v-if="mail.recordType === 'equipment'" :rewards="mail.records" />
+        </div>
+        <div
+          pos="absolute"
+          right="2"
+          top="5"
+        >
+          <var-button
+            :disabled="mail.isRead"
+            class="!text-[#333] !px-4 w-20"
+            size="small"
+            @click.stop="take(mail)"
           >
-            Có đính kèm chưa nhận
-          </div>
+            {{ !mail.isRead ? 'Nhận' : 'Đã nhận' }}
+          </var-button>
         </div>
+        <p
+          pos="absolute"
+          bottom="2"
+          right="2"
+          text="white 10 right"
+        >
+          {{ fromNow(new Date(mail.createdAt).getTime()) }}
+        </p>
       </div>
     </div>
   </div>
-
-  <span class="text-12 fixed transform-center bottom-4 top-auto">Nhấn ra ngoài để đóng</span>
 </template>

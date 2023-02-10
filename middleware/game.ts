@@ -10,6 +10,9 @@ export default defineNuxtRouteMiddleware(async () => {
   if (status.value !== 'authenticated')
     return navigateTo('/login')
 
+  if (!playerInfo.value?.name)
+    return navigateTo('/role')
+
   if (playerInfo.value?.name)
     return
 

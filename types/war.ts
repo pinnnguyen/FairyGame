@@ -57,7 +57,7 @@ export interface BattleResponse extends BattleInRefresh {
   player: BaseProperties
   enemy: BaseProperties
   winner: string
-  emulators: Emulator[]
+  emulators: any
   kind: string
   reward: RewardList
   rankDMG: any

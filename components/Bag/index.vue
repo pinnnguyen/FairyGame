@@ -50,7 +50,7 @@ const tabItems = [
       </button>
     </div>
     <div
-      position="absolute"
+      pos="absolute"
       top="10"
       w="full"
       display="flex"

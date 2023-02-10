@@ -1,20 +1,11 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
 import { set, useLocalStorage } from '@vueuse/core'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { sleep } from '~/common'
-import { BATTLE_TURN } from '~/constants/war'
 import type { BasicItem, PlayerEquipment } from '~/types'
-import type { BaseProperties, BaseReward, BattleResponse } from '~/types/war'
+import type { BaseReward } from '~/types/war'
 
 export const useBattleRoundStore = defineStore('battleRound', () => {
   const loading = ref(true)
-  // const playerEffect = ref('')
-
-  const battleRounds: any = ref([])
-  const rankDMG = ref<{
-    _id: string
-    totalDamage: number
-  }[]>([])
-
   const inRefresh = ref(false)
   const refreshTime = ref(0)
   const reward = ref<{
@@ -23,177 +14,116 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     equipments: PlayerEquipment[]
   }>()
 
-  const state = ref<{
-    player?: BaseProperties
-    enemy?: BaseProperties
-    receiver?: {
-      player: {
-        hp: number
-        mp: number
-      }
-      enemy: {
-        hp: number
-        mp: number
-      }
-    }
-  }>({})
+  const match = ref({})
+  const receiver = ref<any>({})
+  const realTime = ref<any>({})
 
-  const receiver = ref<Record<string | 'player' | 'enemy', {
-    hp?: number
-    mp?: number
-  }>>({})
-
-  const realTime = ref<Record<string | 'player' | 'enemy', {
-    dmg?: number
-    critical?: boolean
-    sureDamage?: boolean
-    bloodsucking?: number
-    counterDamage?: number
-    avoid?: boolean
-  }>>({
-    player: {
-      critical: false,
-      bloodsucking: 0,
-      sureDamage: false,
-      dmg: 0,
-      counterDamage: 0,
-      avoid: false,
-    },
-    enemy: {
-      critical: false,
-      sureDamage: false,
-      bloodsucking: 0,
-      dmg: 0,
-      counterDamage: 0,
-      avoid: false,
-    },
-  })
-
-  const stop = ref(false)
+  // const stop = ref(false)
   const roundNum = ref(0)
   const speed = useLocalStorage('speed', 1)
-  const SKIP = ref(false)
-  const TURN_DELAY = computed(() => 2000 / speed.value)
-  const DAMAGE_DELAY = 500
-  const SHOULD_WIN_DELAY = 1000
-
-  const battleResult = ref({
-    show: false,
-    win: '',
+  const options = reactive({
+    skip: false,
+    stop: false,
+    TURN_DELAY: computed(() => 2000 / speed.value),
+    SHOW_DMG_DELAY: 1500,
+    EFFECT_DELAY: 500,
+    RESULT_DELAY: 1000,
   })
-
-  const onSkip = (boo: boolean) => {
-    set(SKIP, boo)
-  }
-  const startBattle = async (war: BattleResponse, cb: Function) => {
-    if (!war)
-      return
-
+  const makeDefault = () => {
     set(loading, true)
-    set(stop, false)
     set(roundNum, 0)
     set(inRefresh, false)
     set(refreshTime, 0)
-    set(battleRounds, [])
     set(reward, null)
-    set(rankDMG, war.rankDMG)
-    set(reward, war?.reward)
-    set(SKIP, false)
-    set(battleResult, {
-      show: false,
-      win: '',
-    })
+    options.skip = false
+    options.stop = false
+  }
+  const startBattle = async (war: any & { statusCode?: number }, cb: Function) => {
+    if (war?.statusCode === 400)
+      return
 
-    state.value.player = war.player
-    state.value.enemy = war.enemy
+    if (!war)
+      return
 
-    receiver.value = {
-      player: {
-        hp: state.value.player?.hp,
-        mp: state.value.player?.mp,
-      },
-      enemy: {
-        hp: state.value.enemy?.hp,
-        mp: state.value.enemy?.mp,
-      },
-    }
+    makeDefault()
+    set(reward, war.reward)
+    set(match, war.match)
 
-    console.log('receiver', receiver.value)
-    console.log('state', state.value)
-    set(loading, false)
     if (war.inRefresh) {
+      set(loading, false)
       set(inRefresh, war.inRefresh)
       set(refreshTime, war.refreshTime)
       return
     }
 
+    for (const key in war?.match) {
+      Object.assign(receiver.value, {
+        [key]: {
+          hp: war?.match[key].attribute.hp,
+        },
+      })
+    }
+
+    set(loading, false)
     for (const emulator of war.emulators) {
       for (const turn in emulator) {
-        if (stop.value)
-          return
-
-        if (SKIP.value) {
-          battleResult.value = {
-            show: true,
-            win: war.winner,
-          }
-
+        if (options.skip) {
+          cb()
           return
         }
 
-        const _turn = turn.replace(/1_|2_/g, '') // replace '1_player' -> player
-        const __turn: string = _turn === BATTLE_TURN.PLAYER ? BATTLE_TURN.ENEMY : BATTLE_TURN.PLAYER // Đảo ngược key
+        if (options.stop)
+          return
 
-        const emuT = emulator[turn]
-        const DMG = emuT?.state?.damage
+        const realTurn = turn.split('_')[1]
+        const realEmu = emulator[turn]
 
-        if (emuT.action) {
+        if (realEmu.action === 'attack') {
+          await sleep(options.TURN_DELAY)
           roundNum.value++
-          await sleep(TURN_DELAY.value)
 
-          realTime.value[__turn].sureDamage = true
+          realTime.value = {
+            [realTurn]: {
+              effect: true,
+              showDamage: true,
+              damage: realEmu?.state?.damage,
+              critical: realEmu?.state?.critical,
+              bloodsucking: realEmu.state.bloodsucking,
+            },
+          }
+
           setTimeout(() => {
-            realTime.value[__turn].sureDamage = false
-          }, DAMAGE_DELAY)
+            realTime.value[realTurn].effect = false
+          }, options.EFFECT_DELAY)
 
-          receiver.value[__turn].hp = emuT.now.hp[__turn]
-          receiver.value[__turn].mp = emuT.now.mp[_turn]
+          setTimeout(() => {
+            realTime.value[realTurn].showDamage = false
+          }, options.TURN_DELAY)
 
-          realTime.value[__turn].dmg = DMG
-          realTime.value[__turn].critical = emuT?.state?.critical
-          realTime.value[__turn].bloodsucking = emuT.state.bloodsucking
+          if (realEmu.state.damage) {
+            const realDamage = Object.keys(realEmu.state.damage)
+            receiver.value[realDamage[0]].damage = realEmu.state.damage[realDamage[0]]
+          }
 
-          realTime.value[_turn].counterDamage = emuT.state.counterDamage
-          realTime.value[_turn].avoid = emuT.state.avoid
+          if (realEmu.now.hp) {
+            const keyRealEmuNow = Object.keys(realEmu.now.hp)
 
-          battleRounds.value.unshift({
-            turn: _turn,
-            damage: DMG,
-            roundNum: roundNum.value,
-          })
+            if (receiver.value[keyRealEmuNow[0]])
+              receiver.value[keyRealEmuNow[0]].hp = realEmu.now.hp[keyRealEmuNow[0]]
 
-          // console.log('receiver.value[__turn].hp', receiver.value[__turn].hp)
-          // console.log('roundNum.value', roundNum.value)
-          if ((receiver.value[__turn].hp as number) <= 0) {
-            setTimeout(() => {
-              cb()
-              battleResult.value = {
-                show: true,
-                win: war.winner,
-              }
-            }, SHOULD_WIN_DELAY)
+            if ((receiver.value[keyRealEmuNow[0]].hp) <= 0) {
+              setTimeout(() => {
+                cb()
+              }, options.RESULT_DELAY)
 
-            return
+              return
+            }
           }
 
           if (roundNum.value === (war.emulators.length * 2)) {
             setTimeout(() => {
               cb()
-              battleResult.value = {
-                show: true,
-                win: war.winner,
-              }
-            }, SHOULD_WIN_DELAY)
+            }, options.RESULT_DELAY)
 
             return
           }
@@ -202,31 +132,28 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     }
   }
 
-  const onStopBattle = () => {
-    set(stop, true)
-  }
-
-  onUnmounted(() => {
-    set(stop, true)
-  })
-
   return {
-    state,
-    reward,
+    match,
     loading,
-    receiver,
-    realTime,
-    inRefresh,
-    startBattle,
-    // queryTarget,
-    refreshTime,
-    // playerEffect,
-    battleRounds,
-    battleResult,
-    rankDMG,
+    fn: {
+      startBattle,
+      stopBattle: () => {
+        options.stop = true
+      },
+      skipBattle: () => {
+        options.skip = true
+      },
+    },
+    refresh: reactive({
+      inRefresh,
+      refreshTime,
+    }),
+    stateRunning: reactive({
+      receiver,
+      realTime,
+      reward,
+    }),
     speed,
-    onSkip,
-    onStopBattle,
     roundNum,
   }
 })

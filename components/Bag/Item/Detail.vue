@@ -15,11 +15,6 @@ const sellOptions = ref({
   price: 0,
   quantity: 0,
 })
-
-const styles = computed(() => {
-  return backgroundQuality(props.item?.rank!)
-})
-
 const useItem = async () => {
   try {
     const res: any = await $fetch('/api/bag/use', {
@@ -77,7 +72,7 @@ const sell = async () => {
 </script>
 
 <template>
-  <var-popup v-model:show="sellPopup" position="bottom">
+  <var-popup v-if="sellPopup" v-model:show="sellPopup" position="bottom">
     <div class="p-4">
       <var-input v-model="sellOptions.price" type="number" placeholder="Nhập giá bán" />
       <var-input v-model="sellOptions.quantity" type="number" placeholder="Nhập số lượng" />
@@ -93,30 +88,38 @@ const sell = async () => {
     </div>
   </var-popup>
   <div
-    class="rounded p-2 bg-primary"
+    text="10"
+    bg="primary"
+    border="rounded"
+    p="2"
+    w="50"
+    m="auto"
     :style="{
-      border: `2px solid ${qualityPalette(item.props?.quality)}`,
+      border: `1px solid ${qualityPalette(item.props?.quality)}`,
     }"
   >
     <div class="mb-4">
-      <div class="mt-2">
-        <div
-          class="text-12 font-bold uppercase text-left" :style="{
-            color: qualityPalette(item.props?.quality),
-          }"
-        >
-          {{ item.props.name }}
-        </div>
-        <div class="text-left mt-2">
-          {{ item.props.note }}
-        </div>
+      <div
+        text="12 left"
+        font="bold"
+        :style="{
+          color: qualityPalette(item.props?.quality),
+        }"
+      >
+        {{ item.props.name }}
+      </div>
+      <div
+        text="left"
+        m="t-2"
+      >
+        {{ item.props.note }}
       </div>
     </div>
     <div class="text-center">
       <var-button
         v-if="sellAction"
-        class="!text-[#333] font-semibold mx-2 italic"
-        size="small"
+        class="!text-[#333] mx-2"
+        size="mini"
         @click.stop="sellPopup = true"
       >
         Treo bán
@@ -124,8 +127,7 @@ const sell = async () => {
       <var-button
         v-if="item.kind === 3"
         class="mb-2 !text-[#333] font-semibold italic"
-        color="#ffd400"
-        size="small"
+        size="mini"
         @click.stop="useItem"
       >
         Sử dụng

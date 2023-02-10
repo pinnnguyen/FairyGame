@@ -33,6 +33,14 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  const playerName = await PlayerSchema.findOne({ name: body.name })
+  if (playerName) {
+    return {
+      success: false,
+      message: 'Tên nhân vật của đạo hữu đã bị trùng!',
+    }
+  }
+
   const createRole = new PlayerSchema({
     sid,
     name: body.name,
@@ -57,6 +65,8 @@ export default defineEventHandler(async (event) => {
   await addSystemChat('', `Chào mừng ${body.name} gia nhập Tu tiên giả`)
 
   return {
+    success: true,
+    message: 'Tạo nhân vật thành công',
     player: createRole,
     attribute: createAttribute,
     mid,

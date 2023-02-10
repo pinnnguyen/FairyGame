@@ -2,7 +2,7 @@
 import { sendMessage } from '#imports'
 import type { PlayerGem } from '~/types'
 import { qualityPalette } from '~/common'
-import { slotToName, qualityToName } from '~/constants'
+import { qualityToName, slotToName } from '~/constants'
 
 const props = defineProps<{
   gem: PlayerGem
@@ -27,7 +27,7 @@ $io.on('gem:merge:response', (data) => {
 
 <template>
   <div
-    position="relative"
+    pos="relative"
     text="white"
     bg="primary"
     p="0"
@@ -37,19 +37,18 @@ $io.on('gem:merge:response', (data) => {
     font="leading-6"
   >
     <div
-      display="flex"
-      flex="col"
+      flex="~ col"
       align="items-center"
       justify="between"
       p="x-3 t-4"
       font="leading-5"
     >
       <div
-        display="flex"
+        flex="~ "
         w="full"
       >
         <div
-          position="relative"
+          pos="relative"
           w="15"
           h="15"
           m="r-2"
@@ -78,7 +77,7 @@ $io.on('gem:merge:response', (data) => {
             {{ gem.name }}
           </p>
           <p
-            v-if="gem.sum! > 0"
+            v-if="gem.sum > 0"
             text="10"
             font="bold"
           >
@@ -88,13 +87,13 @@ $io.on('gem:merge:response', (data) => {
       </div>
     </div>
     <div
-      text="12"
+      text="10"
       border="t white/40"
       m="4"
       p="2"
     >
       <div
-        display="flex"
+        flex="~ "
       >
         <div
           w="25"
@@ -103,7 +102,7 @@ $io.on('gem:merge:response', (data) => {
         </div> {{ slotToName[gem.slot] }}
       </div>
       <div
-        display="flex"
+        flex="~ "
       >
         <div
           w="25"
@@ -113,7 +112,7 @@ $io.on('gem:merge:response', (data) => {
         {{ gem.rateOnLevel }}%
       </div>
       <div
-        display="flex"
+        flex="~ "
       >
         <div
           w="25"
@@ -122,14 +121,14 @@ $io.on('gem:merge:response', (data) => {
         </div>
         <span
           :style="{
-            color: qualityPalette(gem.quality!),
+            color: qualityPalette(gem.quality),
           }"
         >
           {{ qualityTitle }}
         </span>
       </div>
       <div
-        display="flex"
+        flex="~ "
       >
         <div
           w="25"
@@ -137,13 +136,12 @@ $io.on('gem:merge:response', (data) => {
           Thuộc tính:
         </div>
         <div
-          display="flex"
-          flex="col"
+          flex="~ col"
         >
           <gem-values :gem="gem" />
         </div>
       </div>
-      <BagGemMergePreview
+      <gem-merge-preview
         :quality="gem.quality"
         :gem-id="gem.gemId"
       />
@@ -152,7 +150,7 @@ $io.on('gem:merge:response', (data) => {
       >
         (Chỉ được khảm 1 đá hồn này lên trang bị)
       </div>
-      <BagGemActions
+      <gem-actions
         :sell-action="sellAction"
         :select-action="selectAction"
         :merge-action="mergeGem"

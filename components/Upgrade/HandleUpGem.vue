@@ -137,15 +137,15 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <var-popup v-model:show="viewGem" position="center">
-    <lazy-bag-gem-detail
+  <var-popup v-if="viewGem" v-model:show="viewGem" position="center">
+    <lazy-gem-detail
       :gem="gemSelected"
       :select-action="hasSelectedAction"
       @selected="onmosaic"
       @mergegem="onmergeGems"
     />
   </var-popup>
-  <div class="flex-center bg-[#191b1e] w-[95vw] h-[70vh]">
+  <div class="flex-center bg-[#191b1e] max-w-[60vh] w-[95vw] h-[70vh]">
     <div class="w-full h-full relative border border-white/40">
       <span class="font-bold absolute left-[calc(50%_-_50px)] top-2 text-white text-12 w-25 flex justify-center">
         <slot name="title" />

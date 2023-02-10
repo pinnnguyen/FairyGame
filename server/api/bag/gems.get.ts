@@ -11,11 +11,10 @@ export default defineEventHandler(async (event) => {
   }
 
   const playerInfo = await PlayerSchema.findOne({ userId: session?.user?.email }).select('sid')
-  console.log('playerInfo', playerInfo)
   return PlayerGemSchema.find({
     sid: playerInfo?.sid,
     sum: {
       $gte: 1,
     },
-  }).limit(15)
+  })
 })

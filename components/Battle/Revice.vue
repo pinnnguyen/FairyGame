@@ -16,7 +16,10 @@ const { pause, resume } = useIntervalFn(() => {
   }
 }, 1000)
 
-resume()
+watchEffect(() => {
+  console.log('prop', props)
+  resume()
+})
 </script>
 
 <template>

@@ -38,7 +38,7 @@ export default defineEventHandler((event) => {
     })
 
     socket.on('get:mail', async (sid: string) => {
-      const mails = await MailSchema.find({ sid }).sort({
+      const mails = await MailSchema.find({ sid, deleted: false }).sort({
         createdAt: -1,
       })
 

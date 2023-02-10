@@ -75,9 +75,6 @@ export const getPlayerItems = (sid: string) => {
         'info.rank': 1,
       },
     },
-    {
-      $limit: 1,
-    },
   ])
 }
 

@@ -27,9 +27,10 @@ export interface Battle {
     items: BasicItem[]
     equipments: PlayerEquipment[]
   }
-  damage?: number
+  totalDamage?: []
   createdAt?: string
   updatedAt?: string
+  match: {}
 }
 
 export interface BattleEventBeforeWar {

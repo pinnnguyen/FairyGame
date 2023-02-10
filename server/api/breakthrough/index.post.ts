@@ -161,6 +161,20 @@ export default defineEventHandler(async (event) => {
     return response
   }
 
+  const pGold = await PlayerSchema.findOne({
+    sid: _p.sid,
+    gold: {
+      $gte: needGold,
+    },
+  })
+
+  if (!pGold) {
+    return createError({
+      statusCode: 400,
+      statusMessage: 'CURRENCY ERROR',
+    })
+  }
+
   const changeResult = await (PlayerSchema as any).changeCurrency({
     kind: 'gold',
     sid: _p.sid,

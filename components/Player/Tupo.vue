@@ -39,15 +39,18 @@ const doUpgrade = async () => {
 }
 
 const cPlayerTitle = computed(() => {
-  return playerTitle(playerInfo.value.level, playerInfo.value.level + 1)
+  return playerTitle(playerInfo.value?.level, playerInfo.value?.level + 1)
 })
 </script>
 
 <template>
-  <var-popup v-model:show="change">
-    <div class="w-70 border border-white/20 bg-primary p-4">
+  <var-popup v-if="change" v-model:show="change">
+    <div
+      text="10"
+      class="w-70 border border-white/20 bg-primary p-4"
+    >
       <Line class="pb-4">
-        <div class="whitespace-nowrap text-10">
+        <div class="whitespace-nowrap">
           Thuộc tính tăng
         </div>
       </Line>
@@ -77,9 +80,15 @@ const cPlayerTitle = computed(() => {
       </div>
     </div>
   </var-popup>
-  <div class="flex ml-2">
+  <div
+    text="10"
+    class="flex ml-2"
+  >
     <div>
-      <div>Tiêu phí tu vi: <span class="text-8">{{ formatCash(playerInfo.exp) }}/{{ formatCash(playerInfo.expLimited) }}</span></div>
+      <div>
+        Tiêu phí tu vi:
+        <span class="text-8">{{ formatCash(playerInfo?.exp) }}/{{ formatCash(playerInfo?.expLimited) }}</span>
+      </div>
       <div>Tiêu hao tiền tiên: <span class="text-8">{{ formatCash(upgrade?.condition?.needGold) }}</span></div>
       <div>Đột phá thành công: {{ upgrade?.condition?.rate }}%</div>
       <div>Tổn thất: 0%</div>
@@ -94,6 +103,6 @@ const cPlayerTitle = computed(() => {
     </div>
   </div>
   <div class="text-center">
-    Đột phá {{ cPlayerTitle.levelTitle }} {{ cPlayerTitle.floor }}
+    Đột phá {{ cPlayerTitle?.levelTitle }} {{ cPlayerTitle?.floor }}
   </div>
 </template>

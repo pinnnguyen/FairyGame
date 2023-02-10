@@ -1,57 +1,75 @@
 <script setup lang="ts">
-defineProps<{
+import { playerTitle } from '~/common'
+
+const props = defineProps<{
   realTime: any
-  state: any
   receiver: any
+  match: any
+  pos: number
+  round: number
 }>()
+
+const extend = computed(() => props.match.extends)
+const attribute = computed(() => props.match.attribute)
+
+const cPlayerTitle = computed(() => {
+  return playerTitle(extend.value?.level, extend.value?.level + 1)
+})
 </script>
 
 <template>
   <div
     class="relative duration-800 transition-transform border-box h-12"
     :style="{
-      transform: realTime.enemy.sureDamage ? 'translate(10%)' : '',
+      transform: realTime[extend._id]?.effect ? `${pos === 1 ? 'translate(10%)' : 'translate(-10%)'}` : '',
     }"
   >
     <div class="w-25 italic relative">
       <div class="flex justify-start items-end">
-        <span class="text-10 ml-1 text-[#6ce8d4] line-clamp-1">{{ state?.player?.name ?? '...' }}</span>
+        <span class="text-10 ml-1 text-[#6ce8d4] line-clamp-1">{{ extend?.name ?? '...' }}</span>
       </div>
-      <BattleInfo
-        :name="state?.player?.name"
-        :state="state"
-        :receiver="receiver"
-        :is-enemy="false"
-      />
+      <div class="text-[#333] text-10">
+        <BattleStatusBar
+          :receiver-hp="receiver[extend._id].hp"
+          :hp="attribute.hp"
+        />
+        <div class="h-4 text-8 text-[#d2d2d2] bg-[#00000040] relative flex items-center p-[2px] border border-white/40">
+          {{ cPlayerTitle.levelTitle }} {{ cPlayerTitle.floor }}
+        </div>
+      </div>
     </div>
     <span
       class="battle-action-bloodsucking whitespace-nowrap"
-      :class="{ show: realTime.enemy?.bloodsucking > 0 && realTime.enemy.sureDamage }"
+      :class="{ show: realTime[extend._id]?.bloodsucking > 0 && realTime[extend._id]?.effect }"
     >
-      (+{{ realTime.enemy?.bloodsucking }})
+      (+{{ realTime[extend._id]?.bloodsucking }})
     </span>
     <span
-      :class="{ show: realTime.player?.counterDamage > 0 && realTime.enemy.sureDamage }"
+      :class="{ show: realTime[extend._id]?.defenderCounterAttack > 0 && realTime[extend._id].effect }"
       class="battle-damage whitespace-nowrap"
     >
-      Phản đòn -{{ realTime.player.counterDamage }}
+      Phản đòn -{{ realTime[extend._id]?.defenderCounterAttack }}
     </span>
 
     <span
       class="battle-action whitespace-nowrap text-green-300"
-      :class="{ show: realTime.player?.avoid && realTime.player.sureDamage }"
+      :class="{ show: realTime[extend._id]?.defenderAvoid && realTime[extend._id].effect }"
     >
       Né tránh
     </span>
 
     <span
       class="battle-damage"
-      :class="{ show: realTime.player.sureDamage && !realTime.player?.avoid }"
+      :class="{
+        show: !realTime[extend._id]?.showDamage
+          && round > 0
+          && !realTime[extend._id]?.avoid,
+      }"
     >
-      <span v-if="realTime?.player?.critical" class="whitespace-nowrap">
-        Bạo kích -{{ realTime.player.dmg }}
+      <span v-if="realTime[extend._id]?.critical" class="whitespace-nowrap">
+        Bạo kích -{{ receiver[extend._id]?.damage }}
       </span>
-      <span v-else>-{{ realTime.player.dmg }}</span>
+      <span v-else>-{{ receiver[extend._id].damage ?? 0 }}</span>
     </span>
   </div>
 </template>

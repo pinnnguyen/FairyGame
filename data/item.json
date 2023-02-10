@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Đá cường hoá",
+    "name": "Huyền tinh",
     "note": "Đạo cụ dùng để cường hoá trang bị",
     "kind": 2,
     "preview": "/items/11.png",
@@ -61,7 +61,7 @@
   },
   {
     "id": 8,
-    "name": "KNB",
+    "name": "Tiên duyên",
     "note": "Dùng mua các đạo cụ trong game",
     "kind": 3,
     "preview": "/items/1.png",

@@ -1,8 +1,7 @@
-import type { BaseAttributes, EnemyObject, PlayerAttribute, PlayerInfo } from '~/types'
-import { BATTLE_ACTION, WINNER } from '~/constants/war'
-import type { BaseProperties, BattleResponse, Emulator } from '~/types/war'
+import { cloneDeep } from '~/helpers'
+import type { BaseAttributes } from '~/types'
+import { BATTLE_ACTION } from '~/constants/war'
 import { randomNumber } from '~/common'
-import { playerTitle } from '~/server/helpers'
 
 const handleAvoid = (avoid: number, reductionAvoid: number) => {
   if (avoid <= 0) {
@@ -70,6 +69,12 @@ const handleRecoveryPerformance = (recovery: number, recoveryPerformance: number
   }
 }
 const handleBloodsucking = (inflictDMG: number, bloodsucking: number, reductionBloodsucking: number) => {
+  if (inflictDMG <= 0) {
+    return {
+      blood: 0,
+    }
+  }
+
   if (bloodsucking <= 0) {
     return {
       blood: 0,
@@ -119,62 +124,35 @@ const handleCritical = (critical: number, inflictDMG: number, criticalDamage: nu
   }
 }
 
-export const receiveDamage = (player: PlayerInfo, enemy: EnemyObject) => {
+export const receiveDamageV2 = (battleTarget: any) => {
   let inflictDMG: number
-  const enemyDMG = (enemy?.attribute.damage as number)
-  const playerDef = (player?.attribute?.def as number)
+  const attacker = battleTarget[0]
+  const defender = battleTarget[1]
 
-  inflictDMG = Math.round(enemyDMG - playerDef * 0.75)
+  const attackerDamage = attacker.damage ?? 0
+  const defenderDef = defender.def ?? 0
+
+  inflictDMG = Math.round(attackerDamage - defenderDef * 0.75)
   if (inflictDMG < 0)
     inflictDMG = 0
 
-  const { blood } = handleBloodsucking(inflictDMG, enemy?.attribute?.bloodsucking, player.attribute.reductionBloodsucking)
-  const { recovery } = handleRecoveryPerformance(blood, enemy.attribute.recoveryPerformance, player.attribute.reductionRecoveryPerformance)
-  const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(enemy?.attribute?.critical, inflictDMG, enemy?.attribute?.criticalDamage, player?.attribute?.reductionCriticalDamage)
+  const { blood } = handleBloodsucking(inflictDMG, attacker?.bloodsucking, defender.reductionBloodsucking)
+  const { recovery } = handleRecoveryPerformance(blood, attacker.recoveryPerformance, defender.reductionRecoveryPerformance)
+  const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(attacker?.critical, inflictDMG, attacker?.criticalDamage, defender?.reductionCriticalDamage)
   if (hasCritical)
     inflictDMG = inflictDMGAfter
 
-  const { counterDamage } = handleCounterAttack(inflictDMG, enemy.attribute.reductionCounterAttack, player.attribute.counterAttack)
-  const { hasAvoid } = handleAvoid(player.attribute.avoid, enemy.attribute.reductionAvoid)
+  const { counterDamage } = handleCounterAttack(inflictDMG, attacker?.reductionCounterAttack, defender?.counterAttack)
+  const { hasAvoid } = handleAvoid(defender?.avoid, attacker?.reductionAvoid)
   if (hasAvoid)
     inflictDMG = 0
 
   return {
-    receiveDMG: inflictDMG ?? 0,
-    enemyBloodsucking: recovery,
-    enemyCritical: hasCritical,
-    playerCounterAttack: counterDamage,
-    playerAvoid: hasAvoid,
-  }
-}
-
-export const inflictDamage = (player: PlayerInfo, enemy: EnemyObject) => {
-  let inflictDMG: number
-
-  const playerDMG = (player?.attribute?.damage as number)
-  const enemyDef = (enemy?.attribute.def as number)
-  inflictDMG = Math.round(playerDMG - enemyDef * 0.75)
-
-  if (inflictDMG < 0)
-    inflictDMG = 0
-
-  const { blood } = handleBloodsucking(inflictDMG, player?.attribute?.bloodsucking, enemy.attribute.reductionBloodsucking)
-  const { recovery } = handleRecoveryPerformance(blood, player.attribute.recoveryPerformance, enemy.attribute.reductionRecoveryPerformance)
-  const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(player.attribute.critical, inflictDMG, player.attribute.criticalDamage, enemy.attribute.reductionCriticalDamage)
-  if (hasCritical)
-    inflictDMG = inflictDMGAfter
-
-  const { counterDamage } = handleCounterAttack(inflictDMG, player.attribute.reductionCounterAttack, enemy.attribute.counterAttack)
-  const { hasAvoid } = handleAvoid(enemy.attribute.avoid, player.attribute.reductionAvoid)
-  if (hasAvoid)
-    inflictDMG = 0
-
-  return {
-    inflictDMG,
-    playerBloodsucking: recovery,
-    playerCritical: hasCritical,
-    enemyCounterAttack: counterDamage,
-    enemyAvoid: hasAvoid,
+    receiveDMG: inflictDMG,
+    attackerBloodsucking: recovery,
+    attackerCritical: hasCritical,
+    defenderCounterAttack: counterDamage,
+    defenderAvoid: hasAvoid,
   }
 }
 
@@ -185,264 +163,140 @@ export const formatHP = (hp: number, limit: number) => {
   return limit
 }
 
-export const enemyDeep = (enemy: EnemyObject) => {
-  const { levelTitle, floor } = playerTitle(enemy.level, enemy.level + 1)
+export const attributeDeep = (attribute: BaseAttributes) => {
+  const aDeep = cloneDeep(attribute)
 
   return {
-    _id: enemy._id,
-    levelTitle,
-    floor,
-    level: enemy?.level,
-    damage: enemy?.attribute.damage,
-    def: enemy?.attribute.def,
-    hp: enemy?.attribute.hp,
-    critical: enemy?.attribute.critical,
-    speed: enemy?.attribute.speed,
-    name: enemy?.name,
-    class: enemy.class,
-  } as BaseProperties
+    hp: aDeep.hp,
+  }
 }
 
-export const playerDeep = (params: PlayerInfo) => {
-  return {
-    _id: params.player._id,
-    levelTitle: params.player.levelTitle,
-    floor: params.player.floor,
-    level: params?.player?.level,
-    damage: params?.attribute?.damage,
-    def: params?.attribute?.def,
-    hp: params?.attribute?.hp,
-    speed: params?.attribute?.speed,
-    critical: params?.attribute?.critical,
-    name: params?.player?.name,
-    class: params.player.class,
-  } as BaseProperties
-}
+export const startWarSolo = (targetA: {
+  extends: {
+    _id: string
+    name: string
+    level: number
+  }
+  attribute: BaseAttributes & { _id: string }
+}, targetB: {
+  extends: {
+    _id: string
+    name: string
+    level: number
+  }
+  attribute: BaseAttributes & { _id: string }
+}, personBeingAttacked?: string) => {
+  let round = 0
+  const totalDamage: Record<string, number> = {}
 
-const addPlayerFirstEmulators = (options: {
-  playerCritical: boolean
-  enemyCritical: boolean
-  inflictDMG: number
-  receiveDMG: number
-  _enemy: BaseAttributes
-  _player: PlayerAttribute
-  enemyBloodsucking: number
-  playerBloodsucking: number
-  playerCounterAttack: number
-  enemyCounterAttack: number
-  enemyAvoid: boolean
-  playerAvoid: boolean
-}) => {
-  const emulators: Emulator[] = []
-  emulators.push({
-    [`${1}_player`]: {
-      action: BATTLE_ACTION.ATTACK,
-      state: {
-        damage: options.inflictDMG,
-        bloodsucking: options.playerBloodsucking,
-        critical: options.playerCritical,
-        counterDamage: options.enemyCounterAttack,
-        avoid: options.playerAvoid,
+  targetA.attribute._id = targetA.extends._id
+  targetB.attribute._id = targetB.extends._id
+
+  const match = {
+    [targetA.extends._id]: {
+      extends: {
+        pos: 1,
+        ...targetA.extends,
       },
-      now: {
-        hp: {
-          enemy: options._enemy?.hp,
-        },
-        mp: {
-          player: options._player?.mp,
-        },
+      attribute: {
+        ...attributeDeep(targetA.attribute),
       },
     },
-    [`${2}_enemy`]: {
-      action: BATTLE_ACTION.ATTACK,
-      state: {
-        damage: options.receiveDMG,
-        bloodsucking: options.enemyBloodsucking,
-        critical: options.enemyCritical,
-        counterDamage: options.playerCounterAttack,
-        avoid: options.enemyAvoid,
+    [targetB.extends._id]: {
+      extends: {
+        pos: 2,
+        ...targetB.extends,
       },
-      now: {
-        hp: {
-          player: options._player?.hp,
-        },
-        mp: {
-          enemy: options._enemy?.mp,
-        },
+      attribute: {
+        ...attributeDeep(targetB.attribute),
       },
     },
-  })
-
-  return emulators
-}
-
-const addEnemyFirstEmulators = (options: {
-  enemyCritical: boolean
-  playerCritical: boolean
-  receiveDMG: number
-  inflictDMG: number
-  _player: PlayerAttribute
-  _enemy: BaseAttributes
-  enemyBloodsucking: number
-  playerBloodsucking: number
-  playerCounterAttack: number
-  enemyCounterAttack: number
-  enemyAvoid: boolean
-  playerAvoid: boolean
-}) => {
-  const emulators: Emulator[] = []
-  emulators.push({
-    [`${1}_enemy`]: {
-      action: BATTLE_ACTION.ATTACK,
-      state: {
-        damage: options.receiveDMG,
-        bloodsucking: options.enemyBloodsucking,
-        critical: options.enemyCritical,
-        counterDamage: options.playerCounterAttack,
-        avoid: options.enemyAvoid,
-      },
-      now: {
-        hp: {
-          player: options._player?.hp,
-        },
-        mp: {
-          enemy: options._enemy?.mp,
-        },
-      },
-    },
-    [`${2}_player`]: {
-      action: BATTLE_ACTION.ATTACK,
-      state: {
-        damage: options.inflictDMG,
-        bloodsucking: options.playerBloodsucking,
-        critical: options.playerCritical,
-        counterDamage: options.enemyCounterAttack,
-        avoid: options.playerAvoid,
-      },
-      now: {
-        hp: {
-          enemy: options._enemy?.hp,
-        },
-        mp: {
-          player: options._player?.mp,
-        },
-      },
-    },
-  })
-
-  return emulators
-}
-
-export const startWar = (_p: PlayerInfo, _enemy: EnemyObject) => {
-  const enemyClone = enemyDeep(_enemy)
-  const playerClone = playerDeep(_p)
-
-  const emulators: Emulator[] = []
-  const playerAttribute = _p.attribute
-  const enemyAttribute = _enemy.attribute
-
-  let endWar = false
-  let winner = ''
-  let round = 1
-  let totalDamage = 0
-
-  while (!endWar) {
-    if (enemyAttribute.hp <= 0) {
-      winner = WINNER.youwin
-      endWar = true
-
-      return {
-        player: playerClone,
-        enemy: enemyClone,
-        emulators,
-        winner,
-        totalDamage,
-      } as BattleResponse
-    }
-
-    if (playerAttribute?.hp <= 0) {
-      winner = WINNER.youlose
-      endWar = true
-
-      return {
-        player: playerClone,
-        enemy: enemyClone,
-        emulators,
-        winner,
-        totalDamage,
-      } as BattleResponse
-    }
-
-    if (round >= 30) {
-      winner = WINNER.youlose
-      endWar = true
-
-      return {
-        player: playerClone,
-        enemy: enemyClone,
-        emulators,
-        winner,
-        totalDamage,
-      } as BattleResponse
-    }
-
-    const { receiveDMG, enemyBloodsucking, enemyCritical, playerCounterAttack, playerAvoid } = receiveDamage(_p, _enemy) // Mục tiêu gây sát thương lên người chơi.
-    const { inflictDMG, playerBloodsucking, playerCritical, enemyCounterAttack, enemyAvoid } = inflictDamage(_p, _enemy) // Người chơi gây sát thương lên mục tiêu.
-
-    playerAttribute.hp -= formatHP(playerAttribute?.hp, receiveDMG)
-    playerAttribute.hp -= formatHP(playerAttribute.hp, enemyCounterAttack)
-    if (playerAttribute.hp > 0 && playerBloodsucking > 0)
-      playerAttribute.hp += playerBloodsucking
-
-    totalDamage += inflictDMG
-    enemyAttribute.hp -= formatHP(enemyAttribute.hp, inflictDMG)
-    enemyAttribute.hp -= formatHP(enemyAttribute.hp, playerCounterAttack)
-    if (enemyAttribute.hp > 0 && enemyBloodsucking)
-      enemyAttribute.hp += enemyBloodsucking
-
-    //  Tốc độ cao hơn sẽ đánh
-    if (playerAttribute?.speed < enemyAttribute?.speed) {
-      emulators.push(addEnemyFirstEmulators({
-        enemyCritical,
-        playerCritical,
-        receiveDMG,
-        inflictDMG,
-        _player: playerAttribute,
-        _enemy: enemyAttribute,
-        enemyBloodsucking,
-        playerBloodsucking,
-        playerCounterAttack,
-        enemyCounterAttack,
-        enemyAvoid,
-        playerAvoid,
-      })[0])
-    }
-
-    else {
-      emulators.push(addPlayerFirstEmulators({
-        playerCritical,
-        enemyCritical,
-        inflictDMG,
-        receiveDMG,
-        _enemy: enemyAttribute,
-        _player: playerAttribute,
-        enemyBloodsucking,
-        playerBloodsucking,
-        playerCounterAttack,
-        enemyCounterAttack,
-        enemyAvoid,
-        playerAvoid,
-      })[0])
-    }
-
-    round++
   }
 
-  return {
-    player: playerClone,
-    enemy: enemyClone,
-    emulators,
-    winner,
-    totalDamage,
-  } as BattleResponse
+  const emulators = []
+  for (let i = 0; i < 60; i++) {
+    const battle = {
+      [`${targetA.attribute.speed}_${targetA.extends._id}`]: [
+        targetA.attribute,
+        targetB.attribute,
+      ],
+      [`${targetB.attribute.speed}_${targetB.extends._id}`]: [
+        targetB.attribute,
+        targetA.attribute,
+      ],
+    }
+
+    const battleReverse = Object.keys(battle).reverse()
+    for (const b of battleReverse) {
+      const battleTarget = battle[b]
+      const {
+        receiveDMG,
+        attackerBloodsucking,
+        attackerCritical,
+        defenderCounterAttack,
+        defenderAvoid,
+      } = receiveDamageV2(battleTarget)
+
+      const attacker = battleTarget[0]
+      const defender = battleTarget[1]
+
+      if (!totalDamage[b])
+        totalDamage[b] = 0
+
+      totalDamage[b] += receiveDMG
+      defender.hp -= formatHP(defender?.hp, receiveDMG)
+      attacker.hp -= formatHP(attacker.hp, defenderCounterAttack)
+
+      if (attacker.hp > 0 && attackerBloodsucking > 0)
+        attacker.hp += attackerBloodsucking
+
+      emulators.push({
+        [b]: {
+          action: BATTLE_ACTION.ATTACK,
+          state: {
+            damage: {
+              [defender._id]: receiveDMG,
+            },
+            bloodsucking: attackerBloodsucking,
+            critical: attackerCritical,
+            counterDamage: defenderCounterAttack,
+            avoid: defenderAvoid,
+          },
+          self: {
+            hp: attacker.hp,
+            mp: attacker.mp,
+          },
+          now: {
+            hp: {
+              [defender._id]: defender.hp,
+            },
+            mp: {
+              [attacker._id]: attacker.mp,
+            },
+          },
+        },
+      })
+
+      if (attacker.hp <= 0 || defender.hp <= 0) {
+        const realId = b.split('_')[1]
+        return {
+          emulators,
+          match,
+          winner: realId,
+          totalDamage,
+        }
+      }
+
+      if (round === 50) {
+        return {
+          emulators,
+          match,
+          winner: personBeingAttacked,
+          totalDamage,
+        }
+      }
+
+      round++
+    }
+  }
 }

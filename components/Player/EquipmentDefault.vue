@@ -7,6 +7,7 @@ import { qualityPalette } from '~/common'
 defineProps<{
   wClass?: string
 }>()
+
 const { leftSlots, rightSlots } = storeToRefs(usePlayerSlot())
 const options = reactive<{
   equipSelected: Partial<PlayerEquipment>
@@ -15,16 +16,17 @@ const options = reactive<{
   equipSelected: {},
   equipDetail: false,
 })
-const setSlot = (slot: PlayerEquipment) => {
-  options.equipSelected = slot
+
+const setSlot = (equipment: PlayerEquipment) => {
+  options.equipSelected = equipment
   options.equipDetail = true
 }
 </script>
 
 <template>
-  <var-popup v-model:show="options.equipDetail" position="center">
-    <bag-equipment-detail
-      :item="options.equipSelected"
+  <var-popup v-if="options.equipDetail" v-model:show="options.equipDetail" position="center">
+    <equipment-detail
+      :equipment="options.equipSelected"
       :action="false"
     />
   </var-popup>
@@ -49,12 +51,12 @@ const setSlot = (slot: PlayerEquipment) => {
         v-else
         class="diamond w-20 h-12"
       >
-        <span class="text-10 font-bold italic">
+        <div class="text-10 font-bold italic">
           {{ slotToName[leftS.no] }}
-          <div class="text-8 whitespace-nowrap">
+          <span class="text-8 whitespace-nowrap">
             (Trống)
-          </div>
-        </span>
+          </span>
+        </div>
       </button>
     </div>
     <div

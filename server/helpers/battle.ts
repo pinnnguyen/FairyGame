@@ -25,7 +25,7 @@ const handleTargetNormal = async (_p: PlayerInfo) => {
         kind: BATTLE_KIND.PVE,
         winner: WINNER.youwin,
       })
-    .sort({ createdAt: -1 }).select('player enemy reward createdAt winner kind')
+    .sort({ createdAt: -1 }).select('match reward createdAt winner kind')
 
   if (battle) {
     // Clear pve history
@@ -55,10 +55,9 @@ const handleTargetNormal = async (_p: PlayerInfo) => {
       return {
         inRefresh: true,
         refreshTime: doRefresh - now,
-        playerBefore: battle.player,
-        enemyBefore: battle.enemy,
+        match: battle.match,
         reward: battle.reward,
-        winnerBefore: battle.winner,
+        winner: battle.winner,
         kind: battle.kind,
       }
     }
@@ -74,7 +73,7 @@ const handleTargetFrameTime = async (_p: PlayerInfo) => {
 
   const battle = await BattleSchema
     .findOne({ sid: _p.player.sid, kind: BATTLE_KIND.BOSS_FRAME_TIME })
-    .sort({ createdAt: -1 }).select('player enemy reward createdAt winner kind')
+    .sort({ createdAt: -1 }).select('match reward createdAt winner kind')
 
   if (battle) {
     // validate
@@ -83,10 +82,9 @@ const handleTargetFrameTime = async (_p: PlayerInfo) => {
       return {
         inRefresh: true,
         refreshTime: doRefresh - now,
-        playerBefore: battle.player,
-        enemyBefore: battle.enemy,
+        match: battle.match,
         reward: battle.reward,
-        winnerBefore: battle.winner,
+        winner: battle.winner,
         kind: battle.kind,
       }
     }
@@ -102,7 +100,7 @@ const handleTargetElite = async (_p: PlayerInfo) => {
 
   const battle = await BattleSchema
     .findOne({ sid: _p.player.sid, kind: BATTLE_KIND.BOSS_ELITE })
-    .sort({ createdAt: -1 }).select('player enemy reward createdAt winner kind')
+    .sort({ createdAt: -1 }).select('match reward createdAt winner kind')
 
   if (battle) {
     // validate
@@ -111,10 +109,9 @@ const handleTargetElite = async (_p: PlayerInfo) => {
       return {
         inRefresh: true,
         refreshTime: doRefresh - now,
-        playerBefore: battle.player,
-        enemyBefore: battle.enemy,
+        match: battle.match,
         reward: battle.reward,
-        winnerBefore: battle.winner,
+        winner: battle.winner,
         kind: battle.kind,
       }
     }
@@ -137,7 +134,7 @@ const handleTargetDaily = async (_p: PlayerInfo, battleRequest: BattleRequest, _
       $gte: moment().startOf('day'),
       $lte: moment(today).endOf('day').toDate(),
     },
-  }).select('player enemy reward winner kind')
+  }).select('match reward winner kind')
 
   if (!battle.length) {
     return {
@@ -150,10 +147,9 @@ const handleTargetDaily = async (_p: PlayerInfo, battleRequest: BattleRequest, _
     return {
       inRefresh: true,
       refreshTime: new Date(moment(today).endOf('day').toDate()).getTime() - now,
-      playerBefore: battle[0].player,
-      enemyBefore: battle[0].enemy,
+      match: battle[0].match,
       reward: battle[0].reward,
-      winnerBefore: battle[0].winner,
+      winner: battle[0].winner,
       kind: battle[0].kind,
     }
   }

@@ -48,9 +48,9 @@ const buy = (equipment: any) => {
 </script>
 
 <template>
-  <var-popup v-model:show="show" position="center">
-    <bag-equipment-detail
-      :item="equipItemSelected"
+  <var-popup v-if="show" v-model:show="show" position="center">
+    <equipment-detail
+      :equipment="equipItemSelected"
     />
   </var-popup>
   <div class="overflow-auto scrollbar-hide px-6 pt-4">

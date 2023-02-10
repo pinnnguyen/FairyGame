@@ -11,6 +11,16 @@ const password = ref('')
 const email = ref('')
 
 const handleLogin = async () => {
+  if (!email.value) {
+    sendMessage('Mail không được để trống')
+    return
+  }
+
+  if (!password.value) {
+    sendMessage('Passowrd không được để trống')
+    return
+  }
+
   const { error, url } = await signIn('credentials', { username: email.value, password: password.value, redirect: false })
   if (url) {
     sendMessage('Đăng nhập thành công!')
@@ -24,33 +34,35 @@ const handleLogin = async () => {
 
 <template>
   <section>
-    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
-      <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-        <img class="w-8 h-8 mr-2" src="/logo.png" alt="logo">
-        Tu Tiên Giới
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0 bg-primary max-w-[70vh] m-auto">
+      <a href="#" class="flex items-center">
+        <img class="w-30 h-30 mr-2" src="/logo.png" alt="logo">
       </a>
       <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div class="p-6 space-y-6 sm:p-8">
-          <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-            Đăng nhập tài khoản của bạn
+          <h1 class="text-primary text-xl font-bold leading-tight tracking-tight md:text-2xl">
+            Đăng nhập
           </h1>
           <div class="space-y-4 md:space-y-6">
             <div>
-              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-              <input id="email" v-model="email" type="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="">
+              <var-input id="email" v-model="email" type="email" name="email" placeholder="ttg@gmail.com" required="" text-color="#ffffff" focus-color="#fff" />
             </div>
             <div>
-              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mật khẩu</label>
-              <input id="password" v-model="password" type="password" name="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+              <var-input id="password" v-model="password" type="password" name="password" placeholder="••••••••" required="" text-color="#ffffff" focus-color="#fff" />
             </div>
-            <!-- <div class="flex items-center justify-between text-right">
-              <a href="#" class="w-full text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Quên mật khẩu?</a>
-            </div> -->
-            <button type="button" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:hover:bg-primary-700" @click="handleLogin">
-              Đăng nhập
-            </button>
-            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-              Bạn chưa có tài khoản? <a href="/register" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Đăng ký</a>
+            <div
+              text="center"
+            >
+              <var-button
+                @click="handleLogin"
+              >
+                Đăng nhập
+              </var-button>
+            </div>
+            <p class="text-12 text-primary">
+              Bạn chưa có tài khoản? <nuxt-link to="/register" class="underline font-medium text-primary-600 hover:underline dark:text-primary-500">
+                Đăng ký
+              </nuxt-link>
             </p>
           </div>
         </div>

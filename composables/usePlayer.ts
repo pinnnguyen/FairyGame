@@ -32,26 +32,28 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const getPlayer = async () => {
-    const data = await $fetch<PlayerServerResponse>('/api/player', {
-      headers: (useRequestHeaders(['cookie']) as any),
-    })
+    try {
+      const data = await $fetch<PlayerServerResponse>('/api/player', {
+        headers: (useRequestHeaders(['cookie']) as any),
+      })
 
-    if (!data)
-      return navigateTo('/role')
-
-    set(playerInfo, {
-      ...data?.player,
-      attribute: {
-        ...data?.attribute,
-      },
-      mid: {
-        ...data?.mid,
-      },
-      upgrade: {
-        ...data?.upgrade,
-      },
-      equipments: data.equipments,
-    })
+      set(playerInfo, {
+        ...data?.player,
+        attribute: {
+          ...data?.attribute,
+        },
+        mid: {
+          ...data?.mid,
+        },
+        upgrade: {
+          ...data?.upgrade,
+        },
+        equipments: data.equipments,
+      })
+    }
+    catch (e) {
+      console.error(e)
+    }
   }
 
   return {

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { set } from '@vueuse/core'
 import type { PlayerGem } from '~~/types'
 import { qualityPalette } from '~/common'
 
@@ -6,36 +7,51 @@ defineProps<{
   gem: PlayerGem
 }>()
 
-const emit = defineEmits<{
-  (event: 'onSelected', d: PlayerGem): void
-}>()
+const emit = defineEmits(['onmerge'])
+
+const show = ref(false)
+const onmergeGems = () => {
+  set(show, false)
+  emit('onmerge')
+}
+
+const onSelected = (gem: PlayerGem) => {
+  set(show, true)
+}
 </script>
 
 <template>
+  <var-popup v-if="show" v-model:show="show" position="center">
+    <gem-detail
+      :gem="gem"
+      :sell-action="true"
+      @refresh="onmergeGems"
+      @mergegem="onmergeGems"
+    />
+  </var-popup>
   <div>
     <div
-      position="relative"
+      pos="relative"
       w="12"
       h="12"
-      @click.stop="emit('onSelected', gem)"
+      @click.stop="onSelected"
     >
       <nuxt-img
-        position="absolute"
+        pos="absolute"
         top="0"
-        class="absolute top-0"
         :src="`/quality_bg/iconbg_${gem.quality}.png`"
       />
       <nuxt-img
-        position="absolute"
+        pos="absolute"
         border="rounded-full"
         object="cover"
-        class=" w-[80%] h-[80%] transform-center"
+        class="w-[80%] h-[80%] transform-center"
         format="webp"
         :src="`/gem/${gem.gemId}.png`"
       />
       <div
         border="rounded-2xl"
-        position="absolute"
+        pos="absolute"
         text="8 yellow-300"
         bg="black/60"
         font="bold"
@@ -47,11 +63,11 @@ const emit = defineEmits<{
       </div>
     </div>
     <p
-      text="10"
+      text="8"
       font="semibold"
       class="line-clamp-1"
       :style="{
-        color: qualityPalette(gem.quality!),
+        color: qualityPalette(gem.quality),
       }"
     >
       {{ gem.name }}

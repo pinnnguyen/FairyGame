@@ -23,7 +23,7 @@ const classTitle = computed(() => ROLE_NAME[playerInfo!.class])
       Đẳng cấp {{ playerInfo?.level }}
     </div>
     <div class="whitespace-normal w-5">
-      Hệ <span :class="`bg-[${classColor}]`">{{ classTitle }}</span>
+      Hệ <span>{{ classTitle }}</span>
     </div>
     <div class="whitespace-normal w-5">
       Tu vị {{ formatCash((playerInfo?.exp)) }}

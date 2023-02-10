@@ -21,7 +21,7 @@ const onSell = () => {
 </script>
 
 <template>
-  <var-popup v-model:show="show" position="center">
+  <var-popup v-if="show" v-model:show="show" position="center">
     <bag-item-detail
       :item="selectedItem"
       :sell-action="true"
@@ -30,26 +30,39 @@ const onSell = () => {
   </var-popup>
   <var-loading :loading="pending" :description="tips[Math.round(randomNumber(0, tips.length))]" size="mini" color="#ffffff">
     <div
-      class="grid-cols-3 grid gap-2"
+      grid="~ cols-3"
+      gap="2"
     >
       <div v-if="pending" h="50" w="50" />
       <div
-        v-for="item in items" :key="item.id" class="rounded p-2" :style="{
+        v-for="item in items"
+        :key="item.id"
+        text="10"
+        border="rounded"
+        p="2"
+        :style="{
           border: `1px solid ${qualityPalette(item.props.quality)}`,
         }"
         @click.stop="pickItem(item)"
       >
         <div
-          class="text-10 font-bold line-clamp-1" :style="{
+          font="bold"
+          class="line-clamp-1" :style="{
             color: qualityPalette(item.props.quality),
           }"
         >
           {{ item?.props.name }}
         </div>
-        <div class="pt-2 text-[10px]">
+        <div
+          p="t-2"
+          class="line-clamp-2"
+        >
           {{ item?.props.note }}
         </div>
-        <div class="pt-2 text-8 text-right">
+        <div
+          p="t-2"
+          text="8 right"
+        >
           SL: {{ item?.sum }}
         </div>
       </div>

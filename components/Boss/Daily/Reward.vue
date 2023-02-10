@@ -25,7 +25,7 @@ const selectedEquipment = (equipment: PlayerEquipment) => {
 
 <template>
   <var-popup v-if="options.showEquipment" v-model:show="options.showEquipment">
-    <bag-equipment-detail :item="selected.equipment" />
+    <equipment-detail :equipment="selected.equipment" />
   </var-popup>
   <div class="w-[90%] bg-primary m-auto p-2 rounded border border-white/20">
     <Line class="mb-2 text-10">

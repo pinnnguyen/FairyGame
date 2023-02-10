@@ -1,31 +1,21 @@
 <script setup lang="ts">
 const props = defineProps<{
+  hp?: number
   name?: string
-  isEnemy?: boolean
-  receiver: any
-  state: any
+  level?: number
+  receiver?: any
 }>()
 </script>
 
 <template>
+  {{ receiver }} 11
   <div class="text-[#333] text-10">
-    <div v-if="!isEnemy">
-      <BattleStatusBar
-        :receiver-hp="receiver?.player?.hp"
-        :hp="state?.player?.hp"
-      />
-      <div class="h-4 text-8 text-[#d2d2d2] bg-[#00000040] relative flex items-center p-[2px] border border-white/40">
-        {{ state.player?.levelTitle ?? '...' }} {{ state.player?.floor ?? '...' }}
-      </div>
-    </div>
-    <div v-else>
-      <BattleStatusBar
-        :receiver-hp="receiver?.enemy?.hp"
-        :hp="state?.enemy?.hp"
-      />
-      <div class="h-4 text-[#d2d2d2] text-8 bg-[#00000040] relative flex items-center p-[2px] border border-white/40">
-        {{ state.enemy?.levelTitle ?? '...' }} {{ state.enemy?.floor ?? '...' }}
-      </div>
+    <BattleStatusBar
+      :receiver-hp="receiver ?? hp"
+      :hp="hp"
+    />
+    <div class="h-4 text-8 text-[#d2d2d2] bg-[#00000040] relative flex items-center p-[2px] border border-white/40">
+      {{ level ?? '...' }}
     </div>
   </div>
 </template>

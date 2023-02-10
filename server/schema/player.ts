@@ -42,6 +42,9 @@ const schema = new mongoose.Schema<Player>(
 
         if (params.kind === 'gold')
           return await this.findOneAndUpdate({ sid: params.sid }, { $inc: { gold: params.value } })
+
+        if (params.kind === 'knb')
+          return await this.findOneAndUpdate({ sid: params.sid }, { $inc: { knb: params.value } })
       },
     },
   },

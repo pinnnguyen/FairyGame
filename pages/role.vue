@@ -10,8 +10,7 @@ const classList = [
   {
     id: 1,
     name: 'Tu tiên',
-    img: '/role/tientoc.png',
-    description: `              <p class="text-12 mt-1">
+    description: `<p class="text-12 mt-1">
                               Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu ma
                             </p>
                             <span class="text-12 font-normal">Huyết mạch: </span><span class="text-12">Tăng <strong class="text-red">10%</strong> tấn công, <strong>5%</strong> sát thương bạo kích cơ bản (Không bao gồm trang bị)</span>
@@ -20,19 +19,14 @@ const classList = [
   {
     id: 2,
     name: 'Tu yêu',
-    img: '/role/tuyeu.png',
-    description: `                <p class="text-12 mt-1">
-                              Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu tiên
-                            </p>
-                            <span class="text-12 font-normal">Huyết mạch: </span><span class="text-12">Tăng <strong class="text-[#03a9f4]">10%</strong> sinh lực, <strong class="text-green">5%</strong> phòng thủ cơ bản (Không bao gồm trang bị)</span>
+    description: `<p class="text-12 mt-1">Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu tiên</p>
+                            <span class="text-12 font-normal">Huyết mạch: </span><span class="text-12">Tăng <strong class="text-[#03a9f4]">10%</strong> sinh lực, <strong class="text-green-500">5%</strong> phòng thủ cơ bản (Không bao gồm trang bị)</span>
                            `,
   },
   {
     id: 3,
     name: 'Tu ma',
-    img: '/role/tuma.png',
-    description: `                   <p class="text-12 mt-1">
-                              Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi nhân tộc
+    description: `<p class="text-12 mt-1">Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi nhân tộc
                             </p>
                             <span class="text-12 font-normal">Huyết mạch: </span><span class="text-12">Tăng <strong class="text-red">5%</strong> Tấn công, <strong>10%</strong> sát thương bạo kích (Không bao gồm trang bị)</span>
                           `,
@@ -40,8 +34,7 @@ const classList = [
   {
     id: 4,
     name: 'Nhân tộc',
-    img: '/role/nhantoc.png',
-    description: `              <p class="text-12 mt-1">
+    description: `<p class="text-12 mt-1">
                               Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu yêu
                             </p>
                             <span class="text-12 font-normal">Huyết mạch: </span><span class="text-12">Tăng <strong class="text-red">5%</strong> Tấn công, <strong class="text-[#03a9f4]">5%</strong> sinh lực, <strong class="text-green">5%</strong> phòng thủ (Không bao gồm trang bị)</span>
@@ -53,7 +46,7 @@ const selected = ref(classList[2])
 const handleCreateFigure = async () => {
   const { loadPlayer } = usePlayerStore()
 
-  const role = await $fetch('/api/player/create-role', {
+  const role: any = await $fetch('/api/player/create-role', {
     method: 'POST',
     headers: (useRequestHeaders(['cookie']) as any),
     body: {
@@ -62,49 +55,56 @@ const handleCreateFigure = async () => {
     },
   })
 
-  $io.emit('send-notify', `Chào mừng người chơi ${role.player.name} bước vào tu tiên giới`)
+  if (!role.success) {
+    sendMessage(role.message)
+    return
+  }
+
+  $io.emit('send-notify', `Chào mừng người chơi ${role.player.name} bước vào Tự mình tu tiên`)
   loadPlayer(role)
   navigateTo('/')
 }
 </script>
 
 <template>
-  <div class="h-[95vh] relative bg-[#00000040]">
-    <div class="text-white p-2 h-full">
-      <form class="h-full bg-[#000000] p-2 relative" @submit.prevent="handleCreateFigure">
-        <div>
-          <p class="text-center text-base font-semibold uppercase mb-1">
-            Hệ phái
-          </p>
-          <div class="flex items-start justify-between grid grid-cols-4">
-            <div v-for="classE in classList" :key="classE.name" class="mb-4 p-2" @click="selected = classE">
-              <p class="text-center font-semibold">
-                {{ classE.name }}
-              </p>
-              <nuxt-img
-                class="w-full duration-500 transition transform h-[300px] object-cover"
-                :class="{ 'scale-130': selected ? selected.id === classE.id : 0 }"
-                format="webg"
-                :src="classE.img"
-              />
+  <div class="h-screen relative bg-primary text-primary italic relative max-w-[70vh] m-auto border border-white/40">
+    <div class="p-4 w-full transform-center absolute">
+      <div>
+        <Line
+          m="y-2"
+        >
+          <div text="12">
+            Chọn hệ phái
+          </div>
+        </Line>
+        <div class="flex items-start justify-between grid grid-cols-4">
+          <div v-for="classE in classList" :key="classE.name" @click="selected = classE">
+            <div
+              class="text-center font-semibold border-box text-10 mb-4 mx-1 py-2 px-2 opacity-40"
+              :class="{
+                'opacity-100': classE.name === selected.name,
+              }"
+            >
+              {{ classE.name }}
             </div>
           </div>
         </div>
-        <div class="pt-10 duration" v-html="selected.description" />
-        <div class="absolute bottom-0 left-0 mb-4 flex w-full justify-center items-center">
-          <div>
-            <p>
-              <input v-model="name" placeholder="Tên nhân vật" class="w-[160px] border border-[#dcc18d] focus:border-[#dcc18d] bg-[#2d251d] rounded h-[30px] leading-[35px] text-center flex-center" type="text" name="username" maxlength="16">
-            </p>
-          </div>
-
-          <div class="ml-2">
-            <button class="bg-[#ffd400] text-base border-none leading-8 h-[30px] text-black flex-center !w-[70px] !m-0 !rounded" type="submit" value="Tạo">
-              Tạo
-            </button>
-          </div>
-        </div>
-      </form>
+      </div>
+      <div class="pt-10 duration" v-html="selected.description" />
+    </div>
+    <div class="ml-2 absolute bottom-5 flex w-full gap-2 items-center justify-center">
+      <input
+        v-model="name" placeholder="Tên nhân vật"
+        class="w-[160px] border border-[#dcc18d] bg-[#2d251d] rounded h-[30px] leading-[35px] text-center flex-center" type="text" name="username" maxlength="16"
+      >
+      <var-button
+        class="!text-[#333] font-medium"
+        size="small"
+        @click="handleCreateFigure"
+        @click.stop="sell"
+      >
+        Tạo ngay
+      </var-button>
     </div>
   </div>
 </template>

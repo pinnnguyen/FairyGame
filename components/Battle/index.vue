@@ -1,124 +1,105 @@
 <script setup lang="ts">
 import { Snackbar } from '@varlet/ui'
 import { set } from '@vueuse/core'
-import { sendMessage, useBattleRoundStore, usePlayerStore, useSoundRewardEvent } from '#imports'
-import { BATTLE_KIND, TARGET_TYPE, tips } from '~/constants'
+import { sendMessage, useBattleEvents, useBattleRoundStore, usePlayerStore, useSoundRewardEvent } from '#imports'
+import { TARGET_TYPE, WINNER, tips } from '~/constants'
 import type { BattleResponse } from '~/types'
 import { randomNumber } from '~/common'
 
 const {
+  match,
   loading,
-  state,
-  receiver,
-  realTime,
-  battleResult,
-  inRefresh,
-  refreshTime,
-  reward,
+  refresh,
+  stateRunning,
   speed,
   roundNum,
 } = storeToRefs(useBattleRoundStore())
 
 const { $io } = useNuxtApp()
-const { startBattle, onStopBattle, onSkip } = useBattleRoundStore()
+const { fn } = useBattleRoundStore()
 const { playerInfo } = storeToRefs(usePlayerStore())
-
 const { loadPlayer } = usePlayerStore()
-const battleWarResult = ref()
+
+const {
+  useEventPve,
+  useEventElite,
+  useEventDaily,
+  offAllEvent,
+} = useBattleEvents()
+
+const battleCurrently = ref()
 const battleRequest = useState<{
   id: number
   target: string
 }>('battleRequest')
 
-const isLoadBattle = ref(false)
-const isPve = computed(() => battleWarResult.value?.kind === 'pve')
+const shouldNextBattle = ref(false)
+const isPve = computed(() => battleCurrently.value?.kind === 'pve')
+const isWin = computed(() => battleCurrently.value?.winner === WINNER.youwin)
+const isEliteBoss = computed(() => battleCurrently.value?.kind === TARGET_TYPE.BOSS_ELITE)
 
-const showBattleResult = computed({
-  get() {
-    return battleResult.value.show && !isPve.value
-  },
-  set(boo: boolean) {
-    battleResult.value.show = boo
-  },
-})
-
-$io.emit('battle:join:pve', {
-  skip: false,
-  kind: BATTLE_KIND.PVE,
-  player: {
-    userId: playerInfo.value?.userId,
-  },
-  target: {
-    type: TARGET_TYPE.MONSTER,
-    id: playerInfo.value?.mid?.current?.monsterId,
-  },
-})
-
-const onRefresh = () => {
-  console.log('battleRequest', battleRequest.value)
-  $io.emit('battle:join:pve', {
-    skip: false,
-    kind: BATTLE_KIND.PVE,
-    player: {
-      userId: playerInfo.value?.userId,
-    },
-    target: {
-      type: TARGET_TYPE.MONSTER,
-      id: playerInfo.value?.mid?.current?.monsterId,
-    },
-  })
-}
+// const showBattleResult = computed({
+//   get() {
+//     return battleResult.value.show && !isPve.value
+//   },
+//   set(boo: boolean) {
+//     battleResult.value.show = boo
+//   },
+// })
 
 const handleStartBattle = async (war: BattleResponse) => {
-  set(isLoadBattle, false)
-  set(battleWarResult, war)
+  set(shouldNextBattle, false)
+  set(battleCurrently, war)
 
-  await startBattle(war, async () => {
+  await fn.startBattle(war, async () => {
     if (playerInfo.value) {
-      playerInfo.value.gold += reward.value?.base.gold ?? 0
-      playerInfo.value.exp += reward.value?.base.exp ?? 0
+      playerInfo.value.gold += stateRunning.value.reward?.base.gold ?? 0
+      playerInfo.value.exp += stateRunning.value.reward?.base.exp ?? 0
     }
 
     if (isPve.value) {
       Snackbar.allowMultiple(true)
-      sendMessage(`Nhận Tiền Tiên x${reward.value?.base.gold}`, 3000, 'top')
-      sendMessage(`Nhận Tu Vi x${reward.value?.base.exp}`, 3000, 'top')
+      sendMessage(`Nhận Tiền Tiên x${stateRunning.value.reward?.base.gold}`, 3000, 'top')
+      sendMessage(`Nhận Tu Vi x${stateRunning.value.reward?.base.exp}`, 3000, 'top')
 
-      if (reward.value?.items && reward.value?.items.length > 0) {
-        for (const item of reward.value?.items)
+      if (stateRunning.value.reward?.items && stateRunning.value.reward?.items.length > 0) {
+        for (const item of stateRunning.value.reward?.items)
           sendMessage(`${item.name} x${item.quantity}`, 3000, 'top')
       }
 
-      onRefresh()
+      useEventPve()
     }
 
     await useSoundRewardEvent()
   })
 }
 
-const startPve = (skip: boolean) => {
-  $io.emit('battle:join:pve', {
-    skip,
-    kind: BATTLE_KIND.PVE,
-    player: {
-      userId: playerInfo.value?.userId,
-    },
-    target: {
-      type: TARGET_TYPE.MONSTER,
-      id: playerInfo.value?.mid?.current?.monsterId,
-    },
-  })
-
+const startEventPve = (skip: boolean) => {
+  fn.stopBattle()
+  useEventPve(skip)
   $io.off('battle:start:pve')
   $io.on('battle:start:pve', async (war: BattleResponse) => {
     await handleStartBattle(war)
   })
 }
 
-const resultRefresh = async () => {
-  set(loading, true)
-  showBattleResult.value = false
-  startPve(false)
+const onEventRefresh = () => {
+  // set(showBattleResult, false)
+  if (isWin.value) {
+    startEventPve(false)
+    return
+  }
+
+  switch (battleRequest.value?.target) {
+    case TARGET_TYPE.BOSS_ELITE:
+      set(loading, true)
+      console.log('onEventRefresh')
+      useEventElite()
+      break
+
+    default:
+      useEventPve()
+  }
 }
 
 $io.on('battle:start:pve', async (war: BattleResponse) => {
@@ -126,30 +107,14 @@ $io.on('battle:start:pve', async (war: BattleResponse) => {
 })
 
 watch(battleRequest, async (request) => {
-  $io.off('battle:start:pve')
-  $io.off('battle:start:daily')
-  $io.off('battle:start:elite')
+  set(shouldNextBattle, true)
+  offAllEvent()
+  fn.stopBattle()
 
-  console.log('request', request)
-  set(isLoadBattle, true)
-  // set(loading, true)
-
-  const warRequest = {
-    kind: request.target,
-    player: {
-      userId: playerInfo.value?.userId,
-    },
-    target: {
-      type: request.target,
-      id: request.id,
-    },
-  }
-
-  onStopBattle()
   switch (request.target) {
     case 'boss_daily':
       setTimeout(() => {
-        $io.emit('battle:join:daily', warRequest)
+        useEventDaily()
         $io.on('battle:start:daily', async (war: BattleResponse) => {
           console.log('war', war)
           await handleStartBattle(war)
@@ -160,9 +125,9 @@ watch(battleRequest, async (request) => {
 
     case 'boss_elite':
       setTimeout(() => {
-        $io.emit('battle:join:elite', warRequest)
+        useEventElite()
         $io.on('battle:start:elite', async (war: BattleResponse) => {
-          console.log('war', war)
+          console.log('elite war', war)
           await handleStartBattle(war)
         })
       }, 1000)
@@ -171,8 +136,13 @@ watch(battleRequest, async (request) => {
   }
 })
 
+onMounted(() => {
+  useEventPve()
+})
+
 onUnmounted(async () => {
   $io.off('battle:start')
+  offAllEvent()
 })
 
 const changeBattle = async () => {
@@ -182,9 +152,9 @@ const changeBattle = async () => {
       method: 'POST',
     })
 
-    onStopBattle()
+    fn.stopBattle()
     loadPlayer(player)
-    startPve(true)
+    startEventPve(true)
     set(loading, false)
     sendMessage('Qua ải thành công', 2000)
   }
@@ -196,12 +166,12 @@ const changeBattle = async () => {
 </script>
 
 <template>
-  <BattleResult
-    v-if="showBattleResult"
-    :reward="reward"
-    :battle-result="battleResult"
-    @on-refresh="resultRefresh"
-  />
+  <!--  <BattleResult -->
+  <!--    v-if="showBattleResult" -->
+  <!--    :reward="reward" -->
+  <!--    :battle-result="battleResult" -->
+  <!--    @on-refresh="onEventRefresh" -->
+  <!--  /> -->
   <var-loading
     :loading="loading"
     size="mini"
@@ -215,19 +185,19 @@ const changeBattle = async () => {
       pos="relative"
       w="full"
       h="full"
-      :class="{ 'bg-[#163334]': (!inRefresh && !isPve || isLoadBattle) }"
+      :class="{ 'bg-[#163334]': (!refresh?.inRefresh && !isPve || shouldNextBattle) }"
     >
       <nuxt-img
-        v-if="isLoadBattle"
+        v-if="shouldNextBattle"
         format="webp"
         src="/battle/loading.png"
         w="35" h="35"
-        position="absolute"
+        pos="absolute"
         class="transform-center"
         object="cover"
       />
       <div
-        v-if="!isLoadBattle"
+        v-if="!shouldNextBattle"
         flex="~ "
         pos="absolute"
         align="items-center"
@@ -235,75 +205,30 @@ const changeBattle = async () => {
         w="full"
         class="top-[30%]"
       >
-        <BattlePlayerRealtime
-          :state="state"
-          :receiver="receiver"
-          :real-time="realTime"
-        />
-        <BattleEnemyRealtime
-          :state="state"
-          :receiver="receiver"
-          :real-time="realTime"
-        />
+        <template v-if="stateRunning">
+          <battle-player-realtime
+            v-for="(m, ind) in match"
+            :key="ind"
+            :match="m"
+            :receiver="stateRunning?.receiver"
+            :real-time="stateRunning?.realTime"
+            :pos="m.extends.pos"
+            :round="roundNum"
+          />
+        </template>
       </div>
-      <BattleRevice
-        v-if="inRefresh"
+      <battle-revice
+        v-if="refresh?.inRefresh"
         top="0"
         text="primary"
         pos="absolute"
-        :refresh-time="refreshTime"
-        @refresh-finished="onRefresh"
+        :refresh-time="refresh?.refreshTime"
+        @refresh-finished="onEventRefresh"
       />
     </div>
+    <battle-controls @on-back="startEventPve" />
     <div
-      h="10"
-      pos="absolute"
-      bottom="11"
-      w="full"
-      flex="~ "
-      align="items-enter"
-      justify="end"
-      font="italic"
-    >
-      <button
-        v-show="speed === 1"
-        text="8"
-        m="x-2"
-        h="6"
-        w="6"
-        font="italic semibold"
-        class="border-full-box bg-button-menu"
-        @click="speed = 1.5"
-      >
-        Tăng tốc
-      </button>
-      <button
-        v-show="speed === 1.5"
-        text="8"
-        m="x-2"
-        h="6"
-        w="6"
-        font="italic semibold"
-        class="border-full-box bg-button-menu"
-        @click="speed = 1"
-      >
-        Giảm tốc
-      </button>
-      <button
-        v-if="roundNum > 3"
-        text="8"
-        m="x-2"
-        h="6"
-        w="6"
-        font="italic semibold"
-        class="border-full-box bg-button-menu"
-        @click.stop="onSkip"
-      >
-        Bỏ qua
-      </button>
-    </div>
-    <div
-      :class="{ '!bg-[#540905]': !inRefresh }"
+      :class="{ '!bg-[#540905]': !refresh?.inRefresh }"
       transition="~ colors duration-800"
       h="10"
       pos="absolute"
@@ -311,19 +236,14 @@ const changeBattle = async () => {
       w="full"
       flex="~ "
       align="items-center"
-      justify="between"
+      justify="end"
       text="gray-100"
       font="italic"
       bg="base"
     >
-      <var-loading size="mini" color="#ffffff" :loading="!battleWarResult?.enemy?.name">
-        <div class="text-12 ml-2">
-          Mục tiêu: {{ battleWarResult?.enemy?.name }}
-        </div>
-      </var-loading>
       <var-loading v-if="isPve" size="mini" color="#ffffff" :loading="!playerInfo?.midId">
         <div
-          text="12"
+          text="10"
           flex="~ "
           align="items-center"
         >

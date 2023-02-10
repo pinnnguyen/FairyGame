@@ -11,20 +11,18 @@ import {
 } from '~/server/helpers'
 import {
   BattleSchema,
-  addSystemChat,
 } from '~/server/schema'
-import { startWar } from '~/helpers'
-import type { BattleRequest, BattleResponse, PlayerInfo } from '~/types'
+import { startWarSolo } from '~/helpers'
+import type { BattleRequest, PlayerInfo } from '~/types'
 
 export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: BattleRequest) => {
   const {
     _enemyObj,
     inRefresh,
     refreshTime,
-    playerBefore,
-    enemyBefore,
+    match: beforeMatch,
     reward,
-    winnerBefore,
+    winner,
     kind,
   } = await (handleBeforeStartWar(battleRequest, _p) as any)
 
@@ -32,25 +30,41 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     return {
       inRefresh,
       refreshTime,
-      player: playerBefore,
-      enemy: enemyBefore,
+      match: beforeMatch,
       reward,
-      winner: winnerBefore,
+      winner,
       kind,
     }
   }
 
-  const {
-    player,
-    enemy,
-    emulators,
-    winner,
-    totalDamage,
-  } = startWar(_p, _enemyObj)
+  const targetA = {
+    extends: {
+      _id: _p.player._id ?? 'player',
+      name: _p.player.name,
+      level: _p.player.level,
+    },
+    attribute: _p.attribute,
+  }
 
-  const { exp, gold } = await getBaseReward(_p.player.sid, _enemyObj, winner)
-  const { equipments } = await receivedEquipment(_p.player.sid, _enemyObj, winner)
-  const { itemDrafts } = await receivedItems(_p.player.sid, _enemyObj, winner)
+  const targetB = {
+    extends: {
+      _id: _enemyObj._id ?? 'monster',
+      name: _enemyObj.name,
+      level: _enemyObj.level,
+    },
+    attribute: _enemyObj.attribute,
+  }
+
+  const {
+    emulators,
+    match,
+    winner: realWinner,
+    totalDamage,
+  } = startWarSolo(targetA, targetB, battleRequest.target.id)
+
+  const { exp, gold } = await getBaseReward(_p.player, _enemyObj, winner)
+  const { equipments } = await receivedEquipment(_p.player, _enemyObj, winner)
+  const { itemDrafts } = await receivedItems(_p.player, _enemyObj, winner)
 
   await setLastTimeReceivedRss(_p.player.sid)
   await handleAfterEndWar({ battleRequest, _p, winner, totalDamage })
@@ -62,12 +76,11 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
       id: _p.player.midId,
     },
     kind: battleRequest.kind,
-    targetId: _enemyObj._id,
-    player,
-    enemy,
+    targetId: battleRequest.target.id,
+    match,
     emulators,
-    winner,
-    damage: totalDamage,
+    winner: realWinner,
+    totalDamage,
     reward: {
       base: {
         exp,
@@ -78,12 +91,10 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     },
   }).save()
 
-  await addSystemChat('', `Bạn nhận được ${exp} XP ${gold} Tiền tiên`)
   return {
-    player,
-    enemy,
+    match,
     emulators,
-    winner,
+    winner: realWinner,
     kind: battleRequest.kind,
     reward: {
       base: {
@@ -93,8 +104,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
       items: itemDrafts,
       equipments,
     },
-    // rankDMG,
-  } as BattleResponse
+  }
 }
 
 export const handleWars = async (request: BattleRequest) => {

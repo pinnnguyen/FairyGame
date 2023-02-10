@@ -42,6 +42,14 @@ export default defineNuxtConfig({
   app: {
     keepalive: true,
     buildAssetsDir: '/assets/',
+    head: {
+      meta: [
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0',
+        },
+      ],
+    },
   },
   runtimeConfig: {
     mongoUrl: process.env.MONGO_URL,
@@ -65,7 +73,7 @@ export default defineNuxtConfig({
     meta: {
       favicon: true,
       // appleStatusBarStyle: 'black-translucent',
-      theme_color: '#191b1e',
+      theme_color: '#000000',
       mobileApp: true,
       mobileAppIOS: true,
       name: 'Tự mình tu tiên',

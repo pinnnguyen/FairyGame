@@ -30,29 +30,31 @@ setInterval(() => {
 }, 1000)
 
 const startWar = async (boss: BossElite) => {
-  try {
-    validate.value = await $fetch('/api/boss/elite.validate')
-    if (validate.value.inRefresh) {
-      const { pause } = useIntervalFn(() => {
-        validate.value.refreshTime = validate.value.refreshTime! - 1
-        if (validate.value.refreshTime <= 1)
-          pause()
-      }, 1000)
-
-      sendMessage(`Bị boss đánh bại hãy quay lại sau ${timeOffset(validate.value.refreshTime!).seconds}`)
-      return
-    }
-  }
-  catch (e: any) {
-    sendMessage(e.statusMessage)
-  }
+  // try {
+  //   validate.value = await $fetch('/api/boss/elite.validate')
+  //   if (validate.value.inRefresh) {
+  //     const { pause } = useIntervalFn(() => {
+  //       validate.value.refreshTime = validate.value.refreshTime! - 1
+  //       if (validate.value.refreshTime <= 1)
+  //         pause()
+  //     }, 1000)
+  //
+  //     sendMessage(`Bị boss đánh bại hãy quay lại sau ${timeOffset(validate.value.refreshTime!).seconds}`)
+  //     return
+  //   }
+  // }
+  // catch (e: any) {
+  //   sendMessage(e.statusMessage)
+  // }
   if (playerInfo.value!.level < boss.level) {
     sendMessage('Chưa đạt cấp độ')
     return
   }
 
-  if (revive.value > 0)
+  if (revive.value > 0) {
     sendMessage('Boss đang hồi sinh')
+    return
+  }
 
   set(battleRequest, {
     id: boss._id,
@@ -105,7 +107,6 @@ const startWar = async (boss: BossElite) => {
           Xem thưởng
         </i>
         <var-button
-          :disabled="revive > 0"
           font="semibold italic"
           size="mini"
           class="!text-[#333]"

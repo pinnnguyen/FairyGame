@@ -28,13 +28,13 @@ watch(options, (value) => {
 </script>
 
 <template>
-  <var-popup v-model:show="options.equipDetail" position="center">
-    <bag-equipment-detail
-      :item="options.equipSelected"
+  <var-popup v-if="options.equipDetail" v-model:show="options.equipDetail" position="center">
+    <equipment-detail
+      :equipment="options.equipSelected"
       :action="false"
     />
   </var-popup>
-  <div class="flex-center w-[95vw] h-[70vh] bg-[#191b1e]">
+  <div class="flex-center max-w-[60vh] w-[95vw] h-[70vh] bg-[#191b1e]">
     <div class="w-full h-full relative border border-white/40">
       <span class="font-bold absolute left-[calc(50%_-_50px)] top-[4px] text-white text-12 w-25 flex justify-center">
         <slot name="title" />

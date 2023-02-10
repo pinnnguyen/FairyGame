@@ -139,9 +139,9 @@ const qualityTitle = computed(() => {
       <span
         text="8"
         w="5"
-        :style="colorQuality(quality! + 2)"
+        :style="colorQuality(quality + 2)"
       >
-        {{ qualityToName[quality! + 2] }}
+        {{ qualityToName[quality + 2] }}
         <br>
         x3
       </span>

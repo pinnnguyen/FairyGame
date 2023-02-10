@@ -42,6 +42,7 @@
 //   }
 // }
 import { conditionForUpLevel } from '~/server/common'
+import { AttributePowers } from '~/server/constants'
 import { formatAttributes, useEquipment } from '~/server/helpers/equipment'
 import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule'
 import { MidSchema, PlayerSchema } from '~/server/schema'
@@ -60,7 +61,18 @@ export const playerTitle = (level: number, playerNextLevel: number) => {
       const jd = RANGE_LEVEL_ID[dd]
 
       levelTitle = PLAYER_LEVEL_TITLE[i]
-      floor = `Tầng ${jd}`
+      if (jd < 3)
+        floor = 'Sơ Kỳ'
+
+      if (jd > 3 && jd < 6)
+        floor = 'Trung Kỳ'
+
+      if (jd > 6 && jd < 9)
+        floor = ' Hậu Kỳ'
+
+      if (jd >= 9)
+        floor = 'Đỉnh Phong'
+
       expLimited = playerNextLevel * (playerNextLevel + Math.round(playerNextLevel / 5)) * 12 * RANGE_EXP_A_LEVEL[i] + playerNextLevel
     }
   }
@@ -206,6 +218,19 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
     useAttribute(player, attribute)
     formatAttributes(attribute)
   }
+
+  let power = 0
+  for (const attr in attribute) {
+    if (!AttributePowers[attr])
+      continue
+
+    // console.log('attribute[attr]', attribute[attr])
+    power += Math.round(AttributePowers[attr] * attribute[attr])
+  }
+
+  await PlayerSchema.findByIdAndUpdate(player._id, {
+    power,
+  })
 
   return {
     player,

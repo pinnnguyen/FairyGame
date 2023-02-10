@@ -64,18 +64,18 @@
 //    font-style: normal;
 //}
 //
-//body::after {
-//    content: '';
-//    filter: blur(12px);
-//    background: url('~/assets/images/background/bg.png');
-//    background-size: cover;
-//    position: fixed;
-//    top: 0;
-//    left: 0;
-//    width: 100%;
-//    height: 100%;
-//    z-index: -2;
-//}
+body::after {
+    content: '';
+    filter: blur(12px);
+    background: url('~/assets/images/background/bg.png');
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+}
 #__nuxt, body, html {
     height: 100vh;
     margin: 0;
@@ -110,7 +110,7 @@
 
 .battle-damage.show {
     animation-name: true-damage;
-    animation-duration: 1s;
+    animation-duration: 1.4s;
 }
 
 .battle-action.show {
@@ -335,4 +335,8 @@
 
 .var-snackbar__wrapper {
     box-shadow: none !important;
+}
+
+.var-popup__content {
+    max-width: 60vh;
 }

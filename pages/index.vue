@@ -15,10 +15,9 @@ $io.on('fetch:player:response', (data: any) => {
 </script>
 
 <template>
-  <Menu />
-  <PageSection
-    display="flex"
-    flex="1"
+  <menus />
+  <page-section
+    flex="~ 1"
     position="relative"
     justify="center"
     align="items-center"
@@ -26,31 +25,31 @@ $io.on('fetch:player:response', (data: any) => {
   >
     <div
       w="full"
-      position="absolute"
+      pos="absolute"
       class="top-[40px] h-[34%]"
     >
       <div
-        position="relative"
+        pos="relative"
         h="full"
         border="b white/10"
         bg="primary"
       >
-        <Battle />
+        <battle />
       </div>
     </div>
     <div
-      position="absolute"
+      pos="absolute"
       bottom="0"
       w="full"
       class="h-[60%]"
     >
       <div
-        position="relative"
+        pos="relative"
         h="full"
       >
-        <PageBottom />
+        <page-bottom />
       </div>
     </div>
-    <Chat />
-  </PageSection>
+    <exchange />
+  </page-section>
 </template>

@@ -1,16 +1,16 @@
-import type { BasicItem, EnemyObject, PlayerEquipment } from '~/types'
+import type { BasicItem, EnemyObject, Player, PlayerEquipment } from '~/types'
 import { randomNumber } from '~/common'
 import { BASE_EXP, BASE_GOLD } from '~/server/rule/reward'
 import { ItemSchema, PlayerSchema, addPlayerEquipments, addPlayerItem } from '~/server/schema'
 
-import { DEFAULT_MAX_RATE_RECEIVED, DEFAULT_MIN_RATE_RECEIVED, WINNER } from '~/constants'
+import { DEFAULT_MAX_RATE_RECEIVED, DEFAULT_MIN_RATE_RECEIVED } from '~/constants'
 
 export const setLastTimeReceivedRss = async (sid: string) => {
   await PlayerSchema.findOneAndUpdate({ sid }, { lastTimeReceivedRss: new Date().getTime() })
 }
 
-export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject, winner: string) => {
-  if (winner === WINNER.youlose) {
+export const receivedEquipment = async (player: Player, _enemyObj: EnemyObject, winner: string) => {
+  if (winner !== player._id) {
     return {
       equipments: [],
     }
@@ -33,15 +33,15 @@ export const receivedEquipment = async (sid: string, _enemyObj: EnemyObject, win
       equipmentIds.push(currentRate.id)
   }
 
-  playerEquipments = await addPlayerEquipments(sid, equipmentIds)
+  playerEquipments = await addPlayerEquipments(player.sid, equipmentIds)
 
   return {
     equipments: playerEquipments,
   }
 }
 
-export const receivedItems = async (sid: string, _enemyObj: EnemyObject, winner: string) => {
-  if (winner === WINNER.youlose) {
+export const receivedItems = async (player: Player, _enemyObj: EnemyObject, winner: string) => {
+  if (winner !== player._id) {
     return {
       itemDrafts: [],
     }
@@ -100,8 +100,8 @@ export const receivedItems = async (sid: string, _enemyObj: EnemyObject, winner:
   }
 }
 
-export const getBaseReward = async (sid: string, _enemyObj: EnemyObject, winner: string) => {
-  if (winner === WINNER.youlose) {
+export const getBaseReward = async (player: Player, _enemyObj: EnemyObject, winner: string) => {
+  if (winner !== player._id) {
     return {
       exp: 0,
       gold: 0,
@@ -125,7 +125,7 @@ export const getBaseReward = async (sid: string, _enemyObj: EnemyObject, winner:
   const expInMinute = Math.round(BASE_EXP() * _enemyObj?.reward?.base?.exp)
   const goldInMinute = Math.round(BASE_GOLD() * _enemyObj?.reward?.base?.gold)
 
-  await PlayerSchema.updateOne({ sid }, {
+  await PlayerSchema.updateOne({ sid: player.sid }, {
     lastTimeReceivedRss: new Date().getTime(),
     $inc: {
       exp: expInMinute,

@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { set, useIntervalFn, useLocalStorage } from '@vueuse/core'
+import { set } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { sendMessage, usePlayerStore, useSoundClickEvent } from '#imports'
-import Auction from '~/components/Market/Auction.vue'
 
 const { playerInfo, attribute } = storeToRefs(usePlayerStore())
 const togglePlayerInfo = useState('togglePlayerInfo')
@@ -14,42 +13,12 @@ const toggleUpStar = useState('toggleUpStar')
 const toggleUpRank = useState('toggleUpRank')
 const toggleUpGem = useState('toggleUpGem')
 const toggleBoss = useState('toggleBoss')
-const upgradeOptions = ref(false)
-// const needTimeResource = ref(0)
-// const doReFetch = ref(false)
+// const toggleSetting = useState('toggleSetting')
+// const upgradeOptions = ref(false)
 
-// onMounted(() => {
-//   useIntervalFn(() => {
-//     if (doReFetch.value)
-//       doReFetch.value = false
-//     needTimeResource.value += 1
-//     if (needTimeResource.value >= 100) {
-//       doReFetch.value = true
-//       needTimeResource.value = 0
-//     }
-//   }, 800)
-// })
-
-// watch(doReFetch, async (value) => {
-//   if (value) {
-//     try {
-//       const resources = await $fetch('/api/reward/training', {
-//         headers: (useRequestHeaders(['cookie']) as any),
-//       })
-//
-//       sendMessage(`+${resources.exp} XP`)
-//       sendMessage(`+${resources.gold} Tiền tiên`)
-//
-//       if (playerInfo.value) {
-//         playerInfo.value.exp += resources.exp
-//         playerInfo.value.gold += resources.gold
-//       }
-//     }
-//     catch (e: any) {
-//       sendMessage(e.statusMessage)
-//     }
-//   }
-// })
+const toggleOptions = reactive({
+  showUpgrade: false,
+})
 
 const onToggleUpgrade = () => {
   toggleUpgrade.value = true
@@ -77,7 +46,7 @@ const onToggleUpGem = () => {
 }
 
 const onUpgradeOptions = () => {
-  upgradeOptions.value = true
+  toggleOptions.showUpgrade = true
   useSoundClickEvent()
 }
 
@@ -129,9 +98,33 @@ const menuItems = [
     fn: ontoggleStore,
   },
   {
+    key: 'activity',
+    name: 'Hoạt động',
+    fn: ontoggleStore,
+  },
+  {
     key: 'boss',
     name: 'Boss',
     fn: ontoggleBoss,
+  },
+]
+
+const upgradeTabOptions = [
+  {
+    name: 'Cường hoá',
+    fn: onToggleUpgrade,
+  },
+  {
+    name: 'Nâng sao',
+    fn: onToggleUpStar,
+  },
+  {
+    name: 'Tăng bậc',
+    fn: onToggleUpRank,
+  },
+  {
+    name: 'Đá hồn',
+    fn: onToggleUpGem,
   },
 ]
 
@@ -152,9 +145,10 @@ const setTab = (t: string) => {
 </script>
 
 <template>
-  <var-popup v-model:show="upgradeOptions" position="center">
+  <var-popup v-if="toggleOptions.showUpgrade" v-model:show="toggleOptions.showUpgrade">
     <div
       w="[90vw]"
+      max-w="[60vh]"
       bg="primary"
       grid="~ cols-2"
       gap="4"
@@ -162,31 +156,17 @@ const setTab = (t: string) => {
       border="rounded 1 white/40"
     >
       <div
-        text="center italic"
+        v-for="upgradeTab in upgradeTabOptions"
+        :key="upgradeTab.name"
+        text="center italic 10 primary"
         m="x-2"
         p="x-2 y-2"
-        class="transition transition-opacity text-center mx-2 px-2 py-2 italic shadow rounded font-bold border-1 text-primary border-white/40"
-        @click="onToggleUpgrade"
+        transition="~ opacity"
+        border="rounded 1 white/40"
+        font="bold"
+        @click="upgradeTab.fn"
       >
-        Cường hoá
-      </div>
-      <div
-        class="transition transition-opacity duration-800 text-center mx-2 px-2 py-2 italic shadow rounded font-bold border-1 text-primary border-white/40"
-        @click="onToggleUpStar"
-      >
-        Nâng sao
-      </div>
-      <div
-        class="transition transition-opacity duration-800 text-center mx-2 px-2 py-2 italic shadow rounded font-bold border-1 text-primary border-white/40"
-        @click="onToggleUpRank"
-      >
-        Tăng bậc
-      </div>
-      <div
-        class="transition transition-opacity duration-800 text-center mx-2 px-2 py-2 italic shadow rounded font-bold border-1 text-primary border-white/40"
-        @click="onToggleUpGem"
-      >
-        Đá hồn
+        {{ upgradeTab.name }}
       </div>
     </div>
   </var-popup>
@@ -208,30 +188,30 @@ const setTab = (t: string) => {
       </button>
     </div>
     <div class="absolute top-16 text-10 text-[#eaeced] italic w-full h-[calc(100%_-_115px)]">
-      <Store v-if="tabStore" />
-      <Market v-if="tabMarket" />
+      <store v-if="tabStore" />
+      <market v-if="tabMarket" />
       <template v-if="tabCharacter">
         <Line class="mb-4">
           Thuộc tính nhân vật
         </Line>
         <div class="flex-center">
           <div class="flex w-full justify-around">
-            <PlayerShortView />
+            <player-short-view />
             <div>
-              <PlayerTupo />
+              <player-tupo />
             </div>
           </div>
         </div>
         <Line class="mt-4">
           Thiết lập trang bị
         </Line>
-        <PlayerEquipmentDefault />
+        <player-equipment-default />
       </template>
       <template v-if="tabBag">
-        <Bag />
+        <bag />
       </template>
       <template v-if="tabBoss">
-        <Boss />
+        <boss />
       </template>
     </div>
   </div>

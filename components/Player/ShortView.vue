@@ -1,25 +1,37 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { formatCash } from '~/common'
 import { usePlayerStore } from '~/composables/usePlayer'
 
-const { attribute } = storeToRefs(usePlayerStore())
+const { attribute, playerInfo } = storeToRefs(usePlayerStore())
 const togglePlayerInfo = useState('togglePlayerInfo')
 </script>
 
 <template>
-  <div class="flex pr-2 border-r-2 border-white/10 w-[45%]">
+  <div
+    text="10"
+    flex="~ "
+    p="r-2"
+    border="r-2 white/10"
+    w="[45%]"
+  >
     <div>
       <button
-        class="mx-2 w-9 py-2 leading-3 shadow rounded font-bold border-1 text-primary border-white/40"
+        m="x-2"
+        w="9"
+        p="y-2"
+        font="leading-3 semibold"
+        border="rounded 1 white/40"
         @click.stop="togglePlayerInfo = true"
       >
         Chi tiết nhân vật
       </button>
     </div>
-    <div class="">
-      <div>Công kích: {{ attribute.damage }}</div>
-      <div>HP: {{ attribute.hp }}</div>
-      <div>Thủ: {{ attribute.def }}</div>
+    <div>
+      <div>Tiên lực: <span text="8">{{ formatCash(playerInfo.power) }}</span></div>
+      <div>Công kích: <span text="8">{{ attribute?.damage }}</span></div>
+      <div>HP: <span text="8">{{ attribute?.hp }}</span></div>
+      <div>Thủ: <span text="8">{{ attribute?.def }}</span></div>
     </div>
   </div>
 </template>

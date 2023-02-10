@@ -43,10 +43,10 @@ const close = () => {
 </script>
 
 <template>
-  <var-popup v-model:show="options.showEquipment">
-    <bag-equipment-detail :item="selected.equipment" />
+  <var-popup v-if="options.showEquipment" v-model:show="options.showEquipment">
+    <equipment-detail :equipment="selected.equipment" />
   </var-popup>
-  <var-popup v-model:show="isYouLose" @close="close">
+  <var-popup v-if="isYouLose" v-model:show="isYouLose" @close="close">
     <div
       bg="primary"
       m="auto"
@@ -72,7 +72,7 @@ const close = () => {
       </div>
     </div>
   </var-popup>
-  <var-popup v-model:show="isYouWin" :overlay="true">
+  <var-popup v-if="isYouWin" v-model:show="isYouWin" :overlay="true">
     <div
       bg="primary"
       m="auto"
