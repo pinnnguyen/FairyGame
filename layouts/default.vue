@@ -3,10 +3,8 @@
 
 <template>
   <div
-    display="flex"
-    flex="col"
+    flex="~ col"
     overflow="hidden"
-    font="san"
     h="full"
     class="game-center"
   >
@@ -19,7 +17,6 @@
 
 <style lang="scss">
 .game-center {
-  max-width: calc(100vh * 0.7);
   margin: 0 auto;
   position: relative;
   overflow: hidden;

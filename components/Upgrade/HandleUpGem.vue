@@ -137,7 +137,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <var-popup v-if="viewGem" v-model:show="viewGem" position="center">
+  <var-popup v-model:show="viewGem" position="center">
     <lazy-gem-detail
       :gem="gemSelected"
       :select-action="hasSelectedAction"

@@ -8,7 +8,6 @@ defineProps<{
 }>()
 
 const emit = defineEmits(['onmerge'])
-
 const show = ref(false)
 const onmergeGems = () => {
   set(show, false)
@@ -21,7 +20,7 @@ const onSelected = (gem: PlayerGem) => {
 </script>
 
 <template>
-  <var-popup v-if="show" v-model:show="show" position="center">
+  <var-popup v-model:show="show" position="center">
     <gem-detail
       :gem="gem"
       :sell-action="true"

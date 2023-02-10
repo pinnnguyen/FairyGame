@@ -44,45 +44,10 @@
 import { conditionForUpLevel } from '~/server/common'
 import { AttributePowers } from '~/server/constants'
 import { formatAttributes, useEquipment } from '~/server/helpers/equipment'
-import { PLAYER_LEVEL_TITLE, RANGE_EXP_A_LEVEL, RANGE_LEVEL_ID, RANGE_PLAYER_BIG_LEVEL } from '~/server/rule'
 import { MidSchema, PlayerSchema } from '~/server/schema'
 import type { Player, PlayerAttribute, PlayerServerResponse } from '~/types'
+import { playerTitle } from '~/common'
 
-export const playerTitle = (level: number, playerNextLevel: number) => {
-  let levelTitle = ''
-  let floor = ''
-  let expLimited = 0
-
-  for (let i = 0; i < RANGE_PLAYER_BIG_LEVEL.length; i++) {
-    if (level >= RANGE_PLAYER_BIG_LEVEL[i] && level < RANGE_PLAYER_BIG_LEVEL[i + 1]) {
-      const djc = level - RANGE_PLAYER_BIG_LEVEL[i]
-      const jds = (RANGE_PLAYER_BIG_LEVEL[i + 1] - RANGE_PLAYER_BIG_LEVEL[i]) / 10
-      const dd = Math.floor(djc / jds)
-      const jd = RANGE_LEVEL_ID[dd]
-
-      levelTitle = PLAYER_LEVEL_TITLE[i]
-      if (jd < 3)
-        floor = 'Sơ Kỳ'
-
-      if (jd > 3 && jd < 6)
-        floor = 'Trung Kỳ'
-
-      if (jd > 6 && jd < 9)
-        floor = ' Hậu Kỳ'
-
-      if (jd >= 9)
-        floor = 'Đỉnh Phong'
-
-      expLimited = playerNextLevel * (playerNextLevel + Math.round(playerNextLevel / 5)) * 12 * RANGE_EXP_A_LEVEL[i] + playerNextLevel
-    }
-  }
-
-  return {
-    levelTitle,
-    floor,
-    expLimited,
-  }
-}
 const useClass = (ofClass: number, attribute: PlayerAttribute) => {
   // attribute.criticalDamage = attribute.criticalDamage // 150% sat thuong bao kich
   switch (ofClass) {

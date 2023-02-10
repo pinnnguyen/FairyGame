@@ -14,15 +14,13 @@ export default defineEventHandler(async (event) => {
 
   const playerInfo = await PlayerSchema.findOne({ userId: session?.user?.email })
   if (query.slot) {
-    const gems = await PlayerGemSchema.find({
+    return PlayerGemSchema.find({
       sid: playerInfo?.sid,
       slot: query.slot,
       sum: {
         $gte: 1,
       },
     })
-
-    return gems
   }
 
   return []

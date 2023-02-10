@@ -1,12 +1,7 @@
 <script setup>
-import { storeToRefs } from 'pinia'
-import { onClickOutside } from '@vueuse/core'
-import { useAppStore } from '~/composables/app'
-
-const togglePlayerInfo = useState('togglePlayerInfo')
+const { leftSlots, rightSlots } = storeToRefs(usePlayerSlot())
+const { playerInfo } = storeToRefs(usePlayerStore())
 const currentTab = ref('attribute')
-const target = ref(null)
-onClickOutside(target, () => togglePlayerInfo.value = false)
 
 const tabs = ref([
   {
@@ -30,9 +25,20 @@ const tabs = ref([
       <div
         class="m-1 rounded-md text-10 font-semibold h-[calc(100%_-_60px)]"
       >
-        <PlayerAttributeTab v-if="currentTab === 'attribute'" />
-        <PlayerEquipTab v-if="currentTab === 'equipment'" />
-        <!--        <PlayerTupo v-if="currentTab === 'tupo'" /> -->
+        <player-attribute-tab v-if="currentTab === 'attribute'" />
+        <player-equip-tab
+          v-if="currentTab === 'equipment'"
+          :name="playerInfo.name"
+          :level="playerInfo.level"
+          :level-title="playerInfo.levelTitle"
+          :floor="playerInfo.floor"
+          :class-role="playerInfo.class"
+          :exp="playerInfo.exp"
+          :knb="playerInfo.knb"
+          :gold="playerInfo.gold"
+          :left-slots="leftSlots"
+          :right-slots="rightSlots"
+        />
       </div>
       <div class="flex-center w-full absolute bottom-4">
         <button

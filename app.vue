@@ -4,7 +4,6 @@ import {
 } from '@varlet/ui'
 import '@varlet/ui/es/snackbar/style/index'
 import '@varlet/ui/es/dialog/style/index'
-import { useAppStore } from '~/composables/app'
 
 StyleProvider({
   '--snackbar-content-padding': '6px 16px',
@@ -25,6 +24,8 @@ StyleProvider({
   <Body
     overflow="hidden"
     transition="duration-300 colors"
+    max-w="[768px]"
+    m="auto"
   >
     <NuxtLayout>
       <NuxtPage />

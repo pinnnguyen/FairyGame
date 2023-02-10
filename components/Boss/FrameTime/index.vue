@@ -62,7 +62,7 @@ const parseEquipments = (equipments: Equipment[]) => {
 </script>
 
 <template>
-  <var-popup v-if="tooltip" v-model:show="tooltip" position="center">
+  <var-popup v-model:show="tooltip" position="center">
     <div class="w-70 text-black text-12 rounded leading-6 border border-gray-400 bg-[#00000040]">
       <div class="text-center text-white text-12 font-semibold pt-2">
         Phần thưởng

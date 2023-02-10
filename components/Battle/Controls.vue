@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { useBattleRoundStore } from '~/composables/useBattleRound'
 
+defineProps<{
+  isEliteBoss: boolean
+}>()
 const emits = defineEmits(['onBack'])
 const {
   loading,

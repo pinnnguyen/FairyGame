@@ -70,14 +70,14 @@ const upgrade = () => {
 </script>
 
 <template>
-  <var-popup v-if="tooltip" v-model:show="tooltip" position="center">
+  <var-popup v-model:show="tooltip" position="center">
     <div class="w-60 p-4 bg-white text-12">
       <p>Mỗi cấp sẽ tăng 3% hiệu quả thuộc tính trang bị</p>
       <br>
       <p>Thất bại sẽ giảm 1 cấp cường hóa.</p>
     </div>
   </var-popup>
-  <var-popup v-if="options.showEquipInfo" v-model:show="options.showEquipInfo">
+  <var-popup v-model:show="options.showEquipInfo">
     <equipment-detail :equipment="options.equipSelected" />
   </var-popup>
   <upgrade-item @onselected="onEquipSelected">

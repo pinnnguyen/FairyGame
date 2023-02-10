@@ -14,6 +14,7 @@ const schema = new mongoose.Schema<Player>(
     name: String,
     knb: Number,
     gold: Number,
+    gender: String,
     coin: Number,
     power: Number,
     vipLevel: Number,

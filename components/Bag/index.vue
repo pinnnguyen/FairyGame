@@ -17,15 +17,15 @@ const tabItems = [
 </script>
 
 <template>
-  <div
-    position="relative"
+  <section
+    pos="relative"
     h="full"
     class="flex-center"
   >
     <div
-      position="absolute"
+      pos="absolute"
       top="0"
-      display="flex"
+      flex="~ "
       align="items-center"
       w="full"
       p="2"
@@ -53,8 +53,7 @@ const tabItems = [
       pos="absolute"
       top="10"
       w="full"
-      display="flex"
-      flex="col"
+      flex="~ col"
       align="items-center"
       p="4"
       overflow="auto"
@@ -70,5 +69,5 @@ const tabItems = [
         v-if="tab === 'gem' "
       />
     </div>
-  </div>
+  </section>
 </template>

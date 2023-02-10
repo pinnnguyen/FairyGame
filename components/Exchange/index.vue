@@ -65,7 +65,7 @@ $io.on('chat:system', (data: any) => {
 </script>
 
 <template>
-  <var-popup v-if="toggle.exchange" v-model:show="toggle.exchange" position="bottom">
+  <var-popup v-model:show="toggle.exchange" position="bottom">
     <div
       class="bg-[#000000] overflow-hidden max-w-[70vh] h-[70vh]"
       border="1 green-300/40"

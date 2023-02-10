@@ -72,7 +72,7 @@ const sell = async () => {
 </script>
 
 <template>
-  <var-popup v-if="sellPopup" v-model:show="sellPopup" position="bottom">
+  <var-popup v-model:show="sellPopup" position="bottom">
     <div class="p-4">
       <var-input v-model="sellOptions.price" type="number" placeholder="Nhập giá bán" />
       <var-input v-model="sellOptions.quantity" type="number" placeholder="Nhập số lượng" />

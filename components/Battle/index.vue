@@ -2,7 +2,7 @@
 import { Snackbar } from '@varlet/ui'
 import { set } from '@vueuse/core'
 import { sendMessage, useBattleEvents, useBattleRoundStore, usePlayerStore, useSoundRewardEvent } from '#imports'
-import { TARGET_TYPE, WINNER, tips } from '~/constants'
+import { TARGET_TYPE, tips } from '~/constants'
 import type { BattleResponse } from '~/types'
 import { randomNumber } from '~/common'
 
@@ -18,7 +18,6 @@ const {
 const { $io } = useNuxtApp()
 const { fn } = useBattleRoundStore()
 const { playerInfo } = storeToRefs(usePlayerStore())
-const { loadPlayer } = usePlayerStore()
 
 const {
   useEventPve,
@@ -35,29 +34,24 @@ const battleRequest = useState<{
 
 const shouldNextBattle = ref(false)
 const isPve = computed(() => battleCurrently.value?.kind === 'pve')
-const isWin = computed(() => battleCurrently.value?.winner === WINNER.youwin)
+const isWin = computed(() => battleCurrently.value?.winner === playerInfo.value?._id)
 const isEliteBoss = computed(() => battleCurrently.value?.kind === TARGET_TYPE.BOSS_ELITE)
+const shouldBattleResult = ref(false)
 
-// const showBattleResult = computed({
-//   get() {
-//     return battleResult.value.show && !isPve.value
-//   },
-//   set(boo: boolean) {
-//     battleResult.value.show = boo
-//   },
-// })
-
-const handleStartBattle = async (war: BattleResponse) => {
+const handleStartBattle = async (battleRes: BattleResponse) => {
   set(shouldNextBattle, false)
-  set(battleCurrently, war)
+  set(battleCurrently, battleRes)
 
-  await fn.startBattle(war, async () => {
+  await fn.startBattle(battleRes, async () => {
+    console.log('end battle')
+    set(shouldBattleResult, true)
     if (playerInfo.value) {
       playerInfo.value.gold += stateRunning.value.reward?.base.gold ?? 0
       playerInfo.value.exp += stateRunning.value.reward?.base.exp ?? 0
     }
 
     if (isPve.value) {
+      set(shouldNextBattle, false)
       Snackbar.allowMultiple(true)
       sendMessage(`Nhận Tiền Tiên x${stateRunning.value.reward?.base.gold}`, 3000, 'top')
       sendMessage(`Nhận Tu Vi x${stateRunning.value.reward?.base.exp}`, 3000, 'top')
@@ -78,13 +72,13 @@ const startEventPve = (skip: boolean) => {
   fn.stopBattle()
   useEventPve(skip)
   $io.off('battle:start:pve')
-  $io.on('battle:start:pve', async (war: BattleResponse) => {
-    await handleStartBattle(war)
+  $io.on('battle:start:pve', async (battleRes: BattleResponse) => {
+    await handleStartBattle(battleRes)
   })
 }
 
 const onEventRefresh = () => {
-  // set(showBattleResult, false)
+  set(shouldNextBattle, false)
   if (isWin.value) {
     startEventPve(false)
     return
@@ -102,21 +96,17 @@ const onEventRefresh = () => {
   }
 }
 
-$io.on('battle:start:pve', async (war: BattleResponse) => {
-  await handleStartBattle(war)
-})
-
 watch(battleRequest, async (request) => {
-  set(shouldNextBattle, true)
-  offAllEvent()
-  fn.stopBattle()
+  set(shouldBattleResult, false) // Todo: Hidden popup result
+  set(shouldNextBattle, true) // Todo: loading screen battle
+  offAllEvent() // Todo: Off all event pve, boss daily ...
+  fn.stopBattle() // Todo: stop trận đánh nếu có đang được đánh chưa xong
 
   switch (request.target) {
     case 'boss_daily':
       setTimeout(() => {
         useEventDaily()
         $io.on('battle:start:daily', async (war: BattleResponse) => {
-          console.log('war', war)
           await handleStartBattle(war)
         })
       }, 1000)
@@ -138,40 +128,25 @@ watch(battleRequest, async (request) => {
 
 onMounted(() => {
   useEventPve()
+
+  $io.on('battle:start:pve', async (war: BattleResponse) => {
+    await handleStartBattle(war)
+  })
 })
 
 onUnmounted(async () => {
   $io.off('battle:start')
   offAllEvent()
 })
-
-const changeBattle = async () => {
-  try {
-    set(loading, true)
-    const player = await $fetch('/api/mid/set', {
-      method: 'POST',
-    })
-
-    fn.stopBattle()
-    loadPlayer(player)
-    startEventPve(true)
-    set(loading, false)
-    sendMessage('Qua ải thành công', 2000)
-  }
-  catch (e) {
-    sendMessage('Hãy vượt ải trước đó để tiếp tục', 2000)
-    set(loading, false)
-  }
-}
 </script>
 
 <template>
-  <!--  <BattleResult -->
-  <!--    v-if="showBattleResult" -->
-  <!--    :reward="reward" -->
-  <!--    :battle-result="battleResult" -->
-  <!--    @on-refresh="onEventRefresh" -->
-  <!--  /> -->
+  <battle-result
+    v-if="shouldBattleResult && !isPve"
+    :reward="stateRunning.reward"
+    :is-win="isWin"
+    @on-refresh="onEventRefresh"
+  />
   <var-loading
     :loading="loading"
     size="mini"
@@ -206,7 +181,7 @@ const changeBattle = async () => {
         class="top-[30%]"
       >
         <template v-if="stateRunning">
-          <battle-player-realtime
+          <battle-realtime
             v-for="(m, ind) in match"
             :key="ind"
             :match="m"
@@ -226,7 +201,10 @@ const changeBattle = async () => {
         @refresh-finished="onEventRefresh"
       />
     </div>
-    <battle-controls @on-back="startEventPve" />
+    <battle-controls
+      :is-elite-boss="isEliteBoss"
+      @on-back="startEventPve"
+    />
     <div
       :class="{ '!bg-[#540905]': !refresh?.inRefresh }"
       transition="~ colors duration-800"
@@ -241,31 +219,11 @@ const changeBattle = async () => {
       font="italic"
       bg="base"
     >
-      <var-loading v-if="isPve" size="mini" color="#ffffff" :loading="!playerInfo?.midId">
-        <div
-          text="10"
-          flex="~ "
-          align="items-center"
-        >
-          <span
-            m="x-2"
-          >
-            Hiện tại: thứ {{ playerInfo?.midId }} Ải
-          </span>
-          <button
-            h="6"
-            p="x-2"
-            m="l-1 x-2"
-            border="rounded"
-            text="10 white"
-            font="semibold italic"
-            class="bg-[#841919]"
-            @click.stop="changeBattle"
-          >
-            Khiêu chiến
-          </button>
-        </div>
-      </var-loading>
+      <battle-bottom-bar
+        :is-pve="isPve"
+        :mid-id="playerInfo.midId"
+        @chang-battle="startEventPve(true)"
+      />
     </div>
   </var-loading>
 </template>

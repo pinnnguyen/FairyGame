@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { qualityPalette } from '~/common'
 import type { BaseReward, BasicItem, PlayerEquipment } from '~/types'
-import { ItemToName, ItemToQuality, WINNER } from '~/constants'
+import { ItemToName, ItemToQuality } from '~/constants'
 
 const props = defineProps<{
-  battleResult: {
-    show: boolean
-    win: string
-  }
+  isWin: boolean
   reward?: {
     base: BaseReward
     items: BasicItem[]
@@ -16,8 +13,8 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits(['close', 'onRefresh'])
-const isYouWin = computed(() => props.battleResult.win === WINNER.youwin)
-const isYouLose = computed(() => props.battleResult.win === WINNER.youlose)
+const isYouWin = computed(() => props.isWin)
+const isYouLose = computed(() => !props.isWin)
 
 const selected = reactive({
   equipment: {},
@@ -43,10 +40,10 @@ const close = () => {
 </script>
 
 <template>
-  <var-popup v-if="options.showEquipment" v-model:show="options.showEquipment">
+  <var-popup v-model:show="options.showEquipment">
     <equipment-detail :equipment="selected.equipment" />
   </var-popup>
-  <var-popup v-if="isYouLose" v-model:show="isYouLose" @close="close">
+  <var-popup v-model:show="isYouLose" @close="close">
     <div
       bg="primary"
       m="auto"
@@ -72,7 +69,7 @@ const close = () => {
       </div>
     </div>
   </var-popup>
-  <var-popup v-if="isYouWin" v-model:show="isYouWin" :overlay="true">
+  <var-popup v-model:show="isYouWin" :overlay="true">
     <div
       bg="primary"
       m="auto"
@@ -101,7 +98,7 @@ const close = () => {
           v-for="(value, key) in reward?.items"
           :key="key"
           class="underline pl-1 border border-white/40 p-2"
-          :style="{ color: qualityPalette(value.quality!) }"
+          :style="{ color: qualityPalette(value.quality) }"
         >
           {{ value.name }}
         </div>

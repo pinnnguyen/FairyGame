@@ -29,12 +29,12 @@ const cPlayerTitle = computed(() => {
         <span class="text-10 ml-1 text-[#6ce8d4] line-clamp-1">{{ extend?.name ?? '...' }}</span>
       </div>
       <div class="text-[#333] text-10">
-        <BattleStatusBar
-          :receiver-hp="receiver[extend._id].hp"
-          :hp="attribute.hp"
+        <battle-status-bar
+          :receiver-hp="receiver[extend._id]?.hp"
+          :hp="attribute?.hp"
         />
         <div class="h-4 text-8 text-[#d2d2d2] bg-[#00000040] relative flex items-center p-[2px] border border-white/40">
-          {{ cPlayerTitle.levelTitle }} {{ cPlayerTitle.floor }}
+          {{ cPlayerTitle?.levelTitle }} {{ cPlayerTitle?.floor }}
         </div>
       </div>
     </div>
@@ -69,7 +69,7 @@ const cPlayerTitle = computed(() => {
       <span v-if="realTime[extend._id]?.critical" class="whitespace-nowrap">
         Bạo kích -{{ receiver[extend._id]?.damage }}
       </span>
-      <span v-else>-{{ receiver[extend._id].damage ?? 0 }}</span>
+      <span v-else>-{{ receiver[extend._id]?.damage ?? 0 }}</span>
     </span>
   </div>
 </template>

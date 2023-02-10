@@ -22,7 +22,7 @@ const onchangeEquip = () => {
 </script>
 
 <template>
-  <var-popup v-if="options.show" v-model:show="options.show" position="center">
+  <var-popup v-model:show="options.show" position="center">
     <equipment-detail
       :equipment="equipment"
       :action="true"

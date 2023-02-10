@@ -1,5 +1,5 @@
 import { PlayerEquipmentSchema } from '~/server/schema'
-import type { Player, PlayerAttribute, PlayerEquipment } from '~/types'
+import type { BaseAttributes, Player, PlayerAttribute, PlayerEquipment } from '~/types'
 
 export const needResourceUpgrade = (enhance?: number) => {
   const BASE_GOLD = 10000
@@ -46,7 +46,7 @@ export const needResourceUpRank = async (equipment: PlayerEquipment) => {
   }
 }
 
-export const useEquipment = (playerEquips: PlayerEquipment[], attribute: PlayerAttribute, player: Player) => {
+export const useEquipment = (playerEquips: PlayerEquipment[], attribute: BaseAttributes, player: Player) => {
   for (let i = 0; i < playerEquips.length; i++) {
     const playerEquip = playerEquips[i]
     if (playerEquip.gems && playerEquip.gems.length > 0) {
@@ -77,8 +77,6 @@ export const useEquipment = (playerEquips: PlayerEquipment[], attribute: PlayerA
                 continue
 
               if (g.target === 'attribute') {
-                // console.log('attribute[g.sign]', attribute[g.sign])
-                // console.log('attribute[g.sign]', g.sign)
                 if (!attribute[g.sign])
                   attribute[g.sign] = gValue
                 else
@@ -95,46 +93,12 @@ export const useEquipment = (playerEquips: PlayerEquipment[], attribute: PlayerA
       for (let j = 0; j < playerEquip.stats.length; j++) {
         const stat = playerEquip.stats[j]
 
-        if (stat?.damage) {
-          attribute.damage += stat?.damage?.main ?? 0
-          attribute.damage += stat?.damage?.enhance ?? 0
-          attribute.damage += stat?.damage?.star ?? 0
-        }
-
-        if (stat?.hp) {
-          attribute.hp += stat?.hp?.main ?? 0
-          attribute.hp += stat?.hp?.enhance ?? 0
-          attribute.hp += stat?.hp?.star ?? 0
-        }
-
-        if (stat?.speed) {
-          attribute.speed += stat?.speed?.main ?? 0
-          attribute.speed += stat?.speed?.enhance ?? 0
-          attribute.speed += stat?.speed?.star ?? 0
-        }
-
-        if (stat?.def) {
-          attribute.def += stat?.def?.main ?? 0
-          attribute.def += stat?.def?.enhance ?? 0
-          attribute.def += stat?.def?.star ?? 0
-        }
-
-        if (stat?.critical) {
-          attribute.critical += stat?.critical?.main ?? 0
-          attribute.critical += stat?.critical?.enhance ?? 0
-          attribute.critical += stat?.critical?.star ?? 0
-        }
-
-        if (stat?.bloodsucking) {
-          attribute.bloodsucking += stat?.bloodsucking?.main ?? 0
-          attribute.bloodsucking += stat?.bloodsucking?.enhance ?? 0
-          attribute.bloodsucking += stat?.bloodsucking?.star ?? 0
-        }
-
-        if (stat?.mp) {
-          attribute.mp += stat?.mp?.main ?? 0
-          attribute.mp += stat?.mp?.enhance ?? 0
-          attribute.mp += stat?.mp?.star ?? 0
+        for (const s in stat) {
+          if (stat[s]) {
+            attribute[s] += stat[s].main ?? 0
+            attribute[s] += stat[s].enhance ?? 0
+            attribute[s] += stat[s].star ?? 0
+          }
         }
       }
     }

@@ -1,5 +1,5 @@
 import { cloneDeep } from '~/helpers'
-import type { BaseAttributes } from '~/types'
+import type { BaseAttributes, PlayerAttribute } from '~/types'
 import { BATTLE_ACTION } from '~/constants/war'
 import { randomNumber } from '~/common'
 
@@ -171,21 +171,11 @@ export const attributeDeep = (attribute: BaseAttributes) => {
   }
 }
 
-export const startWarSolo = (targetA: {
-  extends: {
-    _id: string
-    name: string
-    level: number
-  }
-  attribute: BaseAttributes & { _id: string }
-}, targetB: {
-  extends: {
-    _id: string
-    name: string
-    level: number
-  }
-  attribute: BaseAttributes & { _id: string }
-}, personBeingAttacked?: string) => {
+interface Target {
+  extends: { level: number; name: string; _id: string }
+  attribute: PlayerAttribute
+}
+export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttacked?: string | undefined) => {
   let round = 0
   const totalDamage: Record<string, number> = {}
 
@@ -240,10 +230,11 @@ export const startWarSolo = (targetA: {
       const attacker = battleTarget[0]
       const defender = battleTarget[1]
 
-      if (!totalDamage[b])
-        totalDamage[b] = 0
+      const realDamageId = b.split('_')[1]
+      if (!totalDamage[realDamageId])
+        totalDamage[realDamageId] = 0
 
-      totalDamage[b] += receiveDMG
+      totalDamage[realDamageId] += receiveDMG
       defender.hp -= formatHP(defender?.hp, receiveDMG)
       attacker.hp -= formatHP(attacker.hp, defenderCounterAttack)
 

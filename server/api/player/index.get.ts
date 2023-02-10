@@ -11,6 +11,21 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  const query = getQuery(event)
+  if (query.sid) {
+    const playerResource = await getPlayer('', query.sid as string)
+    if (!playerResource) {
+      return createError({
+        statusCode: 404,
+        statusMessage: 'Player not found',
+      })
+    }
+
+    return {
+      ...playerResource,
+    } as PlayerServerResponse
+  }
+
   const playerResource = await getPlayer(session?.user?.email, '')
   if (!playerResource) {
     return createError({

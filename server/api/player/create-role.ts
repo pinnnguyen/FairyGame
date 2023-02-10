@@ -10,6 +10,7 @@ interface CreateRoleBody {
   name: string
   userId: string
   class: number
+  gender: string
 }
 
 export default defineEventHandler(async (event) => {
@@ -44,6 +45,7 @@ export default defineEventHandler(async (event) => {
   const createRole = new PlayerSchema({
     sid,
     name: body.name,
+    gender: body.gender,
     userId: session?.user?.email,
     class: body?.class,
     ...DEFAULT_ROLE,

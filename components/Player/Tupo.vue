@@ -44,7 +44,7 @@ const cPlayerTitle = computed(() => {
 </script>
 
 <template>
-  <var-popup v-if="change" v-model:show="change">
+  <var-popup v-model:show="change">
     <div
       text="10"
       class="w-70 border border-white/20 bg-primary p-4"

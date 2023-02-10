@@ -48,7 +48,7 @@ const buy = (item: any) => {
 </script>
 
 <template>
-  <var-popup v-if="show" v-model:show="show" position="center">
+  <var-popup v-model:show="show" position="center">
     <bag-item-detail
       :item="itemSelected"
     />

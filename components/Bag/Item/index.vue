@@ -21,7 +21,7 @@ const onSell = () => {
 </script>
 
 <template>
-  <var-popup v-if="show" v-model:show="show" position="center">
+  <var-popup v-model:show="show" position="center">
     <bag-item-detail
       :item="selectedItem"
       :sell-action="true"

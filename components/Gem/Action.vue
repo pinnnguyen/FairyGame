@@ -68,7 +68,6 @@ const sell = async () => {
 
 <template>
   <var-popup
-    v-if="sellPopup"
     v-model:show="sellPopup"
     position="bottom"
   >

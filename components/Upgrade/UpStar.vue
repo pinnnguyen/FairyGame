@@ -78,14 +78,14 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <var-popup v-if="tooltip" v-model:show="tooltip" position="center">
+  <var-popup v-model:show="tooltip" position="center">
     <div class="w-60 p-4 bg-white text-12">
       <p>Mỗi cấp sẽ tăng 5% hiệu quả thuộc tính trang bị</p>
       <br>
       <p>Thất bại sẽ giảm 1 cấp.</p>
     </div>
   </var-popup>
-  <var-popup v-if="showEquipInfo" v-model:show="showEquipInfo" position="center">
+  <var-popup v-model:show="showEquipInfo" position="center">
     <equipment-detail :action="false" :equipment="equipSelected" />
   </var-popup>
   <upgrade-item @onselected="onEquipSelected">

@@ -67,7 +67,7 @@ export const receivedItems = async (player: Player, _enemyObj: EnemyObject, winn
         quantity,
       })
 
-      await addPlayerItem(sid, quantity, itemId)
+      await addPlayerItem(player.sid, quantity, itemId)
     }
   }
 

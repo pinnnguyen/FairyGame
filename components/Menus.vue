@@ -9,37 +9,31 @@ const toggleBoss = useState<boolean>('toggleBoss')
 
 <template>
   <var-popup
-    v-if="toggleBoss"
     v-model:show="toggleBoss"
   >
     <boss />
   </var-popup>
   <var-popup
-    v-if="togglePlayerInfo"
     v-model:show="togglePlayerInfo"
   >
     <player-infomation />
   </var-popup>
   <var-popup
-    v-if="toggleUpgrade"
     v-model:show="toggleUpgrade"
   >
     <upgrade />
   </var-popup>
   <var-popup
-    v-if="toggleUpStar"
     v-model:show="toggleUpStar"
   >
     <upgrade-up-star />
   </var-popup>
   <var-popup
-    v-if="toggleUpRank"
     v-model:show="toggleUpRank"
   >
     <upgrade-up-rank />
   </var-popup>
   <var-popup
-    v-if="toggleUpGem"
     v-model:show="toggleUpGem"
   >
     <upgrade-gem />

@@ -1,15 +1,12 @@
 import moment from 'moment'
-import { SendKnbRewardSystemMail } from './../schema/mail'
-import { WINNER } from '~/constants/war'
 import {
   BattleSchema,
   BossDataSchema,
   BossEliteSchema,
   MonsterSchema,
-  PlayerSchema,
   PlayerStatusSchema,
   RewardLogSchema,
-  // addSystemChat,
+  SendKnbRewardSystemMail,
   reviveBossElite,
 } from '~/server/schema'
 import type { BattleRequest, Boss, PlayerInfo } from '~/types'
@@ -23,7 +20,7 @@ const handleTargetNormal = async (_p: PlayerInfo) => {
       {
         sid: _p.player.sid,
         kind: BATTLE_KIND.PVE,
-        winner: WINNER.youwin,
+        winner: _p.player._id,
       })
     .sort({ createdAt: -1 }).select('match reward createdAt winner kind')
 
@@ -46,7 +43,7 @@ const handleTargetNormal = async (_p: PlayerInfo) => {
     }).select('value')
 
     // validate
-    let ms = 5000
+    let ms = 20000
     if (playerStatus && playerStatus.value)
       ms -= (ms / 100) * playerStatus.value
 
@@ -207,14 +204,15 @@ export const handleBeforeStartWar = async (battleRequest: BattleRequest, _p: Pla
 export const handleAfterEndWar = async (request: {
   battleRequest: BattleRequest
   _p: PlayerInfo
-  winner: string
-  totalDamage?: number
+  winner?: string
+  totalDamage: Record<string, number>
 }) => {
   const { battleRequest, _p, winner, totalDamage } = request
   const bossFrameTime = battleRequest.target.type === TARGET_TYPE.BOSS_FRAME_TIME
   const elite = battleRequest.target.type === TARGET_TYPE.BOSS_ELITE
-  const isWinner = winner === WINNER.youwin
+  const isWinner = winner === _p.player._id
 
+  const selfDamage = totalDamage[_p.player._id]
   // if (normal && isWinner) {
   //   console.log('heheheh')
   //   // await addSystemChat(_p.player.sid, `Chúc mừng đạo hữu ${_p.player.name} vượt qua cửa ải ${_p.player.midId}`)
@@ -228,7 +226,7 @@ export const handleAfterEndWar = async (request: {
   if (bossFrameTime) {
     await BossDataSchema.findOneAndUpdate({ id: battleRequest.target.id }, {
       $inc: {
-        hp: -totalDamage!,
+        hp: -selfDamage!,
       },
     })
   }
@@ -236,7 +234,7 @@ export const handleAfterEndWar = async (request: {
   if (elite) {
     await BossEliteSchema.findOneAndUpdate({ _id: battleRequest.target.id }, {
       $inc: {
-        'attribute.hp': -totalDamage!,
+        'attribute.hp': -selfDamage!,
       },
     })
 

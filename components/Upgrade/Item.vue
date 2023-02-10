@@ -22,13 +22,12 @@ const setSlot = (slot: PlayerEquipment) => {
 }
 
 watch(options, (value) => {
-  console.log('watch', value)
   emits('onselected', value.equipSelected)
 })
 </script>
 
 <template>
-  <var-popup v-if="options.equipDetail" v-model:show="options.equipDetail" position="center">
+  <var-popup v-model:show="options.equipDetail" position="center">
     <equipment-detail
       :equipment="options.equipSelected"
       :action="false"

@@ -102,7 +102,7 @@ const pickEquipmentFood = (_id?: string) => {
 </script>
 
 <template>
-  <var-popup v-if="options.tooltip" v-model:show="options.tooltip" position="center">
+  <var-popup v-model:show="options.tooltip" position="center">
     <div class="w-60 p-4 bg-white text-12">
       <p>Mỗi bậc sẽ tăng 10% toàn bộ thuộc tính gốc cho trang bị</p>
       <br>
@@ -115,7 +115,7 @@ const pickEquipmentFood = (_id?: string) => {
       <p>Tăng bậc trang bị sẽ có tỉ lên thành công 100%</p>
     </div>
   </var-popup>
-  <var-popup v-if="options.showEquipInfo" v-model:show="options.showEquipInfo" position="center">
+  <var-popup v-model:show="options.showEquipInfo" position="center">
     <equipment-detail
       :action="false"
       :item="options.equipSelected"

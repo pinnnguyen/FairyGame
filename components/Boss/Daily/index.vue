@@ -34,7 +34,7 @@ const startWar = (boss: Boss) => {
 </script>
 
 <template>
-  <var-popup v-if="showReward" v-model:show="showReward">
+  <var-popup v-model:show="showReward">
     <boss-daily-reward :reward="boss.reward" />
   </var-popup>
   <div class="relative flex border border-white/40 rounded p-2 m-2">

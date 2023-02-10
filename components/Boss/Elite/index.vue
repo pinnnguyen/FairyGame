@@ -66,7 +66,7 @@ const startWar = async (boss: BossElite) => {
 </script>
 
 <template>
-  <var-popup v-if="showReward" v-model:show="showReward">
+  <var-popup v-model:show="showReward">
     <boss-elite-reward :reward="boss.reward" />
   </var-popup>
   <div

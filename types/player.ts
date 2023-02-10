@@ -1,6 +1,6 @@
 import type { Mid } from '~/types/mid'
 import type { PlayerEquipment } from '~/types/equiment'
-export interface BaseAttributes {
+export interface BaseAttributes extends Record<string, number> {
   speed: number
   damage: number
   def: number
@@ -19,7 +19,8 @@ export interface BaseAttributes {
   reductionCounterAttack: number // Khang phan dam
 }
 
-export interface CoreAttribute {
+export interface CoreAttribute extends Record<string, number> {
+  // [key: string]: number
   ofPower: number
   ofAgility: number
   ofSkillful: number
@@ -30,6 +31,7 @@ export interface Player {
   ofAttribute: number
   coreAttribute: CoreAttribute
   sid: string
+  gender: string
   name: string
   gold: number
   knb: number
@@ -48,24 +50,12 @@ export interface Player {
 }
 
 export interface PlayerAttribute extends BaseAttributes {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   _id?: string
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   sid?: string
-}
-
-export interface PlayerResponse {
-  player: Player
-  attribute: PlayerAttribute
-}
-
-export interface Slot {
-  slot_1?: string
-  slot_2?: string
-  slot_3?: string
-  slot_4?: string
-  slot_5?: string
-  slot_6?: string
-  slot_7?: string
-  slot_8?: string
 }
 
 export interface PlayerInfo {

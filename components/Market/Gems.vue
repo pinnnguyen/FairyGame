@@ -46,7 +46,7 @@ const buy = (gem: any) => {
 </script>
 
 <template>
-  <var-popup v-if="show" v-model:show="show" position="center">
+  <var-popup v-model:show="show" position="center">
     <gem-detail
       :gem="gemSelected"
       target="preview"

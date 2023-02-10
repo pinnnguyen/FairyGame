@@ -1,7 +1,6 @@
 import { Server } from 'socket.io'
 import { BATTLE_KIND } from '~/constants/war'
 import { BattleSchema, ChatSchema, MailSchema } from '~/server/schema'
-// import type { ClientToServerEvents, ServerToClientEvents } from '~/types'
 import {
   battleJoinHandler,
   handleAuction,

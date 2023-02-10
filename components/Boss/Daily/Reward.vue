@@ -24,7 +24,7 @@ const selectedEquipment = (equipment: PlayerEquipment) => {
 </script>
 
 <template>
-  <var-popup v-if="options.showEquipment" v-model:show="options.showEquipment">
+  <var-popup v-model:show="options.showEquipment">
     <equipment-detail :equipment="selected.equipment" />
   </var-popup>
   <div class="w-[90%] bg-primary m-auto p-2 rounded border border-white/20">

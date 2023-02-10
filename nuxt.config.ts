@@ -61,28 +61,42 @@ export default defineNuxtConfig({
     'nuxt-windicss',
     'nuxt-icon',
     '@sidebase/nuxt-auth',
+    [
+      '@nuxtjs/google-fonts',
+      {
+        families: {
+          'Roboto': true,
+          'Josefin+Sans': true,
+          'Lato': [100, 300],
+          'Raleway': {
+            wght: [100, 400],
+            ital: [100],
+          },
+        },
+      },
+    ],
     // '@kevinmarrec/nuxt-pwa',
   ],
-  pwa: {
-    manifest: {
-      name: 'Tự Mình Tu Tiên Bon Studio',
-      short_name: 'Tự Mình Tu Tiên',
-      start_url: '/',
-      lang: 'vi',
-    },
-    meta: {
-      favicon: true,
-      // appleStatusBarStyle: 'black-translucent',
-      theme_color: '#000000',
-      mobileApp: true,
-      mobileAppIOS: true,
-      name: 'Tự mình tu tiên',
-      author: 'Bon Studio',
-    },
-    workbox: {
-      enabled: true,
-    },
-  },
+  // pwa: {
+  //   manifest: {
+  //     name: 'Tự Mình Tu Tiên Bon Studio',
+  //     short_name: 'Tự Mình Tu Tiên',
+  //     start_url: '/',
+  //     lang: 'vi',
+  //   },
+  //   meta: {
+  //     favicon: true,
+  //     // appleStatusBarStyle: 'black-translucent',
+  //     theme_color: '#000000',
+  //     mobileApp: true,
+  //     mobileAppIOS: true,
+  //     name: 'Tự mình tu tiên',
+  //     author: 'Bon Studio',
+  //   },
+  //   workbox: {
+  //     enabled: true,
+  //   },
+  // },
   pinia: {
     autoImports: ['storeToRefs'],
   },

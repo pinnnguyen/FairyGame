@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { set } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { sendMessage, usePlayerStore, useSoundClickEvent } from '#imports'
+import { usePlayerSlot, usePlayerStore, useSoundClickEvent } from '#imports'
 
 const { playerInfo, attribute } = storeToRefs(usePlayerStore())
+const { leftSlots, rightSlots } = storeToRefs(usePlayerSlot())
+
 const togglePlayerInfo = useState('togglePlayerInfo')
 const toggleAuction = useState('toggleAuction')
 const toggleStore = useState('toggleStore')
@@ -145,7 +147,7 @@ const setTab = (t: string) => {
 </script>
 
 <template>
-  <var-popup v-if="toggleOptions.showUpgrade" v-model:show="toggleOptions.showUpgrade">
+  <var-popup v-model:show="toggleOptions.showUpgrade">
     <div
       w="[90vw]"
       max-w="[60vh]"
@@ -205,7 +207,10 @@ const setTab = (t: string) => {
         <Line class="mt-4">
           Thiết lập trang bị
         </Line>
-        <player-equipment-default />
+        <player-equipment-default
+          :left-slots="leftSlots"
+          :right-slots="rightSlots"
+        />
       </template>
       <template v-if="tabBag">
         <bag />
