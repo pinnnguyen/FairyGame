@@ -8,9 +8,8 @@ export interface GemValue {
   target: 'attribute' | 'base'
 }
 
-export interface Gem {
+export interface GemCoreProperty {
   _id?: string
-  id?: number
   name?: string
   quality?: number
   rateOnLevel?: number
@@ -19,15 +18,12 @@ export interface Gem {
   slot: number
 }
 
-export interface PlayerGem {
+export type Gem = GemCoreProperty & {
+  id?: number
+}
+
+export type PlayerGem = GemCoreProperty & {
   sum?: number
   sid?: string
-  _id?: string
   gemId?: number
-  name?: string
-  quality?: number
-  target?: 'attribute'
-  rateOnLevel?: number
-  values?: GemValue[]
-  slot: number
 }

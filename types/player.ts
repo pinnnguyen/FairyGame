@@ -1,25 +1,50 @@
 import type { Mid } from '~/types/mid'
 import type { PlayerEquipment } from '~/types/equiment'
-export interface BaseAttributes extends Record<string, number> {
-  speed: number
-  damage: number
-  def: number
-  hp: number
-  mp: number
-  critical: number
-  bloodsucking: number
-  criticalDamage: number
-  avoid: number // Ne Don
-  reductionAvoid: number // Bo qua ne don
-  reductionCriticalDamage: number // Khang sat thuong bao kich
-  reductionBloodsucking: number // Khang hut mau
-  counterAttack: number // Phan dam
-  recoveryPerformance: number // Hieu xuat hoi phuc
-  reductionRecoveryPerformance: number // Khang hoi phuc
-  reductionCounterAttack: number // Khang phan dam
+
+export type BaseAttributeKeys = 'speed'
+| 'damage'
+| 'def'
+| 'hp'
+| 'mp'
+| 'critical'
+| 'bloodsucking'
+| 'criticalDamage'
+| 'avoid'
+| 'reductionAvoid'
+| 'reductionCriticalDamage'
+| 'reductionBloodsucking'
+| 'counterAttack'
+| 'recoveryPerformance'
+| 'reductionRecoveryPerformance'
+| 'reductionCounterAttack'
+
+export const PlayerStatusTypeCon = {
+  reduce_waiting_time_training: 'reduce_waiting_time_training',
 }
 
-export interface CoreAttribute extends Record<string, number> {
+export type PlayerStatusType = 'reduce_waiting_time_training'
+
+export type BaseAttributes = {
+  [key in BaseAttributeKeys]: number
+  // speed: number
+  // damage: number
+  // def: number
+  // hp: number
+  // mp: number
+  // critical: number
+  // bloodsucking: number
+  // criticalDamage: number
+  // avoid: number // Ne Don
+  // reductionAvoid: number // Bo qua ne don
+  // reductionCriticalDamage: number // Khang sat thuong bao kich
+  // reductionBloodsucking: number // Khang hut mau
+  // counterAttack: number // Phan dam
+  // recoveryPerformance: number // Hieu xuat hoi phuc
+  // reductionRecoveryPerformance: number // Khang hoi phuc
+  // reductionCounterAttack: number // Khang phan dam
+}
+
+export interface CoreAttribute {
   // [key: string]: number
   ofPower: number
   ofAgility: number
@@ -50,11 +75,7 @@ export interface Player {
 }
 
 export interface PlayerAttribute extends BaseAttributes {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   _id?: string
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   sid?: string
 }
 
@@ -94,11 +115,6 @@ export interface Upgrade {
   }
 }
 
-export const PlayerStatusTypeCon = {
-  reduce_waiting_time_training: 'reduce_waiting_time_training',
-}
-
-export type PlayerStatusType = 'reduce_waiting_time_training'
 export interface PlayerStatus {
   _id?: string
   sid: string

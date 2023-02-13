@@ -1,3 +1,4 @@
+import type { BaseAttributeKeys } from './player'
 import type { Gem, PlayerGem } from '~/types/gem'
 
 export interface EquipRateReward {
@@ -33,16 +34,8 @@ export interface EquipmentBaseEnhance {
   star: number
 }
 
-export interface PlayerEquipmentStat {
-  [key: string]: EquipmentBaseEnhance
-  speed: EquipmentBaseEnhance
-  damage: EquipmentBaseEnhance
-  def: EquipmentBaseEnhance
-  hp: EquipmentBaseEnhance
-  mp: EquipmentBaseEnhance
-  critical: EquipmentBaseEnhance
-  bloodsucking: EquipmentBaseEnhance
-  criticalDamage: EquipmentBaseEnhance
+export type PlayerEquipmentStat = {
+  [key in BaseAttributeKeys]: EquipmentBaseEnhance
 }
 export interface PlayerEquipment {
   _id?: string
