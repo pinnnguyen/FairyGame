@@ -1,4 +1,4 @@
-import type { BasicItem, Item } from '~/types/item'
+import type { BasicItem } from '~/types/item'
 
 export type currency = 'KNB' | 'GOLD' | 'COIN'
 export interface StoreItem {

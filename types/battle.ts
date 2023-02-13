@@ -21,35 +21,16 @@ export interface Battle {
     speed: number
     name: string
   }
-  winner?: 'youwin' | 'youlost'
+  winner?: string
   reward?: {
     base: BaseReward
     items: BasicItem[]
     equipments: PlayerEquipment[]
   }
-  damageList?: {}
+  damageList?: Record<string, any>
   createdAt?: string
   updatedAt?: string
-  match: {}
-}
-
-export interface BattleEventBeforeWar {
-  inRefresh: boolean
-  refreshTime: number
-  enemy?: EnemyObject
-  player?: {
-    level: number
-    damage: number
-    def: number
-    hp: number
-    speed: number
-    name: string
-  }
-  reward?: {
-    base: BaseReward
-    equipments: PlayerEquipment[]
-  }
-  winner?: 'youwin' | 'youlost'
+  match: Record<string, any>
 }
 
 export interface TopDMG {

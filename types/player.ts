@@ -18,6 +18,25 @@ export type BaseAttributeKeys = 'speed'
 | 'reductionRecoveryPerformance'
 | 'reductionCounterAttack'
 
+// speed: number
+// damage: number
+// def: number
+// hp: number
+// mp: number
+// critical: number
+// bloodsucking: number
+// criticalDamage: number
+// avoid: number // Ne Don
+// reductionAvoid: number // Bo qua ne don
+// reductionCriticalDamage: number // Khang sat thuong bao kich
+// reductionBloodsucking: number // Khang hut mau
+// counterAttack: number // Phan dam
+// recoveryPerformance: number // Hieu xuat hoi phuc
+// reductionRecoveryPerformance: number // Khang hoi phuc
+// reductionCounterAttack: number // Khang phan dam
+
+export type CoreAttributeKey = 'ofPower' | 'ofAgility' | 'ofSkillful' | 'ofVitality'
+
 export const PlayerStatusTypeCon = {
   reduce_waiting_time_training: 'reduce_waiting_time_training',
 }
@@ -25,31 +44,11 @@ export const PlayerStatusTypeCon = {
 export type PlayerStatusType = 'reduce_waiting_time_training'
 
 export type BaseAttributes = {
-  [key in BaseAttributeKeys]: number
-  // speed: number
-  // damage: number
-  // def: number
-  // hp: number
-  // mp: number
-  // critical: number
-  // bloodsucking: number
-  // criticalDamage: number
-  // avoid: number // Ne Don
-  // reductionAvoid: number // Bo qua ne don
-  // reductionCriticalDamage: number // Khang sat thuong bao kich
-  // reductionBloodsucking: number // Khang hut mau
-  // counterAttack: number // Phan dam
-  // recoveryPerformance: number // Hieu xuat hoi phuc
-  // reductionRecoveryPerformance: number // Khang hoi phuc
-  // reductionCounterAttack: number // Khang phan dam
+  [key in BaseAttributeKeys | string]: number
 }
 
-export interface CoreAttribute {
-  // [key: string]: number
-  ofPower: number
-  ofAgility: number
-  ofSkillful: number
-  ofVitality: number
+export type CoreAttribute = {
+  [key in CoreAttributeKey | string]: number
 }
 export interface Player {
   _id?: string
@@ -74,7 +73,7 @@ export interface Player {
   class: number
 }
 
-export interface PlayerAttribute extends BaseAttributes {
+export type PlayerAttribute = BaseAttributes & {
   _id?: string
   sid?: string
 }
