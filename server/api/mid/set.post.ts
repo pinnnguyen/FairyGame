@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const player = await PlayerSchema.findOne({ userId: session?.user?.email })
-  const battle = await BattleSchema.findOne({ 'mid.id': player?.midId, 'winner': WINNER.youwin, 'kind': BATTLE_KIND.PVE })
+  const battle = await BattleSchema.findOne({ 'mid.id': player?.midId, 'winner': player._id, 'kind': BATTLE_KIND.PVE })
   if (!battle) {
     return createError({
       statusCode: 400,

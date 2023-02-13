@@ -25,8 +25,8 @@ const changeBattle = async () => {
     set(loading, false)
     sendMessage('Qua ải thành công', 2000)
   }
-  catch (e) {
-    sendMessage('Hãy vượt ải trước đó để tiếp tục', 2000)
+  catch (e: any) {
+    sendMessage(e.statusMessage, 2000)
     set(loading, false)
   }
 }

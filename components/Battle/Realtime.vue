@@ -19,12 +19,19 @@ const cPlayerTitle = computed(() => {
 
 <template>
   <div
-    class="relative duration-800 transition-transform border-box h-12"
+    pos="relative"
+    transition="~ duration-800 transform"
+    h="12"
+    class="border-box"
     :style="{
       transform: realTime[extend._id]?.effect ? `${pos === 1 ? 'translate(10%)' : 'translate(-10%)'}` : '',
     }"
   >
-    <div class="w-25 italic relative">
+    <nuxt-img v-if="receiver[extend._id]?.hp <= 0" src="/battle/rip.png" z="9" w="10" pos="absolute" class="transform-center" />
+    <div
+      w="28"
+      :class="{ 'grayscale filter': receiver[extend._id]?.hp <= 0 }"
+    >
       <div class="flex justify-start items-end">
         <span class="text-10 ml-1 text-[#6ce8d4] line-clamp-1">{{ extend?.name ?? '...' }}</span>
       </div>
@@ -66,10 +73,7 @@ const cPlayerTitle = computed(() => {
           && !realTime[extend._id]?.avoid,
       }"
     >
-      <span v-if="realTime[extend._id]?.critical" class="whitespace-nowrap">
-        Bạo kích -{{ receiver[extend._id]?.damage }}
-      </span>
-      <span v-else>-{{ receiver[extend._id]?.damage ?? 0 }}</span>
+      <span>{{ receiver[extend._id]?.damage }}</span>
     </span>
   </div>
 </template>

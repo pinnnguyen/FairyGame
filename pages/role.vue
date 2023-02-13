@@ -60,7 +60,6 @@ const handleCreateFigure = async () => {
     return
   }
 
-  $io.emit('send-notify', `Chào mừng người chơi ${role.player.name} bước vào Tự mình tu tiên`)
   loadPlayer(role)
   navigateTo('/')
 }

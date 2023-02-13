@@ -55,6 +55,7 @@ export default defineNuxtConfig({
     mongoUrl: process.env.MONGO_URL,
   },
   modules: [
+    '@nuxt/devtools',
     '@vueuse/nuxt',
     '@pinia/nuxt',
     '@nuxt/image-edge',

@@ -62,12 +62,16 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     totalDamage,
   } = startWarSolo(targetA, targetB, battleRequest.target.id)
 
+  for (const d in totalDamage.list) {
+    if (d === _p.player._id)
+      totalDamage.self = totalDamage.list[d]
+  }
+
   const { exp, gold } = await getBaseReward(_p.player, _enemyObj, realWinner)
   const { equipments } = await receivedEquipment(_p.player, _enemyObj, realWinner)
   const { itemDrafts } = await receivedItems(_p.player, _enemyObj, realWinner)
 
   await setLastTimeReceivedRss(_p.player.sid)
-  await handleAfterEndWar({ battleRequest, _p, realWinner, totalDamage })
 
   // Log battle
   await new BattleSchema({
@@ -80,7 +84,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     match,
     emulators,
     winner: realWinner,
-    totalDamage,
+    damageList: totalDamage,
     reward: {
       base: {
         exp,
@@ -90,6 +94,8 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
       equipments,
     },
   }).save()
+
+  await handleAfterEndWar({ battleRequest, _p, realWinner, totalDamage })
 
   return {
     match,

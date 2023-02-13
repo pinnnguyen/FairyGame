@@ -8,11 +8,16 @@ import { formatCash, playerTitle } from '~/common'
 const { upgrade, playerInfo } = storeToRefs(usePlayerStore())
 const { loadPlayer } = usePlayerStore()
 
+const { $io } = useNuxtApp()
 const tupoResponse = ref({})
 const loading = ref(false)
 const playerBefore = ref()
 const playerAfter = ref()
 const change = ref(false)
+
+const cPlayerTitle = computed(() => {
+  return playerTitle(playerInfo.value?.level, playerInfo.value?.level + 1)
+})
 
 const doUpgrade = async () => {
   try {
@@ -37,10 +42,6 @@ const doUpgrade = async () => {
     sendMessage(err.message)
   }
 }
-
-const cPlayerTitle = computed(() => {
-  return playerTitle(playerInfo.value?.level, playerInfo.value?.level + 1)
-})
 </script>
 
 <template>

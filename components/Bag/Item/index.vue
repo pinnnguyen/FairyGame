@@ -29,13 +29,14 @@ const onSell = () => {
     />
   </var-popup>
   <var-loading :loading="pending" :description="tips[Math.round(randomNumber(0, tips.length))]" size="mini" color="#ffffff">
-    <div
+    <section
       grid="~ cols-3"
       gap="2"
     >
-      <div v-if="pending" h="50" w="50" />
+      <div v-if="pending" h="50" w="100" />
       <div
         v-for="item in items"
+        v-else
         :key="item.id"
         text="10"
         border="rounded"
@@ -66,6 +67,6 @@ const onSell = () => {
           SL: {{ item?.sum }}
         </div>
       </div>
-    </div>
+    </section>
   </var-loading>
 </template>

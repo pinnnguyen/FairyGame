@@ -27,7 +27,7 @@ const handle = defineEventHandler(async (event) => {
     {
       $lookup: {
         from: 'players',
-        localField: 'friendSis',
+        localField: 'friendSid',
         foreignField: 'sid',
         as: 'player',
       },

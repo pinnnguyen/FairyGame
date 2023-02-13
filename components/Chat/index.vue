@@ -10,7 +10,7 @@ const props = defineProps<{
 const { $io } = useNuxtApp()
 const { playerInfo, sid } = usePlayerStore()
 const playerPreviewOptions = reactive<any>({
-  payload: {},
+  sid: '',
   toggle: false,
 })
 
@@ -38,72 +38,9 @@ const previewPlayer = async (sid: string) => {
   if (!sid)
     return
 
-  try {
-    playerPreviewOptions.toggle = true
-    playerPreviewOptions.payload = await $fetch(`/api/player?sid=${sid}`)
-    console.log('player', playerPreviewOptions.payload)
-  }
-  catch (e) {
-    console.error(e)
-  }
+  playerPreviewOptions.toggle = true
+  playerPreviewOptions.sid = sid
 }
-
-const playerPayload = computed(() => playerPreviewOptions.payload.player)
-const equipments = computed(() => playerPreviewOptions.payload.equipments)
-
-const slot1 = computed(() => equipments.value?.find((e: { slot: number }) => e.slot === 1))
-const slot2 = computed(() => equipments.value?.find((e: { slot: number }) => e.slot === 2))
-
-const slot3 = computed(() => equipments.value?.find((e: { slot: number }) => e.slot === 3))
-const slot4 = computed(() => equipments.value?.find((e: { slot: number }) => e.slot === 4))
-
-const slot5 = computed(() => equipments.value?.find((e: { slot: number }) => e.slot === 5))
-const slot6 = computed(() => equipments.value?.find((e: { slot: number }) => e.slot === 6))
-
-const slot7 = computed(() => equipments.value?.find((e: { slot: number }) => e.slot === 7))
-const slot8 = computed(() => equipments.value?.find((e: { slot: number }) => e.slot === 8))
-
-const leftSlots = computed(() => {
-  return [
-    {
-      no: 1,
-      slot: slot1.value,
-    },
-    {
-      no: 2,
-      slot: slot2.value,
-    },
-    {
-      no: 3,
-      slot: slot3.value,
-    },
-    {
-      no: 4,
-      slot: slot4.value,
-    },
-  ]
-})
-
-const rightSlots = computed(() => {
-  return [
-    {
-      no: 5,
-      slot: slot5.value,
-    },
-    {
-      no: 6,
-      slot: slot6.value,
-    },
-    {
-      no: 7,
-      slot: slot7.value,
-    },
-    {
-      no: 8,
-      slot: slot8.value,
-    },
-  ]
-})
 
 const sendChat = () => {
   $io.emit('send:chat', playerInfo?.sid, playerInfo?.name, chatContent.value)
@@ -113,26 +50,9 @@ const sendChat = () => {
 
 <template>
   <var-popup v-model:show="playerPreviewOptions.toggle">
-    <div
-      bg="primary"
-      pos="relative"
-      text="10 primary"
-      font="semibold"
-      class="w-[calc(100vw_-_30px)] border-box"
-      h="120"
-    >
-      <player-equip-tab
-        v-if="playerPayload"
-        :name="playerPayload.name"
-        :level="playerPayload.level"
-        :level-title="playerPayload.levelTitle"
-        :floor="playerPayload.floor"
-        :class-role="playerPayload.class"
-        :exp="playerPayload.exp"
-        :left-slots="leftSlots"
-        :right-slots="rightSlots"
-      />
-    </div>
+    <player-preview
+      :sid="playerPreviewOptions.sid"
+    />
   </var-popup>
   <div class="h-[50vh] mx-2 relative overflow-auto">
     <section class="py-2 text-left">
@@ -148,7 +68,7 @@ const sendChat = () => {
         text="primary space-nowrap 8"
         opacity="60"
         :class="{
-          '!opacity-100 !text-green-400': tab === menu.key,
+          '!opacity-100': tab === menu.key,
         }"
         @click.stop="tab = menu.key"
       >

@@ -82,7 +82,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
           await sleep(options.TURN_DELAY)
           roundNum.value++
 
-          realTime.value = {
+          Object.assign(realTime.value, {
             [realTurn]: {
               effect: true,
               showDamage: true,
@@ -90,7 +90,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
               critical: realEmu?.state?.critical,
               bloodsucking: realEmu.state.bloodsucking,
             },
-          }
+          })
 
           setTimeout(() => {
             realTime.value[realTurn].effect = false
@@ -102,7 +102,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
 
           if (realEmu.state.damage) {
             const realDamage = Object.keys(realEmu.state.damage)
-            receiver.value[realDamage[0]].damage = realEmu.state.damage[realDamage[0]]
+            receiver.value[realDamage[0]].damage = realEmu?.state?.critical ? `Bạo kích -${realEmu.state.damage[realDamage[0]]}` : `-${realEmu.state.damage[realDamage[0]]}`
           }
 
           if (realEmu.now.hp) {
@@ -135,6 +135,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   return {
     match,
     loading,
+    options,
     fn: {
       startBattle,
       stopBattle: () => {

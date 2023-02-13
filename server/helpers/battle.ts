@@ -1,8 +1,8 @@
 import moment from 'moment'
 import {
   BattleSchema,
+  BossCreatorSchema,
   BossDataSchema,
-  BossEliteSchema,
   MonsterSchema,
   PlayerStatusSchema,
   RewardLogSchema,
@@ -43,7 +43,7 @@ const handleTargetNormal = async (_p: PlayerInfo) => {
     }).select('value')
 
     // validate
-    let ms = 20000
+    let ms = 5000
     if (playerStatus && playerStatus.value)
       ms -= (ms / 100) * playerStatus.value
 
@@ -193,7 +193,7 @@ export const handleBeforeStartWar = async (battleRequest: BattleRequest, _p: Pla
   }
 
   if (elite) {
-    const _enemyObj = await BossEliteSchema.findById(battleRequest.target.id)
+    const _enemyObj = await BossCreatorSchema.findById(battleRequest.target.id)
     return {
       _enemyObj,
       ...await handleTargetElite(_p),
@@ -203,16 +203,16 @@ export const handleBeforeStartWar = async (battleRequest: BattleRequest, _p: Pla
 
 export const handleAfterEndWar = async (request: {
   battleRequest: BattleRequest
-  _p: PlayerInfo
-  winner?: string
-  totalDamage: Record<string, number>
+  _p: any
+  realWinner?: string
+  totalDamage: any
 }) => {
-  const { battleRequest, _p, winner, totalDamage } = request
+  const { battleRequest, _p, realWinner, totalDamage } = request
   const bossFrameTime = battleRequest.target.type === TARGET_TYPE.BOSS_FRAME_TIME
   const elite = battleRequest.target.type === TARGET_TYPE.BOSS_ELITE
-  const isWinner = winner === _p.player._id
+  const isWinner = realWinner === _p.player._id
 
-  const selfDamage = totalDamage[_p.player._id]
+  const selfDamage = totalDamage.list[_p.player._id]
   // if (normal && isWinner) {
   //   console.log('heheheh')
   //   // await addSystemChat(_p.player.sid, `Chúc mừng đạo hữu ${_p.player.name} vượt qua cửa ải ${_p.player.midId}`)
@@ -232,7 +232,7 @@ export const handleAfterEndWar = async (request: {
   }
 
   if (elite) {
-    await BossEliteSchema.findOneAndUpdate({ _id: battleRequest.target.id }, {
+    await BossCreatorSchema.findOneAndUpdate({ _id: battleRequest.target.id }, {
       $inc: {
         'attribute.hp': -selfDamage!,
       },
@@ -241,10 +241,9 @@ export const handleAfterEndWar = async (request: {
     if (!isWinner)
       return
 
-    const eliteBossUpdated = await BossEliteSchema.findOneAndUpdate({ _id: battleRequest.target.id }, {
+    const eliteBossUpdated = await BossCreatorSchema.findOneAndUpdate({ _id: battleRequest.target.id }, {
       death: true,
       killer: {
-        // avatar: '',
         name: _p.player.name,
         sid: _p.player.sid,
       },
@@ -264,7 +263,7 @@ export const handleAfterEndWar = async (request: {
           $group:
                   {
                     _id: '$sid',
-                    totalDamage: { $sum: { $multiply: ['$damage'] } },
+                    totalDamage: { $sum: { $multiply: ['$damageList.self'] } },
                     sid: {
                       $first: '$sid',
                     },
@@ -284,6 +283,7 @@ export const handleAfterEndWar = async (request: {
       ],
     )
 
+    console.log('topDMG', topDMG)
     await SendKnbRewardSystemMail(_p.player.sid, baseReward?.kill, {
       note: `Đạo hữu thành công trở thành người ra đòn kết liễu boss ${eliteBossUpdated?.name}`,
       title: 'Thưởng kích sát boss',
@@ -300,6 +300,7 @@ export const handleAfterEndWar = async (request: {
       upsert: true,
     })
 
+    console.log('topDMG', topDMG)
     if (topDMG.length > 0) {
       // await PlayerSchema.findOneAndUpdate({ sid: topDMG[0].sid }, {
       //   $inc: {

@@ -24,7 +24,7 @@ StyleProvider({
   <Body
     overflow="hidden"
     transition="duration-300 colors"
-    max-w="[768px]"
+    max-w="[70vh]"
     m="auto"
   >
     <NuxtLayout>

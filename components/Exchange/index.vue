@@ -22,6 +22,10 @@ const exchangeTabs = [
     name: 'Thư',
   },
   {
+    key: 'rank',
+    name: 'Tiên bảng',
+  },
+  {
     key: 'friend',
     name: 'Đạo hữu',
   },
@@ -62,21 +66,30 @@ $io.on('chat:system', (data: any) => {
     contents.value.splice(contents.value.length - 1, 1)
   }
 })
+
+const mailsUnRead = computed(() => {
+  return mails.value.filter((v: any) => {
+    return !v.isRead
+  })
+})
 </script>
 
 <template>
   <var-popup v-model:show="toggle.exchange" position="bottom">
     <div
       class="bg-[#000000] overflow-hidden max-w-[70vh] h-[70vh]"
-      border="1 green-300/40"
+      border="t-1 green-300/40"
       m="auto"
     >
-      <div m="x-2" p="y-2 t-4">
+      <div
+        m="x-2"
+        p="y-2 t-4"
+      >
         <button
           v-for="exchangeTab in exchangeTabs"
           :key="exchangeTab.key"
           transition="~ opacity duration-700"
-          m="x-2"
+          m="x-2 y-1"
           w="16"
           h="8"
           font="semibold"
@@ -87,11 +100,15 @@ $io.on('chat:system', (data: any) => {
           @click.stop="exchangeTabState = exchangeTab.key"
         >
           {{ exchangeTab.name }}
+          <template v-if="exchangeTab.key === 'mail'">
+            ({{ mailsUnRead.length }})
+          </template>
         </button>
       </div>
       <chat v-if="exchangeTabState === 'chat'" :contents="contents" />
       <mail v-if="exchangeTabState === 'mail'" :mails="mails" />
       <settings v-if="exchangeTabState === 'settings'" />
+      <rank v-if="exchangeTabState === 'rank'" />
     </div>
   </var-popup>
   <div class="max-w-[70vh] h-12 bg-[#000000] text-12 w-full flex items-center justify-between gap-2 p-2 fixed bottom-0 border-t border-white/10">

@@ -13,6 +13,7 @@ const {
   stateRunning,
   speed,
   roundNum,
+  options,
 } = storeToRefs(useBattleRoundStore())
 
 const { $io } = useNuxtApp()
@@ -43,11 +44,16 @@ const handleStartBattle = async (battleRes: BattleResponse) => {
   set(battleCurrently, battleRes)
 
   await fn.startBattle(battleRes, async () => {
-    console.log('end battle')
-    set(shouldBattleResult, true)
+    await useSoundRewardEvent()
+
     if (playerInfo.value) {
       playerInfo.value.gold += stateRunning.value.reward?.base.gold ?? 0
       playerInfo.value.exp += stateRunning.value.reward?.base.exp ?? 0
+    }
+
+    if (!isPve) {
+      set(shouldBattleResult, true)
+      return
     }
 
     if (isPve.value) {
@@ -63,8 +69,6 @@ const handleStartBattle = async (battleRes: BattleResponse) => {
 
       useEventPve()
     }
-
-    await useSoundRewardEvent()
   })
 }
 
@@ -79,6 +83,8 @@ const startEventPve = (skip: boolean) => {
 
 const onEventRefresh = () => {
   set(shouldNextBattle, false)
+  set(shouldBattleResult, false)
+
   if (isWin.value) {
     startEventPve(false)
     return
@@ -87,7 +93,6 @@ const onEventRefresh = () => {
   switch (battleRequest.value?.target) {
     case TARGET_TYPE.BOSS_ELITE:
       set(loading, true)
-      console.log('onEventRefresh')
       useEventElite()
       break
 
@@ -95,6 +100,26 @@ const onEventRefresh = () => {
       useEventPve()
   }
 }
+
+const skipListener = () => {
+  if (isPve.value)
+    return
+
+  set(shouldBattleResult, true)
+}
+
+onMounted(() => {
+  useEventPve()
+
+  $io.on('battle:start:pve', async (war: BattleResponse) => {
+    await handleStartBattle(war)
+  })
+})
+
+onUnmounted(async () => {
+  $io.off('battle:start')
+  offAllEvent()
+})
 
 watch(battleRequest, async (request) => {
   set(shouldBattleResult, false) // Todo: Hidden popup result
@@ -125,19 +150,6 @@ watch(battleRequest, async (request) => {
       break
   }
 })
-
-onMounted(() => {
-  useEventPve()
-
-  $io.on('battle:start:pve', async (war: BattleResponse) => {
-    await handleStartBattle(war)
-  })
-})
-
-onUnmounted(async () => {
-  $io.off('battle:start')
-  offAllEvent()
-})
 </script>
 
 <template>
@@ -166,7 +178,9 @@ onUnmounted(async () => {
         v-if="shouldNextBattle"
         format="webp"
         src="/battle/loading.png"
-        w="35" h="35"
+        w="35"
+        h="35"
+        top="[40%]"
         pos="absolute"
         class="transform-center"
         object="cover"
@@ -204,6 +218,7 @@ onUnmounted(async () => {
     <battle-controls
       :is-elite-boss="isEliteBoss"
       @on-back="startEventPve"
+      @on-skip="skipListener"
     />
     <div
       :class="{ '!bg-[#540905]': !refresh?.inRefresh }"

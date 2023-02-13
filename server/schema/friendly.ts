@@ -10,7 +10,7 @@ const schema = new mongoose.Schema(
       },
     },
     sid: String,
-    friendSid: Number,
+    friendSid: String,
     relationship: String,
   },
   { timestamps: true },

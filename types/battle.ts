@@ -27,7 +27,7 @@ export interface Battle {
     items: BasicItem[]
     equipments: PlayerEquipment[]
   }
-  totalDamage?: []
+  damageList?: {}
   createdAt?: string
   updatedAt?: string
   match: {}

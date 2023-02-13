@@ -4,7 +4,7 @@ import { useBattleRoundStore } from '~/composables/useBattleRound'
 defineProps<{
   isEliteBoss: boolean
 }>()
-const emits = defineEmits(['onBack'])
+const emits = defineEmits(['onBack', 'onSkip'])
 const {
   loading,
   refresh,
@@ -12,6 +12,11 @@ const {
   roundNum,
 } = storeToRefs(useBattleRoundStore())
 const { fn } = useBattleRoundStore()
+
+const skipBattle = () => {
+  emits('onSkip')
+  fn.skipBattle()
+}
 </script>
 
 <template>
@@ -57,7 +62,7 @@ const { fn } = useBattleRoundStore()
       w="6"
       font="italic semibold"
       class="border-full-box bg-button-menu"
-      @click.stop="fn.skipBattle"
+      @click.stop="skipBattle"
     >
       Bỏ qua
     </button>

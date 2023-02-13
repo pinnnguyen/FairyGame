@@ -1,11 +1,11 @@
 [
   {
     "id": 17,
-    "name": "Minh Nguyệt Chi Kiếm",
-    "info": "Minh Nguyệt Chi Kiếm",
-    "rank": 2,
-    "quality": 2,
-    "level": 10,
+    "name": "Bách Luyện Thanh Kiếm",
+    "info": "Bách Luyện Thanh Kiếm",
+    "rank": 1,
+    "quality": 1,
+    "level": 20,
     "slot": 1,
     "preview": "/items/50031.png",
     "enhance": 0,
@@ -13,13 +13,13 @@
       {
         "damage": {
           "enhance": 0,
-          "main": 55
+          "main": 105
         }
       },
       {
         "speed": {
           "enhance": 0,
-          "main": 1
+          "main": 10
         }
       },
       {
@@ -31,7 +31,7 @@
       {
         "hp": {
           "enhance": 0,
-          "main": 100
+          "main": 300
         }
       },
       {
@@ -56,11 +56,11 @@
   },
   {
     "id": 18,
-    "name": "Minh Nguyệt Chi Giáp",
-    "info": "Minh Nguyệt Chi Giáp",
-    "rank": 2,
-    "quality": 2,
-    "level": 10,
+    "name": "Bách Luyện Thanh Giáp",
+    "info": "Bách Luyện Thanh Giáp",
+    "rank": 1,
+    "quality": 1,
+    "level": 20,
     "slot": 2,
     "preview": "/items/50033.png",
     "enhance": 0,
@@ -74,19 +74,19 @@
       {
         "speed": {
           "enhance": 0,
-          "main": 2
+          "main": 5
         }
       },
       {
         "def": {
           "enhance": 0,
-          "main": 45
+          "main": 75
         }
       },
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 250
         }
       },
       {
@@ -111,11 +111,11 @@
   },
   {
     "id": 19,
-    "name": "Minh Nguyệt Chi Khôi",
-    "info": "Minh Nguyệt Chi Khôi",
-    "rank": 2,
-    "quality": 2,
-    "level": 10,
+    "name": "Bách Luyện Thanh Khôi",
+    "info": "Bách Luyện Thanh Khôi",
+    "rank": 1,
+    "quality": 1,
+    "level": 20,
     "slot": 3,
     "preview": "/items/50032.png",
     "enhance": 0,
@@ -129,19 +129,19 @@
       {
         "speed": {
           "enhance": 0,
-          "main": 2
+          "main": 5
         }
       },
       {
         "def": {
           "enhance": 0,
-          "main": 20
+          "main": 40
         }
       },
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 250
         }
       },
       {
@@ -166,11 +166,11 @@
   },
   {
     "id": 20,
-    "name": "Minh Nguyệt Chi Nhẫn",
-    "info": "Minh Nguyệt Chi Nhẫn",
-    "rank": 2,
-    "quality": 2,
-    "level": 10,
+    "name": "Bách Luyện Thanh Nhẫn",
+    "info": "Bách Luyện Thanh Nhẫn",
+    "rank": 1,
+    "quality": 1,
+    "level": 20,
     "slot": 4,
     "preview": "/items/50038.png",
     "enhance": 0,
@@ -178,19 +178,19 @@
       {
         "damage": {
           "enhance": 0,
-          "main": 35
+          "main": 55
         }
       },
       {
         "speed": {
           "enhance": 0,
-          "main": 2
+          "main": 10
         }
       },
       {
         "def": {
           "enhance": 0,
-          "main": 5
+          "main": 25
         }
       },
       {
@@ -208,7 +208,7 @@
       {
         "critical": {
           "enhance": 0,
-          "main": 2
+          "main": 5
         }
       },
       {
@@ -223,9 +223,9 @@
     "id": 21,
     "name": "Minh Nguyệt Ngọc Bội",
     "info": "Minh Nguyệt Ngọc Bội",
-    "rank": 2,
-    "quality": 2,
-    "level": 10,
+    "rank": 1,
+    "quality": 1,
+    "level": 20,
     "slot": 5,
     "preview": "/items/50037.png",
     "enhance": 0,
@@ -239,7 +239,7 @@
       {
         "speed": {
           "enhance": 0,
-          "main": 7
+          "main": 10
         }
       },
       {
@@ -251,7 +251,7 @@
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 250
         }
       },
       {
@@ -263,7 +263,7 @@
       {
         "critical": {
           "enhance": 0,
-          "main": 2
+          "main": 5
         }
       },
       {
@@ -278,9 +278,9 @@
     "id": 22,
     "name": "Minh Nguyệt Thủ Hộ",
     "info": "Minh Nguyệt Thủ Hộ",
-    "rank": 2,
-    "quality": 2,
-    "level": 10,
+    "rank": 1,
+    "quality": 1,
+    "level": 20,
     "slot": 6,
     "preview": "/items/50034.png",
     "enhance": 0,
@@ -300,13 +300,13 @@
       {
         "def": {
           "enhance": 0,
-          "main": 35
+          "main": 45
         }
       },
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 200
         }
       },
       {
@@ -331,11 +331,11 @@
   },
   {
     "id": 23,
-    "name": "Minh Nguyệt Chi Ngoạ",
-    "info": "Minh Nguyệt Chi Ngoạ",
-    "rank": 2,
-    "quality": 2,
-    "level": 10,
+    "name": "Bách Luyện Thanh Ngoạ",
+    "info": "Bách Luyện Thanh Ngoạ",
+    "rank": 1,
+    "quality": 1,
+    "level": 20,
     "slot": 7,
     "preview": "/items/50035.png",
     "enhance": 0,
@@ -355,13 +355,13 @@
       {
         "def": {
           "enhance": 0,
-          "main": 35
+          "main": 45
         }
       },
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 250
         }
       },
       {
@@ -386,11 +386,11 @@
   },
   {
     "id": 24,
-    "name": "Minh Nguyệt Chi Đai",
-    "info": "Minh Nguyệt Chi Đai",
-    "rank": 2,
-    "quality": 2,
-    "level": 10,
+    "name": "Bách Luyện Thanh Đai",
+    "info": "Bách Luyện Thanh Đai",
+    "rank": 1,
+    "quality": 1,
+    "level": 20,
     "slot": 8,
     "preview": "/items/50036.png",
     "enhance": 0,
@@ -410,13 +410,13 @@
       {
         "def": {
           "enhance": 0,
-          "main": 35
+          "main": 55
         }
       },
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 200
         }
       },
       {

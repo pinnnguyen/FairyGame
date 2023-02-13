@@ -1,5 +1,5 @@
 import { conditionForUpLevel, playerLevelUp, shouldTupo } from '~/server/common'
-import { PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
+import { PlayerAttributeSchema, PlayerSchema, addSystemChat } from '~/server/schema'
 import { randomNumber } from '~/common'
 import { UPGRADE_LEVEL } from '~/server/rule'
 import { getPlayer } from '~/server/helpers'
@@ -203,6 +203,10 @@ export default defineEventHandler(async (event) => {
 
   const playerBefore = await getPlayer('', _p.sid)
 
+  if (response.status) {
+    await addSystemChat('', `Trải qua muôn vài khó khăn cuối cùng ${playerBefore?.player.name}
+      cũng đột phá thành công ${playerBefore?.player.levelTitle} ${playerBefore?.player.floor} khiến người người nể phục`)
+  }
   return {
     ...response,
     playerBefore: playerBefore || {},

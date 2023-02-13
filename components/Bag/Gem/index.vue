@@ -17,8 +17,9 @@ const onmerge = () => {
     size="mini"
     color="#ffffff"
   >
-    <div v-if="pending" h="50" w="50" />
+    <div v-if="pending" h="50" w="100" />
     <div
+      v-else
       grid="~ cols-6"
       gap="2"
     >

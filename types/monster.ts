@@ -72,6 +72,9 @@ export interface BossElite {
     name: string
     sid: string
   }
+  startHours?: number
+  endHours?: number
+  isStart?: boolean
 }
 
 export type EnemyObject = Monster | Boss | BossElite

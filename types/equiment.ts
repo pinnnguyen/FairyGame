@@ -32,6 +32,7 @@ export interface EquipmentBaseEnhance {
   main: number
   star: number
 }
+
 export interface PlayerEquipmentStat {
   [key: string]: EquipmentBaseEnhance
   speed: EquipmentBaseEnhance

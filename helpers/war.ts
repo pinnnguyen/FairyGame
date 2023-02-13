@@ -177,7 +177,10 @@ interface Target {
 }
 export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttacked?: string | undefined) => {
   let round = 0
-  const totalDamage: Record<string, number> = {}
+  const totalDamage = {
+    list: {},
+    self: 0,
+  }
 
   targetA.attribute._id = targetA.extends._id
   targetB.attribute._id = targetB.extends._id
@@ -231,10 +234,11 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
       const defender = battleTarget[1]
 
       const realDamageId = b.split('_')[1]
-      if (!totalDamage[realDamageId])
-        totalDamage[realDamageId] = 0
+      if (!totalDamage.list[realDamageId])
+        totalDamage.list[realDamageId] = 0
 
-      totalDamage[realDamageId] += receiveDMG
+      totalDamage.list[realDamageId] += receiveDMG
+
       defender.hp -= formatHP(defender?.hp, receiveDMG)
       attacker.hp -= formatHP(attacker.hp, defenderCounterAttack)
 
