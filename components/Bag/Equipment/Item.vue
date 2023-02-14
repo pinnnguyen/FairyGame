@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { PlayerEquipment } from '~/types'
-import { qualityPalette } from '~/common'
-import { qualityToName } from '~/constants'
+import { playerTitle, qualityPalette } from '~/common'
+import { qualityToName, slotToName } from '~/constants'
 
-defineProps<{
+const props = defineProps<{
   equipment: PlayerEquipment
 }>()
 
@@ -11,6 +11,11 @@ const emits = defineEmits(['onchangeEquip'])
 const options = reactive({
   show: false,
 })
+
+const equipmentLevelTitle = computed(() => {
+  return playerTitle(props.equipment.level!, props.equipment.level! + 1)
+})
+
 const pickEquipItem = () => {
   options.show = true
 }
@@ -39,6 +44,9 @@ const onchangeEquip = () => {
     }"
     @click.stop="pickEquipItem()"
   >
+    <p text="8" m="b-1">
+      {{ slotToName[equipment.slot] }} ({{ equipmentLevelTitle.levelTitle }} {{ equipmentLevelTitle.floor }})
+    </p>
     <div
       text="8"
       font="semibold"

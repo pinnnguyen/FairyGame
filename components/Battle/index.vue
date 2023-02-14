@@ -35,9 +35,9 @@ const battleRequest = useState<{
 }>('battleRequest')
 
 const shouldNextBattle = ref(false)
-const isPve = computed(() => battleCurrently.value?.kind === 'pve')
-const isWin = computed(() => battleCurrently.value?.winner === playerInfo.value?._id)
-const isEliteBoss = computed(() => battleCurrently.value?.kind === TARGET_TYPE.BOSS_ELITE)
+const isPve = computed<boolean>(() => battleCurrently.value?.kind === 'pve')
+const isWin = computed<boolean>(() => battleCurrently.value?.winner === playerInfo.value?._id)
+const isEliteBoss = computed<boolean>(() => battleCurrently.value?.kind === TARGET_TYPE.BOSS_ELITE)
 const shouldBattleResult = ref(false)
 
 const handleStartBattle = async (battleRes: BattleResponse) => {

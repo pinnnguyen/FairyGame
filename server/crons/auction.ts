@@ -1,17 +1,17 @@
+import { cloneDeep } from '~/helpers'
 import {
   AuctionItemSchema,
   AuctionSchema,
   BossDataSchema,
-  EquipmentSchema,
-  ItemSchema,
-  PlayerEquipmentSchema,
-  addPlayerItems,
+  SendAuctionSystemMail,
 } from '~/server/schema'
-import type { Equipment, Item, PlayerEquipment } from '~/types'
 
 export const handleStartBoss12h = async () => {
-  const boss = await BossDataSchema.findOne({ kind: 'frameTime', startHours: 12 })
+  const boss = await BossDataSchema.findOne({ kind: 'frame_time', startHours: 12 })
   console.log('--START BOSS--', boss)
+
+  if (!boss)
+    return
 
   const auction = await new AuctionSchema({
     name: `Đấu giá boss ${boss?.name}`,
@@ -21,82 +21,103 @@ export const handleStartBoss12h = async () => {
     open: true,
   }).save()
 
-  console.log('auction', auction)
   const auctionItems = []
-  const equipRates = boss?.reward?.equipRates
-  if (!equipRates)
-    return
+  const items = boss?.reward?.items
+  const gems = boss?.reward?.gems
 
-  for (let i = 0; i < equipRates.length; i++) {
-    auctionItems.push({
-      itemId: equipRates[i].id,
-      auctionId: auction._id,
-      kind: equipRates[i].kind,
-      price: 50,
-      own: '',
-      quantity: equipRates[i].quantity,
-    })
+  if (items.length > 0) {
+    for (let i = 0; i < items.length; i++) {
+      auctionItems.push({
+        itemId: items[i].itemId,
+        auctionId: auction._id,
+        kind: 'item',
+        price: 50,
+        own: '',
+        quantity: items[i].quantity,
+      })
+    }
+  }
+
+  if (gems.length > 0) {
+    for (let i = 0; i < gems.length; i++) {
+      auctionItems.push({
+        gemId: gems[i].gemId,
+        auctionId: auction._id,
+        kind: 'gem',
+        price: 100,
+        own: '',
+        quantity: gems[i].quantity,
+      })
+    }
   }
 
   await AuctionItemSchema.insertMany(auctionItems)
 }
 export const handleRewardBoss12h = async () => {
-  const auction = await AuctionSchema.findOneAndUpdate({ open: true }, {
-    open: false,
-  })
+  const auction: any = await AuctionSchema.aggregate(
+    [
+      {
+        $match: { open: true },
+      },
+      {
+        $lookup: {
+          from: 'gl_auction_items',
+          localField: '_id',
+          foreignField: 'auctionId',
+          pipeline: [
+            {
+              $lookup: {
+                from: 'gl_equipments',
+                localField: 'equipmentId',
+                foreignField: 'id',
+                as: 'equipment',
+              },
+            },
+            {
+              $lookup: {
+                from: 'gl_gems',
+                localField: 'gemId',
+                foreignField: 'id',
+                as: 'gem',
+              },
+            },
+          ],
+          as: 'auctionItems',
+        },
+      },
+      {
+        $limit: 1,
+      },
+    ],
+  )
 
-  if (!auction)
+  if (auction.length <= 0)
     return
 
-  const auctionItems = await AuctionItemSchema.find({ auctionId: auction?._id })
-  if (!auctionItems)
+  if (auction[0].auctionItems.length <= 0)
     return
 
-  const playerEquipItems: PlayerEquipment[] = []
-  const playerItems: Item[] = []
+  for (const auctionElement of auction[0].auctionItems) {
+    const kind = auctionElement.kind
+    const sid = auctionElement.sid
+    console.log('sid', auctionElement.sid)
+    if (!sid)
+      continue
 
-  for (let i = 0; i < auctionItems.length; i++) {
-    const _itemID = auctionItems[i].itemId
-    const _sid = auctionItems[i].sid
-    const _kind = auctionItems[i].kind
-    const _quantity = auctionItems[i].quantity
-
-    if (_kind === 1) {
-      if (_itemID && _sid) {
-        const equipment = await EquipmentSchema.findOne({ id: _itemID })
-        if (!equipment)
-          return
-
-        playerEquipItems.push({
-          sid: _sid,
-          name: equipment?.name,
-          info: equipment?.info,
-          rank: equipment?.rank,
-          level: equipment?.level,
-          slot: equipment?.slot,
-          preview: equipment?.preview,
-          enhance: equipment.enhance,
-          stats: equipment.stats,
-          used: false,
-        })
-      }
-    }
-
-    if (_kind === 2) {
-      if (_itemID && _sid) {
-        const item = await ItemSchema.findOne({ id: _itemID })
-        if (!item)
-          return
-
-        playerItems.push({
-          sid: _sid,
-          itemId: item.id,
-          sum: _quantity,
-        })
-      }
+    if (kind === 'gem') {
+      const gem = auctionElement.gem[0]
+      await SendAuctionSystemMail(sid, 'gem', {
+        gemId: auctionElement.gemId,
+        sum: auctionElement.quantity,
+        ...cloneDeep(gem),
+      }, {
+        title: 'Đấu giá thành công',
+        note: `Chúc mừng đạo hữu thành công dấu giá vật phẩm ${gem.name}`,
+      })
     }
   }
 
-  await PlayerEquipmentSchema.insertMany(playerEquipItems)
-  await addPlayerItems(playerItems)
+  await AuctionSchema.findOneAndUpdate({ open: true }, {
+    open: false,
+  })
 }

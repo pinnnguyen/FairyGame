@@ -24,6 +24,7 @@ const onSelected = (gem: PlayerGem) => {
     <gem-detail
       :gem="gem"
       :sell-action="true"
+      :merge-gem="true"
       @refresh="onmergeGems"
       @mergegem="onmergeGems"
     />

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PlayerGem } from '~~/types'
+import type { PlayerGem } from '~/types'
 
 const props = defineProps<{
   gem: PlayerGem
@@ -8,17 +8,13 @@ const props = defineProps<{
   mergeAction?: boolean
 }>()
 
-const emits = defineEmits<{
-  (ev: 'sell'): void
-  (ev: 'selected'): void
-  (ev: 'refresh'): void
-}>()
+const emits = defineEmits(['sell', 'selected', 'refresh'])
 
 const { $io } = useNuxtApp()
 const sellPopup = ref(false)
 const sellOptions = ref<any>({
-  price: 0,
-  quantity: 0,
+  price: 1,
+  quantity: 1,
 })
 
 const mergeGems = () => {
@@ -57,6 +53,7 @@ const sell = async () => {
 
     if (sellRes.success) {
       emits('refresh')
+      sellPopup.value = false
       sendMessage(sellRes.message)
     }
   }
@@ -74,8 +71,8 @@ const sell = async () => {
     <div
       p="4"
     >
-      <var-input v-model="sellOptions.price" type="number" placeholder="Nhập giá bán" />
-      <var-input v-model="sellOptions.quantity" type="number" placeholder="Nhập số lượng" />
+      <var-input v-model="sellOptions.price" placeholder="Nhập giá bán" />
+      <var-input v-model="sellOptions.quantity" placeholder="Nhập số lượng" />
     </div>
     <div
       text="center"
@@ -84,7 +81,7 @@ const sell = async () => {
       <var-button
         font="semibold"
         m="x-2"
-        color="#333"
+        class="!text-[#333]"
         size="small"
         @click.stop="sell"
       >
@@ -100,9 +97,9 @@ const sell = async () => {
       v-if="sellAction"
       font="semibold italic"
       m="x-2"
-      color="#333"
+      class="!text-[#333]"
       size="small"
-      @click.stop="emits('sell')"
+      @click.stop="sellPopup = true"
     >
       Treo bán
     </var-button>
@@ -110,18 +107,18 @@ const sell = async () => {
       v-if="selectAction"
       font="semibold italic"
       m="x-2"
-      color="#333"
+      class="!text-[#333]"
       size="small"
       @click.stop="emits('selected')"
     >
       Khảm đá
     </var-button>
     <var-button
-      v-if="gem.sum! >= 3 && mergeAction"
+      v-if="gem.sum >= 3 && mergeAction"
       font="semibold italic"
       m="x-2"
-      color="#333"
       size="small"
+      class="!text-[#333]"
       @click.stop="mergeGems"
     >
       Ghép đá

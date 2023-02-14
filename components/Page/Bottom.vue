@@ -130,11 +130,12 @@ const upgradeTabOptions = [
   },
 ]
 
-const tabMarket = computed(() => tab.value === 'market')
-const tabStore = computed(() => tab.value === 'store')
-const tabCharacter = computed(() => tab.value === 'character')
-const tabBag = computed(() => tab.value === 'bag')
-const tabBoss = computed(() => tab.value === 'boss')
+const isMarket = computed(() => tab.value === 'market')
+const isStore = computed(() => tab.value === 'store')
+const isCharacter = computed(() => tab.value === 'character')
+const isBag = computed(() => tab.value === 'bag')
+const isBoss = computed(() => tab.value === 'boss')
+const isActivity = computed(() => tab.value === 'activity')
 
 const setTab = (t: string) => {
   if (['upgrade'].includes(t)) {
@@ -173,7 +174,15 @@ const setTab = (t: string) => {
     </div>
   </var-popup>
   <div class="h-full">
-    <div class="flex justify-around w-full absolute top-[10px] pl-1 text-white">
+    <div
+      flex="~"
+      justify="around"
+      w="full"
+      pos="absolute"
+      top="[10px]"
+      p="l-1"
+      text="white"
+    >
       <button
         v-for="menu in menuItems"
         :key="menu.key"
@@ -197,9 +206,9 @@ const setTab = (t: string) => {
       </button>
     </div>
     <div class="absolute top-16 text-10 text-[#eaeced] italic w-full h-[calc(100%_-_115px)]">
-      <store v-if="tabStore" />
-      <market v-if="tabMarket" />
-      <template v-if="tabCharacter">
+      <store v-if="isStore" />
+      <market v-if="isMarket" />
+      <template v-if="isCharacter">
         <Line class="mb-4">
           Thuộc tính nhân vật
         </Line>
@@ -219,11 +228,14 @@ const setTab = (t: string) => {
           :right-slots="rightSlots"
         />
       </template>
-      <template v-if="tabBag">
+      <template v-if="isBag">
         <bag />
       </template>
-      <template v-if="tabBoss">
+      <template v-if="isBoss">
         <boss />
+      </template>
+      <template v-if="isActivity">
+        <Activity />
       </template>
     </div>
   </div>

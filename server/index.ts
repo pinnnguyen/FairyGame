@@ -17,17 +17,15 @@ export default async () => {
 
   try {
     const tasks: ScheduledTask[] = []
-
+    await handleRewardBoss12h()
     tasks.push(
-      cron.schedule('00 12 * * *', async () => {
+      cron.schedule('42 16 * * *', async () => {
         await handleStartBoss12h()
       }),
 
-      cron.schedule('30 12 * * *', async () => {
+      cron.schedule('35 21 * * *', async () => {
         console.log('start job send reward auction')
-        await handleRewardBoss12h()
-
-        console.log('end job send reward auction')
+        // await handleRewardBoss12h()
       }),
 
       // “At every 2nd minute

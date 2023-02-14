@@ -33,13 +33,50 @@ export const addPlayerGem = async (sid?: string, gemId?: number, quality?: numbe
   if (!gem)
     return
 
+  const playerG = await PlayerGemSchema.findOne({ sid, gemId, quality })
   const rateOnLevel = Math.round(randomNumber(1, 2) * 100) / 100
+
+  if (playerG) {
+    if (!playerG.rateOnLevel || playerG.rateOnLevel! < rateOnLevel) {
+      await PlayerGemSchema.findOneAndUpdate({ sid, gemId, quality }, {
+        name: gem.name,
+        slot: gem.slot,
+        values: gem.values,
+        rateOnLevel,
+        target: gem.target,
+        $inc: {
+          sum: num,
+        },
+      }, {
+        new: true,
+        upsert: true,
+      })
+
+      return
+    }
+
+    await PlayerGemSchema.findOneAndUpdate({ sid, gemId, quality }, {
+      name: gem.name,
+      slot: gem.slot,
+      values: gem.values,
+      target: gem.target,
+      $inc: {
+        sum: num,
+      },
+    }, {
+      new: true,
+      upsert: true,
+    })
+
+    return
+  }
+
   await PlayerGemSchema.findOneAndUpdate({ sid, gemId, quality }, {
     name: gem.name,
     slot: gem.slot,
-    rateOnLevel,
     values: gem.values,
     target: gem.target,
+    rateOnLevel,
     $inc: {
       sum: num,
     },

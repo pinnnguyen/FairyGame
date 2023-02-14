@@ -4,48 +4,69 @@
     "price": 100,
     "quantity": 100,
     "kind": 2,
-    "currency": "KNB"
+    "currency": "knb"
   },
   {
     "itemId": 2,
     "price": 100,
     "quantity": 100,
     "kind": 2,
-    "currency": "KNB"
+    "currency": "knb"
   },
   {
     "itemId": 3,
     "price": 100,
     "quantity": 100,
     "kind": 2,
-    "currency": "KNB"
+    "currency": "knb"
   },
   {
     "itemId": 4,
     "price": 100,
     "quantity": 1,
     "kind": 2,
-    "currency": "KNB"
+    "currency": "knb"
   },
   {
     "itemId": 5,
     "price": 150,
     "quantity": 1,
     "kind": 2,
-    "currency": "KNB"
+    "currency": "knb"
   },
   {
     "itemId": 6,
     "price": 200,
     "quantity": 1,
     "kind": 2,
-    "currency": "KNB"
+    "currency": "knb"
   },
   {
     "itemId": 7,
     "price": 250,
     "quantity": 1,
     "kind": 2,
-    "currency": "KNB"
+    "currency": "knb"
+  },
+  {
+    "itemId": 9,
+    "price": 250,
+    "quantity": 1,
+    "kind": 2,
+    "currency": "knb"
+  },
+  {
+    "itemId": 10,
+    "price": 25,
+    "quantity": 1,
+    "kind": 2,
+    "currency": "coin"
+  },
+  {
+    "itemId": 11,
+    "price": 50,
+    "quantity": 1,
+    "kind": 2,
+    "currency": "coin"
   }
 ]

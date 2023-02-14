@@ -86,3 +86,19 @@ export const SendMarketSystemMail = async (sid: string, recordType?: string, rec
     records,
   })
 }
+
+export const SendAuctionSystemMail = async (sid: string, recordType?: string, records?: any, options?: {
+  title: string
+  note: string
+}) => {
+  await MailSchema.create({
+    sid,
+    kind: 'system',
+    title: options?.title,
+    note: options?.note,
+    isRead: false,
+    deleted: false,
+    recordType,
+    records,
+  })
+}

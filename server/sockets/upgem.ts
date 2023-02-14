@@ -47,10 +47,9 @@ export const handleEventUpGem = async (io: any, socket: any) => {
       },
     })
 
-    const rateOnLevel = Math.round(randomNumber(1, 2) * 100) / 100
     await PlayerGemSchema.findOneAndUpdate({ sid: playerInfo.sid, gemId: gem.gemId, quality: gem.quality! + 1 }, {
       name: gem.name,
-      rateOnLevel,
+      rateOnLevel: gem.rateOnLevel,
       values: gem.values,
       slot: gem.slot,
       target: gem.target,

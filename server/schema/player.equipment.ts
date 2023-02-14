@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import type { Equipment, PlayerEquipment } from '~/types'
+import type { PlayerEquipment } from '~/types'
 import { EquipmentSchema } from '~/server/schema/equipment'
 import { randomNumber } from '~/common'
 import { DEFAULT_MAX_RATE_RECEIVED, DEFAULT_MIN_RATE_RECEIVED } from '~/constants'
@@ -23,7 +23,6 @@ const schema = new mongoose.Schema<PlayerEquipment>(
     preview: String,
     enhance: Number,
     star: Number,
-    quality: Number,
     stats: [],
     gemSlot: Number,
     gems: [],
@@ -89,10 +88,8 @@ export const addPlayerEquipments = async (sid: string, equipmentIds: Array<numbe
     const quality = getRateQuality()
     const stats = equipments[i].stats
     for (const stat of stats!) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      for (const key in stat) { // @ts-expect-error
+      for (const key in stat)
         stat[key].main = stat[key].main + (stat[key].main * quality / 100)
-      }
     }
 
     playerEquipments.push({
@@ -107,7 +104,6 @@ export const addPlayerEquipments = async (sid: string, equipmentIds: Array<numbe
       enhance: equipments[i]?.enhance,
       gemSlot: 0,
       stats,
-      quality,
       used: false,
       gems: [],
     })

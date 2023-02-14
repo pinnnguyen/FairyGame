@@ -2,7 +2,6 @@ import { getServerSession } from '#auth'
 import {
   ItemSchema,
   MarketSchema,
-  PlayerItemSchema,
   PlayerSchema,
   SendKnbMarketSystemMail,
   SendMarketSystemMail,

@@ -18,6 +18,9 @@ const showReward = ref<boolean>(false)
 const now = new Date().getTime()
 const startTime = ref(((props.boss?.startHours ?? 0) - new Date().getTime()) / 1000)
 const endTime = ref(((props.boss?.endHours ?? 0) - now) / 1000)
+const isStart = computed(() => {
+  return startTimeEvent(props.boss?.startHours, props.boss?.endHours)
+})
 
 onMounted(() => {
   setInterval(() => {
@@ -31,15 +34,10 @@ const startWar = async (boss?: BossFrameTime) => {
   if (!boss)
     return
 
-  // if (boss?.isStart) {
-  //   sendMessage('Thời gian hoạt động chưa mở mời đạo hữu quay lại sau')
-  //   return
-  // }
-
-  // if (playerInfo.value!.level < boss.level) {
-  //   sendMessage('Chưa đạt cấp độ')
-  //   return
-  // }
+  if (!isStart.value) {
+    sendMessage('Thời gian hoạt động chưa mở mời đạo hữu quay lại sau')
+    return
+  }
 
   set(battleRequest, {
     id: boss._id,
@@ -55,10 +53,6 @@ const bossLevelTitle = computed(() => {
 
   return playerTitle(props.boss.level, props.boss?.level + 1)
 })
-
-const isStart = computed(() => {
-  return startTimeEvent(props.boss?.startHours, props.boss?.endHours)
-})
 </script>
 
 <template>
@@ -67,13 +61,13 @@ const isStart = computed(() => {
       <span v-if="!isStart">
         Boss bắt đầu:
         <span v-if="timeOffset(startTime).hours > 0">{{ timeOffset(startTime).hours }}h</span>
-        <span v-if="timeOffset(startTime).minutes > 0">{{ timeOffset(startTime).minutes }}phút</span>
+        <span v-if="timeOffset(startTime).minutes > 0" p="x-1">{{ timeOffset(startTime).minutes }}phút</span>
         <span>{{ timeOffset(startTime).seconds }}s</span>
       </span>
       <span v-else>
         Boss kết thúc:
         <span v-if="timeOffset(endTime).hours > 0">{{ timeOffset(endTime).hours }}h</span>
-        <span v-if="timeOffset(endTime).minutes > 0">{{ timeOffset(endTime).minutes }}phút</span>
+        <span v-if="timeOffset(endTime).minutes > 0" p="x-1">{{ timeOffset(endTime).minutes }}phút</span>
         <span>{{ timeOffset(endTime).seconds }}s</span>
       </span>
     </div>

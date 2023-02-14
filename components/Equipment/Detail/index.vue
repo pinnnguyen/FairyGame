@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { playerTitle } from '~/common'
 import type { PlayerEquipment } from '~/types'
 import { usePlayerStore } from '~/composables/usePlayer'
 import { sendMessage } from '~/composables/useMessage'
@@ -19,6 +20,10 @@ const sellPopup = ref<boolean>(false)
 const sellOptions = ref({
   price: 0,
   quantity: 0,
+})
+
+const equipmentLevelTitle = computed(() => {
+  return playerTitle(props.equipment.level!, props.equipment.level! + 1)
 })
 
 const doEquip = async () => {
@@ -188,7 +193,7 @@ const sell = async () => {
       <div
         text="center 10"
       >
-        Cấp độ sử dụng: {{ equipment.level }}
+        Cấp độ sử dụng: {{ equipmentLevelTitle.levelTitle }} {{ equipmentLevelTitle.floor }}
       </div>
     </div>
   </div>

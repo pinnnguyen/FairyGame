@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
 
   if (mail.recordType === 'gem') {
     for (const record of mail.records)
-      await addPlayerGem(playerInfo.sid, record.gemId, record.quality, record.sum)
+      await addPlayerGem(playerInfo.sid, record.gemId ?? record.id, record.quality, record.sum ?? 1)
   }
 
   if (mail.recordType === 'equipment') {

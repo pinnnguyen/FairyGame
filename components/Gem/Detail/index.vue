@@ -27,6 +27,7 @@ $io.on('gem:merge:response', (data) => {
 
 <template>
   <div
+    v-if="gem"
     pos="relative"
     text="white"
     bg="primary"
@@ -72,7 +73,7 @@ $io.on('gem:merge:response', (data) => {
           <p
             text="12"
             font="bold"
-            :style="{ color: qualityPalette(gem.quality!) }"
+            :style="{ color: qualityPalette(gem.quality) }"
           >
             {{ gem.name }}
           </p>

@@ -20,3 +20,9 @@ export const ItemToQuality: Record<string, number> = {
   kill: 3,
   top: 5,
 }
+
+export enum CurrencyTitle {
+  knb = 'Tiên Duyên',
+  gold = 'Tiền Tiên',
+  coin = 'Tiên Ngọc',
+}

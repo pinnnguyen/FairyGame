@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { sendMessage, usePlayerStore } from '#imports'
 import type { StoreItem } from '~/types'
 import { qualityPalette } from '~/common'
+import { CurrencyTitle } from '~/constants'
 
 defineProps<{
   storeItem: StoreItem
@@ -40,17 +41,24 @@ const buy = async (storeItem: StoreItem) => {
     }"
   >
     <div
-      class="text-10 font-bold" :style="{
+      class="text-10 font-bold line-clamp-1" :style="{
         color: qualityPalette(storeItem?.props?.quality),
       }"
     >
       {{ storeItem.props?.name }}
     </div>
-    <div class="pt-2 text-10 line-clamp-2 text-primary">
+    <div
+      p="t-2"
+      text="12 primary"
+      class="line-clamp-2"
+    >
       {{ storeItem?.props?.note }}
     </div>
-    <div class="mt-2 text-primary">
-      Giá bán: {{ storeItem?.price }}
+    <div
+      m="t-2"
+      text="8 primary"
+    >
+      Giá bán: {{ storeItem?.price }} {{ CurrencyTitle[storeItem.currency] }}
     </div>
     <div class="text-center">
       <button

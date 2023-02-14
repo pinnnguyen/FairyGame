@@ -24,7 +24,14 @@ const tabItems = [
       v-for="tabItem in tabItems"
       :key="tabItem.key"
       :class="{ '!opacity-100': tab === tabItem.key }"
-      class="transition opacity-40 transition-opacity duration-800 mx-2 w-16 h-8 leading-3 italic shadow rounded font-bold border-1 text-primary border-white/40"
+      transition="~ opacity duration-800"
+      m="x-2"
+      w="16"
+      h="8"
+      font="italic bold leading-3"
+      opacity="40"
+      border="rounded 1 white/40"
+      text="primary"
       @click="tab = tabItem.key"
     >
       {{ tabItem.name }}

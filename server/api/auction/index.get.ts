@@ -18,18 +18,33 @@ export default defineEventHandler(async () => {
                 localField: 'sid',
                 foreignField: 'sid',
                 as: 'player',
+                pipeline: [
+                  {
+                    $project: {
+                      name: true,
+                    },
+                  },
+                ],
+              },
+            },
+            // {
+            //
+            // },
+            {
+              $lookup: {
+                from: 'gl_equipments',
+                localField: 'equipmentId',
+                foreignField: 'id',
+                as: 'equipment',
               },
             },
             {
               $lookup: {
-                from: 'equipments',
-                localField: 'itemId',
+                from: 'gl_gems',
+                localField: 'gemId',
                 foreignField: 'id',
-                as: 'detail',
+                as: 'gem',
               },
-            },
-            {
-              $unwind: '$detail',
             },
           ],
           as: 'auctionItems',
@@ -40,6 +55,9 @@ export default defineEventHandler(async () => {
       },
     ],
   )
+
+  if (auction.length <= 0)
+    return false
 
   return auction[0]
 })

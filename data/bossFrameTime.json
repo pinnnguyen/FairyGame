@@ -22,54 +22,20 @@
             "exp": 10,
             "gold": 10
           },
-          "equipRates": [
+          "equipments": [],
+          "items": [],
+          "gems": [
             {
-              "id": 1,
-              "rate": 20,
-              "kind": 1,
+              "gemId": 5,
               "quantity": 1
             },
             {
-              "id": 2,
-              "rate": 20,
-              "kind": 1,
+              "gemId": 5,
               "quantity": 1
             },
             {
-              "id": 3,
-              "rate": 20,
-              "kind": 1,
+              "gemId": 5,
               "quantity": 1
-            },
-            {
-              "id": 4,
-              "rate": 20,
-              "kind": 1,
-              "quantity": 1
-            },
-            {
-              "id": 5,
-              "rate": 20,
-              "kind": 1,
-              "quantity": 1
-            },
-            {
-              "id": 6,
-              "rate": 20,
-              "kind": 1,
-              "quantity": 1
-            },
-            {
-              "id": 7,
-              "rate": 20,
-              "kind": 1,
-              "quantity": 1
-            },
-            {
-              "id": 8,
-              "rate": 20,
-              "kind": 2,
-              "quantity": 10
             }
           ]
         },

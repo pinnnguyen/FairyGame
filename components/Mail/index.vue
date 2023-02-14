@@ -64,6 +64,7 @@ const take = async (mail: any) => {
     p="2"
     h="full"
     overflow="auto"
+    class="h-[calc(100%_-_100px)]"
   >
     <div
       v-for="mail in mails"
@@ -85,7 +86,7 @@ const take = async (mail: any) => {
         <div font="bold">
           {{ mail?.title }}
         </div>
-        <div text="10 white" class="w-[calc(100%_-_100px)]">
+        <div text="10 white" class="w-50">
           {{ mail.note }}
         </div>
         <div m="t-2">

@@ -66,5 +66,31 @@
     "kind": 3,
     "preview": "/items/1.png",
     "quality": 5
+  },
+  {
+    "id": 9,
+    "name": "100 Vạn Tiền Tiên",
+    "note": "Dùng vật phẩm sẽ nhận được 100 Vạn Tiền Tiên",
+    "kind": 3,
+    "preview": "/items/1.png",
+    "quality": 3
+  },
+  {
+    "id": 10,
+    "name": "Tăng 50% Tu Vi Nhận Được Trong 2h",
+    "note": "Dùng vật phẩm sẽ nhận được 100 Vạn Tiền Tiên",
+    "kind": 3,
+    "preview": "/items/1.png",
+    "quality": 3,
+    "value": 50
+  },
+  {
+    "id": 11,
+    "name": "Tăng 100% Tu Vi Nhận Được Trong 2h",
+    "note": "Dùng vật phẩm sẽ nhận được 100 Vạn Tiền Tiên",
+    "kind": 3,
+    "preview": "/items/1.png",
+    "quality": 3,
+    "value": 100
   }
 ]

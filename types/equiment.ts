@@ -12,6 +12,7 @@ export interface BaseEquipment {
   preview?: string
   enhance?: number
   stats?: PlayerEquipmentStat[]
+  star?: number
 }
 export interface EquipRateReward {
   id: number
@@ -45,4 +46,5 @@ export type PlayerEquipment = BaseEquipment & {
   equipmentId?: number
   gemSlot: number
   gems: Partial<PlayerGem[]>
+  used: boolean
 }

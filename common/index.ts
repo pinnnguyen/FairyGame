@@ -75,10 +75,10 @@ export const startEndHoursBossFrameTime = (hours: number) => {
   }
 }
 
-export const startTimeEvent = (startTime: number, endTime: number) => {
+export const startTimeEvent = (startTime?: number, endTime?: number) => {
   const now = new Date().getTime()
 
-  return now < endTime && now > startTime
+  return now < endTime! && now > startTime!
 }
 
 export function fromNow(to: number, now = +new Date()) {
@@ -218,14 +218,34 @@ export const playerTitle = (level: number, playerNextLevel: number) => {
       const jd = RANGE_LEVEL_ID[dd]
 
       levelTitle = PLAYER_LEVEL_TITLE[i]
-      if (jd < 3)
-        floor = 'Sơ Kỳ'
+      if (jd <= 3) {
+        if (jd === 1)
+          floor = 'Sơ Kỳ T1'
 
-      if (jd > 3 && jd < 6)
-        floor = 'Trung Kỳ'
+        if (jd === 2)
+          floor = 'Sơ Kỳ T2'
 
-      if (jd > 6 && jd < 9)
-        floor = ' Hậu Kỳ'
+        if (jd === 3)
+          floor = 'Sơ Kỳ T3'
+      }
+
+      if (jd > 3 && jd <= 6) {
+        if (jd === 4)
+          floor = 'Trung Kỳ T1'
+
+        if (jd === 5)
+          floor = 'Trung Kỳ T2'
+
+        if (jd === 6)
+          floor = 'Trung Kỳ T3'
+      }
+
+      if (jd > 6 && jd < 9) {
+        if (jd === 7)
+          floor = 'Hậu Kỳ T1'
+        if (jd === 8)
+          floor = 'Hậu Kỳ T2'
+      }
 
       if (jd >= 9)
         floor = 'Đỉnh Phong'

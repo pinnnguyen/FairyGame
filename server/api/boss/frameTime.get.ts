@@ -11,7 +11,7 @@ const getBossFrameTime = async () => {
     death: false,
     kind: 'frame_time',
     endHours: {
-      $gte: today,
+      $lte: today,
     },
   })
 

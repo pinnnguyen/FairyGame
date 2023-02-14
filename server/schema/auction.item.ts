@@ -10,8 +10,10 @@ const schema = new mongoose.Schema(
       },
     },
     itemId: Number,
+    gemId: Number,
+    equipmentId: Number,
     auctionId: String,
-    kind: Number,
+    kind: String,
     price: Number,
     sid: String,
     quantity: Number,
@@ -20,6 +22,3 @@ const schema = new mongoose.Schema(
 )
 
 export const AuctionItemSchema = mongoose.model('AuctionItemSchema', schema, 'gl_auction_items')
-// export const AuctionItemSchema = (mongoose.models && mongoose.models.AuctionItemSchema
-//   ? mongoose.models.AuctionItemSchema
-//   : mongoose.model('AuctionItemSchema', schema, 'gl_auction_items'))
