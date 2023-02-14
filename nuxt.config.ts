@@ -5,6 +5,21 @@ import { defineNuxtConfig } from 'nuxt/config'
 import Unimport from 'unimport/unplugin'
 
 export default defineNuxtConfig({
+  nitro: {
+    // storage: {
+    //   notes: {
+    //     driver: 'cloudflare-kv-binding',
+    //     binding: 'ATINOTES',
+    //   },
+    // },
+    // Overwrite notes storage in development using FS
+    devStorage: {
+      notes: {
+        driver: 'fs',
+        base: './.data/caches',
+      },
+    },
+  },
   ssr: false,
   // routeRules: {
   //   '/**': { swr: true },

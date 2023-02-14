@@ -3,11 +3,15 @@ import { cloneDeep } from '~/helpers'
 import { BossCreatorSchema, BossDataSchema, PlayerSchema } from '~/server/schema'
 
 const getBossElite = async () => {
-  const bossEliteData = await BossCreatorSchema.find({ death: false })
+  const bossEliteData = await BossCreatorSchema.find({ death: false, kind: 'elite' })
   if (bossEliteData.length !== 0)
     return bossEliteData
 
-  const bossData = await BossDataSchema.find({ kind: 'elite' })
+  const bossData = await BossDataSchema.find({ kind: 'elite' }).select({
+    _id: false,
+    __v: false,
+  })
+
   const bossClone = cloneDeep(bossData)
   return await BossCreatorSchema.insertMany(bossClone.map(b => ({
     ...b,

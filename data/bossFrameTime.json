@@ -1,13 +1,14 @@
 [
     {
         "id": 99980,
-        "name": "Tà ma hổ kình",
+        "name": "Tô Nhan",
         "kind": "frame_time",
         "quality": 6,
         "level": 100,
         "info": "",
         "sex": "",
         "attribute": {
+          "speed": 20,
           "damage": 2500,
           "def": 200,
           "hp": 9999999,

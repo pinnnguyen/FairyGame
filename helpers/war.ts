@@ -139,7 +139,7 @@ export const receiveDamageV2 = (battleTarget: any) => {
   const { blood } = handleBloodsucking(inflictDMG, attacker?.bloodsucking, defender.reductionBloodsucking)
   const { recovery } = handleRecoveryPerformance(blood, attacker.recoveryPerformance, defender.reductionRecoveryPerformance)
   const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(attacker?.critical, inflictDMG, attacker?.criticalDamage, defender?.reductionCriticalDamage)
-  if (hasCritical)
+  if (hasCritical && inflictDMGAfter > 0)
     inflictDMG = inflictDMGAfter
 
   const { counterDamage } = handleCounterAttack(inflictDMG, attacker?.reductionCounterAttack, defender?.counterAttack)
@@ -177,7 +177,7 @@ interface Target {
 }
 export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttacked?: string | undefined) => {
   let round = 0
-  const totalDamage = {
+  const totalDamage: Record<string, any> = {
     list: {},
     self: 0,
   }
@@ -208,7 +208,7 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
 
   const emulators = []
   for (let i = 0; i < 60; i++) {
-    const battle = {
+    const battle: Record<string, any> = {
       [`${targetA.attribute.speed}_${targetA.extends._id}`]: [
         targetA.attribute,
         targetB.attribute,
@@ -279,7 +279,7 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
           match,
           winner: realId,
           totalDamage,
-        }
+        } as any
       }
 
       if (round === 50) {
@@ -288,7 +288,7 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
           match,
           winner: personBeingAttacked,
           totalDamage,
-        }
+        } as any
       }
 
       round++

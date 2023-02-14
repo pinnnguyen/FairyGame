@@ -37,6 +37,7 @@ const exchangeTabs = [
 
 $io.emit('get:chat:request')
 $io.emit('get:mail', sid)
+
 setInterval(() => {
   $io.emit('get:mail', sid)
 }, 10000)
@@ -67,6 +68,10 @@ $io.on('chat:system', (data: any) => {
   }
 })
 
+const onReadMail = () => {
+  $io.emit('get:mail', sid)
+}
+
 const mailsUnRead = computed(() => {
   return mails.value.filter((v: any) => {
     return !v.isRead
@@ -76,7 +81,7 @@ const mailsUnRead = computed(() => {
 
 <template>
   <var-popup v-model:show="toggle.exchange" position="bottom">
-    <div
+    <section
       class="bg-[#000000] overflow-hidden max-w-[70vh] h-[70vh]"
       border="t-1 green-300/40"
       m="auto"
@@ -106,16 +111,16 @@ const mailsUnRead = computed(() => {
         </button>
       </div>
       <chat v-if="exchangeTabState === 'chat'" :contents="contents" />
-      <mail v-if="exchangeTabState === 'mail'" :mails="mails" />
+      <mail v-if="exchangeTabState === 'mail'" :mails="mails" @read="onReadMail" />
       <settings v-if="exchangeTabState === 'settings'" />
       <rank v-if="exchangeTabState === 'rank'" />
-    </div>
+    </section>
   </var-popup>
   <div class="max-w-[70vh] h-12 bg-[#000000] text-12 w-full flex items-center justify-between gap-2 p-2 fixed bottom-0 border-t border-white/10">
     <button class="h-8 w-8 text-12 italic font-semibold border-full-box bg-button-menu" @click="toggle.exchange = true">
       <span class="">Giao lưu</span>
     </button>
-    <div class="h-12 w-full overflow-auto text-left">
+    <section class="h-12 w-full overflow-auto text-left">
       <div v-for="content in contents" :key="content._id">
         <span
           class="font-bold text-10 text-[#6ce8d4]" :class="{
@@ -129,6 +134,6 @@ const mailsUnRead = computed(() => {
           {{ content.content }}
         </span>
       </div>
-    </div>
+    </section>
   </div>
 </template>

@@ -6,29 +6,30 @@ const props = defineProps<{
   mails: any
 }>()
 
+const emits = defineEmits(['read'])
 const toggle = reactive({
   mail: false,
 })
 
 const readMail = ref({})
 
-const gemReward = computed(() => {
-  return props.mails.filter((m: any) => {
-    return m.recordType === 'gem'
-  })
-})
-
-const equipmentReward = computed(() => {
-  return props.mails.filter((m: any) => {
-    return m.recordType === 'equipment'
-  })
-})
-
-const itemReward = computed(() => {
-  return props.mails.filter((m: any) => {
-    return m.recordType === 'item'
-  })
-})
+// const gemReward = computed(() => {
+//   return props.mails.filter((m: any) => {
+//     return m.recordType === 'gem'
+//   })
+// })
+//
+// const equipmentReward = computed(() => {
+//   return props.mails.filter((m: any) => {
+//     return m.recordType === 'equipment'
+//   })
+// })
+//
+// const itemReward = computed(() => {
+//   return props.mails.filter((m: any) => {
+//     return m.recordType === 'item'
+//   })
+// })
 
 const read = (mail: any) => {
   set(readMail, mail)
@@ -50,6 +51,7 @@ const take = async (mail: any) => {
     })
 
     sendMessage(takeRes.message, 2500)
+    emits('read')
   }
   catch (e: any) {
     sendMessage(e.statusMessage)

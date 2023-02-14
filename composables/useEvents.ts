@@ -35,6 +35,19 @@ export const useBattleEvents = () => {
     })
   }
 
+  const useEventFrameTime = () => {
+    $io.emit('battle:join:frame_time', {
+      kind: battleRequest.value?.target,
+      player: {
+        userId: playerInfo.value?.userId,
+      },
+      target: {
+        type: battleRequest.value?.target,
+        id: battleRequest.value?.id,
+      },
+    })
+  }
+
   const useEventDaily = () => {
     $io.emit('battle:join:daily', {
       kind: battleRequest.value?.target,
@@ -52,6 +65,7 @@ export const useBattleEvents = () => {
     $io.off('battle:start:pve')
     $io.off('battle:start:daily')
     $io.off('battle:start:elite')
+    $io.off('battle:start:frame_time')
   }
 
   return {
@@ -59,5 +73,6 @@ export const useBattleEvents = () => {
     useEventDaily,
     useEventElite,
     offAllEvent,
+    useEventFrameTime,
   }
 }

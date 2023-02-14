@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
-import type { Boss } from '~/types'
+import type { BaseBossType } from '~/types'
 const ObjectId = mongoose.Types.ObjectId
 
-const schema = new mongoose.Schema<Boss>(
+const schema = new mongoose.Schema<BaseBossType & { numberOfTurn: number }>(
   {
     _id: {
       type: String,
@@ -11,6 +11,7 @@ const schema = new mongoose.Schema<Boss>(
       },
     },
     id: Number,
+    quality: Number,
     kind: String,
     name: String,
     level: Number,

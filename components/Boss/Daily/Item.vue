@@ -2,11 +2,11 @@
 import { set } from '@vueuse/core'
 import { sendMessage, usePlayerStore } from '#imports'
 import { playerTitle } from '~/common'
-import type { Boss } from '~/types'
+import type { BossDaily } from '~/types'
 import { TARGET_TYPE } from '~/constants'
 
 const props = defineProps<{
-  boss: Boss
+  boss: BossDaily
 }>()
 
 const emits = defineEmits(['war'])
@@ -14,7 +14,7 @@ const { playerInfo } = storeToRefs(usePlayerStore())
 const battleRequest = useState('battleRequest')
 const showReward = ref<boolean>(false)
 
-const startWar = (boss: Boss) => {
+const startWar = (boss: BossDaily) => {
   if (playerInfo.value!.level < boss.level) {
     sendMessage('Chưa đạt cấp độ')
     return

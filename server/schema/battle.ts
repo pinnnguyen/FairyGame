@@ -15,8 +15,6 @@ const schema = new mongoose.Schema<Battle>(
     mid: {},
     kind: String,
     emulators: [],
-    enemy: {},
-    player: {},
     winner: String,
     damageList: {},
     reward: {},

@@ -20,6 +20,7 @@ const schema = new mongoose.Schema<BossElite>(
     info: String,
     sex: String,
     hp: Number,
+    quality: Number,
     attribute: {},
     reward: {},
     avatar: String,
@@ -32,7 +33,7 @@ const schema = new mongoose.Schema<BossElite>(
     },
     startHours: Number,
     endHours: Number,
-    isStart: Boolean,
+    // isStart: Boolean,
   },
   { timestamps: true },
 )

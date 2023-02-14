@@ -1,5 +1,6 @@
-import type { H3Event } from 'h3'
-import { createError, sendError } from 'h3'
+import { createError } from 'h3'
+import { TARGET_TYPE } from '~/constants'
+import { startWarSolo } from '~/helpers'
 import {
   getBaseReward,
   getPlayer,
@@ -9,13 +10,10 @@ import {
   receivedItems,
   setLastTimeReceivedRss,
 } from '~/server/helpers'
-import {
-  BattleSchema,
-} from '~/server/schema'
-import { startWarSolo } from '~/helpers'
+import { BattleSchema } from '~/server/schema'
 import type { BattleRequest, PlayerInfo } from '~/types'
 
-export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: BattleRequest) => {
+export const handlePlayerVsMonster = async (_p: PlayerInfo, battleRequest: BattleRequest) => {
   const {
     _enemyObj,
     inRefresh,
@@ -24,7 +22,8 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     reward,
     winner,
     kind,
-  } = await (handleBeforeStartWar(battleRequest, _p) as any)
+    damageList,
+  } = await handleBeforeStartWar(battleRequest, _p)
 
   if (inRefresh) {
     return {
@@ -34,6 +33,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
       reward,
       winner,
       kind,
+      damageList,
     }
   }
 
@@ -70,7 +70,6 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
   const { exp, gold } = await getBaseReward(_p.player, _enemyObj, realWinner)
   const { equipments } = await receivedEquipment(_p.player, _enemyObj, realWinner)
   const { itemDrafts } = await receivedItems(_p.player, _enemyObj, realWinner)
-
   await setLastTimeReceivedRss(_p.player.sid)
 
   // Log battle
@@ -101,6 +100,7 @@ export const handlePlayerVsTarget = async (_p: PlayerInfo, battleRequest: Battle
     match,
     emulators,
     winner: realWinner,
+    damageList: totalDamage,
     kind: battleRequest.kind,
     reward: {
       base: {
@@ -142,21 +142,21 @@ export const handleWars = async (request: BattleRequest) => {
     })
   }
 
-  return handlePlayerVsTarget(player, request)
+  return handlePlayerVsMonster(player, request)
 }
 
-export default defineEventHandler(async (event: H3Event) => {
-  const body = await readBody<BattleRequest>(event)
+export const isBossDaily = (target?: string) => {
+  return target === TARGET_TYPE.BOSS_DAILY
+}
 
-  if (!body.kind) {
-    return sendError(
-      event,
-      createError({
-        statusCode: 400,
-        statusMessage: 'kind war not found!',
-      }),
-    )
-  }
+export const isBossFrameTime = (target?: string) => {
+  return target === TARGET_TYPE.BOSS_FRAME_TIME
+}
 
-  return handleWars(body)
-})
+export const isBossElite = (target?: string) => {
+  return target === TARGET_TYPE.BOSS_ELITE
+}
+
+export const isNormalMonster = (target?: string) => {
+  return target === TARGET_TYPE.MONSTER
+}

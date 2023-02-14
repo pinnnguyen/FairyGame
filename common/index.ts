@@ -230,7 +230,7 @@ export const playerTitle = (level: number, playerNextLevel: number) => {
       if (jd >= 9)
         floor = 'Đỉnh Phong'
 
-      expLimited = playerNextLevel * (playerNextLevel + Math.round(playerNextLevel / 5)) * 12 * RANGE_EXP_A_LEVEL[i] + playerNextLevel
+      expLimited = 5 * playerNextLevel * (playerNextLevel + Math.round(playerNextLevel / 5)) * 12 * RANGE_EXP_A_LEVEL[i] + playerNextLevel
     }
   }
 

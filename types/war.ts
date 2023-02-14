@@ -1,4 +1,5 @@
 import type { BasicItem } from './item'
+import type { BattleTargetKey } from '~/types/battle'
 import type { PlayerEquipment } from '~/types/equiment'
 import type { BaseAttributes } from '~/types/player'
 
@@ -9,7 +10,7 @@ export interface BattleRequest {
   }
   target: {
     id?: string
-    type?: string | 'monster' | 'boss-daily'
+    type?: BattleTargetKey
   }
   skip: boolean
 }
@@ -30,7 +31,7 @@ export interface EmulatorBattle {
 }
 
 export type Emulator = Record<string | 'player' | 'enemy', EmulatorBattle>
-export interface BaseProperties extends BaseAttributes {
+export type BaseProperties = BaseAttributes & {
   _id?: string
   name: string
   level: number
@@ -54,8 +55,6 @@ export interface RewardList {
 }
 
 export interface BattleResponse extends BattleInRefresh {
-  player: BaseProperties
-  enemy: BaseProperties
   winner: string
   emulators: any
   kind: string

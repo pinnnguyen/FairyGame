@@ -1,4 +1,4 @@
-import {BaseReward} from "~/types/war";
+import type { BaseReward } from '~/types/war'
 
 export interface Mid {
   _id: string /* primary key */
@@ -11,6 +11,4 @@ export interface Mid {
   reward: {
     base: BaseReward
   }
-  // rateExp?: number // type unknown;
-  // rateResource?: number // type unknown;
 }

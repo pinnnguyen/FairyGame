@@ -1,22 +1,35 @@
+import moment from 'moment'
 import { getServerSession } from '#auth'
 import { startEndHoursBossFrameTime, startTimeEvent } from '~/common'
 import { cloneDeep } from '~/helpers'
 import { BossCreatorSchema, BossDataSchema } from '~/server/schema'
 
 const getBossFrameTime = async () => {
-  const bossFrameTime = await BossCreatorSchema.find({ death: false, kind: 'frame_time' })
+  const today = moment().startOf('day')
+
+  const bossFrameTime = await BossCreatorSchema.find({
+    death: false,
+    kind: 'frame_time',
+    endHours: {
+      $gte: today,
+    },
+  })
+
   if (bossFrameTime.length !== 0)
     return bossFrameTime
 
-  // const today = moment().startOf('day')
-  const bossFrameTimeList = await BossDataSchema.find({ kind: 'frame_time' })
+  const bossFrameTimeList = await BossDataSchema.find({ kind: 'frame_time' }).select({
+    _id: false,
+    __v: false,
+  })
+
   const bossList = cloneDeep(bossFrameTimeList)
 
   const newBoss = []
   for (let i = 0; i < bossList.length; i++) {
-    bossList[i].isStart = false
-    const { start, end } = startEndHoursBossFrameTime(bossList[i].startHours)
-    bossList[i].isStart = startTimeEvent(start, end)
+    // bossList[i].isStart = false
+    const { start, end } = startEndHoursBossFrameTime(bossList[i].startHours!)
+    // bossList[i].isStart = startTimeEvent(start, end)
 
     bossList[i].startHours = start
     bossList[i].endHours = end

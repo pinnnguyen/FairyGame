@@ -24,6 +24,7 @@ const {
   useEventPve,
   useEventElite,
   useEventDaily,
+  useEventFrameTime,
   offAllEvent,
 } = useBattleEvents()
 
@@ -44,6 +45,7 @@ const handleStartBattle = async (battleRes: BattleResponse) => {
   set(battleCurrently, battleRes)
 
   await fn.startBattle(battleRes, async () => {
+    console.log('battle end')
     await useSoundRewardEvent()
 
     if (playerInfo.value) {
@@ -96,6 +98,11 @@ const onEventRefresh = () => {
       useEventElite()
       break
 
+    case TARGET_TYPE.BOSS_FRAME_TIME:
+      set(loading, true)
+      useEventFrameTime()
+      break
+
     default:
       useEventPve()
   }
@@ -128,7 +135,7 @@ watch(battleRequest, async (request) => {
   fn.stopBattle() // Todo: stop trận đánh nếu có đang được đánh chưa xong
 
   switch (request.target) {
-    case 'boss_daily':
+    case TARGET_TYPE.BOSS_DAILY:
       setTimeout(() => {
         useEventDaily()
         $io.on('battle:start:daily', async (war: BattleResponse) => {
@@ -138,7 +145,7 @@ watch(battleRequest, async (request) => {
 
       break
 
-    case 'boss_elite':
+    case TARGET_TYPE.BOSS_ELITE:
       setTimeout(() => {
         useEventElite()
         $io.on('battle:start:elite', async (war: BattleResponse) => {
@@ -147,6 +154,16 @@ watch(battleRequest, async (request) => {
         })
       }, 1000)
 
+      break
+
+    case TARGET_TYPE.BOSS_FRAME_TIME:
+      setTimeout(() => {
+        useEventFrameTime()
+        $io.on('battle:start:frame_time', async (war: BattleResponse) => {
+          console.log('frame time war', war)
+          await handleStartBattle(war)
+        })
+      }, 1000)
       break
   }
 })
@@ -157,6 +174,7 @@ watch(battleRequest, async (request) => {
     v-if="shouldBattleResult && !isPve"
     :reward="stateRunning.reward"
     :is-win="isWin"
+    :damage-list="battleCurrently.damageList"
     @on-refresh="onEventRefresh"
   />
   <var-loading

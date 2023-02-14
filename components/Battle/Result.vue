@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { qualityPalette } from '~/common'
+import { formatCash, qualityPalette } from '~/common'
 import type { BaseReward, BasicItem, PlayerEquipment } from '~/types'
 import { ItemToName, ItemToQuality } from '~/constants'
 
 const props = defineProps<{
   isWin: boolean
+  damageList: {}
   reward?: {
     base: BaseReward
     items: BasicItem[]
@@ -31,7 +32,6 @@ const selectedEquipment = (equipment: PlayerEquipment) => {
   options.showEquipment = true
 }
 const onRefresh = () => {
-  // emits('close')
   emits('onRefresh')
 }
 const close = () => {
@@ -55,17 +55,17 @@ const close = () => {
         m="b-2"
         text="12 white space-nowrap"
       >
-        Phần thưởng
+        Khiêu chiến thất bại
       </Line>
 
       <div text="center white">
-        Khiêu chiến thất bại
+        Sát thương gây ra {{ formatCash(damageList?.self) }}
       </div>
       <div
         class="text-center text-primary underline text-10 mt-4"
         @click.stop="close"
       >
-        Đóng
+        Đã hiểu
       </div>
     </div>
   </var-popup>
@@ -119,7 +119,7 @@ const close = () => {
         class="text-center text-primary underline text-10 mt-4"
         @click.stop="close"
       >
-        Đóng
+        Đã hiểu
       </div>
     </div>
   </var-popup>

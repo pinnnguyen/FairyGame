@@ -1,6 +1,6 @@
 import type { BattleRequest } from '~/types'
-import { handleWars } from '~/server/api/war/index.post'
 import { BattleSchema } from '~/server/schema'
+import { handleWars } from '~/server/utils'
 
 export const battleJoinHandler = async (io: any, socket: any) => {
   socket.on('battle:log', async (_bossId: string) => {
@@ -48,5 +48,10 @@ export const battleJoinHandler = async (io: any, socket: any) => {
   socket.on('battle:join:elite', async (warRequest: BattleRequest) => {
     const response = await handleWars(warRequest)
     socket.emit('battle:start:elite', response)
+  })
+
+  socket.on('battle:join:frame_time', async (warRequest: BattleRequest) => {
+    const response = await handleWars(warRequest)
+    socket.emit('battle:start:frame_time', response)
   })
 }

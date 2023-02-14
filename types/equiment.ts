@@ -39,6 +39,7 @@ export type Equipment = BaseEquipment & {
 export type PlayerEquipmentStat = {
   [key in BaseAttributeKeys | string]: EquipmentBaseEnhance
 }
+
 export type PlayerEquipment = BaseEquipment & {
   sid?: string
   equipmentId?: number

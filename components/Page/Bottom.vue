@@ -177,13 +177,20 @@ const setTab = (t: string) => {
       <button
         v-for="menu in menuItems"
         :key="menu.key"
-        class="transition transition-color duration-800 mx-2 h-10 w-10 shadow rounded text-12 italic font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
+        transition="~ colors duration-800"
+        m="x-2"
+        w="10"
+        h="10"
+        text="12 primary"
+        font="italic semibold"
+        border="rounded-full 1 white/40"
+        class="bg-button-menu"
+        @click.stop="setTab(menu.key)"
       >
         <span
           :class="{
             'text-[#4add3b]': tab === menu.key,
           }"
-          @click.stop="setTab(menu.key)"
         >
           {{ menu.name }}
         </span>
