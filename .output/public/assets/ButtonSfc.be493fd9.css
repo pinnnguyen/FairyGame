@@ -1,0 +1,1 @@
+:root{--ripple-cubic-bezier:cubic-bezier(.68,.01,.62,.6);--ripple-color:currentColor}.var-ripple{background-color:var(--ripple-color);border-radius:50%;left:0;opacity:0;pointer-events:none;position:absolute;top:0;transition:transform .2s var(--ripple-cubic-bezier),opacity .14s linear;will-change:transform,opacity;z-index:100}
