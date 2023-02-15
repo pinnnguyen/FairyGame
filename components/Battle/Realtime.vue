@@ -27,7 +27,7 @@ const cPlayerTitle = computed(() => {
       transform: realTime[extend._id]?.effect ? `${pos === 1 ? 'translate(10%)' : 'translate(-10%)'}` : '',
     }"
   >
-    <nuxt-img v-if="receiver[extend._id]?.hp <= 0" src="/battle/rip.png" z="9" w="10" pos="absolute" class="transform-center" />
+    <!--    <nuxt-img v-if="receiver[extend._id]?.hp <= 0" src="/battle/rip.png" z="9" w="10" pos="absolute" class="transform-center" /> -->
     <div
       w="28"
       :class="{ 'grayscale filter': receiver[extend._id]?.hp <= 0 }"

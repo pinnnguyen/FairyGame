@@ -14,12 +14,12 @@ const handle = defineEventHandler(async (event) => {
   if (query.sorted === 'power') {
     return PlayerSchema.find({}).sort({
       power: -1,
-    }).limit(20)
+    }).limit(20).select('name level arenas power sid')
   }
 
   return PlayerSchema.find({}).sort({
     level: -1,
-  }).limit(20)
+  }).limit(20).select('name level arenas power sid')
 })
 
 export { handle as default }

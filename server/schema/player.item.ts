@@ -71,8 +71,7 @@ export const getPlayerItems = (sid: string) => {
     },
     {
       $sort: {
-        'info.kind': 1,
-        'info.rank': 1,
+        'props.quality': -1,
       },
     },
   ])

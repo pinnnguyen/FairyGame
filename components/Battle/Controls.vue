@@ -2,7 +2,7 @@
 import { useBattleRoundStore } from '~/composables/useBattleRound'
 
 defineProps<{
-  isEliteBoss: boolean
+  back: boolean
 }>()
 const emits = defineEmits(['onBack', 'onSkip'])
 const {
@@ -67,7 +67,7 @@ const skipBattle = () => {
       Bỏ qua
     </button>
     <button
-      v-if="isEliteBoss"
+      v-if="back"
       text="8"
       m="x-2"
       h="6"

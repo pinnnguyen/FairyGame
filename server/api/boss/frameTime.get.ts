@@ -5,13 +5,16 @@ import { cloneDeep } from '~/helpers'
 import { BossCreatorSchema, BossDataSchema } from '~/server/schema'
 
 const getBossFrameTime = async () => {
-  const today = moment().startOf('day')
+  const now = new Date().getTime()
 
   const bossFrameTime = await BossCreatorSchema.find({
     death: false,
     kind: 'frame_time',
+    startHours: {
+      $gte: now,
+    },
     endHours: {
-      $lte: today,
+      $lte: now,
     },
   })
 

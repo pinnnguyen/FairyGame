@@ -1,8 +1,11 @@
-import { PlayerSchema, PlayerStatusSchema } from '~/server/schema'
+import { PlayerSchema, PlayerStatusSchema, addPlayerGem } from '~/server/schema'
 import type { BasicItem } from '~/types'
 import { PlayerStatusTypeCon } from '~/types'
 
 export const useItems = () => {
+  const useUnboxGem = async (sid: string, itemInfo: BasicItem) => {
+    await addPlayerGem(sid, itemInfo.value, 1, 1)
+  }
   const useIncreaseExp = async (sid: string, itemInfo: BasicItem) => {
     const playerStatus = await PlayerStatusSchema.findOne({
       sid,
@@ -87,5 +90,6 @@ export const useItems = () => {
     useReducedTimeItemRefreshMonster,
     useGold,
     useIncreaseExp,
+    useUnboxGem,
   }
 }

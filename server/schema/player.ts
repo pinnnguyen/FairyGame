@@ -29,6 +29,12 @@ const schema = new mongoose.Schema<Player>(
     class: Number,
     ofAttribute: Number,
     coreAttribute: {},
+    arenas: {
+      tienDau: {
+        pos: Number,
+        score: Number,
+      },
+    },
   },
   {
     timestamps: true,

@@ -72,6 +72,12 @@ export interface Player {
   floor: string
   expLimited: number
   class: number
+  arenas: {
+    tienDau: {
+      pos: number
+      score: number
+    }
+  }
 }
 
 export type PlayerAttribute = BaseAttributes & {

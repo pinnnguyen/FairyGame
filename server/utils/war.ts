@@ -1,5 +1,6 @@
 import { createError } from 'h3'
-import { TARGET_TYPE } from '~/constants'
+import moment from 'moment'
+import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { startWarSolo } from '~/helpers'
 import {
   getBaseReward,
@@ -10,7 +11,7 @@ import {
   receivedItems,
   setLastTimeReceivedRss,
 } from '~/server/helpers'
-import { BattleSchema } from '~/server/schema'
+import { BattleSchema, PlayerSchema } from '~/server/schema'
 import type { BattleRequest, PlayerInfo } from '~/types'
 
 export const handlePlayerVsMonster = async (_p: PlayerInfo, battleRequest: BattleRequest) => {
@@ -143,6 +144,120 @@ export const handleWars = async (request: BattleRequest) => {
   }
 
   return handlePlayerVsMonster(player, request)
+}
+
+export const handleArenaTienDauSolo = async (request: {
+  attackerSid: string
+  defenderSid: string
+  pos: number
+}) => {
+  const today = moment().startOf('day')
+
+  const numberOfArena = await BattleSchema.find({
+    sid: request.attackerSid,
+    kind: BATTLE_KIND.ARENA_SOLO_PVP,
+    createdAt: {
+      $gte: moment().startOf('day'),
+      $lte: moment(today).endOf('day').toDate(),
+    },
+  }).count()
+
+  if (numberOfArena >= 5) {
+    return {
+      reachLimit: true,
+    }
+  }
+
+  const attacker = await getPlayer('', request.attackerSid)
+  if (!attacker) {
+    return createError({
+      statusCode: 400,
+      statusMessage: 'player not found!',
+    })
+  }
+
+  const defender = await getPlayer('', request.defenderSid)
+  if (!defender) {
+    return createError({
+      statusCode: 400,
+      statusMessage: 'player not found!',
+    })
+  }
+
+  const targetA = {
+    extends: {
+      _id: attacker.player._id,
+      name: attacker.player.name,
+      level: attacker.player.level,
+    },
+    attribute: attacker.attribute,
+  }
+
+  const targetB = {
+    extends: {
+      _id: defender.player._id,
+      name: defender.player.name,
+      level: defender.player.level,
+    },
+    attribute: defender.attribute,
+  }
+
+  const warResponse = startWarSolo(targetA, targetB, attacker.player._id)
+  await new BattleSchema({
+    sid: attacker.player.sid,
+    kind: BATTLE_KIND.ARENA_SOLO_PVP,
+    match: warResponse.match,
+    emulators: warResponse.emulators,
+    winner: warResponse.winner,
+    damageList: warResponse.totalDamage,
+  }).save()
+
+  const youwin = warResponse.winner === attacker.player._id
+  if (youwin) {
+    const defenderPos = defender.player?.arenas?.tienDau?.pos ?? 999
+    const attackerPos = attacker.player?.arenas?.tienDau?.pos ?? request.pos
+
+    await PlayerSchema.findByIdAndUpdate(attacker.player._id, {
+      'arenas.tienDau.pos': defenderPos < attackerPos ? defenderPos : attackerPos,
+      '$inc': {
+        'knb': 10,
+        'arenas.tienDau.score': 10,
+      },
+    })
+
+    await PlayerSchema.findByIdAndUpdate(defender.player._id, {
+      'arenas.tienDau.pos': attackerPos < defenderPos ? attackerPos : defenderPos,
+    })
+
+    return {
+      youwin,
+      attacker: attacker.player,
+      defender: defender.player,
+      reward: {
+        knb: 10,
+        scoreTienDau: 10,
+      },
+      ...warResponse,
+    }
+  }
+
+  await PlayerSchema.findByIdAndUpdate(attacker.player._id, {
+    $inc: {
+      'knb': 5,
+      'arenas.tienDau.score': 5,
+    },
+  })
+
+  return {
+    youwin,
+    attacker: attacker.player,
+    defender: defender.player,
+    reward: {
+      knb: 5,
+      scoreTienDau: 5,
+    },
+    ...warResponse,
+  }
 }
 
 export const isBossDaily = (target?: string) => {

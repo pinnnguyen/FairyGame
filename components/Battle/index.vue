@@ -45,10 +45,9 @@ const handleStartBattle = async (battleRes: BattleResponse) => {
   set(battleCurrently, battleRes)
 
   await fn.startBattle(battleRes, async () => {
-    console.log('battle end')
     await useSoundRewardEvent()
 
-    if (playerInfo.value) {
+    if (playerInfo.value && stateRunning.value) {
       playerInfo.value.gold += stateRunning.value.reward?.base.gold ?? 0
       playerInfo.value.exp += stateRunning.value.reward?.base.exp ?? 0
     }
@@ -149,7 +148,6 @@ watch(battleRequest, async (request) => {
       setTimeout(() => {
         useEventElite()
         $io.on('battle:start:elite', async (war: BattleResponse) => {
-          console.log('elite war', war)
           await handleStartBattle(war)
         })
       }, 1000)
@@ -160,7 +158,6 @@ watch(battleRequest, async (request) => {
       setTimeout(() => {
         useEventFrameTime()
         $io.on('battle:start:frame_time', async (war: BattleResponse) => {
-          console.log('frame time war', war)
           await handleStartBattle(war)
         })
       }, 1000)
@@ -234,7 +231,7 @@ watch(battleRequest, async (request) => {
       />
     </div>
     <battle-controls
-      :is-elite-boss="isEliteBoss"
+      :back="isEliteBoss"
       @on-back="startEventPve"
       @on-skip="skipListener"
     />

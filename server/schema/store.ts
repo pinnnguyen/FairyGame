@@ -47,5 +47,10 @@ export const getStoreItems = async () => {
     {
       $unwind: '$props',
     },
+    {
+      $sort: {
+        price: -1,
+      },
+    },
   ])
 }

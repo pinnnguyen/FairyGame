@@ -1,6 +1,6 @@
 import type { BasicItem } from '~/types/item'
 
-export type currency = 'KNB' | 'GOLD' | 'COIN'
+export type currency = 'knb' | 'gold' | 'coin' | 'scoreTienDau'
 export interface StoreItem {
   _id?: string
   itemId: number

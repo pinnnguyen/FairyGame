@@ -68,5 +68,19 @@
     "quantity": 1,
     "kind": 2,
     "currency": "coin"
+  },
+  {
+    "itemId": 12,
+    "price": 350,
+    "quantity": 1,
+    "kind": 3,
+    "currency": "scoreTienDau"
+  },
+  {
+    "itemId": 13,
+    "price": 350,
+    "quantity": 1,
+    "kind": 3,
+    "currency": "scoreTienDau"
   }
 ]

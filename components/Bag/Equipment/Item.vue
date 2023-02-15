@@ -56,5 +56,8 @@ const onchangeEquip = () => {
     >
       {{ `${qualityToName[equipment.quality ?? 1]} -` }} {{ equipment?.name }} (+{{ equipment.enhance }})
     </div>
+    <div>
+      <icon v-for="i of equipment.star" :key="i" name="material-symbols:star" size="10" />
+    </div>
   </div>
 </template>

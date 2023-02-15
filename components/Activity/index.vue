@@ -1,6 +1,10 @@
 <script setup lang="ts">
-const typeTab = ref<'auction'>('auction')
+const typeTab = ref<'auction' | 'tien_dau'>('tien_dau')
 const typeTabItems = [
+  {
+    key: 'tien_dau',
+    name: 'Tiên đấu',
+  },
   {
     key: 'auction',
     name: 'Đấu giá',
@@ -8,6 +12,7 @@ const typeTabItems = [
 ]
 
 const isAuction = computed(() => typeTab.value === 'auction')
+const isTienDau = computed(() => typeTab.value === 'tien_dau')
 </script>
 
 <template>
@@ -33,5 +38,6 @@ const isAuction = computed(() => typeTab.value === 'auction')
   </div>
   <div class="h-[calc(100%_-_47px)] overflow-scroll">
     <ActivityAuciton v-if="isAuction" />
+    <ActivityTienDau v-if="isTienDau" />
   </div>
 </template>

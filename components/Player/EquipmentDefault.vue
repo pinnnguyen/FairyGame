@@ -27,7 +27,7 @@ const setSlot = (equipment: PlayerEquipment) => {
   <var-popup v-model:show="options.equipDetail" position="center">
     <equipment-detail
       :equipment="options.equipSelected"
-      :action="false"
+      :action="true"
     />
   </var-popup>
   <div

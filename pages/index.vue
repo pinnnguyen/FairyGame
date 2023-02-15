@@ -3,6 +3,7 @@ import { usePlayerStore } from '#imports'
 
 const { $io } = useNuxtApp()
 const { loadPlayer } = usePlayerStore()
+const isArena = useState('isArena', () => false)
 
 definePageMeta({
   middleware: ['game'],
@@ -11,6 +12,10 @@ definePageMeta({
 
 $io.on('fetch:player:response', (data: any) => {
   loadPlayer(data)
+})
+
+watch(isArena, (arena) => {
+  console.log('arena', arena)
 })
 </script>
 
@@ -34,7 +39,8 @@ $io.on('fetch:player:response', (data: any) => {
         border="b white/10"
         bg="primary"
       >
-        <battle />
+        <battle v-if="!isArena" />
+        <arena v-else />
       </div>
     </div>
     <div

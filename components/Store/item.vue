@@ -57,6 +57,7 @@ const buy = async (storeItem: StoreItem) => {
     <div
       m="t-2"
       text="8 primary"
+      h="5"
     >
       Giá bán: {{ storeItem?.price }} {{ CurrencyTitle[storeItem.currency] }}
     </div>

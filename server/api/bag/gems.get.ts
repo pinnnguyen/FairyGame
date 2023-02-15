@@ -16,5 +16,7 @@ export default defineEventHandler(async (event) => {
     sum: {
       $gte: 1,
     },
+  }).sort({
+    quality: -1,
   })
 })

@@ -20,5 +20,5 @@ export default defineEventHandler(async (event: H3Event) => {
     })
   }
 
-  return PlayerEquipmentSchema.find({ sid: player?.sid, used: false }).sort({ rank: -1, level: -1 })
+  return PlayerEquipmentSchema.find({ sid: player?.sid, used: false }).sort({ quality: -1, level: -1, star: -1, enhance: -1 })
 })

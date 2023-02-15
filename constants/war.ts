@@ -29,6 +29,7 @@ export const BATTLE_TURN = {
 export const BATTLE_KIND = {
   PVE: 'pve',
   PVP: 'pvp',
+  ARENA_SOLO_PVP: 'arena_solo_pvp',
   BOSS_FRAME_TIME: 'boss_frame_time',
   BOSS_DAILY: 'boss_daily',
   BOSS_ELITE: 'boss_elite',

@@ -93,5 +93,23 @@
     "preview": "/items/1.png",
     "quality": 3,
     "value": 100
+  },
+  {
+    "id": 12,
+    "name": "Rương đá Phiến Khinh La - Nhất Phẩm",
+    "note": "Dùng vật phẩm sẽ nhận được được đá hồn Phiến Khinh La Nhất Phẩm độ trưởng thành ngẫu nhiên",
+    "kind": 3,
+    "preview": "/items/1.png",
+    "quality": 4,
+    "value": 6
+  },
+  {
+    "id": 13,
+    "name": "Rương đá Tuyết Nguyệt - Nhất Phẩm",
+    "note": "Dùng vật phẩm sẽ nhận được được đá hồn Tuyết Nguyệt Nhất Phẩm độ trưởng thành ngẫu nhiên",
+    "kind": 3,
+    "preview": "/items/1.png",
+    "quality": 4,
+    "value": 7
   }
 ]

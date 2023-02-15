@@ -172,7 +172,7 @@ export const attributeDeep = (attribute: BaseAttributes) => {
 }
 
 interface Target {
-  extends: { level: number; name: string; _id: string }
+  extends: { level?: number; name?: string; _id?: string }
   attribute: PlayerAttribute
 }
 export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttacked?: string | undefined) => {
@@ -219,8 +219,11 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
       ],
     }
 
-    const battleReverse = Object.keys(battle).reverse()
-    for (const b of battleReverse) {
+    const battleReverse = Object.entries(battle)
+      .sort()
+      .reduce((o, [k, v]) => (((o[k]) = v), o), {})
+
+    for (const b in battleReverse) {
       const battleTarget = battle[b]
       const {
         receiveDMG,

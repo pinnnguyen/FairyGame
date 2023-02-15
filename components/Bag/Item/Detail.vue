@@ -9,7 +9,7 @@ interface Prop {
 
 const props = defineProps<Prop>()
 const emits = defineEmits(['refresh'])
-const { sid } = usePlayerStore()
+const { sid, fetchPlayer } = usePlayerStore()
 const sellPopup = ref(false)
 const sellOptions = ref({
   price: 0,
@@ -22,53 +22,54 @@ const useItem = async () => {
       body: {
         sid,
         itemId: props.item?.itemId,
-        kind: props.item.kind,
+        kind: props.item.props.kind,
         quantity: 1,
       },
     })
 
-    sendMessage(res.statusMessage, 1500)
+    sendMessage(res.statusMessage, 2000)
     emits('refresh')
+    fetchPlayer()
   }
   catch (e: any) {
     sendMessage(e.statusMessage)
   }
 }
 
-const sell = async () => {
-  if (sellOptions.value.price <= 0) {
-    sendMessage('Giá treo bán không hợp lệ')
-    return
-  }
-
-  if (sellOptions.value.quantity <= 0 || sellOptions.value.quantity > props.item.sum) {
-    sendMessage('Số lượng treo bán không hợp lệ')
-    return
-  }
-
-  try {
-    const sellRes: {
-      success: boolean
-      message: string
-    } = await $fetch('/api/market/sell', {
-      method: 'POST',
-      body: {
-        type: 'item',
-        quantity: sellOptions.value.quantity,
-        price: sellOptions.value.price,
-        _id: props.item._id,
-      },
-    })
-
-    if (sellRes.success) {
-      emits('refresh')
-      sendMessage(sellRes.message)
-    }
-  }
-  catch (e: any) {
-    sendMessage(e.statusMessage)
-  }
-}
+// const sell = async () => {
+//   if (sellOptions.value.price <= 0) {
+//     sendMessage('Giá treo bán không hợp lệ', 2000)
+//     return
+//   }
+//
+//   if (sellOptions.value.quantity <= 0 || sellOptions.value.quantity > props.item.sum) {
+//     sendMessage('Số lượng treo bán không hợp lệ', 2000)
+//     return
+//   }
+//
+//   try {
+//     const sellRes: {
+//       success: boolean
+//       message: string
+//     } = await $fetch('/api/market/sell', {
+//       method: 'POST',
+//       body: {
+//         type: 'item',
+//         quantity: sellOptions.value.quantity,
+//         price: sellOptions.value.price,
+//         _id: props.item._id,
+//       },
+//     })
+//
+//     if (sellRes.success) {
+//       emits('refresh')
+//       sendMessage(sellRes.message, 2000)
+//     }
+//   }
+//   catch (e: any) {
+//     sendMessage(e.statusMessage, 2000)
+//   }
+// }
 </script>
 
 <template>
@@ -116,16 +117,16 @@ const sell = async () => {
       </div>
     </div>
     <div class="text-center">
+      <!--      <var-button -->
+      <!--        v-if="sellAction" -->
+      <!--        class="!text-[#333] mx-2" -->
+      <!--        size="mini" -->
+      <!--        @click.stop="sellPopup = true" -->
+      <!--      > -->
+      <!--        Treo bán -->
+      <!--      </var-button> -->
       <var-button
-        v-if="sellAction"
-        class="!text-[#333] mx-2"
-        size="mini"
-        @click.stop="sellPopup = true"
-      >
-        Treo bán
-      </var-button>
-      <var-button
-        v-if="item.kind === 3"
+        v-if="item.props.kind === 3"
         class="mb-2 !text-[#333] font-semibold italic"
         size="mini"
         @click.stop="useItem"

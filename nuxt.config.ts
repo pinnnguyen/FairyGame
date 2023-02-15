@@ -6,6 +6,9 @@ import Unimport from 'unimport/unplugin'
 
 export default defineNuxtConfig({
   nitro: {
+    plugins: [
+      '~/server/index.ts',
+    ],
     // storage: {
     //   notes: {
     //     driver: 'cloudflare-kv-binding',
@@ -49,11 +52,6 @@ export default defineNuxtConfig({
     origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://tienhoi.vercel.app',
     enableGlobalAppMiddleware: false,
   },
-  nitro: {
-    plugins: [
-      '~/server/index.ts',
-    ],
-  },
   app: {
     keepalive: true,
     buildAssetsDir: '/assets/',
@@ -70,7 +68,7 @@ export default defineNuxtConfig({
     mongoUrl: process.env.MONGO_URL,
   },
   modules: [
-    '@nuxt/devtools',
+    // '@nuxt/devtools',
     '@vueuse/nuxt',
     '@pinia/nuxt',
     '@nuxt/image-edge',

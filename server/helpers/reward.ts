@@ -1,7 +1,8 @@
+import { PlayerStatusTypeCon } from '~/types'
 import type { BasicItem, EnemyObject, Player, PlayerEquipment } from '~/types'
 import { randomNumber } from '~/common'
 import { BASE_EXP, BASE_GOLD } from '~/server/rule/reward'
-import { ItemSchema, PlayerSchema, addPlayerEquipments, addPlayerItem } from '~/server/schema'
+import { ItemSchema, PlayerSchema, PlayerStatusSchema, addPlayerEquipments, addPlayerItem } from '~/server/schema'
 
 import { DEFAULT_MAX_RATE_RECEIVED, DEFAULT_MIN_RATE_RECEIVED } from '~/constants'
 
@@ -122,8 +123,19 @@ export const getBaseReward = async (player: Player, _enemyObj: EnemyObject, winn
     }
   }
 
-  const expInMinute = Math.round(BASE_EXP() * _enemyObj?.reward?.base?.exp)
+  let expInMinute = Math.round(BASE_EXP() * _enemyObj?.reward?.base?.exp)
   const goldInMinute = Math.round(BASE_GOLD() * _enemyObj?.reward?.base?.gold)
+
+  const playerStatus = await PlayerStatusSchema.findOne({
+    sid: player.sid,
+    type: PlayerStatusTypeCon.increase_exp,
+    timeLeft: {
+      $gte: new Date().getTime(),
+    },
+  }).select('value')
+
+  if (playerStatus && playerStatus.value)
+    expInMinute += expInMinute * (playerStatus.value / 100)
 
   await PlayerSchema.updateOne({ sid: player.sid }, {
     lastTimeReceivedRss: new Date().getTime(),

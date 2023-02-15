@@ -1,7 +1,7 @@
 import { PlayerItemSchema, getPlayerItem } from '~/server/schema'
 import { useItems } from '~/server/utils'
 
-const { useReducedTimeItemRefreshMonster, useGold, useIncreaseExp } = useItems()
+const { useReducedTimeItemRefreshMonster, useGold, useIncreaseExp, useUnboxGem } = useItems()
 interface Body {
   sid: string
   itemId: number
@@ -23,14 +23,14 @@ export default defineEventHandler(async (event) => {
   if (playerItem?.info?.kind !== body.kind) {
     return {
       statusCode: 400,
-      statusMessage: 'Loại trang bị không thể sử dụng',
+      statusMessage: 'Loại vật phảm không hợp lệ',
     }
   }
 
   if (playerItem.sum && playerItem.sum < body.quantity) {
     return {
       statusCode: 400,
-      statusMessage: 'Loại trang bị không thể sử dụng',
+      statusMessage: 'Vật phẩm không đủ số lượng',
     }
   }
 
@@ -52,7 +52,10 @@ export default defineEventHandler(async (event) => {
       break
     case 10:
     case 11:
-      useIncreaseExp(body.sid, playerItem.info)
+      await useIncreaseExp(body.sid, playerItem.info)
+      break
+    case 12:
+      await useUnboxGem(body.sid, playerItem.info)
       break
   }
 
