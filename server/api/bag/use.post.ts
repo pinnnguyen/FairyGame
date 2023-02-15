@@ -1,6 +1,7 @@
-import { PlayerItemSchema, PlayerStatusSchema, getPlayerItem } from '~/server/schema'
-import { PlayerStatusTypeCon } from '~/types'
+import { PlayerItemSchema, getPlayerItem } from '~/server/schema'
+import { useItems } from '~/server/utils'
 
+const { useReducedTimeItemRefreshMonster, useGold, useIncreaseExp } = useItems()
 interface Body {
   sid: string
   itemId: number
@@ -17,6 +18,7 @@ export default defineEventHandler(async (event) => {
       statusMessage: 'Vật phẩm không tồn tại',
     }
   }
+
   const playerItem = playerItems[0]
   if (playerItem?.info?.kind !== body.kind) {
     return {
@@ -38,35 +40,20 @@ export default defineEventHandler(async (event) => {
     },
   })
 
-  const playerStatus = await PlayerStatusSchema.findOne({
-    sid: body.sid,
-    type: PlayerStatusTypeCon.reduce_waiting_time_training,
-  })
-
-  if (!playerStatus) {
-    await PlayerStatusSchema.create({
-      sid: body.sid,
-      type: PlayerStatusTypeCon.reduce_waiting_time_training,
-      value: playerItem.info.value,
-      timeLeft: new Date().getTime() + 86400000,
-    })
-  }
-
-  if (playerStatus) {
-    const now = new Date().getTime()
-    let timeLeft = 0
-    if (playerStatus.timeLeft! < now)
-      timeLeft = now + 86400000
-
-    else
-      timeLeft = playerStatus.timeLeft! + 86400000
-
-    await PlayerStatusSchema.updateOne({ sid: body.sid, type: PlayerStatusTypeCon.reduce_waiting_time_training }, {
-      value: playerItem.info.value,
-      $inc: {
-        timeLeft, // 1 Day
-      },
-    })
+  switch (body.itemId) {
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+      await useReducedTimeItemRefreshMonster(body.sid, playerItem.info)
+      break
+    case 9:
+      await useGold(body.sid, playerItem.info)
+      break
+    case 10:
+    case 11:
+      useIncreaseExp(body.sid, playerItem.info)
+      break
   }
 
   return {

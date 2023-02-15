@@ -33,6 +33,14 @@ export interface BaseBossType {
     equipRates: EquipRateReward[]
     itemRates: ItemRateReward[]
     equipments: PlayerEquipment[]
+    items: {
+      itemId: number
+      quantity: number
+    }[]
+    gems: {
+      gemId: number
+      quantity: number
+    }[]
   }
   attribute: BaseAttributes
   class: number

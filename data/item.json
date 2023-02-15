@@ -73,7 +73,8 @@
     "note": "Dùng vật phẩm sẽ nhận được 100 Vạn Tiền Tiên",
     "kind": 3,
     "preview": "/items/1.png",
-    "quality": 3
+    "quality": 3,
+    "value": 1000000
   },
   {
     "id": 10,

@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { getServerSession } from '#auth'
-import { startEndHoursBossFrameTime, startTimeEvent } from '~/common'
+import { startEndHoursBossFrameTime } from '~/common'
 import { cloneDeep } from '~/helpers'
 import { BossCreatorSchema, BossDataSchema } from '~/server/schema'
 

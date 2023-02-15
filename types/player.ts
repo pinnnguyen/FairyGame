@@ -37,8 +37,9 @@ export type BaseAttributeKeys = 'speed'
 
 export type CoreAttributeKey = 'ofPower' | 'ofAgility' | 'ofSkillful' | 'ofVitality'
 
-export const PlayerStatusTypeCon = {
-  reduce_waiting_time_training: 'reduce_waiting_time_training',
+export enum PlayerStatusTypeCon {
+  reduce_waiting_time_training = 'reduce_waiting_time_training',
+  increase_exp = 'increase_exp',
 }
 
 export type PlayerStatusType = 'reduce_waiting_time_training'
