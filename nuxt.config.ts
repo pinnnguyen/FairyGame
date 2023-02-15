@@ -50,7 +50,7 @@ export default defineNuxtConfig({
     ],
   },
   auth: {
-    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : '103.179.189.210:3000/',
+    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'http://103.179.189.210:3000/',
     enableGlobalAppMiddleware: false,
   },
   app: {
