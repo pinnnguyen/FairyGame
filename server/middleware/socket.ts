@@ -4,7 +4,7 @@ import { BattleSchema, ChatSchema, MailSchema } from '~/server/schema'
 import {
   battleJoinHandler,
   handleAuction,
-  handleEquipStar,
+  // handleEquipStar,
   handleEquipUpRank,
   handleEquipUpgrade,
   handleEventUpGem,
@@ -95,7 +95,7 @@ export default defineEventHandler((event) => {
     await handleAuction(socket)
     await handleEquipUpgrade(io, socket)
     await battleJoinHandler(io, socket)
-    await handleEquipStar(io, socket)
+    // await handleEquipStar(io, socket)
     await handleEquipUpRank(io, socket)
     await handleEventUpGem(io, socket)
 

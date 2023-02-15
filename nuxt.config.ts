@@ -6,6 +6,7 @@ import Unimport from 'unimport/unplugin'
 
 export default defineNuxtConfig({
   nitro: {
+    preset: 'node-server',
     plugins: [
       '~/server/index.ts',
     ],
