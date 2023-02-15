@@ -6,16 +6,16 @@ const client_manifest = {
   },
   "InputSfc.css": {
     "resourceType": "style",
-    "file": "InputSfc.853a989b.css",
+    "file": "InputSfc.76ecac0e.css",
     "src": "InputSfc.css"
   },
-  "_ButtonSfc.4224516d.js": {
+  "_ButtonSfc.676ad373.js": {
     "resourceType": "script",
     "module": true,
     "css": [
       "ButtonSfc.be493fd9.css"
     ],
-    "file": "ButtonSfc.4224516d.js",
+    "file": "ButtonSfc.676ad373.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs"
     ]
@@ -24,39 +24,39 @@ const client_manifest = {
     "file": "ButtonSfc.be493fd9.css",
     "resourceType": "style"
   },
-  "_InputSfc.91f1e5a5.js": {
+  "_InputSfc.145169a3.js": {
     "resourceType": "script",
     "module": true,
     "css": [
-      "InputSfc.853a989b.css"
+      "InputSfc.76ecac0e.css"
     ],
-    "file": "InputSfc.91f1e5a5.js",
+    "file": "InputSfc.145169a3.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_useMessage.b3c713b8.js"
+      "_useMessage.4ef409fc.js"
     ]
   },
-  "InputSfc.853a989b.css": {
-    "file": "InputSfc.853a989b.css",
+  "InputSfc.76ecac0e.css": {
+    "file": "InputSfc.76ecac0e.css",
     "resourceType": "style"
   },
-  "_Line.2eebb493.js": {
+  "_Line.938dcc9e.js": {
     "resourceType": "script",
     "module": true,
-    "file": "Line.2eebb493.js",
+    "file": "Line.938dcc9e.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
       "__plugin-vue_export-helper.c27b6911.js"
     ]
   },
-  "_RewardList.vue.f27acb18.js": {
+  "_RewardList.vue.90a05acb.js": {
     "resourceType": "script",
     "module": true,
-    "file": "RewardList.vue.f27acb18.js",
+    "file": "RewardList.vue.90a05acb.js",
     "imports": [
       "_index.040b5bdf.js",
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_index.415a6716.js"
+      "_index.79c2bd23.js"
     ]
   },
   "__plugin-vue_export-helper.c27b6911.js": {
@@ -69,7 +69,7 @@ const client_manifest = {
     "module": true,
     "file": "index.040b5bdf.js"
   },
-  "_index.415a6716.js": {
+  "_index.79c2bd23.js": {
     "resourceType": "script",
     "module": true,
     "assets": [
@@ -85,18 +85,18 @@ const client_manifest = {
       "components/Store/item.vue",
       "components/Bag/Gem/Item.vue"
     ],
-    "file": "index.415a6716.js",
+    "file": "index.79c2bd23.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_Line.2eebb493.js",
-      "_useMessage.b3c713b8.js",
-      "_usePlayer.1a998e47.js",
+      "_Line.938dcc9e.js",
+      "_useMessage.4ef409fc.js",
+      "_usePlayer.4eda164d.js",
       "_index.040b5bdf.js",
       "node_modules/nuxt-icon/dist/runtime/Icon.vue",
-      "_ButtonSfc.4224516d.js",
-      "_InputSfc.91f1e5a5.js",
+      "_ButtonSfc.676ad373.js",
+      "_InputSfc.145169a3.js",
       "__plugin-vue_export-helper.c27b6911.js",
-      "_useBattleRound.5f6c2d3a.js"
+      "_useBattleRound.ae7aabef.js"
     ],
     "isDynamicEntry": true
   },
@@ -112,37 +112,37 @@ const client_manifest = {
     "file": "reward.7ee45cc1.mp3",
     "resourceType": "audio"
   },
-  "_logo.26f8c7fb.js": {
+  "_logo.9a87ed7f.js": {
     "resourceType": "script",
     "module": true,
-    "file": "logo.26f8c7fb.js",
+    "file": "logo.9a87ed7f.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs"
     ]
   },
-  "_useBattleRound.5f6c2d3a.js": {
+  "_useBattleRound.ae7aabef.js": {
     "resourceType": "script",
     "module": true,
-    "file": "useBattleRound.5f6c2d3a.js",
+    "file": "useBattleRound.ae7aabef.js",
     "imports": [
       "_index.040b5bdf.js",
-      "_usePlayer.1a998e47.js",
+      "_usePlayer.4eda164d.js",
       "node_modules/nuxt/dist/app/entry.mjs"
     ]
   },
-  "_useMessage.b3c713b8.js": {
+  "_useMessage.4ef409fc.js": {
     "resourceType": "script",
     "module": true,
-    "file": "useMessage.b3c713b8.js",
+    "file": "useMessage.4ef409fc.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_ButtonSfc.4224516d.js"
+      "_ButtonSfc.676ad373.js"
     ]
   },
-  "_usePlayer.1a998e47.js": {
+  "_usePlayer.4eda164d.js": {
     "resourceType": "script",
     "module": true,
-    "file": "usePlayer.1a998e47.js",
+    "file": "usePlayer.4eda164d.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs"
     ]
@@ -181,19 +181,19 @@ const client_manifest = {
   "components/Bag/Gem/Item.vue": {
     "resourceType": "script",
     "module": true,
-    "file": "Item.c37f3246.js",
+    "file": "Item.74da6ea2.js",
     "imports": [
-      "_index.415a6716.js",
-      "_Line.2eebb493.js",
+      "_index.79c2bd23.js",
+      "_Line.938dcc9e.js",
       "node_modules/nuxt/dist/app/entry.mjs",
       "_index.040b5bdf.js",
-      "_usePlayer.1a998e47.js",
-      "_useMessage.b3c713b8.js",
-      "_ButtonSfc.4224516d.js",
+      "_usePlayer.4eda164d.js",
+      "_useMessage.4ef409fc.js",
+      "_ButtonSfc.676ad373.js",
       "node_modules/nuxt-icon/dist/runtime/Icon.vue",
       "__plugin-vue_export-helper.c27b6911.js",
-      "_InputSfc.91f1e5a5.js",
-      "_useBattleRound.5f6c2d3a.js"
+      "_InputSfc.145169a3.js",
+      "_useBattleRound.ae7aabef.js"
     ],
     "isDynamicEntry": true,
     "src": "components/Bag/Gem/Item.vue"
@@ -201,20 +201,20 @@ const client_manifest = {
   "components/Boss/Daily/Item.vue": {
     "resourceType": "script",
     "module": true,
-    "file": "Item.82d006e8.js",
+    "file": "Item.b8e1b309.js",
     "imports": [
-      "_index.415a6716.js",
-      "_Line.2eebb493.js",
+      "_index.79c2bd23.js",
+      "_Line.938dcc9e.js",
       "node_modules/nuxt/dist/app/entry.mjs",
       "_index.040b5bdf.js",
-      "_RewardList.vue.f27acb18.js",
-      "_useMessage.b3c713b8.js",
-      "_usePlayer.1a998e47.js",
-      "_ButtonSfc.4224516d.js",
-      "_useBattleRound.5f6c2d3a.js",
+      "_RewardList.vue.90a05acb.js",
+      "_useMessage.4ef409fc.js",
+      "_usePlayer.4eda164d.js",
+      "_ButtonSfc.676ad373.js",
+      "_useBattleRound.ae7aabef.js",
       "node_modules/nuxt-icon/dist/runtime/Icon.vue",
       "__plugin-vue_export-helper.c27b6911.js",
-      "_InputSfc.91f1e5a5.js"
+      "_InputSfc.145169a3.js"
     ],
     "isDynamicEntry": true,
     "src": "components/Boss/Daily/Item.vue"
@@ -225,19 +225,19 @@ const client_manifest = {
     "dynamicImports": [
       "components/Boss/Daily/Item.vue"
     ],
-    "file": "index.87b95e87.js",
+    "file": "index.13f6d1d1.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_index.415a6716.js",
+      "_index.79c2bd23.js",
       "_index.040b5bdf.js",
-      "_useBattleRound.5f6c2d3a.js",
-      "_ButtonSfc.4224516d.js",
-      "_Line.2eebb493.js",
+      "_useBattleRound.ae7aabef.js",
+      "_ButtonSfc.676ad373.js",
+      "_Line.938dcc9e.js",
       "__plugin-vue_export-helper.c27b6911.js",
-      "_useMessage.b3c713b8.js",
-      "_usePlayer.1a998e47.js",
+      "_useMessage.4ef409fc.js",
+      "_usePlayer.4eda164d.js",
       "node_modules/nuxt-icon/dist/runtime/Icon.vue",
-      "_InputSfc.91f1e5a5.js"
+      "_InputSfc.145169a3.js"
     ],
     "isDynamicEntry": true,
     "src": "components/Boss/Daily/index.vue"
@@ -245,20 +245,20 @@ const client_manifest = {
   "components/Boss/Elite/Item.vue": {
     "resourceType": "script",
     "module": true,
-    "file": "Item.0c027736.js",
+    "file": "Item.92124d3d.js",
     "imports": [
-      "_Line.2eebb493.js",
+      "_Line.938dcc9e.js",
       "_index.040b5bdf.js",
-      "_index.415a6716.js",
+      "_index.79c2bd23.js",
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_RewardList.vue.f27acb18.js",
-      "_ButtonSfc.4224516d.js",
-      "_usePlayer.1a998e47.js",
-      "_useMessage.b3c713b8.js",
-      "_useBattleRound.5f6c2d3a.js",
+      "_RewardList.vue.90a05acb.js",
+      "_ButtonSfc.676ad373.js",
+      "_usePlayer.4eda164d.js",
+      "_useMessage.4ef409fc.js",
+      "_useBattleRound.ae7aabef.js",
       "__plugin-vue_export-helper.c27b6911.js",
       "node_modules/nuxt-icon/dist/runtime/Icon.vue",
-      "_InputSfc.91f1e5a5.js"
+      "_InputSfc.145169a3.js"
     ],
     "isDynamicEntry": true,
     "src": "components/Boss/Elite/Item.vue"
@@ -269,19 +269,19 @@ const client_manifest = {
     "dynamicImports": [
       "components/Boss/Elite/Item.vue"
     ],
-    "file": "index.f9f5021a.js",
+    "file": "index.f6f0845b.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_index.415a6716.js",
+      "_index.79c2bd23.js",
       "_index.040b5bdf.js",
-      "_useBattleRound.5f6c2d3a.js",
-      "_ButtonSfc.4224516d.js",
-      "_Line.2eebb493.js",
+      "_useBattleRound.ae7aabef.js",
+      "_ButtonSfc.676ad373.js",
+      "_Line.938dcc9e.js",
       "__plugin-vue_export-helper.c27b6911.js",
-      "_useMessage.b3c713b8.js",
-      "_usePlayer.1a998e47.js",
+      "_useMessage.4ef409fc.js",
+      "_usePlayer.4eda164d.js",
       "node_modules/nuxt-icon/dist/runtime/Icon.vue",
-      "_InputSfc.91f1e5a5.js"
+      "_InputSfc.145169a3.js"
     ],
     "isDynamicEntry": true,
     "src": "components/Boss/Elite/index.vue"
@@ -289,20 +289,20 @@ const client_manifest = {
   "components/Boss/FrameTime/Item.vue": {
     "resourceType": "script",
     "module": true,
-    "file": "Item.dd1d6720.js",
+    "file": "Item.b60489c5.js",
     "imports": [
-      "_RewardList.vue.f27acb18.js",
+      "_RewardList.vue.90a05acb.js",
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_ButtonSfc.4224516d.js",
-      "_usePlayer.1a998e47.js",
-      "_useMessage.b3c713b8.js",
-      "_useBattleRound.5f6c2d3a.js",
+      "_ButtonSfc.676ad373.js",
+      "_usePlayer.4eda164d.js",
+      "_useMessage.4ef409fc.js",
+      "_useBattleRound.ae7aabef.js",
       "_index.040b5bdf.js",
-      "_index.415a6716.js",
-      "_Line.2eebb493.js",
+      "_index.79c2bd23.js",
+      "_Line.938dcc9e.js",
       "__plugin-vue_export-helper.c27b6911.js",
       "node_modules/nuxt-icon/dist/runtime/Icon.vue",
-      "_InputSfc.91f1e5a5.js"
+      "_InputSfc.145169a3.js"
     ],
     "isDynamicEntry": true,
     "src": "components/Boss/FrameTime/Item.vue"
@@ -313,19 +313,19 @@ const client_manifest = {
     "dynamicImports": [
       "components/Boss/FrameTime/Item.vue"
     ],
-    "file": "index.4d753587.js",
+    "file": "index.4494a7d2.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_index.415a6716.js",
+      "_index.79c2bd23.js",
       "_index.040b5bdf.js",
-      "_useBattleRound.5f6c2d3a.js",
-      "_ButtonSfc.4224516d.js",
-      "_Line.2eebb493.js",
+      "_useBattleRound.ae7aabef.js",
+      "_ButtonSfc.676ad373.js",
+      "_Line.938dcc9e.js",
       "__plugin-vue_export-helper.c27b6911.js",
-      "_useMessage.b3c713b8.js",
-      "_usePlayer.1a998e47.js",
+      "_useMessage.4ef409fc.js",
+      "_usePlayer.4eda164d.js",
       "node_modules/nuxt-icon/dist/runtime/Icon.vue",
-      "_InputSfc.91f1e5a5.js"
+      "_InputSfc.145169a3.js"
     ],
     "isDynamicEntry": true,
     "src": "components/Boss/FrameTime/index.vue"
@@ -333,19 +333,19 @@ const client_manifest = {
   "components/Gem/Detail/index.vue": {
     "resourceType": "script",
     "module": true,
-    "file": "index.f4c60e92.js",
+    "file": "index.30402993.js",
     "imports": [
-      "_index.415a6716.js",
+      "_index.79c2bd23.js",
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_Line.2eebb493.js",
+      "_Line.938dcc9e.js",
       "__plugin-vue_export-helper.c27b6911.js",
-      "_useMessage.b3c713b8.js",
-      "_ButtonSfc.4224516d.js",
-      "_usePlayer.1a998e47.js",
+      "_useMessage.4ef409fc.js",
+      "_ButtonSfc.676ad373.js",
+      "_usePlayer.4eda164d.js",
       "_index.040b5bdf.js",
       "node_modules/nuxt-icon/dist/runtime/Icon.vue",
-      "_InputSfc.91f1e5a5.js",
-      "_useBattleRound.5f6c2d3a.js"
+      "_InputSfc.145169a3.js",
+      "_useBattleRound.ae7aabef.js"
     ],
     "isDynamicEntry": true,
     "src": "components/Gem/Detail/index.vue"
@@ -353,19 +353,19 @@ const client_manifest = {
   "components/Store/item.vue": {
     "resourceType": "script",
     "module": true,
-    "file": "item.48190a3c.js",
+    "file": "item.e380defa.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_useMessage.b3c713b8.js",
-      "_usePlayer.1a998e47.js",
+      "_useMessage.4ef409fc.js",
+      "_usePlayer.4eda164d.js",
       "_index.040b5bdf.js",
-      "_index.415a6716.js",
-      "_ButtonSfc.4224516d.js",
-      "_Line.2eebb493.js",
+      "_index.79c2bd23.js",
+      "_ButtonSfc.676ad373.js",
+      "_Line.938dcc9e.js",
       "__plugin-vue_export-helper.c27b6911.js",
       "node_modules/nuxt-icon/dist/runtime/Icon.vue",
-      "_InputSfc.91f1e5a5.js",
-      "_useBattleRound.5f6c2d3a.js"
+      "_InputSfc.145169a3.js",
+      "_useBattleRound.ae7aabef.js"
     ],
     "isDynamicEntry": true,
     "src": "components/Store/item.vue"
@@ -373,7 +373,7 @@ const client_manifest = {
   "layouts/auth.vue": {
     "resourceType": "script",
     "module": true,
-    "file": "auth.6c46a50f.js",
+    "file": "auth.85e75ba2.js",
     "imports": [
       "__plugin-vue_export-helper.c27b6911.js",
       "node_modules/nuxt/dist/app/entry.mjs"
@@ -392,10 +392,10 @@ const client_manifest = {
     "css": [
       "default.ef099398.css"
     ],
-    "file": "default.ea3ddba4.js",
+    "file": "default.97d37a06.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_usePlayer.1a998e47.js",
+      "_usePlayer.4eda164d.js",
       "_index.040b5bdf.js",
       "__plugin-vue_export-helper.c27b6911.js"
     ],
@@ -409,10 +409,10 @@ const client_manifest = {
   "middleware/game.ts": {
     "resourceType": "script",
     "module": true,
-    "file": "game.a2004800.js",
+    "file": "game.641dcd23.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_usePlayer.1a998e47.js"
+      "_usePlayer.4eda164d.js"
     ],
     "isDynamicEntry": true,
     "src": "middleware/game.ts"
@@ -420,10 +420,10 @@ const client_manifest = {
   "middleware/role.ts": {
     "resourceType": "script",
     "module": true,
-    "file": "role.69f608e1.js",
+    "file": "role.f80a16ff.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_usePlayer.1a998e47.js"
+      "_usePlayer.4eda164d.js"
     ],
     "isDynamicEntry": true,
     "src": "middleware/role.ts"
@@ -601,7 +601,7 @@ const client_manifest = {
     "css": [
       "error-404.23f2309d.css"
     ],
-    "file": "error-404.96e5ef8c.js",
+    "file": "error-404.4a4e21bd.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
       "__plugin-vue_export-helper.c27b6911.js"
@@ -624,7 +624,7 @@ const client_manifest = {
     "css": [
       "error-500.aa16ed4d.css"
     ],
-    "file": "error-500.e8c95a24.js",
+    "file": "error-500.9b1ad3f9.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
       "__plugin-vue_export-helper.c27b6911.js"
@@ -647,7 +647,7 @@ const client_manifest = {
     "css": [
       "Icon.294af607.css"
     ],
-    "file": "Icon.f1f3be64.js",
+    "file": "Icon.6e08e514.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
       "__plugin-vue_export-helper.c27b6911.js"
@@ -696,14 +696,14 @@ const client_manifest = {
       "entry.aa262684.css"
     ],
     "dynamicImports": [
-      "_index.415a6716.js",
+      "_index.79c2bd23.js",
       "middleware/game.ts",
       "middleware/role.ts",
       "layouts/auth.vue",
       "layouts/default.vue",
       "virtual:nuxt:/Users/bon/Documents/GitHub/Gem/.nuxt/error-component.mjs"
     ],
-    "file": "entry.937bdf01.js",
+    "file": "entry.303ba4a8.js",
     "isEntry": true,
     "src": "node_modules/nuxt/dist/app/entry.mjs"
   },
@@ -829,13 +829,13 @@ const client_manifest = {
   "pages/battle/[boss].vue": {
     "resourceType": "script",
     "module": true,
-    "file": "_boss_.db1f17b6.js",
+    "file": "_boss_.71416d50.js",
     "imports": [
-      "_useBattleRound.5f6c2d3a.js",
+      "_useBattleRound.ae7aabef.js",
       "node_modules/nuxt/dist/app/entry.mjs",
       "_index.040b5bdf.js",
-      "_usePlayer.1a998e47.js",
-      "_ButtonSfc.4224516d.js"
+      "_usePlayer.4eda164d.js",
+      "_ButtonSfc.676ad373.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/battle/[boss].vue"
@@ -843,13 +843,13 @@ const client_manifest = {
   "pages/login.vue": {
     "resourceType": "script",
     "module": true,
-    "file": "login.16737b7b.js",
+    "file": "login.906e0b82.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_ButtonSfc.4224516d.js",
-      "_InputSfc.91f1e5a5.js",
-      "_logo.26f8c7fb.js",
-      "_useMessage.b3c713b8.js"
+      "_ButtonSfc.676ad373.js",
+      "_InputSfc.145169a3.js",
+      "_logo.9a87ed7f.js",
+      "_useMessage.4ef409fc.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/login.vue"
@@ -857,7 +857,7 @@ const client_manifest = {
   "pages/logout.vue": {
     "resourceType": "script",
     "module": true,
-    "file": "logout.7363f282.js",
+    "file": "logout.1673f958.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs"
     ],
@@ -867,13 +867,13 @@ const client_manifest = {
   "pages/register.vue": {
     "resourceType": "script",
     "module": true,
-    "file": "register.5db0c4c6.js",
+    "file": "register.952001ae.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_ButtonSfc.4224516d.js",
-      "_InputSfc.91f1e5a5.js",
-      "_logo.26f8c7fb.js",
-      "_useMessage.b3c713b8.js"
+      "_ButtonSfc.676ad373.js",
+      "_InputSfc.145169a3.js",
+      "_logo.9a87ed7f.js",
+      "_useMessage.4ef409fc.js"
     ],
     "isDynamicEntry": true,
     "src": "pages/register.vue"
@@ -881,13 +881,13 @@ const client_manifest = {
   "pages/role.vue": {
     "resourceType": "script",
     "module": true,
-    "file": "role.e5bf4c49.js",
+    "file": "role.f96a56f7.js",
     "imports": [
-      "_Line.2eebb493.js",
+      "_Line.938dcc9e.js",
       "node_modules/nuxt/dist/app/entry.mjs",
-      "_usePlayer.1a998e47.js",
-      "_useMessage.b3c713b8.js",
-      "_ButtonSfc.4224516d.js",
+      "_usePlayer.4eda164d.js",
+      "_useMessage.4ef409fc.js",
+      "_ButtonSfc.676ad373.js",
       "__plugin-vue_export-helper.c27b6911.js"
     ],
     "isDynamicEntry": true,
@@ -900,7 +900,7 @@ const client_manifest = {
       "node_modules/@nuxt/ui-templates/dist/templates/error-404.vue",
       "node_modules/@nuxt/ui-templates/dist/templates/error-500.vue"
     ],
-    "file": "error-component.af70682a.js",
+    "file": "error-component.170dd522.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs"
     ],
