@@ -49,7 +49,7 @@ export default defineNuxtConfig({
     ],
   },
   auth: {
-    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://tienhoi.vercel.app',
+    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : '103.179.189.210:3000/',
     enableGlobalAppMiddleware: false,
   },
   app: {
@@ -89,28 +89,28 @@ export default defineNuxtConfig({
         },
       },
     ],
-    // '@kevinmarrec/nuxt-pwa',
+    '@kevinmarrec/nuxt-pwa',
   ],
-  // pwa: {
-  //   manifest: {
-  //     name: 'Tự Mình Tu Tiên Bon Studio',
-  //     short_name: 'Tự Mình Tu Tiên',
-  //     start_url: '/',
-  //     lang: 'vi',
-  //   },
-  //   meta: {
-  //     favicon: true,
-  //     // appleStatusBarStyle: 'black-translucent',
-  //     theme_color: '#000000',
-  //     mobileApp: true,
-  //     mobileAppIOS: true,
-  //     name: 'Tự mình tu tiên',
-  //     author: 'Bon Studio',
-  //   },
-  //   workbox: {
-  //     enabled: true,
-  //   },
-  // },
+  pwa: {
+    manifest: {
+      name: 'Tự Mình Tu Tiên Bon Studio',
+      short_name: 'Tự Mình Tu Tiên',
+      start_url: '/',
+      lang: 'vi',
+    },
+    meta: {
+      favicon: true,
+      // appleStatusBarStyle: 'black-translucent',
+      theme_color: '#000000',
+      mobileApp: true,
+      mobileAppIOS: true,
+      name: 'Tự mình tu tiên',
+      author: 'Bon Studio',
+    },
+    workbox: {
+      enabled: true,
+    },
+  },
   pinia: {
     autoImports: ['storeToRefs'],
   },
