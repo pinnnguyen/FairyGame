@@ -212,42 +212,42 @@ export const playerTitle = (level: number, playerNextLevel: number) => {
 
   for (let i = 0; i < RANGE_PLAYER_BIG_LEVEL.length; i++) {
     if (level >= RANGE_PLAYER_BIG_LEVEL[i] && level < RANGE_PLAYER_BIG_LEVEL[i + 1]) {
-      const djc = level - RANGE_PLAYER_BIG_LEVEL[i]
-      const jds = (RANGE_PLAYER_BIG_LEVEL[i + 1] - RANGE_PLAYER_BIG_LEVEL[i]) / 10
-      const dd = Math.floor(djc / jds)
-      const jd = RANGE_LEVEL_ID[dd]
+      const lr = level - RANGE_PLAYER_BIG_LEVEL[i]
+      const rbl = (RANGE_PLAYER_BIG_LEVEL[i + 1] - RANGE_PLAYER_BIG_LEVEL[i]) / 10
+      const lfloor = Math.floor(lr / rbl)
+      const floorR = RANGE_LEVEL_ID[lfloor]
 
       levelTitle = PLAYER_LEVEL_TITLE[i]
-      if (jd <= 3) {
-        if (jd === 1)
-          floor = 'Sơ Kỳ T1'
+      if (floorR <= 3) {
+        if (floorR === 1)
+          floor = 'Sơ Kỳ 1'
 
-        if (jd === 2)
-          floor = 'Sơ Kỳ T2'
+        if (floorR === 2)
+          floor = 'Sơ Kỳ 2'
 
-        if (jd === 3)
-          floor = 'Sơ Kỳ T3'
+        if (floorR === 3)
+          floor = 'Sơ Kỳ 3'
       }
 
-      if (jd > 3 && jd <= 6) {
-        if (jd === 4)
-          floor = 'Trung Kỳ T1'
+      if (floorR > 3 && floorR <= 6) {
+        if (floorR === 4)
+          floor = 'Trung Kỳ 1'
 
-        if (jd === 5)
-          floor = 'Trung Kỳ T2'
+        if (floorR === 5)
+          floor = 'Trung Kỳ 2'
 
-        if (jd === 6)
-          floor = 'Trung Kỳ T3'
+        if (floorR === 6)
+          floor = 'Trung Kỳ 3'
       }
 
-      if (jd > 6 && jd < 9) {
-        if (jd === 7)
-          floor = 'Hậu Kỳ T1'
-        if (jd === 8)
-          floor = 'Hậu Kỳ T2'
+      if (floorR > 6 && floorR < 9) {
+        if (floorR === 7)
+          floor = 'Hậu Kỳ 1'
+        if (floorR === 8)
+          floor = 'Hậu Kỳ 2'
       }
 
-      if (jd >= 9)
+      if (floorR >= 9)
         floor = 'Đỉnh Phong'
 
       expLimited = 5 * playerNextLevel * (playerNextLevel + Math.round(playerNextLevel / 5)) * 12 * RANGE_EXP_A_LEVEL[i] + playerNextLevel
