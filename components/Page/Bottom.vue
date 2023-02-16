@@ -76,7 +76,7 @@ const tab = ref('character')
 const menuItems = [
   {
     key: 'character',
-    name: 'Nhân vât',
+    name: 'Nhân vật',
     fn: onPlayerInfo,
   },
   {

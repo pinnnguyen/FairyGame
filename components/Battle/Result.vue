@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { formatCash, qualityPalette } from '~/common'
 import type { BaseReward, BasicItem, PlayerEquipment } from '~/types'
-import { ItemToName, ItemToQuality } from '~/constants'
+import { ItemToName, ItemToQuality, qualityToName } from '~/constants'
 
 const props = defineProps<{
   isWin: boolean
@@ -103,7 +103,7 @@ const close = () => {
           {{ value.name }}
         </div>
       </div>
-      <div class="grid grid-cols-4 gap-4 text-10 mt-2">
+      <div class="grid grid-cols-3 gap-4 text-10 mt-2">
         <div
           v-for="(value, key) in reward?.equipments"
           :key="key"
@@ -111,7 +111,7 @@ const close = () => {
           :style="{ color: qualityPalette(value.quality) }"
           @click.stop="selectedEquipment(value)"
         >
-          {{ value.name }}
+          {{ qualityToName[value.quality] }} - {{ value.name }}
         </div>
       </div>
 

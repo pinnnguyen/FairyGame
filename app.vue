@@ -43,7 +43,7 @@ const onLoopComplete = () => {
 </script>
 
 <template>
-  <Marquee v-if="chatSystem" :loop="1" :duration="8" @on-loop-complete="onLoopComplete">
+  <Marquee v-if="chatSystem" :duration="8" @on-loop-complete="onLoopComplete">
     {{ chatSystem.content }}
   </Marquee>
   <Body

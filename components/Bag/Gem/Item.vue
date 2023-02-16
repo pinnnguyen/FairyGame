@@ -43,7 +43,7 @@ const onSelected = (gem: PlayerGem) => {
       />
       <nuxt-img
         pos="absolute"
-        border="rounded-full"
+        border="rounded-full 1 white/40"
         object="cover"
         class="w-[80%] h-[80%] transform-center"
         format="webp"
@@ -65,7 +65,7 @@ const onSelected = (gem: PlayerGem) => {
     <p
       text="8"
       font="semibold"
-      class="line-clamp-1"
+      class="line-clamp-2"
       :style="{
         color: qualityPalette(gem.quality),
       }"

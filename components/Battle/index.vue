@@ -4,7 +4,7 @@ import { set } from '@vueuse/core'
 import { sendMessage, useBattleEvents, useBattleRoundStore, usePlayerStore, useSoundRewardEvent } from '#imports'
 import { TARGET_TYPE, tips } from '~/constants'
 import type { BattleResponse } from '~/types'
-import { randomNumber } from '~/common'
+import { randomNumber, sleep } from '~/common'
 
 const {
   match,
@@ -45,19 +45,21 @@ const handleStartBattle = async (battleRes: BattleResponse) => {
   set(battleCurrently, battleRes)
 
   await fn.startBattle(battleRes, async () => {
+    console.log('call back end battle index')
     await useSoundRewardEvent()
 
-    if (playerInfo.value && stateRunning.value) {
-      playerInfo.value.gold += stateRunning.value.reward?.base.gold ?? 0
-      playerInfo.value.exp += stateRunning.value.reward?.base.exp ?? 0
-    }
-
-    if (!isPve) {
+    if (!isPve.value) {
+      offAllEvent()
       set(shouldBattleResult, true)
       return
     }
 
     if (isPve.value) {
+      if (playerInfo.value && stateRunning.value) {
+        playerInfo.value.gold += stateRunning.value.reward?.base.gold ?? 0
+        playerInfo.value.exp += stateRunning.value.reward?.base.exp ?? 0
+      }
+
       set(shouldNextBattle, false)
       Snackbar.allowMultiple(true)
       sendMessage(`Nhận Tiền Tiên x${stateRunning.value.reward?.base.gold}`, 3000, 'top')
@@ -128,10 +130,10 @@ onUnmounted(async () => {
 })
 
 watch(battleRequest, async (request) => {
-  set(shouldBattleResult, false) // Todo: Hidden popup result
-  set(shouldNextBattle, true) // Todo: loading screen battle
   offAllEvent() // Todo: Off all event pve, boss daily ...
   fn.stopBattle() // Todo: stop trận đánh nếu có đang được đánh chưa xong
+  set(shouldBattleResult, false) // Todo: Hidden popup result
+  set(shouldNextBattle, true) // Todo: loading screen battle
 
   switch (request.target) {
     case TARGET_TYPE.BOSS_DAILY:
@@ -201,7 +203,7 @@ watch(battleRequest, async (request) => {
         object="cover"
       />
       <div
-        v-if="!shouldNextBattle"
+        v-else
         flex="~ "
         pos="absolute"
         align="items-center"

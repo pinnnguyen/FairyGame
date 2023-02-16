@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+import { BossDaily, BossElite, BossFrameTime } from '#components'
 const emits = defineEmits(['close'])
 const tab = ref('daily')
 
@@ -16,6 +17,16 @@ const tabItems = [
     name: 'Thế giới',
   },
 ]
+
+const dynamicComponents = computed(() => {
+  if (tab.value === 'elite')
+    return BossElite
+
+  if (tab.value === 'frameTime')
+    return BossFrameTime
+
+  return BossDaily
+})
 </script>
 
 <template>
@@ -38,20 +49,6 @@ const tabItems = [
     </button>
   </div>
   <div class="h-[calc(100%_-_47px)] overflow-scroll">
-    <template
-      v-if="tab === 'elite'"
-    >
-      <lazy-boss-elite />
-    </template>
-    <template
-      v-if="tab === 'daily'"
-    >
-      <lazy-boss-daily />
-    </template>
-    <template
-      v-if="tab === 'frameTime'"
-    >
-      <lazy-boss-frame-time />
-    </template>
+    <component :is="dynamicComponents" />
   </div>
 </template>

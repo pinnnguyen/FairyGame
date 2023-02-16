@@ -3,7 +3,7 @@ import { cloneDeep } from '~/helpers'
 import { BossCreatorSchema, BossDataSchema, PlayerSchema } from '~/server/schema'
 
 const getBossElite = async () => {
-  const bossEliteData = await BossCreatorSchema.find({ death: false, kind: 'elite' })
+  const bossEliteData = await BossCreatorSchema.find({ death: false, kind: 'elite' }).sort({ level: 1 })
   if (bossEliteData.length !== 0)
     return bossEliteData
 

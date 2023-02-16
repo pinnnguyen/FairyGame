@@ -4,9 +4,9 @@ import {
   BossCreatorSchema,
   BossDataSchema,
   MonsterSchema,
+  PlayerSchema,
   PlayerStatusSchema,
-  SendKnbRewardSystemMail,
-  reviveBossElite,
+  SendKnbRewardSystemMail, reviveBossElite,
 } from '~/server/schema'
 import { isBossDaily, isBossElite, isBossFrameTime, isNormalMonster } from '~/server/utils'
 import type { BattleRequest, BossDaily, PlayerInfo } from '~/types'
@@ -208,6 +208,17 @@ export const handleBeforeStartWar = async (battleRequest: BattleRequest, _p: Pla
   }
 }
 
+export const afterNormal = async (sid: string, isWinner: boolean) => {
+  if (isWinner)
+    return
+
+  await PlayerSchema.findOneAndUpdate({ sid }, {
+    $inc: {
+      midId: -1,
+    },
+  })
+}
+
 export const afterBossFrameTimeWar = async (targetId?: string, options?: {
   selfDamage: number
   isWinner: boolean
@@ -391,16 +402,20 @@ export const handleAfterEndWar = async (request: {
   const { battleRequest, _p, realWinner, totalDamage } = request
   const battleTargetType = battleRequest.target.type
   const targetId = battleRequest.target.id
+  const sid = _p.player.sid
 
   const isWinner = realWinner === _p.player._id
 
   const selfDamage = totalDamage.list[_p.player._id]
+  if (isNormalMonster(battleTargetType))
+    await afterNormal(sid, isWinner)
+
   if (isBossFrameTime(battleTargetType)) {
     await afterBossFrameTimeWar(targetId, {
       selfDamage,
       isWinner,
       playerName: _p.player.name,
-      sid: _p.player.sid,
+      sid,
     })
   }
 
@@ -409,7 +424,7 @@ export const handleAfterEndWar = async (request: {
       selfDamage,
       isWinner,
       playerName: _p.player.name,
-      sid: _p.player.sid,
+      sid,
     })
   }
 }

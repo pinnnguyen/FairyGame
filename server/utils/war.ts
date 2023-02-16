@@ -95,7 +95,12 @@ export const handlePlayerVsMonster = async (_p: PlayerInfo, battleRequest: Battl
     },
   }).save()
 
-  await handleAfterEndWar({ battleRequest, _p, realWinner, totalDamage })
+  await handleAfterEndWar({
+    battleRequest,
+    _p,
+    realWinner,
+    totalDamage,
+  })
 
   return {
     match,
@@ -124,6 +129,10 @@ export const handleWars = async (request: BattleRequest) => {
     })
   }
 
+  // await addPlayerGem(player.player.sid, 1, 1, 3)
+  // await addPlayerGem(player.player.sid, 2, 1, 3)
+  // await addPlayerGem(player.player.sid, 3, 1, 3)
+  // await addPlayerGem(player.player.sid, 4, 1, 3)
   // await addPlayerGem(player.player.sid, 5, 1, 3)
   // await addPlayerGem(player.player.sid, 6, 2, 3)
   // await addPlayerGem(player.player.sid, 7, 3, 3)

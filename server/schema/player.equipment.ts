@@ -17,6 +17,7 @@ const schema = new mongoose.Schema<PlayerEquipment>(
     equipmentId: Number,
     name: String,
     info: String,
+    quality: Number,
     rank: Number,
     level: Number,
     slot: Number,
@@ -44,33 +45,35 @@ const getRateQuality = () => {
   const qualityRate = randomNumber(DEFAULT_MIN_RATE_RECEIVED, DEFAULT_MAX_RATE_RECEIVED)
   let quality = 0
 
-  if (qualityRate <= 10)
-    quality = 1
-
-  else if (qualityRate <= 20 && qualityRate > 10)
-    quality = 2
-
-  else if (qualityRate <= 30 && qualityRate > 20)
-    quality = 3
-
-  else if (qualityRate <= 40 && qualityRate > 30)
-    quality = 4
-
-  else if (qualityRate <= 50 && qualityRate > 40)
-    quality = 5
-
-  else if (qualityRate <= 60 && qualityRate > 50)
-    quality = 6
-
-  else if (qualityRate <= 70 && qualityRate > 60)
-    quality = 7
-
-  else if (qualityRate <= 80 && qualityRate > 70)
-    quality = 8
-
-  else if (qualityRate >= 90)
+  if (qualityRate > 1 && qualityRate <= 3)
     quality = 9
 
+  if (qualityRate > 3 && qualityRate <= 7)
+    quality = 8
+
+  if (qualityRate > 7 && qualityRate <= 10)
+    quality = 7
+
+  if (qualityRate > 10 && qualityRate <= 15)
+    quality = 6
+
+  if (qualityRate > 15 && qualityRate <= 20)
+    quality = 5
+
+  if (qualityRate > 20 && qualityRate <= 25)
+    quality = 4
+
+  if (qualityRate > 25 && qualityRate <= 40)
+    quality = 3
+
+  if (qualityRate > 40 && qualityRate <= 60)
+    quality = 2
+
+  if (qualityRate > 60 && qualityRate <= 100)
+    quality = 1
+
+  console.log('quality', quality)
+  console.log('qualityRate', qualityRate)
   return quality
 }
 export const addPlayerEquipments = async (sid: string, equipmentIds: Array<number>) => {
@@ -86,6 +89,8 @@ export const addPlayerEquipments = async (sid: string, equipmentIds: Array<numbe
       continue
 
     const quality = getRateQuality()
+    console.log('quality', quality)
+
     const stats = equipments[i].stats
     for (const stat of stats!) {
       for (const key in stat)
@@ -104,6 +109,7 @@ export const addPlayerEquipments = async (sid: string, equipmentIds: Array<numbe
       enhance: equipments[i]?.enhance,
       gemSlot: 0,
       stats,
+      quality,
       used: false,
       gems: [],
     })

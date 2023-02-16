@@ -3,6 +3,11 @@ import { randomNumber } from '~/common'
 import { tips } from '~/constants'
 
 const { data: listBoss, pending, refresh } = useFetch('/api/boss/daily')
+const afterWar = () => {
+  setTimeout(() => {
+    refresh()
+  }, 1500)
+}
 </script>
 
 <template>
@@ -19,6 +24,7 @@ const { data: listBoss, pending, refresh } = useFetch('/api/boss/daily')
       v-else
       :key="boss._id"
       :boss="boss"
+      @war="afterWar"
     />
   </var-loading>
 </template>

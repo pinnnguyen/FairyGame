@@ -142,7 +142,7 @@ onUnmounted(async () => {
         </template>
       </div>
     </div>
-    <battle-controls :back="true" @onBack="onBack" />
+    <battle-controls :back="true" @on-back="onBack" />
     <div
       :class="{ '!bg-[#540905]': !refresh?.inRefresh }"
       transition="~ colors duration-800"

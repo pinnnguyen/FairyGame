@@ -20,7 +20,7 @@ const onmerge = () => {
     <div v-if="pending" h="50" w="100" />
     <div
       v-else
-      grid="~ cols-6"
+      grid="~ cols-7"
       gap="2"
     >
       <lazy-bag-gem-item
