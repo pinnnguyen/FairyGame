@@ -31,32 +31,29 @@ const handleStartBattle = async (battleRes: BattleResponse) => {
   await fn.startBattle(battleRes, async () => {
     await useSoundRewardEvent()
 
-    if (playerInfo.value && stateRunning.value) {
+    if (playerInfo.value) {
       playerInfo.value.gold += stateRunning.value.reward?.base.gold ?? 0
       playerInfo.value.exp += stateRunning.value.reward?.base.exp ?? 0
+    }
 
+    if (stateRunning.value) {
       Snackbar.allowMultiple(true)
       sendMessage(`Nhận Tiền Tiên x${stateRunning.value.reward?.base.gold}`, 3000, 'top')
       sendMessage(`Nhận Tu Vi x${stateRunning.value.reward?.base.exp}`, 3000, 'top')
-
-      if (stateRunning.value.reward?.items && stateRunning.value.reward?.items.length > 0) {
-        for (const item of stateRunning.value.reward?.items)
-          sendMessage(`${item.name} x${item.quantity}`, 3000, 'top')
-      }
-
-      useEventPve()
     }
+
+    if (stateRunning.value.reward?.items && stateRunning.value.reward?.items.length > 0) {
+      for (const item of stateRunning.value.reward?.items)
+        sendMessage(`${item.name} x${item.quantity}`, 3000, 'top')
+    }
+
+    useEventPve()
   })
 }
 
 const startEventPve = (skip: boolean) => {
+  console.log('skip', skip)
   useEventPve(skip)
-
-  // $io.off('battle:start:pve')
-  $io.on('battle:start:pve', async (battleRes: BattleResponse) => {
-    console.log('battleRes', battleRes)
-    await handleStartBattle(battleRes)
-  })
 }
 
 const onEventRefresh = () => {
@@ -137,7 +134,7 @@ onUnmounted(async () => {
       <battle-bottom-bar
         :is-pve="true"
         :mid-id="playerInfo.midId"
-        @chang-battle="startEventPve(true)"
+        @change-battle="startEventPve(true)"
       />
     </div>
   </var-loading>

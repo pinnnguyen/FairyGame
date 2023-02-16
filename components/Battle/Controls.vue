@@ -4,6 +4,7 @@ import { useBattleRoundStore } from '~/composables/useBattleRound'
 defineProps<{
   back?: boolean
 }>()
+
 const emits = defineEmits(['onBack', 'onSkip'])
 const {
   loading,

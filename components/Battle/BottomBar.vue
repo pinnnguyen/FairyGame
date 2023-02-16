@@ -20,10 +20,10 @@ const changeBattle = async () => {
     })
 
     fn.stopBattle()
-    emits('changeBattle')
     loadPlayer(player)
     set(loading, false)
     sendMessage('Qua ải thành công', 2000)
+    emits('changeBattle')
   }
   catch (e: any) {
     sendMessage(e.statusMessage, 2000)
