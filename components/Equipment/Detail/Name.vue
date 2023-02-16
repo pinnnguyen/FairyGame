@@ -21,7 +21,7 @@ const qualityTitle = computed(() => {
     <span
       text="12"
     >
-      {{ enhance }}
+      (+{{ enhance }})
     </span>
   </div>
 </template>

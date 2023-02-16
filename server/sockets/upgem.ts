@@ -1,7 +1,6 @@
 import { PlayerEquipmentSchema, PlayerGemSchema, PlayerSchema, addPlayerGem, addSystemChat } from '~/server/schema'
 import type { PlayerGem } from '~/types'
 import { qualityToName } from '~/constants'
-import { randomNumber } from '~/common'
 
 export const handleEventUpGem = async (io: any, socket: any) => {
   socket.on('equip:gem:preview', async (_equipId: string) => {

@@ -2,8 +2,6 @@ import { PlayerEquipmentSchema, PlayerItemSchema, PlayerSchema } from '~/server/
 import { needResourceUpStar } from '~/server/helpers'
 
 export const handleEquipStar = async (io: any, socket: any) => {
-  // socket.on('equip:star:start', (_channel: string) => {
-  //   socket.join(_channel)
   socket.on('equip:star:preview', async (_equipId: string) => {
     const equip = await PlayerEquipmentSchema.findById(_equipId)
     if (!equip)

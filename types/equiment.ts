@@ -13,6 +13,7 @@ export interface BaseEquipment {
   enhance?: number
   stats?: PlayerEquipmentStat[]
   star?: number
+  quality?: number
 }
 export interface EquipRateReward {
   id: number

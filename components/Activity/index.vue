@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const typeTab = ref<'auction' | 'tien_dau'>('tien_dau')
+import { ActivityAuciton, ActivityTienDau } from '#components'
+
+const typeTab = ref('tien_dau')
 const typeTabItems = [
   {
     key: 'tien_dau',
@@ -11,8 +13,12 @@ const typeTabItems = [
   },
 ]
 
-const isAuction = computed(() => typeTab.value === 'auction')
-const isTienDau = computed(() => typeTab.value === 'tien_dau')
+const component = computed(() => {
+  if (typeTab.value === 'auction')
+    return ActivityAuciton
+
+  return ActivityTienDau
+})
 </script>
 
 <template>
@@ -37,7 +43,6 @@ const isTienDau = computed(() => typeTab.value === 'tien_dau')
     </button>
   </div>
   <div class="h-[calc(100%_-_47px)] overflow-scroll">
-    <ActivityAuciton v-if="isAuction" />
-    <ActivityTienDau v-if="isTienDau" />
+    <component :is="component" />
   </div>
 </template>

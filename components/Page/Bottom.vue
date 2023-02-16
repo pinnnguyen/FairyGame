@@ -2,9 +2,9 @@
 import { set } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { usePlayerSlot, usePlayerStore, useSoundClickEvent } from '#imports'
+import { Activity, Bag, Boss, Character, Market, Store } from '#components'
 
 const { playerInfo, attribute } = storeToRefs(usePlayerStore())
-const { leftSlots, rightSlots } = storeToRefs(usePlayerSlot())
 
 const togglePlayerInfo = useState('togglePlayerInfo')
 const toggleAuction = useState('toggleAuction')
@@ -137,6 +137,28 @@ const isBag = computed(() => tab.value === 'bag')
 const isBoss = computed(() => tab.value === 'boss')
 const isActivity = computed(() => tab.value === 'activity')
 
+const dynamicComponent = computed(() => {
+  switch (tab.value) {
+    case 'market':
+      return Market
+
+    case 'store':
+      return Store
+
+    case 'character':
+      return Character
+
+    case 'bag':
+      return Bag
+
+    case 'boss':
+      return Boss
+
+    case 'activity':
+      return Activity
+  }
+})
+
 const setTab = (t: string) => {
   if (['upgrade'].includes(t)) {
     onUpgradeOptions()
@@ -206,37 +228,7 @@ const setTab = (t: string) => {
       </button>
     </div>
     <div class="absolute top-16 text-10 text-[#eaeced] italic w-full h-[calc(100%_-_115px)]">
-      <store v-if="isStore" />
-      <market v-if="isMarket" />
-      <template v-if="isCharacter">
-        <Line class="mb-4">
-          Thuộc tính nhân vật
-        </Line>
-        <div class="flex-center">
-          <div class="flex w-full justify-around">
-            <player-short-view />
-            <div>
-              <player-tupo />
-            </div>
-          </div>
-        </div>
-        <Line class="mt-4">
-          Thiết lập trang bị
-        </Line>
-        <player-equipment-default
-          :left-slots="leftSlots"
-          :right-slots="rightSlots"
-        />
-      </template>
-      <template v-if="isBag">
-        <bag />
-      </template>
-      <template v-if="isBoss">
-        <boss />
-      </template>
-      <template v-if="isActivity">
-        <Activity />
-      </template>
+      <component :is="dynamicComponent" />
     </div>
   </div>
 </template>

@@ -29,16 +29,20 @@ const reachLimit = computed(() => ranks.value.reachLimit?.remaining >= ranks.val
     :sid="options.sid"
   />
   <var-loading :loading="pending" size="mini" :description="tips[Math.round(randomNumber(0, tips.length))]" color="#ffffff">
-    <div
+    <div v-if="pending" h="50" w="100" />
+    <section
+      v-else
       m="x-4 t-2"
       flex="~ "
       justify="between"
     >
-      <div>Điểm Tiên Đấu: {{ playerInfo.arenas.tienDau.score ?? 0 }}</div>
-      <div>Lượt: {{ ranks.reachLimit?.remaining }}/{{ ranks.reachLimit?.maximum }}</div>
-    </div>
+      <div>Điểm Tiên Đấu: {{ playerInfo?.arenas?.tienDau?.score ?? 0 }}</div>
+      <div v-if="ranks?.reachLimit">
+        Lượt: {{ ranks?.reachLimit?.remaining }}/{{ ranks?.reachLimit?.maximum }}
+      </div>
+    </section>
     <div
-      v-for="(rank, index) in ranks.data"
+      v-for="(rank, index) in ranks?.data"
       :key="rank._id"
       pos="relative"
       border="1 white/40 rounded"

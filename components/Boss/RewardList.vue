@@ -10,7 +10,7 @@ defineProps<{
 
 <template>
   <div
-    display="flex"
+    flex="~ "
     class="max-w-[calc(100vw_-_40px)]"
   >
     Thưởng:
@@ -25,6 +25,17 @@ defineProps<{
         }"
       >
         {{ ItemToName[key] }} x{{ value }}
+      </span>
+      <span
+        v-for="(value, key) in reward.equipments"
+        :key="key"
+        text="underline"
+        p="l-1"
+        :style="{
+          color: qualityPalette(value.quality),
+        }"
+      >
+        {{ value.name }}
       </span>
     </div>
   </div>

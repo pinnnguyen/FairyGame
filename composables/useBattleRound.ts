@@ -25,8 +25,8 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     skip: false,
     stop: false,
     TURN_DELAY: computed(() => 2000 / speed.value),
-    SHOW_DMG_DELAY: 1500,
-    EFFECT_DELAY: 500,
+    SHOW_DMG_DELAY: 1200,
+    EFFECT_DELAY: 400,
     RESULT_DELAY: 1000,
   })
   const makeDefault = () => {

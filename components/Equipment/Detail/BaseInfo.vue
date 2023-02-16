@@ -19,13 +19,13 @@ defineProps<{
   >
     <equipment-detail-name
       :quality="quality"
-      :ehance="enhance"
+      :enhance="enhance"
       :name="name"
     />
     <div
       flex="~ "
     >
-      <icon v-for="i of star" :key="i" name="material-symbols:star" size="18" />
+      <icon v-for="i of star" :key="i" name="material-symbols:star" size="14" />
     </div>
     <p
       text="10"
