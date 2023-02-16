@@ -4,7 +4,7 @@ import { BattleSchema, ChatSchema, MailSchema } from '~/server/schema'
 import {
   battleJoinHandler,
   handleAuction,
-  // handleEquipStar,
+  handleEquipStar,
   handleEquipUpRank,
   handleEquipUpgrade,
   handleEventUpGem,
@@ -95,9 +95,20 @@ export default defineEventHandler((event) => {
     await handleAuction(socket)
     await handleEquipUpgrade(io, socket)
     await battleJoinHandler(io, socket)
-    // await handleEquipStar(io, socket)
+    await handleEquipStar(io, socket)
     await handleEquipUpRank(io, socket)
     await handleEventUpGem(io, socket)
+
+    socket.on('get:marquee-text', async (_id) => {
+      if (_id) {
+        await ChatSchema.findByIdAndUpdate(_id, {
+          isRead: true,
+        })
+      }
+
+      const chats = await ChatSchema.findOne({ isRead: false }).limit(1)
+      socket.emit('response:marquee-text', chats)
+    })
 
     socket.on('get:chat:request', async () => {
       const chats = await ChatSchema.find({}).limit(20).sort({ createdAt: -1 })

@@ -71,7 +71,7 @@ const upgrade = () => {
 
 <template>
   <var-popup v-model:show="tooltip" position="center">
-    <div class="w-60 p-4 bg-white text-12">
+    <div class="w-60 p-4 bg-white text-12 border border-white/40 text-primary">
       <p>Mỗi cấp sẽ tăng 3% hiệu quả thuộc tính trang bị</p>
       <br>
       <p>Thất bại sẽ giảm 1 cấp cường hóa.</p>

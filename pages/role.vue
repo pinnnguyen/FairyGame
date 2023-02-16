@@ -42,26 +42,41 @@ const classList = [
   },
 ]
 
+const genders = [
+  {
+    key: 'male',
+    name: 'Nam',
+  },
+  {
+    key: 'female',
+    name: 'Nữ',
+  },
+]
+
 const selected = ref(classList[2])
+const selectedGender = ref('male')
 const handleCreateFigure = async () => {
   const { loadPlayer } = usePlayerStore()
 
-  const role: any = await $fetch('/api/player/create-role', {
-    method: 'POST',
-    headers: (useRequestHeaders(['cookie']) as any),
-    body: {
-      name: name.value,
-      class: selected.value.id,
-    },
-  })
+  try {
+    const role: any = await $fetch('/api/player/create-role', {
+      method: 'POST',
+      headers: (useRequestHeaders(['cookie']) as any),
+      body: {
+        name: name.value,
+        class: selected.value.id,
+        gender: selectedGender.value,
+      },
+    })
 
-  if (!role.success) {
     sendMessage(role.message)
-    return
-  }
 
-  loadPlayer(role)
-  navigateTo('/')
+    loadPlayer(role)
+    navigateTo('/')
+  }
+  catch (e: any) {
+    sendMessage(e.statusMessage)
+  }
 }
 </script>
 
@@ -76,6 +91,23 @@ const handleCreateFigure = async () => {
             Chọn hệ phái
           </div>
         </Line>
+        <div class="flex justify-center">
+          <div
+            v-for="gender in genders"
+            :key="gender.name"
+            @click="selectedGender = gender.key"
+          >
+            <div
+              class="text-center font-semibold border-box text-10 mb-4 mx-1 py-2 px-2 opacity-40 w-20"
+              :class="{
+                'opacity-100': gender.key === selectedGender,
+              }"
+            >
+              {{ gender.name }}
+            </div>
+          </div>
+        </div>
+
         <div class="flex items-start justify-between grid grid-cols-4">
           <div v-for="classE in classList" :key="classE.name" @click="selected = classE">
             <div
@@ -91,16 +123,18 @@ const handleCreateFigure = async () => {
       </div>
       <div class="pt-10 duration" v-html="selected.description" />
     </div>
-    <div class="ml-2 absolute bottom-5 flex w-full gap-2 items-center justify-center">
+    <div class="ml-2 absolute bottom-20 flex w-full gap-2 items-center justify-center">
       <input
-        v-model="name" placeholder="Tên nhân vật"
-        class="w-[160px] border border-[#dcc18d] bg-[#2d251d] rounded h-[30px] leading-[35px] text-center flex-center" type="text" name="username" maxlength="16"
+        v-model="name"
+        placeholder="Tên nhân vật"
+        class="w-[160px] rounded h-[30px] leading-[35px] text-center flex-center text-[#333]"
+        type="text" name="username"
+        maxlength="16"
       >
       <var-button
         class="!text-[#333] font-medium"
         size="small"
         @click="handleCreateFigure"
-        @click.stop="sell"
       >
         Tạo ngay
       </var-button>

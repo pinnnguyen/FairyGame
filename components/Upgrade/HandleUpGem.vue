@@ -90,6 +90,7 @@ const punchahole = () => {
   })
 }
 const onmosaic = (gem: PlayerGem) => {
+  console.log('gem', gem)
   $io.emit('gem:mosaic', equipSelected.value._id, gem._id)
   set(viewGem, false)
 }
@@ -140,8 +141,8 @@ onUnmounted(() => {
   <var-popup v-model:show="viewGem" position="center">
     <lazy-gem-detail
       :gem="gemSelected"
-      :select-action="hasSelectedAction"
-      @selected="onmosaic"
+      :onmosaic-action="hasSelectedAction"
+      @onmosaic="onmosaic"
       @mergegem="onmergeGems"
     />
   </var-popup>

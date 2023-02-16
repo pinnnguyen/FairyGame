@@ -225,9 +225,11 @@ export const handleArenaTienDauSolo = async (request: {
       },
     })
 
-    await PlayerSchema.findByIdAndUpdate(defender.player._id, {
-      'arenas.tienDau.pos': attackerPos < defenderPos ? attackerPos : defenderPos,
-    })
+    if (attackerPos < defenderPos) {
+      await PlayerSchema.findByIdAndUpdate(defender.player._id, {
+        'arenas.tienDau.pos': attackerPos < defenderPos ? attackerPos : defenderPos,
+      })
+    }
 
     return {
       youwin,

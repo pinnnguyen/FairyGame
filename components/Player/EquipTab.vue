@@ -65,9 +65,13 @@ const classTitle = computed(() => ROLE_NAME[props.classRole])
     >
       Tu vị {{ formatCash((exp)) }}
     </div>
-    <!--    <span class=""> -->
-    <!--      Tiên ngọc: {{ Math.round(playerInfo.coin) }} -->
-    <!--    </span> -->
+    <div
+      text="space-normal"
+      w="5"
+    >
+      Tiên ngọc {{ formatCash((playerInfo.coin)) }}
+    </div>
+
     <div
       v-if="knb"
       text="space-normal"

@@ -18,9 +18,34 @@ StyleProvider({
   '--snackbar-margin': '1px 24px',
   '--snackbar-font-size': '10px',
 })
+
+const { $io } = useNuxtApp()
+const chatSystem = ref('')
+
+onMounted(() => {
+  setInterval(() => {
+    $io.emit('get:marquee-text')
+  }, 30000)
+})
+
+$io.emit('get:marquee-text')
+$io.on('response:marquee-text', (c) => {
+  setTimeout(() => {
+    chatSystem.value = c
+  }, 1000)
+})
+const onLoopComplete = () => {
+  setTimeout(() => {
+    $io.emit('get:marquee-text', chatSystem.value._id)
+    chatSystem.value = null
+  }, 500)
+}
 </script>
 
 <template>
+  <Marquee v-if="chatSystem" :loop="1" :duration="8" @on-loop-complete="onLoopComplete">
+    {{ chatSystem.content }}
+  </Marquee>
   <Body
     overflow="hidden"
     transition="duration-300 colors"

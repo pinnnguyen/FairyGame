@@ -20,7 +20,7 @@ const tabs = ref([
 </script>
 
 <template>
-  <div class="bg-primary border-box w-full h-[80%] w-[calc(100vw_-_30px)] h-120 relative overflow-hidden">
+  <div class="bg-primary border-box h-[80%] w-[calc(100vw_-_30px)] h-120 relative overflow-hidden max-w-[60vh]">
     <div class="h-full absolute top-0 w-full">
       <div
         class="m-1 rounded-md text-10 font-semibold h-[calc(100%_-_60px)]"

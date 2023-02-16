@@ -13,10 +13,15 @@ const schema = new mongoose.Schema(
     type: String,
     name: String,
     content: String,
+    isRead: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 )
 
+schema.index({ isRead: -1 })
 // export const AuctionSchema = (mongoose.models && mongoose.models.AuctionSchema ? mongoose.models.AuctionSchema : mongoose.model('AuctionSchema', schema, 'gl_auction'))
 export const ChatSchema = mongoose.model('ChatSchema', schema, 'gl_chats')
 

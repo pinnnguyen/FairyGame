@@ -103,7 +103,7 @@ const pickEquipmentFood = (_id?: string) => {
 
 <template>
   <var-popup v-model:show="options.tooltip" position="center">
-    <div class="w-60 p-4 bg-white text-12">
+    <div class="w-60 p-4 border border-white/40 text-primary text-12">
       <p>Mỗi bậc sẽ tăng 10% toàn bộ thuộc tính gốc cho trang bị</p>
       <br>
       <p class="pb-4">

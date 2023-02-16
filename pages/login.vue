@@ -45,10 +45,10 @@ const handleLogin = async () => {
           </h1>
           <div class="space-y-4 md:space-y-6">
             <div>
-              <var-input id="email" v-model="email" type="email" name="email" placeholder="ttg@gmail.com" required="" text-color="#ffffff" focus-color="#fff" />
+              <var-input v-model="email" name="email" placeholder="ttg@gmail.com" required="" text-color="#ffffff" focus-color="#fff" />
             </div>
             <div>
-              <var-input id="password" v-model="password" type="password" name="password" placeholder="••••••••" required="" text-color="#ffffff" focus-color="#fff" />
+              <var-input v-model="password" type="password" name="password" placeholder="••••••••" required="" text-color="#ffffff" focus-color="#fff" />
             </div>
             <div
               text="center"

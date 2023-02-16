@@ -96,5 +96,4 @@ export const handleEquipStar = async (io: any, socket: any) => {
       totalDaNangSao: playerItem?.sum,
     })
   })
-  // })
 }

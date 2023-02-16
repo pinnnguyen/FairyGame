@@ -4,11 +4,11 @@ import type { PlayerGem } from '~/types'
 const props = defineProps<{
   gem: PlayerGem
   sellAction?: boolean
-  selectAction?: boolean
+  onmosaicAction?: boolean
   mergeAction?: boolean
 }>()
 
-const emits = defineEmits(['sell', 'selected', 'refresh'])
+const emits = defineEmits(['sell', 'onmosaic', 'refresh'])
 
 const { $io } = useNuxtApp()
 const sellPopup = ref(false)
@@ -104,12 +104,12 @@ const sell = async () => {
       Treo bán
     </var-button>
     <var-button
-      v-if="selectAction"
+      v-if="onmosaicAction"
       font="semibold italic"
       m="x-2"
       class="!text-[#333]"
       size="small"
-      @click.stop="emits('selected')"
+      @click.stop="emits('onmosaic', gem)"
     >
       Khảm đá
     </var-button>

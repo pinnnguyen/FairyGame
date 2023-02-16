@@ -79,7 +79,7 @@ onUnmounted(() => {
 
 <template>
   <var-popup v-model:show="tooltip" position="center">
-    <div class="w-60 p-4 bg-white text-12">
+    <div class="w-60 p-4 border border-white/40 text-12 text-primary">
       <p>Mỗi cấp sẽ tăng 5% hiệu quả thuộc tính trang bị</p>
       <br>
       <p>Thất bại sẽ giảm 1 cấp.</p>
@@ -97,19 +97,16 @@ onUnmounted(() => {
       </Line>
     </template>
   </upgrade-item>
-  <div v-if="needResource" class="absolute bottom-0 w-full duration-500 text-10 font-semibold ">
+  <div v-if="needResource" class="absolute bottom-0 w-full duration-500 text-10 font-semibold text-primary">
     <div class="flex-center">
       <div class="flex items-center mx-1">
-        <nuxt-img format="webp" class="w-5 mr-1" src="/items/3_s.png" />
-        <span class="text-[#52648e]">{{ needResource?.gold }}</span>
+        Tiền tiên: {{ needResource?.gold }}
       </div>
       <div class="flex items-center mx-1">
-        <nuxt-img format="webp" class="w-5 mr-1" src="/items/1_s.png" />
-        <span class="text-[#52648e]">{{ needResource?.knb }}</span>
+        Tiên duyên: {{ needResource?.knb }}
       </div>
       <div class="flex items-center mx-1">
-        <nuxt-img format="webp" class="w-5 mr-1" src="/items/17.png" />
-        <span class="text-[#52648e]"> {{ needResource?.daNangSao }}/{{ needResource?.totalDaNangSao }}</span>
+        Đá nâng sao: {{ needResource?.daNangSao }}/{{ needResource?.totalDaNangSao }}
       </div>
     </div>
     <div class="mb-6 mt-2 flex justify-center">
@@ -117,6 +114,7 @@ onUnmounted(() => {
         :loading="loading"
         color="white"
         loading-size="mini"
+        class="!text-[#333]"
         size="mini"
         @click.stop="upgrade"
       >

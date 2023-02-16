@@ -6,12 +6,12 @@ import { qualityToName, slotToName } from '~/constants'
 
 const props = defineProps<{
   gem: PlayerGem
-  selectAction?: boolean
+  onmosaicAction?: boolean
   sellAction?: boolean
   mergeGem?: boolean
 }>()
 
-const emits = defineEmits(['selected', 'mergegem', 'refresh'])
+const emits = defineEmits(['onmosaic', 'mergegem', 'refresh'])
 const { $io } = useNuxtApp()
 const qualityTitle = computed(() => {
   return qualityToName[props.gem.quality!]
@@ -23,6 +23,10 @@ $io.on('gem:merge:response', (data) => {
   if (data.success)
     emits('mergegem')
 })
+
+const onmosaic = (gem: PlayerGem) => {
+  emits('onmosaic', gem)
+}
 </script>
 
 <template>
@@ -153,9 +157,10 @@ $io.on('gem:merge:response', (data) => {
       </div>
       <gem-actions
         :sell-action="sellAction"
-        :select-action="selectAction"
+        :onmosaic-action="onmosaicAction"
         :merge-action="mergeGem"
         :gem="gem"
+        @onmosaic="onmosaic"
       />
     </div>
   </div>
