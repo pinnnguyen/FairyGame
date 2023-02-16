@@ -4,8 +4,8 @@ import { useBattleRoundStore } from '~/composables/useBattleRound'
 import { sendMessage } from '~/composables/useMessage'
 
 defineProps<{
-  isPve: boolean
-  midId: number
+  isPve?: boolean
+  midId?: number
 }>()
 
 const emits = defineEmits(['changeBattle'])

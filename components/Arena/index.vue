@@ -3,7 +3,7 @@ import { set } from '@vueuse/core'
 import { sendMessage, useBattleRoundStore, usePlayerStore, useSoundRewardEvent } from '#imports'
 import { ItemToName, ItemToQuality, tips } from '~/constants'
 import type { BattleResponse } from '~/types'
-import { qualityPalette, randomNumber } from '~/common'
+import { qualityPalette, randomNumber, sleep } from '~/common'
 
 const {
   match,
@@ -38,7 +38,8 @@ const close = () => {
   onBack()
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await sleep(1000)
   set(shouldNextBattle, false)
   $io.on('response:pvp:solo', async (war: any) => {
     if (war?.reachLimit) {
@@ -107,7 +108,7 @@ onUnmounted(async () => {
       pos="relative"
       w="full"
       h="full"
-      :class="{ 'bg-[#163334]': (!refresh?.inRefresh) }"
+      :class="{ 'bg-[#163334]': stateRunning }"
     >
       <nuxt-img
         v-if="shouldNextBattle"
