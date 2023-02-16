@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const player = await PlayerSchema.findOne({ userId: uServer?.user?.email }).select('sid')
+  const player = await PlayerSchema.findOne({ userId: uServer?.user?.email }).select('sid power')
   if (!player?.sid) {
     return createError({
       statusCode: 404,
@@ -30,12 +30,34 @@ export default defineEventHandler(async (event) => {
     },
   }).count()
 
-  const players = await PlayerSchema.find({}).sort({ 'arenas.tienDau.pos': -1 }).limit(50).select('name level arenas power sid')
+  const playerList1 = await PlayerSchema.find({
+    power: {
+      $gte: player.power,
+    },
+    sid: {
+      $nin: [player.sid],
+    },
+  })
+    .sort({ 'arenas.tienDau.pos': -1 })
+    .limit(10)
+    .select('name level arenas power sid')
+
+  const playerList2 = await PlayerSchema.find({
+    power: {
+      $lte: player.power,
+    },
+    sid: {
+      $nin: [player.sid],
+    },
+  })
+    .sort({ 'arenas.tienDau.pos': -1 })
+    .limit(10).select('name level arenas power sid')
+
   return {
     reachLimit: {
       remaining: numberOfArena,
       maximum: REACH_LIMIT.TIEN_DAU,
     },
-    data: players,
+    data: [...playerList1, ...playerList2],
   }
 })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { randomNumber } from '~/common'
+import { randomNumber, shuffle } from '~/common'
 import { tips } from '~/constants'
 
 const { sid, playerInfo } = storeToRefs(usePlayerStore())
@@ -23,6 +23,9 @@ const playerPreview = (sid: string) => {
 }
 
 const reachLimit = computed(() => ranks.value.reachLimit?.remaining >= ranks.value.reachLimit?.maximum)
+const shuffleItem = computed(() => {
+  return shuffle(ranks.value.data)
+})
 </script>
 
 <template>
@@ -51,43 +54,53 @@ const reachLimit = computed(() => ranks.value.reachLimit?.remaining >= ranks.val
   </var-popup>
   <var-loading :loading="pending" size="mini" :description="tips[Math.round(randomNumber(0, tips.length))]" color="#ffffff">
     <div v-if="pending" h="50" w="100" />
-    <section
-      v-else
-      m="x-4 t-2"
-      flex="~ "
-      justify="between"
-    >
-      <div>Điểm Tiên Đấu: {{ playerInfo?.arenas?.tienDau?.score ?? 0 }}</div>
-      <div>
-        <div
-          text="underline right"
-          @click.stop="options.tooltip = true"
-        >
-          Thể thức
+    <template v-else>
+      <section
+        m="x-4 t-2"
+        flex="~ "
+        justify="between"
+      >
+        <div>
+          <div
+            text="underline left"
+            @click.stop="refresh"
+          >
+            Làm mới
+          </div>
+          <div>Điểm Tiên Đấu: {{ playerInfo?.arenas?.tienDau?.score ?? 0 }}</div>
+          <div>Điểm Xếp Hạng: {{ playerInfo?.arenas?.tienDau?.pos ?? 0 }}</div>
         </div>
-        <div v-if="ranks?.reachLimit">
-          Lượt: {{ ranks?.reachLimit?.remaining }}/{{ ranks?.reachLimit?.maximum }}
+        <div>
+          <div
+            text="underline right"
+            @click.stop="options.tooltip = true"
+          >
+            Thể thức
+          </div>
+          <div v-if="ranks?.reachLimit">
+            Lượt: {{ ranks?.reachLimit?.remaining }}/{{ ranks?.reachLimit?.maximum }}
+          </div>
         </div>
+      </section>
+      <div
+        v-for="(rank, index) in shuffleItem"
+        :key="rank._id"
+        pos="relative"
+        border="1 white/40 rounded"
+        text="primary"
+        p="2"
+        m="x-4 y-2"
+        :class="{
+          '!border-green-400': sid === rank.sid,
+        }"
+      >
+        <activity-tien-dau-item
+          :rank="rank"
+          :pos="index + 1"
+          :reach-limit="reachLimit"
+          @click.stop="playerPreview(rank.sid)"
+        />
       </div>
-    </section>
-    <div
-      v-for="(rank, index) in ranks?.data"
-      :key="rank._id"
-      pos="relative"
-      border="1 white/40 rounded"
-      text="primary"
-      p="2"
-      m="x-4 y-2"
-      :class="{
-        '!border-green-400': sid === rank.sid,
-      }"
-    >
-      <activity-tien-dau-item
-        :rank="rank"
-        :pos="index + 1"
-        :reach-limit="reachLimit"
-        @click.stop="playerPreview(rank.sid)"
-      />
-    </div>
+    </template>
   </var-loading>
 </template>
