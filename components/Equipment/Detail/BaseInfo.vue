@@ -2,17 +2,17 @@
 import { slotToName } from '~/constants'
 
 defineProps<{
-  name: string
-  quality: number
-  enhance: number
-  star: number
-  slotNum: number
-  rank: number
+  name?: string
+  quality?: number
+  enhance?: number
+  star?: number
+  slotNum?: number
+  rank?: number
 }>()
 </script>
 
 <template>
-  <div
+  <section
     m="x-2"
     font="semibold"
     text="left"
@@ -37,5 +37,5 @@ defineProps<{
     >
       Bậc {{ rank }}
     </p>
-  </div>
+  </section>
 </template>

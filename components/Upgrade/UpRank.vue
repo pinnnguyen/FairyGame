@@ -40,8 +40,12 @@ $io.on('rank:preview:response', (require: Require) => {
 })
 
 $io.on('equip:rank:response', async (require: any) => {
-  fetchPlayer()
-  set(needResource, require)
+  console.log('require', require)
+
+  if (require.success) {
+    fetchPlayer()
+    set(needResource, require)
+  }
   set(loading, false)
   sendMessage(require.message)
 })
@@ -138,7 +142,7 @@ const pickEquipmentFood = (_id?: string) => {
         Kho trang bị
       </div>
     </Line>
-    <div
+    <section
       v-if="needResource?.playerEquipments && needResource?.playerEquipments?.length > 0"
       p="2"
       h="full"
@@ -152,7 +156,7 @@ const pickEquipmentFood = (_id?: string) => {
         :class="{
           'border border-green-400': currentFood.includes(equipment._id),
         }"
-        class="rounded p-1 border border-white/40"
+        class="rounded p-1 border border-white/40 h-5"
         @click.stop="pickEquipmentFood(equipment._id)"
       >
         <div
@@ -164,7 +168,7 @@ const pickEquipmentFood = (_id?: string) => {
           {{ `${qualityToName[equipment.quality ?? 1]} -` }} {{ equipment?.name }} (+{{ equipment.enhance }})
         </div>
       </div>
-    </div>
+    </section>
   </div>
   <div
     v-if="needResource"

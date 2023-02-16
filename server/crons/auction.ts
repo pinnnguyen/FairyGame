@@ -3,7 +3,7 @@ import {
   AuctionItemSchema,
   AuctionSchema,
   BossDataSchema,
-  SendAuctionSystemMail,
+  SendSystemMail,
 } from '~/server/schema'
 
 export const handleStartBoss12h = async () => {
@@ -106,7 +106,7 @@ export const handleRewardBoss12h = async () => {
 
     if (kind === 'gem') {
       const gem = auctionElement.gem[0]
-      await SendAuctionSystemMail(sid, 'gem', {
+      await SendSystemMail(sid, 'gem', {
         gemId: auctionElement.gemId,
         sum: auctionElement.quantity,
         ...cloneDeep(gem),

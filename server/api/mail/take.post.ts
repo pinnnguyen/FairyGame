@@ -61,15 +61,27 @@ export default defineEventHandler(async (event) => {
 
   if (mail.recordType === 'item') {
     for (const record of mail.records) {
-      if (record.itemId === 8) {
-        await (PlayerSchema as any).changeCurrency({
-          kind: 'knb',
-          sid: playerInfo.sid,
-          value: record.sum,
-        })
-      }
-      else {
-        await addPlayerItem(playerInfo.sid, record.sum, record.itemId)
+      switch (record.itemId) {
+        // TODO: TAKE KNB
+        case 8:
+          await (PlayerSchema as any).changeCurrency({
+            kind: 'knb',
+            sid: playerInfo.sid,
+            value: record.sum,
+          })
+          break
+        // TODO: TAKE DIEM TIEN DAU
+        case 14:
+          await (PlayerSchema as any).changeCurrency({
+            kind: 'diemTienDau',
+            sid: playerInfo.sid,
+            value: record.sum,
+          })
+          break
+
+        default:
+          await addPlayerItem(playerInfo.sid, record.sum, record.itemId)
+          break
       }
     }
   }

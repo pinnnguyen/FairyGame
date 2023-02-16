@@ -54,26 +54,12 @@ export const handleEquipUpgrade = (io: any, socket: any) => {
     for (let i = 0; i < stats!.length; i++) {
       const stat = stats![i]
 
-      if (stat.damage)
-        stat.damage.enhance = (stat.damage.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
-
-      if (stat.def)
-        stat.def.enhance = (stat.def.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
-
-      if (stat.speed)
-        stat.speed.enhance = (stat.speed.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
-
-      if (stat.hp)
-        stat.hp.enhance = (stat.hp.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
-
-      if (stat.mp)
-        stat.mp.enhance = (stat.mp.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
-
-      if (stat.critical)
-        stat.critical.enhance = (stat.critical.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
-
-      if (stat.bloodsucking)
-        stat.bloodsucking.enhance = (stat.bloodsucking.main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100
+      for (const s in stat) {
+        if (stat[s]) {
+          const extend = ((stat[s].main * (extentAttributeEnhanceLevel * equipEnhanceUpdated!.enhance!)) / 100) ?? 0
+          stat[s].enhance += extend
+        }
+      }
     }
 
     await PlayerEquipmentSchema.findOneAndUpdate({ _id: equip._id }, {

@@ -87,7 +87,7 @@ export const SendMarketSystemMail = async (sid: string, recordType?: string, rec
   })
 }
 
-export const SendAuctionSystemMail = async (sid: string, recordType?: string, records?: any, options?: {
+export const SendSystemMail = async (sid: string, recordType?: string, records?: any, options?: {
   title: string
   note: string
 }) => {

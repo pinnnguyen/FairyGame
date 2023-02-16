@@ -44,11 +44,8 @@ const getPlayerTitle = computed(() => {
       <div text="10">
         Tiên lực: {{ formatCash(rank.power) }}
       </div>
-      <div v-if="rank?.arenas?.tienDau?.pos" text="10">
-        Xếp hạng: {{ rank?.arenas?.tienDau?.pos }}
-      </div>
-      <div v-else text="10">
-        Xếp hạng: Chưa có
+      <div text="10">
+        Điểm: {{ rank?.arenas?.tienDau?.pos ?? 0 }}
       </div>
     </div>
     <div m="t-2" pos="absolute" right="2" top="[20%]">

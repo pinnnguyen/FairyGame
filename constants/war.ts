@@ -45,5 +45,5 @@ export const BATTLE_ACTION = {
 }
 
 export const REACH_LIMIT = {
-  TIEN_DAU: 20,
+  TIEN_DAU: 10,
 }

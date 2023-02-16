@@ -223,22 +223,23 @@ export const handleArenaTienDauSolo = async (request: {
 
   const youwin = warResponse.winner === attacker.player._id
   if (youwin) {
-    const defenderPos = defender.player?.arenas?.tienDau?.pos ?? 999
-    const attackerPos = attacker.player?.arenas?.tienDau?.pos ?? request.pos
+    const playerLose = await PlayerSchema.findById(defender.player._id).select('arenas')
+    if (playerLose && playerLose?.arenas?.tienDau?.pos >= 10) {
+      await PlayerSchema.findByIdAndUpdate(defender.player._id,
+        {
+          $inc: {
+            'arenas.tienDau.pos': -10,
+          },
+        })
+    }
 
     await PlayerSchema.findByIdAndUpdate(attacker.player._id, {
-      'arenas.tienDau.pos': defenderPos < attackerPos ? defenderPos : attackerPos,
-      '$inc': {
+      $inc: {
         'knb': 10,
         'arenas.tienDau.score': 10,
+        'arenas.tienDau.pos': 10,
       },
     })
-
-    if (attackerPos < defenderPos) {
-      await PlayerSchema.findByIdAndUpdate(defender.player._id, {
-        'arenas.tienDau.pos': attackerPos < defenderPos ? attackerPos : defenderPos,
-      })
-    }
 
     return {
       youwin,
@@ -256,6 +257,7 @@ export const handleArenaTienDauSolo = async (request: {
     $inc: {
       'knb': 5,
       'arenas.tienDau.score': 5,
+      'arenas.tienDau.pos': 10,
     },
   })
 

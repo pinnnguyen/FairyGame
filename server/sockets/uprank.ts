@@ -7,7 +7,6 @@ export const handleEquipUpRank = async (io: any, socket: any) => {
   //   socket.join(_channel)
 
   socket.on('equip:rank:preview', async (_equipId: string) => {
-    console.log('start preview')
     const equip = await PlayerEquipmentSchema.findById(_equipId)
     if (!equip)
       return
@@ -33,34 +32,43 @@ export const handleEquipUpRank = async (io: any, socket: any) => {
     const needRss = await needResourceUpRank(equip)
     const playerInfo = await PlayerSchema.findOne({ sid: equip.sid }).select('knb gold')
     if (playerInfo!.knb < needRss.knb) {
-      return {
-        message: 'Đạo hữu không đủ KNB để nâng cấp',
-      }
+      socket.emit('equip:rank:response', {
+        success: false,
+        message: 'Đạo hữu không đủ Tiên duyên để nâng cấp',
+      })
+
+      return
     }
 
     if (playerInfo!.gold < needRss.gold) {
-      return {
+      socket.emit('equip:rank:response', {
+        success: false,
         message: 'Đạo hữu không đủ Tiền tiên để nâng cấp',
-      }
+      })
+
+      return
     }
 
-    const equipments = await PlayerEquipmentSchema.find({
+    const countEquipments = await PlayerEquipmentSchema.find({
       _id: {
         $in: params.listFood,
       },
-    })
+    }).count()
 
-    if (equipments.length < needRss.needFoodNumber) {
-      return {
+    if (countEquipments < needRss.needFoodNumber) {
+      socket.emit('equip:rank:response', {
+        success: false,
         message: 'Nguyên liệu nâng cấp trang bị của đạo hữu không đủ',
-      }
+      })
+
+      return
     }
 
-    await PlayerEquipmentSchema.deleteMany({
-      _id: {
-        $in: params.listFood,
-      },
-    })
+    // await PlayerEquipmentSchema.deleteMany({
+    //   _id: {
+    //     $in: params.listFood,
+    //   },
+    // })
 
     await PlayerSchema.findOneAndUpdate({ sid: equip.sid }, {
       $inc: {
@@ -75,10 +83,12 @@ export const handleEquipUpRank = async (io: any, socket: any) => {
       },
     }, {
       new: true,
+      upsert: true,
     })
 
     if (!equipStarUpdated) {
       socket.emit('equip:rank:response', {
+        success: false,
         message: 'Nâng cấp thất bại',
       })
 
@@ -90,26 +100,12 @@ export const handleEquipUpRank = async (io: any, socket: any) => {
     for (let i = 0; i < stats!.length; i++) {
       const stat = stats![i]
 
-      if (stat.damage)
-        stat.damage.main += (stat.damage.main * extentAttributeRankLevel) / 100
-
-      if (stat.def)
-        stat.def.main += (stat.def.main * extentAttributeRankLevel) / 100
-
-      if (stat.speed)
-        stat.speed.main += (stat.speed.main * extentAttributeRankLevel) / 100
-
-      if (stat.hp)
-        stat.hp.main += (stat.hp.main * extentAttributeRankLevel) / 100
-
-      if (stat.mp)
-        stat.mp.main += (stat.mp.main * extentAttributeRankLevel) / 100
-
-      if (stat.critical)
-        stat.critical.main += (stat.critical.main * extentAttributeRankLevel) / 100
-
-      if (stat.bloodsucking)
-        stat.bloodsucking.main += (stat.bloodsucking.main * extentAttributeRankLevel) / 100
+      for (const s in stat) {
+        if (stat[s].main > 0) {
+          const extend = ((stat[s].main * extentAttributeRankLevel) / 100) ?? 0
+          stat[s].main += extend
+        }
+      }
     }
 
     await PlayerEquipmentSchema.findOneAndUpdate({ _id: equip._id }, {
@@ -117,13 +113,13 @@ export const handleEquipUpRank = async (io: any, socket: any) => {
     })
 
     const { gold, knb, needFoodNumber, playerEquipments } = await needResourceUpRank(equipStarUpdated)
-
     socket.emit('equip:rank:response', {
       gold,
       knb,
       needFoodNumber,
       playerEquipments,
       message: `Trang bị tăng thành công lên bậc${equipStarUpdated?.rank}`,
+      success: true,
     })
   })
   // })

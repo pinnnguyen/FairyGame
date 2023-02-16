@@ -111,5 +111,13 @@
     "preview": "/items/1.png",
     "quality": 4,
     "value": 7
+  },
+  {
+    "id": 14,
+    "name": "Điểm Tiên Đấu",
+    "note": "Sử dụng sẽ được điểm tương đương",
+    "kind": 3,
+    "preview": "/items/1.png",
+    "quality": 4
   }
 ]

@@ -41,7 +41,7 @@ export const needResourceUpRank = async (equipment: PlayerEquipment) => {
   return {
     gold: BASE_GOLD * equipment.rank!,
     knb: BASE_KNB * equipment.rank!,
-    needFoodNumber: 3 + equipment.rank!,
+    needFoodNumber: 3,
     playerEquipments,
   }
 }

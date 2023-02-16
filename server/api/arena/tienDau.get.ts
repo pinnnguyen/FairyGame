@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     },
   }).count()
 
-  const players = await PlayerSchema.find({}).sort({ 'arenas.tienDau.pos': 1 }).limit(50).select('name level arenas power sid')
+  const players = await PlayerSchema.find({}).sort({ 'arenas.tienDau.pos': -1 }).limit(50).select('name level arenas power sid')
   return {
     reachLimit: {
       remaining: numberOfArena,
