@@ -3,7 +3,6 @@ import { randomNumber, sleep } from '~/common'
 import { tips } from '~/constants'
 
 const { data: listBoss, pending, refresh } = useFetch('/api/boss/frameTime')
-
 const beforeWar = async () => {
   await sleep(3000)
   refresh()

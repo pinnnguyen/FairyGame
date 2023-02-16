@@ -27,6 +27,7 @@ export const BATTLE_TURN = {
 }
 
 export const BATTLE_KIND = {
+  NORMAL: 'normal',
   PVE: 'pve',
   PVP: 'pvp',
   ARENA_SOLO_PVP: 'arena_solo_pvp',
@@ -41,4 +42,8 @@ export const BATTLE_ACTION = {
   ATTACK: 'attack',
   DRUNK: 'drunk',
   FIRE: 'fire',
+}
+
+export const REACH_LIMIT = {
+  TIEN_DAU: 20,
 }

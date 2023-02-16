@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { set } from '@vueuse/core'
 import { sendMessage, useBattleRoundStore, usePlayerStore, useSoundRewardEvent } from '#imports'
-import { ItemToName, ItemToQuality, tips } from '~/constants'
+import { BATTLE_KIND, ItemToName, ItemToQuality, tips } from '~/constants'
 import type { BattleResponse } from '~/types'
 import { qualityPalette, randomNumber, sleep } from '~/common'
 
@@ -31,7 +31,8 @@ const handleStartBattle = async (battleRes: BattleResponse) => {
 }
 
 const onBack = () => {
-  set(useState('isArena'), false)
+  // TODO: Quay lại map thường
+  set(useState('arena'), BATTLE_KIND.NORMAL)
 }
 const close = () => {
   set(warResult, false)
@@ -39,8 +40,6 @@ const close = () => {
 }
 
 onMounted(async () => {
-  await sleep(1000)
-  set(shouldNextBattle, false)
   $io.on('response:pvp:solo', async (war: any) => {
     if (war?.reachLimit) {
       sendMessage('Đã đạt đến giới hạn khiêu chiến mỗi ngày', 2000)
@@ -48,7 +47,9 @@ onMounted(async () => {
       return
     }
 
+    await sleep(1000)
     set(battleCurrently, war)
+    set(shouldNextBattle, false)
     await handleStartBattle(war)
   })
 })
@@ -145,7 +146,7 @@ onUnmounted(async () => {
     </div>
     <battle-controls :back="true" @on-back="onBack" />
     <div
-      :class="{ '!bg-[#540905]': !refresh?.inRefresh }"
+      :class="{ '!bg-[#540905]': stateRunning }"
       transition="~ colors duration-800"
       h="10"
       pos="absolute"

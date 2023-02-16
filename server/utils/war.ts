@@ -1,6 +1,6 @@
 import { createError } from 'h3'
 import moment from 'moment'
-import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
+import { BATTLE_KIND, REACH_LIMIT, TARGET_TYPE } from '~/constants'
 import { startWarSolo } from '~/helpers'
 import {
   getBaseReward,
@@ -171,7 +171,7 @@ export const handleArenaTienDauSolo = async (request: {
     },
   }).count()
 
-  if (numberOfArena >= 5) {
+  if (numberOfArena >= REACH_LIMIT.TIEN_DAU) {
     return {
       reachLimit: true,
     }

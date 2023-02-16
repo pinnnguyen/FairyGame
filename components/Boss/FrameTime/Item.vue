@@ -3,7 +3,7 @@ import { set } from '@vueuse/core'
 import { usePlayerStore } from '~/composables/usePlayer'
 import { sendMessage } from '~/composables/useMessage'
 import type { BossFrameTime } from '~/types'
-import { TARGET_TYPE } from '~/constants'
+import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { playerTitle, startTimeEvent, timeOffset } from '~/common'
 
 const props = defineProps<{
@@ -30,7 +30,6 @@ onMounted(() => {
 })
 
 const startWar = async (boss?: BossFrameTime) => {
-  console.log('boss', boss)
   if (!boss)
     return
 
@@ -39,6 +38,8 @@ const startWar = async (boss?: BossFrameTime) => {
     return
   }
 
+  console.log('boss', boss)
+  set(useState('arena'), BATTLE_KIND.BOSS_FRAME_TIME)
   set(battleRequest, {
     id: boss._id,
     target: TARGET_TYPE.BOSS_FRAME_TIME,
@@ -59,13 +60,13 @@ const bossLevelTitle = computed(() => {
   <section pos="relative" border="1 white/40 rounded" p="2" m="2">
     <div text="center">
       <span v-if="!isStart">
-        Boss bắt đầu:
+        Bắt đầu:
         <span v-if="timeOffset(startTime).hours > 0">{{ timeOffset(startTime).hours }}h</span>
         <span v-if="timeOffset(startTime).minutes > 0" p="x-1">{{ timeOffset(startTime).minutes }}phút</span>
         <span>{{ timeOffset(startTime).seconds }}s</span>
       </span>
       <span v-else>
-        Boss kết thúc:
+        Kết thúc:
         <span v-if="timeOffset(endTime).hours > 0">{{ timeOffset(endTime).hours }}h</span>
         <span v-if="timeOffset(endTime).minutes > 0" p="x-1">{{ timeOffset(endTime).minutes }}phút</span>
         <span>{{ timeOffset(endTime).seconds }}s</span>

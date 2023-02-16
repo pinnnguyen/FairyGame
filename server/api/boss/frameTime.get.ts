@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { getServerSession } from '#auth'
 import { startEndHoursBossFrameTime } from '~/common'
 import { cloneDeep } from '~/helpers'
@@ -22,12 +21,10 @@ const getBossFrameTime = async () => {
     return bossFrameTime
 
   const bossFrameTimeList = await BossDataSchema.find({ kind: 'frame_time' }).select({
-    _id: false,
     __v: false,
   })
 
   const bossList = cloneDeep(bossFrameTimeList)
-
   const newBoss = []
   for (let i = 0; i < bossList.length; i++) {
     // bossList[i].isStart = false
@@ -39,9 +36,6 @@ const getBossFrameTime = async () => {
     newBoss.push({
       bossId: bossList[i].id,
       hp: bossList[i].attribute.hp,
-      death: false,
-      killer: null,
-      revive: 0,
       ...bossList[i],
     })
   }

@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { getServerSession } from '#auth'
-import { BATTLE_KIND } from '~/constants'
+import { BATTLE_KIND, REACH_LIMIT } from '~/constants'
 import { BattleSchema, PlayerSchema } from '~/server/schema'
 
 export default defineEventHandler(async (event) => {
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
   return {
     reachLimit: {
       remaining: numberOfArena,
-      maximum: 5,
+      maximum: REACH_LIMIT.TIEN_DAU,
     },
     data: players,
   }

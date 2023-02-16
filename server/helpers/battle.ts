@@ -192,6 +192,7 @@ export const handleBeforeStartWar = async (battleRequest: BattleRequest, _p: Pla
   }
 
   if (isBossFrameTime(battleTargetType)) {
+    console.log('battleRequest', battleRequest)
     const _enemyObj = await BossCreatorSchema.findById(battleRequest.target.id)
     return {
       _enemyObj,

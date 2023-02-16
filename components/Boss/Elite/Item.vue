@@ -3,7 +3,7 @@ import { set, useIntervalFn } from '@vueuse/core'
 import { usePlayerStore } from '~/composables/usePlayer'
 import { sendMessage } from '~/composables/useMessage'
 import type { BossElite } from '~/types'
-import { TARGET_TYPE } from '~/constants'
+import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { playerTitle, timeOffset } from '~/common'
 
 const props = defineProps<{
@@ -30,22 +30,6 @@ setInterval(() => {
 }, 1000)
 
 const startWar = async (boss: BossElite) => {
-  // try {
-  //   validate.value = await $fetch('/api/boss/elite.validate')
-  //   if (validate.value.inRefresh) {
-  //     const { pause } = useIntervalFn(() => {
-  //       validate.value.refreshTime = validate.value.refreshTime! - 1
-  //       if (validate.value.refreshTime <= 1)
-  //         pause()
-  //     }, 1000)
-  //
-  //     sendMessage(`Bị boss đánh bại hãy quay lại sau ${timeOffset(validate.value.refreshTime!).seconds}`)
-  //     return
-  //   }
-  // }
-  // catch (e: any) {
-  //   sendMessage(e.statusMessage)
-  // }
   if (playerInfo.value!.level < boss.level) {
     sendMessage('Chưa đạt cấp độ')
     return
@@ -56,6 +40,7 @@ const startWar = async (boss: BossElite) => {
     return
   }
 
+  set(useState('arena'), BATTLE_KIND.BOSS_ELITE)
   set(battleRequest, {
     id: boss._id,
     target: TARGET_TYPE.BOSS_ELITE,

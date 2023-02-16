@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { set } from '@vueuse/core'
 import { formatCash, playerTitle } from '~/common'
+import { BATTLE_KIND } from '~/constants'
+
 const props = defineProps<{
   pos: number
   rank: any
@@ -7,13 +10,12 @@ const props = defineProps<{
 }>()
 
 const { sid } = usePlayerStore()
-
 const { $io } = useNuxtApp()
 const war = (defenderSid: string) => {
   if (props.reachLimit)
     return
 
-  useState('isArena').value = true
+  set(useState('arena'), BATTLE_KIND.ARENA_SOLO_PVP)
   $io.emit('arena:pvp:solo', {
     attackerSid: sid,
     defenderSid,

@@ -3,7 +3,7 @@ import { set } from '@vueuse/core'
 import { sendMessage, usePlayerStore } from '#imports'
 import { playerTitle } from '~/common'
 import type { BossDaily } from '~/types'
-import { TARGET_TYPE } from '~/constants'
+import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 
 const props = defineProps<{
   boss: BossDaily
@@ -25,6 +25,7 @@ const startWar = (boss: BossDaily) => {
     return
   }
 
+  set(useState('arena'), BATTLE_KIND.BOSS_DAILY)
   set(battleRequest, {
     id: boss.id,
     target: TARGET_TYPE.BOSS_DAILY,

@@ -2,7 +2,7 @@
 import { useBattleRoundStore } from '~/composables/useBattleRound'
 
 defineProps<{
-  back: boolean
+  back?: boolean
 }>()
 const emits = defineEmits(['onBack', 'onSkip'])
 const {

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { usePlayerStore } from '#imports'
+import { BattleArena, BattleDaily, BattleElite, BattleFrameTime, BattleNormal } from '#components'
+import { BATTLE_KIND } from '~/constants'
 
 const { $io } = useNuxtApp()
 const { loadPlayer } = usePlayerStore()
-const isArena = useState('isArena', () => false)
+const arena = useState('arena', () => BATTLE_KIND.NORMAL)
 
 definePageMeta({
   middleware: ['game'],
@@ -14,8 +16,20 @@ $io.on('fetch:player:response', (data: any) => {
   loadPlayer(data)
 })
 
-watch(isArena, (arena) => {
-  console.log('arena', arena)
+const dynamicBattles = computed(() => {
+  if (arena.value === BATTLE_KIND.BOSS_DAILY)
+    return BattleDaily
+
+  if (arena.value === BATTLE_KIND.BOSS_ELITE)
+    return BattleElite
+
+  if (arena.value === BATTLE_KIND.BOSS_FRAME_TIME)
+    return BattleFrameTime
+
+  if (arena.value === BATTLE_KIND.ARENA_SOLO_PVP)
+    return BattleArena
+
+  return BattleNormal
 })
 </script>
 
@@ -39,8 +53,9 @@ watch(isArena, (arena) => {
         border="b white/10"
         bg="primary"
       >
-        <battle v-if="!isArena" />
-        <arena v-else />
+        <!--        <Battle v-if="!isArena" /> -->
+        <!--        <Arena v-else /> -->
+        <component :is="dynamicBattles" />
       </div>
     </div>
     <div

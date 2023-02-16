@@ -22,8 +22,20 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="text-white flex flex-col items-center justify-center">
-    <div v-if="endTime > 0" class="text-12 text-primary font-medium p-1 mb-2 rounded px-4">
+  <div
+    text="white"
+    flex="~ col"
+    align="items-center"
+    justify="center"
+  >
+    <div
+      v-if="endTime > 0"
+      text="12"
+      font="medium"
+      p="1 x-4"
+      m="b-2"
+      border="rounded"
+    >
       Hồi sinh: {{ Math.round(convertMillisecondsToSeconds(endTime)) }}s
     </div>
   </div>
