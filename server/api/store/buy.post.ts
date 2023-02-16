@@ -11,7 +11,7 @@ interface Body {
 export default defineEventHandler(async (event) => {
   const body = await readBody<Body>(event)
 
-  const player = await PlayerSchema.findOne({ sid: body.sid }).select('sid knb arenas')
+  const player = await PlayerSchema.findOne({ sid: body.sid }).select('sid knb arenas coin')
   if (!player) {
     return createError({
       statusCode: 400,
@@ -39,6 +39,22 @@ export default defineEventHandler(async (event) => {
     await PlayerSchema.updateOne({ sid: player.sid }, {
       $inc: {
         knb: -price,
+      },
+    })
+  }
+
+  if (storeItem.currency === 'coin') {
+    const price = storeItem.price
+    if (player.coin < price) {
+      return {
+        statusCode: 400,
+        statusMessage: `Còn thiếu ${price - player.coin} ${CurrencyTitle[storeItem.currency]} để mua vật phẩm này`,
+      }
+    }
+
+    await PlayerSchema.updateOne({ sid: player.sid }, {
+      $inc: {
+        coin: -price,
       },
     })
   }
