@@ -1,11 +1,11 @@
 [
   {
-    "id": 9,
-    "name": "Minh Nguyệt Chi Kiếm",
-    "info": "Minh Nguyệt Chi Kiếm",
+    "id": 41,
+    "name": "Vô Danh Địa Huyền Thuơng",
+    "info": "Vô Danh Địa Huyền Thuơng",
     "rank": 1,
     "quality": 1,
-    "level": 20,
+    "level": 60,
     "slot": 1,
     "preview": "/items/50031.png",
     "enhance": 0,
@@ -13,13 +13,13 @@
       {
         "damage": {
           "enhance": 0,
-          "main": 80
+          "main": 1440
         }
       },
       {
         "speed": {
           "enhance": 0,
-          "main": 20
+          "main": 60
         }
       },
       {
@@ -31,7 +31,7 @@
       {
         "hp": {
           "enhance": 0,
-          "main": 100
+          "main": 1800
         }
       },
       {
@@ -43,24 +43,24 @@
       {
         "critical": {
           "enhance": 0,
-          "main": 2
+          "main": 20
         }
       },
       {
         "bloodsucking": {
           "enhance": 0,
-          "main": 2
+          "main": 5
         }
       }
     ]
   },
   {
-    "id": 10,
-    "name": "Minh Nguyệt Chi Giáp",
-    "info": "Minh Nguyệt Chi Giáp",
+    "id": 42,
+    "name": "Vô Danh Địa Huyền Giáp",
+    "info": "Vô Danh Địa Huyền Giáp",
     "rank": 1,
     "quality": 1,
-    "level": 20,
+    "level": 60,
     "slot": 2,
     "preview": "/items/50033.png",
     "enhance": 0,
@@ -74,19 +74,19 @@
       {
         "speed": {
           "enhance": 0,
-          "main": 2
+          "main": 30
         }
       },
       {
         "def": {
           "enhance": 0,
-          "main": 45
+          "main": 405
         }
       },
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 1550
         }
       },
       {
@@ -110,12 +110,12 @@
     ]
   },
   {
-    "id": 11,
-    "name": "Minh Nguyệt Chi Khôi",
-    "info": "Minh Nguyệt Chi Khôi",
+    "id": 43,
+    "name": "Vô Danh Địa Huyền Khôi",
+    "info": "Vô Danh Địa Huyền Khôi",
     "rank": 1,
     "quality": 1,
-    "level": 20,
+    "level": 60,
     "slot": 3,
     "preview": "/items/50032.png",
     "enhance": 0,
@@ -129,19 +129,19 @@
       {
         "speed": {
           "enhance": 0,
-          "main": 2
+          "main": 20
         }
       },
       {
         "def": {
           "enhance": 0,
-          "main": 20
+          "main": 380
         }
       },
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 1450
         }
       },
       {
@@ -165,12 +165,12 @@
     ]
   },
   {
-    "id": 12,
-    "name": "Minh Nguyệt Chi Nhẫn",
-    "info": "Minh Nguyệt Chi Nhẫn",
+    "id": 44,
+    "name": "Vô Danh Địa Huyền Nhẫn",
+    "info": "Vô Danh Địa Huyền Nhẫn",
     "rank": 1,
     "quality": 1,
-    "level": 20,
+    "level": 60,
     "slot": 4,
     "preview": "/items/50038.png",
     "enhance": 0,
@@ -178,25 +178,25 @@
       {
         "damage": {
           "enhance": 0,
-          "main": 35
+          "main": 385
         }
       },
       {
         "speed": {
           "enhance": 0,
-          "main": 2
+          "main": 30
         }
       },
       {
         "def": {
           "enhance": 0,
-          "main": 5
+          "main": 120
         }
       },
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 1350
         }
       },
       {
@@ -208,7 +208,7 @@
       {
         "critical": {
           "enhance": 0,
-          "main": 2
+          "main": 10
         }
       },
       {
@@ -220,12 +220,12 @@
     ]
   },
   {
-    "id": 13,
-    "name": "Minh Nguyệt Ngọc Bội",
-    "info": "Minh Nguyệt Ngọc Bội",
+    "id": 45,
+    "name": "Vô Danh Địa Huyền Bội",
+    "info": "Vô Danh Địa Huyền Bội",
     "rank": 1,
     "quality": 1,
-    "level": 20,
+    "level": 60,
     "slot": 5,
     "preview": "/items/50037.png",
     "enhance": 0,
@@ -239,19 +239,19 @@
       {
         "speed": {
           "enhance": 0,
-          "main": 7
+          "main": 20
         }
       },
       {
         "def": {
           "enhance": 0,
-          "main": 10
+          "main": 300
         }
       },
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 1250
         }
       },
       {
@@ -263,7 +263,7 @@
       {
         "critical": {
           "enhance": 0,
-          "main": 2
+          "main": 5
         }
       },
       {
@@ -275,12 +275,12 @@
     ]
   },
   {
-    "id": 14,
-    "name": "Minh Nguyệt Thủ Hộ",
-    "info": "Minh Nguyệt Thủ Hộ",
+    "id": 46,
+    "name": "Vô Danh Địa Huyền Uyên",
+    "info": "Vô Danh Địa Huyền Uyên",
     "rank": 1,
     "quality": 1,
-    "level": 20,
+    "level": 60,
     "slot": 6,
     "preview": "/items/50034.png",
     "enhance": 0,
@@ -300,13 +300,13 @@
       {
         "def": {
           "enhance": 0,
-          "main": 35
+          "main": 285
         }
       },
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 1600
         }
       },
       {
@@ -330,12 +330,12 @@
     ]
   },
   {
-    "id": 15,
-    "name": "Minh Nguyệt Chi Ngoạ",
-    "info": "Minh Nguyệt Chi Ngoạ",
+    "id": 47,
+    "name": "Vô Danh Địa Huyền Hài",
+    "info": "Vô Danh Địa Huyền Hài",
     "rank": 1,
     "quality": 1,
-    "level": 20,
+    "level": 60,
     "slot": 7,
     "preview": "/items/50035.png",
     "enhance": 0,
@@ -355,13 +355,13 @@
       {
         "def": {
           "enhance": 0,
-          "main": 35
+          "main": 155
         }
       },
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 1250
         }
       },
       {
@@ -385,12 +385,12 @@
     ]
   },
   {
-    "id": 16,
-    "name": "Minh Nguyệt Chi Đai",
-    "info": "Minh Nguyệt Chi Đai",
+    "id": 48,
+    "name": "Vô Danh Địa Huyền Đai",
+    "info": "Vô Danh Địa Huyền Đai",
     "rank": 1,
-    "level": 20,
     "quality": 1,
+    "level": 60,
     "slot": 8,
     "preview": "/items/50036.png",
     "enhance": 0,
@@ -410,13 +410,13 @@
       {
         "def": {
           "enhance": 0,
-          "main": 35
+          "main": 220
         }
       },
       {
         "hp": {
           "enhance": 0,
-          "main": 150
+          "main": 1400
         }
       },
       {

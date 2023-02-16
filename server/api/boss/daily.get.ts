@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import moment from 'moment'
 import { getServerSession } from '#auth'
 import { BATTLE_KIND } from '~/constants'
 import { BattleSchema, BossDataSchema, EquipmentSchema, PlayerSchema } from '~/server/schema'
