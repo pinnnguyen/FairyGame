@@ -48,20 +48,26 @@ const onchangeEquip = () => {
     >
       <button
         v-if="leftS.slot"
-        class="diamond"
+        class="diamond items-center justify-center"
         w="20"
         h="12"
+        flex="~ col"
         :style="{
           border: `1px solid ${qualityPalette(leftS.slot?.quality)}`,
         }"
         @click.stop="setSlot(leftS.slot)"
       >
-        <span
-          text="10"
+        <div
+          flex="~ "
+        >
+          <icon v-for="i of leftS.slot?.star" :key="i" name="material-symbols:star" size="10" />
+        </div>
+        <div
+          text="8"
           font="bold italic"
         >
           {{ leftS.slot?.name }}(+{{ leftS.slot?.enhance }})
-        </span>
+        </div>
       </button>
       <button
         v-else
@@ -70,7 +76,7 @@ const onchangeEquip = () => {
         w="20"
       >
         <span
-          text="10"
+          text="8"
           font="bold italic"
         >
           {{ slotToName[leftS.no] }}
