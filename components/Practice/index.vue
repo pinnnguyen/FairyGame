@@ -7,6 +7,22 @@ const tabItems = [
     key: 'mindDharma',
     name: 'Tâm pháp',
   },
+  {
+    key: '1',
+    name: 'Thần thông',
+  },
+  {
+    key: '2',
+    name: 'Linh căn',
+  },
+  {
+    key: '3',
+    name: 'Thần thông',
+  },
+  {
+    key: '4',
+    name: 'Huyết mạnh',
+  },
 ]
 
 const components = computed(() => {
