@@ -111,7 +111,7 @@ const sell = async () => {
     bg="primary"
     font="leading-[23px]"
     p="0"
-    w="11/12"
+    w="full"
     m="auto"
     overflow="hidden"
     class="border-box"

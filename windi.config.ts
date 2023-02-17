@@ -74,6 +74,8 @@ export default defineConfig({
   },
   theme: {
     fontSize: {
+      6: '6px',
+      7: '7px',
       8: '8px',
       9: '9px',
       10: '10px',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Dialog } from '@varlet/ui'
-import { qualityToName } from '../../constants'
+import { qualityToName, slotToName } from '../../constants'
 import { qualityPalette } from '~/common'
 
 defineProps<{
@@ -65,8 +65,14 @@ const buy = (equipment: any) => {
         @click.stop="onItemSelected(equipment)"
       >
         <market-name :quality="equipment?.record?.quality">
-          {{ qualityToName[equipment?.record?.quality] }} - {{ equipment?.record?.name }}
+          [{{ slotToName[equipment?.record?.slot] }}]
+          {{ qualityToName[equipment?.record?.quality] }} - {{ equipment?.record?.name }} (+{{ equipment?.record?.enhance }})
         </market-name>
+        <div
+          flex="~ "
+        >
+          <icon v-for="i of equipment?.record?.star" :key="i" name="material-symbols:star" size="10" />
+        </div>
         <market-owner>
           (NB: {{ equipment.player.name }})
         </market-owner>

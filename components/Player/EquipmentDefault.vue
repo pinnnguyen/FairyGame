@@ -21,6 +21,10 @@ const setSlot = (equipment: PlayerEquipment) => {
   options.equipSelected = equipment
   options.equipDetail = true
 }
+
+const onchangeEquip = () => {
+  options.equipDetail = false
+}
 </script>
 
 <template>
@@ -28,6 +32,7 @@ const setSlot = (equipment: PlayerEquipment) => {
     <equipment-detail
       :equipment="options.equipSelected"
       :action="true"
+      @change-equip="onchangeEquip"
     />
   </var-popup>
   <div

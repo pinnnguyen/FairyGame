@@ -1,7 +1,7 @@
 <template>
   <div
-    m="y-1"
-    text="primary 8"
+    m="b-1"
+    text="primary 6"
   >
     <slot /> Tiên duyên
   </div>

@@ -82,7 +82,7 @@ const sell = async () => {
         font="semibold"
         m="x-2"
         class="!text-[#333]"
-        size="small"
+        size="mini"
         @click.stop="sell"
       >
         Treo bán
@@ -98,7 +98,7 @@ const sell = async () => {
       font="semibold italic"
       m="x-2"
       class="!text-[#333]"
-      size="small"
+      size="mini"
       @click.stop="sellPopup = true"
     >
       Treo bán
@@ -108,7 +108,7 @@ const sell = async () => {
       font="semibold italic"
       m="x-2"
       class="!text-[#333]"
-      size="small"
+      size="mini"
       @click.stop="emits('onmosaic', gem)"
     >
       Khảm đá
@@ -117,7 +117,7 @@ const sell = async () => {
       v-if="gem.sum >= 3 && mergeAction"
       font="semibold italic"
       m="x-2"
-      size="small"
+      size="mini"
       class="!text-[#333]"
       @click.stop="mergeGems"
     >

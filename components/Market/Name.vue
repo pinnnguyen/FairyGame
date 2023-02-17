@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <div
-    class="text-10"
+    class="text-8"
     :style="{
       color: qualityPalette(quality),
     }"
