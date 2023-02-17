@@ -7,6 +7,7 @@ import type { BaseReward } from '~/types/war'
 export const useBattleRoundStore = defineStore('battleRound', () => {
   const loading = ref(true)
   const inRefresh = ref(false)
+
   const refreshTime = ref(0)
   const reward = ref<{
     base: BaseReward
@@ -18,7 +19,6 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   const receiver = ref<any>({})
   const realTime = ref<any>({})
 
-  // const stop = ref(false)
   const roundNum = ref(0)
   const speed = useLocalStorage('speed', 1)
   const options = reactive({
@@ -46,6 +46,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
       return
 
     makeDefault()
+
     set(reward, war.reward)
     set(match, war.match)
 

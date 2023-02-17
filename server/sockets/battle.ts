@@ -33,7 +33,6 @@ export const battleJoinHandler = async (io: any, socket: any) => {
   socket.on('arena:pvp:solo', async (warRequest: {
     attackerSid: string
     defenderSid: string
-    pos: number
   }) => {
     const response = await handleArenaTienDauSolo(warRequest)
     socket.emit('response:pvp:solo', response)

@@ -19,7 +19,6 @@ const war = (defenderSid: string) => {
   $io.emit('arena:pvp:solo', {
     attackerSid: sid,
     defenderSid,
-    pos: props.pos,
   })
 }
 
@@ -42,7 +41,7 @@ const getPlayerTitle = computed(() => {
         {{ rank.name }} - <span text="10">{{ getPlayerTitle.levelTitle }} {{ getPlayerTitle.floor }}</span>
       </div>
       <div text="10">
-        Tiên lực: {{ formatCash(rank.power) }}
+        Tiên lực: {{ formatCash(rank?.power) }}
       </div>
       <div text="10">
         Điểm: {{ rank?.arenas?.tienDau?.pos ?? 0 }}

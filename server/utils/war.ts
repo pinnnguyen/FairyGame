@@ -161,7 +161,6 @@ export const handleWars = async (request: BattleRequest) => {
 export const handleArenaTienDauSolo = async (request: {
   attackerSid: string
   defenderSid: string
-  pos: number
 }) => {
   const today = moment().startOf('day')
 

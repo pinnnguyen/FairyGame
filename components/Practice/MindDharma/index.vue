@@ -64,7 +64,7 @@ const upgrade = (key: string) => {
           w="50"
         >
           <div>
-            {{ MIND_DHARMA_DES[key].title }}:
+            {{ MIND_DHARMA_DES[key].title }}
             <span text="8">
               {{ playerTitle(mind.enhance, mind.enhance + 1).levelTitle }} {{ playerTitle(mind.enhance, mind.enhance + 1).floor }}
             </span>
@@ -78,8 +78,9 @@ const upgrade = (key: string) => {
         <div
           text="center"
           w="1/2"
+          font="bold"
         >
-          {{ mind.main * mind.enhance }}
+          (+{{ mind.main * mind.enhance }})
         </div>
       </div>
       <var-button
@@ -93,6 +94,7 @@ const upgrade = (key: string) => {
           <template v-if="resource">
             <div
               flex="~ col"
+              font="bold"
             >
               <div
                 v-for="k in Object.keys(resource[key])"
