@@ -90,7 +90,7 @@ export default defineNuxtConfig({
         },
       },
     ],
-    // '@kevinmarrec/nuxt-pwa',
+    '@kevinmarrec/nuxt-pwa',
   ],
   pwa: {
     manifest: {
