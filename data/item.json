@@ -119,5 +119,14 @@
     "kind": 3,
     "preview": "/items/1.png",
     "quality": 4
+  },
+  {
+    "id": 15,
+    "name": "100 Vạn Tu Vi",
+    "note": "Dùng vật phẩm sẽ nhận được 100 Vạn Tu Vi",
+    "kind": 3,
+    "preview": "/items/1.png",
+    "quality": 3,
+    "value": 1000000
   }
 ]

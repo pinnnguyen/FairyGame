@@ -3,7 +3,7 @@ import { getServerSession } from '#auth'
 import { MidSchema, PlayerAttributeSchema, PlayerSchema, addSystemChat } from '~/server/schema'
 import { getPlayer } from '~/server/helpers'
 
-import { DEFAULT_ATTRIBUTE, DEFAULT_ROLE } from '~/constants'
+import { DEFAULT_ATTRIBUTE, DEFAULT_ROLE } from '~/config'
 const ObjectId = mongoose.Types.ObjectId
 
 interface CreateRoleBody {

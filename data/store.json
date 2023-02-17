@@ -82,5 +82,12 @@
     "quantity": 1,
     "kind": 3,
     "currency": "scoreTienDau"
+  },
+  {
+    "itemId": 15,
+    "price": 200,
+    "quantity": 1,
+    "kind": 2,
+    "currency": "knb"
   }
 ]

@@ -43,7 +43,3 @@ export const BATTLE_ACTION = {
   DRUNK: 'drunk',
   FIRE: 'fire',
 }
-
-export const REACH_LIMIT = {
-  TIEN_DAU: 10,
-}

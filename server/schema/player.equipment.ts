@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import type { PlayerEquipment } from '~/types'
 import { EquipmentSchema } from '~/server/schema/equipment'
 import { randomNumber } from '~/common'
-import { DEFAULT_MAX_RATE_RECEIVED, DEFAULT_MIN_RATE_RECEIVED } from '~/constants'
+import { DEFAULT_MAX_RATE_RECEIVED, DEFAULT_MIN_RATE_RECEIVED } from '~/config'
 const ObjectId = mongoose.Types.ObjectId
 
 const schema = new mongoose.Schema<PlayerEquipment>(

@@ -50,6 +50,14 @@ export const useItems = () => {
     })
   }
 
+  const useTuVi = async (sid: string, itemInfo: BasicItem) => {
+    await PlayerSchema.findOneAndUpdate({ sid }, {
+      $inc: {
+        exp: itemInfo.value,
+      },
+    })
+  }
+
   const useReducedTimeItemRefreshMonster = async (sid: string, itemInfo: BasicItem) => {
     const playerStatus = await PlayerStatusSchema.findOne({
       sid,
@@ -91,5 +99,6 @@ export const useItems = () => {
     useGold,
     useIncreaseExp,
     useUnboxGem,
+    useTuVi,
   }
 }

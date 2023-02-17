@@ -1,7 +1,8 @@
 import { createError } from 'h3'
 import moment from 'moment'
-import { BATTLE_KIND, REACH_LIMIT, TARGET_TYPE } from '~/constants'
+import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { startWarSolo } from '~/helpers'
+import { REACH_LIMIT } from '~/config'
 import {
   getBaseReward,
   getPlayer,

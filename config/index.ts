@@ -1,5 +1,11 @@
 import type { PlayerAttribute } from '~/types'
 
+export enum REACH_LIMIT {
+  TIEN_DAU = 10,
+}
+
+export const DEFAULT_MIN_RATE_RECEIVED = 1
+export const DEFAULT_MAX_RATE_RECEIVED = 100
 export const DEFAULT_ROLE = {
   gold: 0,
   coin: 0,
@@ -28,13 +34,6 @@ export const DEFAULT_ATTRIBUTE: PlayerAttribute = {
   speed: 1,
   reductionCounterAttack: 0,
   reductionAvoid: 0,
-}
-
-export const ROLE_IMG: Record<number, string> = {
-  1: '/role/tientoc.png',
-  2: '/role/tuyeu.png',
-  3: '/role/tuma.png',
-  4: '/role/nhantoc.png',
 }
 
 export const ROLE_NAME: Record<number, string> = {

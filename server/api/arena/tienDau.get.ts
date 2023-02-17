@@ -1,7 +1,9 @@
 import moment from 'moment'
 import { getServerSession } from '#auth'
-import { BATTLE_KIND, REACH_LIMIT } from '~/constants'
+import { shuffle } from '~/common'
+import { BATTLE_KIND } from '~/constants'
 import { BattleSchema, PlayerSchema } from '~/server/schema'
+import { REACH_LIMIT } from '~/config'
 
 export default defineEventHandler(async (event) => {
   const today = moment().startOf('day')
@@ -53,11 +55,15 @@ export default defineEventHandler(async (event) => {
     .sort({ 'arenas.tienDau.pos': -1 })
     .limit(10).select('name level arenas power sid')
 
+  const data = () => {
+    return shuffle([...playerList1, ...playerList2])
+  }
+
   return {
+    data: data().slice(0, 5),
     reachLimit: {
       remaining: numberOfArena,
       maximum: REACH_LIMIT.TIEN_DAU,
     },
-    data: [...playerList1, ...playerList2],
   }
 })

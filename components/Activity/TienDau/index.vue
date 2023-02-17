@@ -83,7 +83,7 @@ const shuffleItem = computed(() => {
         </div>
       </section>
       <div
-        v-for="(rank, index) in shuffleItem"
+        v-for="(rank, index) in ranks.data"
         :key="rank._id"
         pos="relative"
         border="1 white/40 rounded"

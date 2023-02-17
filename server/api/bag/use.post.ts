@@ -2,7 +2,7 @@ import { getServerSession } from '#auth'
 import { PlayerItemSchema, PlayerSchema, addSystemChat, getPlayerItem } from '~/server/schema'
 import { useItems } from '~/server/utils'
 
-const { useReducedTimeItemRefreshMonster, useGold, useIncreaseExp, useUnboxGem } = useItems()
+const { useReducedTimeItemRefreshMonster, useGold, useIncreaseExp, useUnboxGem, useTuVi } = useItems()
 interface Body {
   sid: string
   itemId: number
@@ -70,11 +70,15 @@ export default defineEventHandler(async (event) => {
       break
     case 10:
     case 11:
+      // TODO: Ve Tang x2 exp
       await useIncreaseExp(player.sid, playerItem.info)
       break
     case 12:
       await addSystemChat('', `${player.name} sử dụng ${playerItem?.info?.name} thành công nhận được đá hồn tương đương thật là may mắn`)
       await useUnboxGem(player.sid, playerItem.info)
+      break
+    case 15:
+      await useTuVi(player.sid, playerItem.info)
       break
   }
 
