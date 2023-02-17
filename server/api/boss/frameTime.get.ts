@@ -22,6 +22,7 @@ const getBossFrameTime = async () => {
 
   const bossFrameTimeList = await BossDataSchema.find({ kind: 'frame_time' }).select({
     __v: false,
+    _id: false,
   })
 
   const bossList = cloneDeep(bossFrameTimeList)
@@ -40,8 +41,7 @@ const getBossFrameTime = async () => {
     })
   }
 
-  await BossCreatorSchema.insertMany(newBoss)
-  return newBoss
+  return BossCreatorSchema.insertMany(newBoss)
 }
 
 const handle = defineEventHandler(async (event) => {
