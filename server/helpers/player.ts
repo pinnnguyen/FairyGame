@@ -1,4 +1,5 @@
 // import type { EnemyObject, PlayerInfo } from '~/types'
+import { DEFAULT_MIND_DHARMA } from '~/config'
 //
 // export const classPlayerCounter = (_p: PlayerInfo, _enemyObject: EnemyObject) => {
 //   const counter = {
@@ -45,9 +46,15 @@ import { conditionForUpLevel } from '~/server/common'
 import { AttributePowers } from '~/server/constants'
 import { formatAttributes, useEquipment } from '~/server/helpers/equipment'
 import { MidSchema, PlayerSchema } from '~/server/schema'
-import type { Player, PlayerAttribute, PlayerServerResponse } from '~/types'
+import type { BaseAttributes, MindDharma, Player, PlayerAttribute, PlayerServerResponse } from '~/types'
 import { playerTitle } from '~/common'
 
+const mindDharmaApply = (mindDharma: MindDharma, attribute: BaseAttributes) => {
+  for (const mindK in mindDharma) {
+    const extentAtt = mindDharma[mindK].main * mindDharma[mindK].enhance
+    attribute[mindK] += extentAtt
+  }
+}
 const useClass = (ofClass: number, attribute: PlayerAttribute) => {
   // attribute.criticalDamage = attribute.criticalDamage // 150% sat thuong bao kich
   switch (ofClass) {
@@ -152,6 +159,17 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
     return
 
   const player = players[0]
+  if (!player.mindDharma) {
+    const playerUpdated = await PlayerSchema.findByIdAndUpdate(player._id, {
+      mindDharma: DEFAULT_MIND_DHARMA,
+    }, {
+      new: true,
+    })
+
+    if (playerUpdated)
+      player.mindDharma = playerUpdated.mindDharma
+  }
+
   const attribute = player.attribute
   const playerEquips = player.equipments
 
@@ -172,6 +190,9 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
   player.levelTitle = levelTitle
   player.floor = floor
   player.expLimited = expLimited
+
+  if (player.mindDharma)
+    mindDharmaApply(player.mindDharma, attribute)
 
   if (playerEquips.length > 0)
     useEquipment(playerEquips, attribute, player)

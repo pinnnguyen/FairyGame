@@ -1,5 +1,7 @@
 import { Server } from 'socket.io'
+import { MIND_DHARMA_RESOURCE } from '~/config'
 import { BATTLE_KIND } from '~/constants/war'
+import { cloneDeep } from '~/helpers'
 import {
   BattleSchema,
   ChatSchema,
@@ -18,6 +20,7 @@ import {
 } from '~/server/sockets'
 import { getPlayer, needResourceUpStar } from '~/server/helpers'
 import { getDamageList } from '~/server/utils'
+import type { MindDharmaResource } from '~/types'
 
 let server: any = null
 
@@ -130,6 +133,84 @@ export default defineEventHandler((event) => {
   console.log('Start websocket...')
   io.on('connection', async (socket) => {
     console.log(`Socket connected: ${socket.id}`)
+
+    socket.on('mind:dharma:upgrade', async (sid: string, key: string) => {
+      if (!sid)
+        return
+
+      const player = await PlayerSchema.findOne({ sid }).select('mindDharma exp gold')
+      if (!player?.mindDharma)
+        return
+
+      const keyMindDharma = player.mindDharma[key]
+      const needGoldResource = MIND_DHARMA_RESOURCE[key].needExp * keyMindDharma.enhance
+      const needExpResource = MIND_DHARMA_RESOURCE[key].needGold * keyMindDharma.enhance
+
+      if (player.gold < needGoldResource) {
+        socket.emit('response:dharma:upgrade', {
+          success: false,
+          message: 'Tiền tiên không đủ để thăng cấp',
+        })
+        return
+      }
+
+      if (player.exp < needExpResource) {
+        socket.emit('response:dharma:upgrade', {
+          success: false,
+          message: 'Tu vi không đủ để thăng cấp',
+        })
+        return
+      }
+
+      keyMindDharma.enhance += 1
+      player.mindDharma[key] = keyMindDharma
+
+      const playerUpdated = await PlayerSchema.findOneAndUpdate({ sid }, {
+        mindDharma: player.mindDharma,
+        $inc: {
+          exp: -needExpResource,
+          gold: -needGoldResource,
+        },
+      },
+      {
+        new: true,
+      })
+
+      const mindDharma = cloneDeep(playerUpdated?.mindDharma)
+      const resource: MindDharmaResource = {}
+      for (const key in mindDharma) {
+        Object.assign(resource, {
+          [key]: {
+            exp: MIND_DHARMA_RESOURCE[key].needExp * mindDharma[key].enhance,
+            gold: MIND_DHARMA_RESOURCE[key].needGold * mindDharma[key].enhance,
+          },
+        })
+      }
+
+      socket.emit('response:dharma:upgrade', resource)
+    })
+
+    socket.on('mind:dharma:resource', async (sid: string) => {
+      if (!sid)
+        return
+
+      const player = await PlayerSchema.findOne({ sid }).select('mindDharma')
+      if (!player?.mindDharma)
+        return
+
+      const mindDharma = cloneDeep(player.mindDharma)
+      const resource: MindDharmaResource = {}
+      for (const key in mindDharma) {
+        Object.assign(resource, {
+          [key]: {
+            exp: MIND_DHARMA_RESOURCE[key].needExp * mindDharma[key].enhance,
+            gold: MIND_DHARMA_RESOURCE[key].needGold * mindDharma[key].enhance,
+          },
+        })
+      }
+
+      socket.emit('response:dharma:resource', resource)
+    })
 
     socket.on('fetch:player', async (sid) => {
       const playerResource = await getPlayer('', sid)

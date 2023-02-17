@@ -111,6 +111,6 @@ export const formatAttributes = (attribute: PlayerAttribute) => {
   attribute.speed = Math.round(attribute.speed)
   attribute.def = Math.round(attribute.def)
   attribute.mp = Math.round(attribute.mp)
-  attribute.critical = Math.round(attribute.critical)
+  attribute.critical = Math.round(attribute.critical * 100) / 100
   attribute.bloodsucking = Math.round(attribute.bloodsucking)
 }

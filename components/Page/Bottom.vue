@@ -1,22 +1,16 @@
 <script lang="ts" setup>
 import { set } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { usePlayerSlot, usePlayerStore, useSoundClickEvent } from '#imports'
-import { Activity, Bag, Boss, Character, Market, Store } from '#components'
+import { usePlayerStore, useSoundClickEvent } from '#imports'
+import { Activity, Bag, Boss, Character, Market, Practice, Store } from '#components'
 
 const { playerInfo, attribute } = storeToRefs(usePlayerStore())
 
 const togglePlayerInfo = useState('togglePlayerInfo')
-const toggleAuction = useState('toggleAuction')
-const toggleStore = useState('toggleStore')
-const toggleBag = useState('toggleBag')
 const toggleUpgrade = useState('toggleUpgrade')
 const toggleUpStar = useState('toggleUpStar')
 const toggleUpRank = useState('toggleUpRank')
 const toggleUpGem = useState('toggleUpGem')
-const toggleBoss = useState('toggleBoss')
-// const toggleSetting = useState('toggleSetting')
-// const upgradeOptions = ref(false)
 
 const toggleOptions = reactive({
   showUpgrade: false,
@@ -26,12 +20,6 @@ const onToggleUpgrade = () => {
   toggleUpgrade.value = true
   useSoundClickEvent()
 }
-
-const ontoggleBoss = () => {
-  toggleBoss.value = true
-  useSoundClickEvent()
-}
-
 const onToggleUpStar = () => {
   toggleUpStar.value = true
   useSoundClickEvent()
@@ -52,21 +40,6 @@ const onUpgradeOptions = () => {
   useSoundClickEvent()
 }
 
-const onToggleAuction = () => {
-  toggleAuction.value = true
-  useSoundClickEvent()
-}
-
-const ontoggleStore = () => {
-  toggleStore.value = true
-  useSoundClickEvent()
-}
-
-const ontoggleBag = () => {
-  toggleBag.value = true
-  useSoundClickEvent()
-}
-
 const onPlayerInfo = () => {
   togglePlayerInfo.value = true
   useSoundClickEvent()
@@ -80,6 +53,10 @@ const menuItems = [
     fn: onPlayerInfo,
   },
   {
+    key: 'practice',
+    name: 'Tu luyện',
+  },
+  {
     key: 'upgrade',
     name: 'Nâng Cấp',
     fn: onUpgradeOptions,
@@ -87,27 +64,22 @@ const menuItems = [
   {
     key: 'bag',
     name: 'Túi',
-    fn: ontoggleBag,
   },
   {
     key: 'market',
     name: 'Chợ',
-    fn: onToggleAuction,
   },
   {
     key: 'store',
     name: 'Cửa Hàng',
-    fn: ontoggleStore,
   },
   {
     key: 'activity',
     name: 'Hoạt động',
-    fn: ontoggleStore,
   },
   {
     key: 'boss',
     name: 'Boss',
-    fn: ontoggleBoss,
   },
 ]
 
@@ -130,13 +102,6 @@ const upgradeTabOptions = [
   },
 ]
 
-const isMarket = computed(() => tab.value === 'market')
-const isStore = computed(() => tab.value === 'store')
-const isCharacter = computed(() => tab.value === 'character')
-const isBag = computed(() => tab.value === 'bag')
-const isBoss = computed(() => tab.value === 'boss')
-const isActivity = computed(() => tab.value === 'activity')
-
 const dynamicComponent = computed(() => {
   switch (tab.value) {
     case 'market':
@@ -156,6 +121,9 @@ const dynamicComponent = computed(() => {
 
     case 'activity':
       return Activity
+
+    case 'practice':
+      return Practice
   }
 })
 
@@ -210,21 +178,22 @@ const setTab = (t: string) => {
         :key="menu.key"
         transition="~ colors duration-800"
         m="x-2"
-        w="10"
-        h="10"
+        w="8"
+        h="8"
         text="12 primary"
         font="italic semibold"
         border="rounded-full 1 white/40"
         class="bg-button-menu"
         @click.stop="setTab(menu.key)"
       >
-        <span
+        <div
+          w="8"
           :class="{
             'text-[#4add3b]': tab === menu.key,
           }"
         >
           {{ menu.name }}
-        </span>
+        </div>
       </button>
     </div>
     <div class="absolute top-16 text-10 text-[#eaeced] italic w-full h-[calc(100%_-_115px)]">

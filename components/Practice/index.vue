@@ -1,31 +1,18 @@
 <script setup lang="ts">
-import { BagEquipment, BagGem, BagItem } from '#components'
-const tab = ref('item')
+import { PracticeMindDharma } from '#components'
+
+const tab = ref('mindDharma')
 const tabItems = [
   {
-    key: 'item',
-    name: 'Vật Phẩm',
-  },
-  {
-    key: 'equip',
-    name: 'Trang Bị',
-  },
-  {
-    key: 'gem',
-    name: 'Đá Hồn',
+    key: 'mindDharma',
+    name: 'Tâm pháp',
   },
 ]
 
 const components = computed(() => {
   switch (tab.value) {
-    case 'item':
-      return BagItem
-    case 'equip':
-      return BagEquipment
-    case 'gem':
-      return BagGem
-    default:
-      return BagEquipment
+    case 'mindDharma':
+      return PracticeMindDharma
   }
 })
 </script>
@@ -69,7 +56,7 @@ const components = computed(() => {
       w="full"
       flex="~ col"
       align="items-center"
-      p="4"
+      p="x-4"
       overflow="auto"
       class="h-[calc(100%_-_47px)]"
     >

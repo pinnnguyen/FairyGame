@@ -51,6 +51,14 @@ export type BaseAttributes = {
 export type CoreAttribute = {
   [key in CoreAttributeKey | string]: number
 }
+
+export type MindDharma = {
+  [key in CoreAttributeKey | string]: {
+    main: number
+    enhance: number
+  }
+}
+
 export interface Player {
   _id?: string
   ofAttribute: number
@@ -78,6 +86,7 @@ export interface Player {
       score: number
     }
   }
+  mindDharma: MindDharma
 }
 
 export type PlayerAttribute = BaseAttributes & {
@@ -128,4 +137,11 @@ export interface PlayerStatus {
   type?: PlayerStatusType
   value?: number
   timeLeft?: number
+}
+
+export interface MindDharmaResource {
+  [key: string]: {
+    gold: number
+    exp: number
+  }
 }
