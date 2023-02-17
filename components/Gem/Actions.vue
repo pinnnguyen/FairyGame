@@ -68,25 +68,27 @@ const sell = async () => {
     v-model:show="sellPopup"
     position="bottom"
   >
-    <div
-      p="4"
-    >
-      <var-input v-model="sellOptions.price" placeholder="Nhập giá bán" />
-      <var-input v-model="sellOptions.quantity" placeholder="Nhập số lượng" />
-    </div>
-    <div
-      text="center"
-      p="y-4"
-    >
-      <var-button
-        font="semibold"
-        m="x-2"
-        class="!text-[#333]"
-        size="mini"
-        @click.stop="sell"
+    <div class="bg-[#000000]">
+      <div
+        p="4"
       >
-        Treo bán
-      </var-button>
+        <var-input v-model="sellOptions.price" placeholder="Nhập giá bán" />
+        <var-input v-model="sellOptions.quantity" placeholder="Nhập số lượng" />
+      </div>
+      <div
+        text="center"
+        p="y-4"
+      >
+        <var-button
+          font="semibold"
+          m="x-2"
+          class="!text-[#333]"
+          size="mini"
+          @click.stop="sell"
+        >
+          Treo bán
+        </var-button>
+      </div>
     </div>
   </var-popup>
   <div

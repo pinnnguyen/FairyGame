@@ -73,21 +73,21 @@ const useItem = async () => {
 </script>
 
 <template>
-  <var-popup v-model:show="sellPopup" position="bottom">
-    <div class="p-4">
-      <var-input v-model="sellOptions.price" type="number" placeholder="Nhập giá bán" />
-      <var-input v-model="sellOptions.quantity" type="number" placeholder="Nhập số lượng" />
-    </div>
-    <div class="text-center my-4">
-      <var-button
-        class="!text-[#333] font-medium mx-2"
-        size="small"
-        @click.stop="sell"
-      >
-        Treo bán
-      </var-button>
-    </div>
-  </var-popup>
+  <!--  <var-popup v-model:show="sellPopup" position="bottom"> -->
+  <!--    <div class="p-4"> -->
+  <!--      <var-input v-model="sellOptions.price" type="number" placeholder="Nhập giá bán" /> -->
+  <!--      <var-input v-model="sellOptions.quantity" type="number" placeholder="Nhập số lượng" /> -->
+  <!--    </div> -->
+  <!--    <div class="text-center my-4"> -->
+  <!--      <var-button -->
+  <!--        class="!text-[#333] font-medium mx-2" -->
+  <!--        size="small" -->
+  <!--        @click.stop="sell" -->
+  <!--      > -->
+  <!--        Treo bán -->
+  <!--      </var-button> -->
+  <!--    </div> -->
+  <!--  </var-popup> -->
   <div
     text="10"
     bg="primary"

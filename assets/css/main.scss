@@ -274,3 +274,7 @@ body::after {
 .var-popup__content {
     max-width: 60vh;
 }
+
+.var-popup {
+    overflow: hidden !important;
+}

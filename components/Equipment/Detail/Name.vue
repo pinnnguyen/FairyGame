@@ -15,6 +15,7 @@ const qualityTitle = computed(() => {
 
 <template>
   <div
+    w="85"
     :style="{ color: qualityPalette(quality) }"
   >
     {{ qualityTitle }} - {{ name }}
