@@ -39,9 +39,14 @@ const skipBattle = () => {
       w="6"
       font="italic semibold"
       class="border-full-box bg-button-menu"
+      pos="relative"
       @click="speed = 1.5"
     >
-      Tăng tốc
+      <span
+        pos="absolute"
+        class="transform-center"
+      >Tăng tốc
+      </span>
     </button>
     <button
       v-show="speed === 1.5"
@@ -51,9 +56,15 @@ const skipBattle = () => {
       w="6"
       font="italic semibold"
       class="border-full-box bg-button-menu"
+      pos="relative"
       @click="speed = 1"
     >
-      Giảm tốc
+      <span
+        pos="absolute"
+        class="transform-center"
+      >
+        Giảm tốc
+      </span>
     </button>
     <button
       v-if="roundNum > 3"
@@ -63,9 +74,15 @@ const skipBattle = () => {
       w="6"
       font="italic semibold"
       class="border-full-box bg-button-menu"
+      pos="relative"
       @click.stop="skipBattle"
     >
-      Bỏ qua
+      <span
+        pos="absolute"
+        class="transform-center"
+      >
+        Bỏ qua
+      </span>
     </button>
     <button
       v-if="back"
@@ -75,9 +92,13 @@ const skipBattle = () => {
       w="6"
       font="italic semibold"
       class="border-full-box bg-button-menu"
+      pos="relative"
       @click.stop="emits('onBack')"
     >
-      Trở về
+      <span
+        pos="absolute"
+        class="transform-center"
+      > Trở về</span>
     </button>
   </div>
 </template>

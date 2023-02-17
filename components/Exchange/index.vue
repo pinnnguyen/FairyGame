@@ -116,9 +116,35 @@ const mailsUnRead = computed(() => {
       <rank v-if="exchangeTabState === 'rank'" />
     </section>
   </var-popup>
-  <div class="max-w-[70vh] h-12 bg-[#000000] text-12 w-full flex items-center justify-between gap-2 p-2 fixed bottom-0 border-t border-white/10">
-    <button class="h-8 w-8 text-12 italic font-semibold border-full-box bg-button-menu" @click="toggle.exchange = true">
-      <span class="">Giao lưu</span>
+  <div
+    h="12"
+    bg="[#000000]"
+    text="12"
+    w="full"
+    flex="~ "
+    align="items-center"
+    justify="between"
+    gap="2"
+    p="2"
+    border="1 white/10"
+    pos="fixed"
+    bottom="0"
+  >
+    <button
+      class="border-full-box bg-button-menu"
+      h="8"
+      w="8"
+      text="12"
+      font="semibold italic"
+      pos="relative"
+      @click="toggle.exchange = true"
+    >
+      <div
+        pos="absolute"
+        class="transform-center"
+      >
+        Giao lưu
+      </div>
     </button>
     <section class="h-12 w-full overflow-auto text-left">
       <div v-for="content in contents" :key="content._id">
