@@ -184,10 +184,13 @@ const setTab = (t: string) => {
         font="italic semibold"
         border="rounded-full 1 white/40"
         class="bg-button-menu"
+        pos="relative"
         @click.stop="setTab(menu.key)"
       >
         <div
           text="center"
+          pos="absolute"
+          class="transform-center"
           :class="{
             'text-[#4add3b]': tab === menu.key,
           }"
