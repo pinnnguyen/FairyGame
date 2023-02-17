@@ -16,11 +16,6 @@ export const TARGET_TYPE = {
   BOSS_ELITE: 'boss_elite',
 }
 
-export const WINNER = {
-  youwin: 'youwin',
-  youlose: 'youlose',
-}
-
 export const BATTLE_TURN = {
   PLAYER: 'player',
   ENEMY: 'enemy',

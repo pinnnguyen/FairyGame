@@ -25,9 +25,11 @@ export default defineNuxtConfig({
     },
   },
   ssr: false,
-  // routeRules: {
-  //   '/**': { swr: true },
-  // },
+  routeRules: {
+    '/api/mid': { static: true },
+    '/login': { static: true },
+    '/register': { static: true },
+  },
   vite: {
     plugins: [
       Unimport.vite({

@@ -1,5 +1,5 @@
 import { getServerSession } from '#auth'
-import { BATTLE_KIND, WINNER } from '~/constants'
+import { BATTLE_KIND } from '~/constants'
 import { BattleSchema, PlayerSchema } from '~/server/schema'
 import { getPlayer } from '~/server/helpers'
 
@@ -12,8 +12,8 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const player = await PlayerSchema.findOne({ userId: session?.user?.email })
-  const battle = await BattleSchema.findOne({ 'mid.id': player?.midId, 'winner': player._id, 'kind': BATTLE_KIND.PVE })
+  const player = await PlayerSchema.findOne({ userId: session?.user?.email }).select('_id midId')
+  const battle = await BattleSchema.findOne({ 'mid.id': player?.midId, 'winner': player?._id, 'kind': BATTLE_KIND.PVE })
   if (!battle) {
     return createError({
       statusCode: 400,

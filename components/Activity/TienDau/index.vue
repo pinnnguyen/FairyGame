@@ -38,6 +38,8 @@ const shuffleItem = computed(() => {
       p="4"
       bg="[#000000]"
       font="leading-6"
+      w="11/12"
+      m="auto"
     >
       <p>Hoạt đông tiên đấu sẽ diễn ra cả ngày từ thứ 2 đến chủ nhật hằng tuần</p>
       <p>Các đạo hữu sẽ lựa chọn các đối thủ để tham gia cướp điểm</p>

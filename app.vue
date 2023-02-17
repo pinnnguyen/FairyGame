@@ -10,7 +10,7 @@ const { loadPlayer } = usePlayerStore()
 
 StyleProvider({
   '--snackbar-content-padding': '6px 16px',
-  '--snackbar-background': 'radial-gradient(#4041448c, #191b1e)',
+  '--snackbar-background': 'transparent',
   '--snackbar-border-radius': '0px',
   '--snackbar-width': '200px',
   '--popup-content-background-color': '1',
