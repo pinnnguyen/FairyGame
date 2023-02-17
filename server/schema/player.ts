@@ -35,28 +35,7 @@ const schema = new mongoose.Schema<Player>(
         score: Number,
       },
     },
-    mindDharma: {
-      damage: {
-        enhance: Number,
-        main: Number,
-      },
-      def: {
-        enhance: Number,
-        main: Number,
-      },
-      critical: {
-        enhance: Number,
-        main: Number,
-      },
-      hp: {
-        enhance: Number,
-        main: Number,
-      },
-      criticalDamage: {
-        enhance: Number,
-        main: Number,
-      },
-    },
+    mindDharma: {},
   },
   {
     timestamps: true,

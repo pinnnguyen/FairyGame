@@ -1,19 +1,12 @@
 <script setup lang="ts">
-import { usePlayerStore } from '#imports'
 import { LazyBattleArena, LazyBattleDaily, LazyBattleElite, LazyBattleFrameTime, LazyBattleNormal } from '#components'
 import { BATTLE_KIND } from '~/constants'
 
-const { $io } = useNuxtApp()
-const { loadPlayer } = usePlayerStore()
 const arena = useState('arena', () => BATTLE_KIND.NORMAL)
 
 definePageMeta({
   middleware: ['game'],
   auth: false,
-})
-
-$io.on('fetch:player:response', (data: any) => {
-  loadPlayer(data)
 })
 
 const dynamicBattles = computed(() => {

@@ -109,7 +109,7 @@ export default defineNuxtConfig({
       author: 'Bon Studio',
     },
     workbox: {
-      enabled: true,
+      enabled: false,
     },
   },
   pinia: {

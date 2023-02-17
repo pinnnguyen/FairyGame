@@ -4,29 +4,6 @@ export enum REACH_LIMIT {
 }
 export const DEFAULT_MIN_RATE_RECEIVED = 1
 export const DEFAULT_MAX_RATE_RECEIVED = 100
-
-export const DEFAULT_MIND_DHARMA = {
-  damage: {
-    enhance: 1,
-    main: 10,
-  },
-  def: {
-    enhance: 1,
-    main: 5,
-  },
-  critical: {
-    enhance: 1,
-    main: 0.5,
-  },
-  hp: {
-    enhance: 1,
-    main: 20,
-  },
-  criticalDamage: {
-    enhance: 1,
-    main: 1.5,
-  },
-}
 export const DEFAULT_ROLE = {
   gold: 0,
   coin: 0,
@@ -70,6 +47,41 @@ export const ROLE_NAME: Record<number, string> = {
   4: 'Nhân Tộc',
 }
 
+export const MIND_DHARMA_CONFIG: Record<string, any> = {
+  damage: {
+    enhance: 1,
+    main: 10,
+  },
+  def: {
+    enhance: 1,
+    main: 5,
+  },
+  critical: {
+    enhance: 1,
+    main: 0.5,
+  },
+  hp: {
+    enhance: 1,
+    main: 20,
+  },
+  criticalDamage: {
+    enhance: 1,
+    main: 1.5,
+  },
+  reductionCriticalDamage: {
+    enhance: 1,
+    main: 1.5,
+  },
+  recoveryPerformance: {
+    enhance: 1,
+    main: 0.5,
+  },
+  reductionRecoveryPerformance: {
+    enhance: 1,
+    main: 0.5,
+  },
+}
+
 export const MIND_DHARMA_DES: Record<string, { title: string; description: string }> = {
   damage: {
     title: 'Công kích',
@@ -91,6 +103,18 @@ export const MIND_DHARMA_DES: Record<string, { title: string; description: strin
     title: 'Sát thương bạo kích',
     description: 'Tâm pháp giúp tăng sát thương khi gây đòn đánh bạo kích',
   },
+  reductionCriticalDamage: {
+    title: 'Miễn sát thương bạo kích',
+    description: 'Tâm pháp giúp kháng lại sát thương nhận phải',
+  },
+  recoveryPerformance: {
+    title: 'Tăng khả năng hồi phục',
+    description: 'Tâm pháp giúp tăng khả năng hồi phục sinh lực dựa theo các nguồn sát thương gây ra',
+  },
+  reductionRecoveryPerformance: {
+    title: 'Kháng khả năng hồi phục',
+    description: 'Tâm pháp làm giảm khả năng hồi phục của mục tiêu',
+  },
 }
 
 export const MIND_DHARMA_RESOURCE: Record<string, { needGold: number; needExp: number }> = {
@@ -111,6 +135,18 @@ export const MIND_DHARMA_RESOURCE: Record<string, { needGold: number; needExp: n
     needExp: 7000,
   },
   criticalDamage: {
+    needGold: 15000,
+    needExp: 14000,
+  },
+  reductionCriticalDamage: {
+    needGold: 15000,
+    needExp: 14000,
+  },
+  recoveryPerformance: {
+    needGold: 15000,
+    needExp: 14000,
+  },
+  reductionRecoveryPerformance: {
     needGold: 15000,
     needExp: 14000,
   },

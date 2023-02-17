@@ -52,11 +52,11 @@ const components = computed(() => {
     </div>
     <div
       pos="absolute"
-      top="10"
-      w="full"
+      top="12"
       flex="~ col"
       align="items-center"
       p="x-4"
+      w="full"
       overflow="auto"
       class="h-[calc(100%_-_47px)]"
     >

@@ -1,9 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import {
   StyleProvider,
 } from '@varlet/ui'
 import '@varlet/ui/es/snackbar/style/index'
 import '@varlet/ui/es/dialog/style/index'
+
+import { usePlayerStore } from '~/composables/usePlayer'
+const { loadPlayer } = usePlayerStore()
 
 StyleProvider({
   '--snackbar-content-padding': '6px 16px',
@@ -23,6 +26,11 @@ const { $io } = useNuxtApp()
 const chatSystem = ref('')
 
 onMounted(() => {
+  $io.on('fetch:player:response', (data: any) => {
+    console.log('data', data)
+    loadPlayer(data)
+  })
+
   setInterval(() => {
     $io.emit('get:marquee-text')
   }, 30000)

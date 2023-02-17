@@ -1,5 +1,5 @@
 // import type { EnemyObject, PlayerInfo } from '~/types'
-import { DEFAULT_MIND_DHARMA } from '~/config'
+import { MIND_DHARMA_CONFIG } from '~/config'
 //
 // export const classPlayerCounter = (_p: PlayerInfo, _enemyObject: EnemyObject) => {
 //   const counter = {
@@ -161,13 +161,29 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
   const player = players[0]
   if (!player.mindDharma) {
     const playerUpdated = await PlayerSchema.findByIdAndUpdate(player._id, {
-      mindDharma: DEFAULT_MIND_DHARMA,
+      mindDharma: MIND_DHARMA_CONFIG,
     }, {
       new: true,
     })
 
     if (playerUpdated)
       player.mindDharma = playerUpdated.mindDharma
+  }
+  else {
+    const mindNewVersion = {}
+    for (const mind in MIND_DHARMA_CONFIG) {
+      const enhance = player.mindDharma[mind]?.enhance ?? 1
+      const main = MIND_DHARMA_CONFIG[mind]?.main
+      Object.assign(mindNewVersion, {
+        [mind]: {
+          enhance,
+          main,
+        },
+      })
+    }
+
+    await PlayerSchema.findByIdAndUpdate(player._id, { mindDharma: mindNewVersion })
+    player.mindDharma = mindNewVersion
   }
 
   const attribute = player.attribute
