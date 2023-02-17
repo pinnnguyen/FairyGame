@@ -1,36 +1,11 @@
 import type { BattleRequest } from '~/types'
-import { BattleSchema } from '~/server/schema'
-import { handleArenaTienDauSolo, handleWars } from '~/server/utils'
+import { getDamageList, handleArenaTienDauSolo, handleWars } from '~/server/utils'
 
 export const battleJoinHandler = async (io: any, socket: any) => {
   socket.on('battle:log', async (_bossId: string) => {
-    const topDMG: any = await BattleSchema.aggregate(
-      [
-        {
-          $match: {
-            targetId: _bossId,
-          },
-        },
-        {
-          $group:
-                {
-                  _id: '$sid',
-                  totalDamage: { $sum: { $multiply: ['$damage'] } },
-                  sid: {
-                    $first: '$sid',
-                  },
-                  name: {
-                    $first: '$player.name',
-                  },
-                },
-        },
-        {
-          $sort: {
-            totalDamage: -1,
-          },
-        },
-      ],
-    )
+    console.log('_bossId', _bossId)
+    const topDMG = await getDamageList(_bossId)
+    console.log('topDMG', topDMG)
 
     socket.emit('send-battle:log', topDMG)
   })

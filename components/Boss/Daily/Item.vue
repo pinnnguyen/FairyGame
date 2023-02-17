@@ -11,8 +11,8 @@ const props = defineProps<{
 
 const emits = defineEmits(['war'])
 const { playerInfo } = storeToRefs(usePlayerStore())
-const battleRequest = useState('battleRequest')
-const showReward = ref<boolean>(false)
+const { useBattleRequest } = useRequest()
+const showReward = ref(false)
 
 const startWar = (boss: BossDaily) => {
   if (playerInfo.value!.level < boss.level) {
@@ -26,7 +26,7 @@ const startWar = (boss: BossDaily) => {
   }
 
   set(useState('arena'), BATTLE_KIND.BOSS_DAILY)
-  set(battleRequest, {
+  set(useBattleRequest, {
     id: boss.id,
     target: TARGET_TYPE.BOSS_DAILY,
   })

@@ -44,6 +44,7 @@ export const handlePlayerVsMonster = async (_p: PlayerInfo, battleRequest: Battl
       _id: _p.player._id ?? 'player',
       name: _p.player.name,
       level: _p.player.level,
+      sid: _p.player.sid,
     },
     attribute: _p.attribute,
   }
@@ -53,6 +54,7 @@ export const handlePlayerVsMonster = async (_p: PlayerInfo, battleRequest: Battl
       _id: _enemyObj._id ?? 'monster',
       name: _enemyObj.name,
       level: _enemyObj.level,
+      sid: null,
     },
     attribute: _enemyObj.attribute,
   }

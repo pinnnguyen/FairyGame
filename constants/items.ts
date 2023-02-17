@@ -1,8 +1,3 @@
-export const ITEMS_ICON = {
-  exp: '/items/7.png',
-  gold: '/items/3.png',
-}
-
 export const ItemToName: Record<string, string> = {
   exp: 'Tu Vi',
   gold: 'Tiền Tiên',

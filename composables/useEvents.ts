@@ -3,10 +3,7 @@ import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 export const useBattleEvents = () => {
   const { $io } = useNuxtApp()
   const { playerInfo } = storeToRefs(usePlayerStore())
-  const battleRequest = useState<{
-    id: number
-    target: string
-  }>('battleRequest')
+  const { useBattleRequest } = useRequest()
 
   const useEventPve = (skip?: boolean) => {
     $io.emit('battle:join:pve', {
@@ -24,39 +21,39 @@ export const useBattleEvents = () => {
 
   const useEventElite = () => {
     $io.emit('battle:join:elite', {
-      kind: battleRequest.value?.target,
+      kind: useBattleRequest.value?.target,
       player: {
         userId: playerInfo.value?.userId,
       },
       target: {
-        type: battleRequest.value?.target,
-        id: battleRequest.value?.id,
+        type: useBattleRequest.value?.target,
+        id: useBattleRequest.value?.id,
       },
     })
   }
 
   const useEventFrameTime = () => {
     $io.emit('battle:join:frame_time', {
-      kind: battleRequest.value?.target,
+      kind: useBattleRequest.value?.target,
       player: {
         userId: playerInfo.value?.userId,
       },
       target: {
-        type: battleRequest.value?.target,
-        id: battleRequest.value?.id,
+        type: useBattleRequest.value?.target,
+        id: useBattleRequest.value?.id,
       },
     })
   }
 
   const useEventDaily = () => {
     $io.emit('battle:join:daily', {
-      kind: battleRequest.value?.target,
+      kind: useBattleRequest.value?.target,
       player: {
         userId: playerInfo.value?.userId,
       },
       target: {
-        type: battleRequest.value?.target,
-        id: battleRequest.value?.id,
+        type: useBattleRequest.value?.target,
+        id: useBattleRequest.value?.id,
       },
     })
   }

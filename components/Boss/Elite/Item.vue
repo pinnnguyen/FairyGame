@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { set, useIntervalFn } from '@vueuse/core'
+import { set } from '@vueuse/core'
+import { useRequest } from '#imports'
 import { usePlayerStore } from '~/composables/usePlayer'
 import { sendMessage } from '~/composables/useMessage'
 import type { BossElite } from '~/types'
@@ -12,7 +13,7 @@ const props = defineProps<{
 
 const emits = defineEmits(['war'])
 const { playerInfo } = storeToRefs(usePlayerStore())
-const battleRequest = useState('battleRequest')
+const { useBattleRequest } = useRequest()
 const showReward = ref<boolean>(false)
 
 const now = new Date().getTime()
@@ -41,7 +42,7 @@ const startWar = async (boss: BossElite) => {
   }
 
   set(useState('arena'), BATTLE_KIND.BOSS_ELITE)
-  set(battleRequest, {
+  set(useBattleRequest, {
     id: boss._id,
     target: TARGET_TYPE.BOSS_ELITE,
   })

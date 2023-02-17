@@ -17,6 +17,7 @@ import {
   handleEventUpGem,
 } from '~/server/sockets'
 import { getPlayer, needResourceUpStar } from '~/server/helpers'
+import { getDamageList } from '~/server/utils'
 
 let server: any = null
 
@@ -158,35 +159,7 @@ export default defineEventHandler((event) => {
         if (!kind)
           return
 
-        const topDMG = await BattleSchema.aggregate(
-          [
-            {
-              $match: {
-                targetId,
-              },
-            },
-            {
-              $group:
-                    {
-                      _id: '$sid',
-                      totalDamage: { $sum: { $multiply: ['$damage'] } },
-                      sid: {
-                        $first: '$sid',
-                      },
-                      name: {
-                        $first: '$player.name',
-                      },
-                    },
-            },
-            {
-              $sort: {
-                totalDamage: -1,
-              },
-            },
-          ],
-        )
-
-        // socket.emit('send-battle:log', topDMG)
+        const topDMG = getDamageList(targetId)
         socket.broadcast.emit('send-battle:log', topDMG)
       }
     })

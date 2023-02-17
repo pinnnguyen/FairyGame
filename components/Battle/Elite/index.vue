@@ -56,6 +56,7 @@ const skipListener = () => {
 onMounted(() => {
   useEventElite()
   $io.on('battle:start:elite', async (war: any) => {
+    console.log('war', war)
     await sleep(1000)
     set(battleCurrently, war)
     set(shouldLoading, false)
@@ -151,7 +152,9 @@ onUnmounted(async () => {
       font="italic"
       bg="base"
     >
-      <battle-bottom-bar />
+      <battle-bottom-bar
+        :war-notice="true"
+      />
     </div>
   </var-loading>
 </template>
