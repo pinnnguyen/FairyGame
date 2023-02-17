@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePlayerStore } from '#imports'
-import { BattleArena, BattleDaily, BattleElite, BattleFrameTime, BattleNormal } from '#components'
+import { LazyBattleArena, LazyBattleDaily, LazyBattleElite, LazyBattleFrameTime, LazyBattleNormal } from '#components'
 import { BATTLE_KIND } from '~/constants'
 
 const { $io } = useNuxtApp()
@@ -18,18 +18,18 @@ $io.on('fetch:player:response', (data: any) => {
 
 const dynamicBattles = computed(() => {
   if (arena.value === BATTLE_KIND.BOSS_DAILY)
-    return BattleDaily
+    return LazyBattleDaily
 
   if (arena.value === BATTLE_KIND.BOSS_ELITE)
-    return BattleElite
+    return LazyBattleElite
 
   if (arena.value === BATTLE_KIND.BOSS_FRAME_TIME)
-    return BattleFrameTime
+    return LazyBattleFrameTime
 
   if (arena.value === BATTLE_KIND.ARENA_SOLO_PVP)
-    return BattleArena
+    return LazyBattleArena
 
-  return BattleNormal
+  return LazyBattleNormal
 })
 </script>
 

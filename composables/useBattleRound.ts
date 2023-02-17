@@ -35,17 +35,18 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     set(inRefresh, false)
     set(refreshTime, 0)
     set(reward, null)
+    set(receiver, {})
     options.skip = false
     options.stop = false
   }
   const startBattle = async (war: any & { statusCode?: number }, cb: Function) => {
+    makeDefault()
+
     if (war?.statusCode === 400)
       return
 
     if (!war)
       return
-
-    makeDefault()
 
     set(reward, war.reward)
     set(match, war.match)

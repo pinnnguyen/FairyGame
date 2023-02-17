@@ -2,7 +2,7 @@
 import { set } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { usePlayerStore, useSoundClickEvent } from '#imports'
-import { Activity, Bag, Boss, Character, Market, Practice, Store } from '#components'
+import { LazyActivity, LazyBag, LazyBoss, LazyCharacter, LazyMarket, LazyPractice, LazyStore } from '#components'
 
 const { playerInfo, attribute } = storeToRefs(usePlayerStore())
 
@@ -105,25 +105,25 @@ const upgradeTabOptions = [
 const dynamicComponent = computed(() => {
   switch (tab.value) {
     case 'market':
-      return Market
+      return LazyMarket
 
     case 'store':
-      return Store
+      return LazyStore
 
     case 'character':
-      return Character
+      return LazyCharacter
 
     case 'bag':
-      return Bag
+      return LazyBag
 
     case 'boss':
-      return Boss
+      return LazyBoss
 
     case 'activity':
-      return Activity
+      return LazyActivity
 
     case 'practice':
-      return Practice
+      return LazyPractice
   }
 })
 
