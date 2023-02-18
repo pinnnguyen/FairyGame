@@ -41,7 +41,8 @@ const buy = async (storeItem: StoreItem) => {
     }"
   >
     <div
-      class="text-10 font-bold line-clamp-1" :style="{
+      h="8"
+      class="text-10 font-bold line-clamp-2" :style="{
         color: qualityPalette(storeItem?.props?.quality),
       }"
     >
@@ -49,7 +50,7 @@ const buy = async (storeItem: StoreItem) => {
     </div>
     <div
       p="t-2"
-      text="12 primary"
+      text="8 primary"
       class="line-clamp-2"
     >
       {{ storeItem?.props?.note }}

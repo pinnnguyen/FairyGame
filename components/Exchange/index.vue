@@ -118,6 +118,7 @@ const mailsUnRead = computed(() => {
   </var-popup>
   <div
     h="12"
+    max-w="[70vh]"
     bg="[#000000]"
     text="12"
     w="full"

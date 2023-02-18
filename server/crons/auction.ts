@@ -100,7 +100,6 @@ export const handleRewardBoss12h = async () => {
   for (const auctionElement of auction[0].auctionItems) {
     const kind = auctionElement.kind
     const sid = auctionElement.sid
-    console.log('sid', auctionElement.sid)
     if (!sid)
       continue
 

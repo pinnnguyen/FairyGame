@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { set } from '@vueuse/core'
 import type { PlayerItem } from '~/types'
-import { useFetch } from '#app'
 import { qualityPalette, randomNumber } from '~/common'
 import { tips } from '~/constants'
 
@@ -57,6 +55,8 @@ const onSell = () => {
         <div
           p="t-2"
           class="line-clamp-2"
+          h="10"
+          text="8"
         >
           {{ item?.props.note }}
         </div>

@@ -87,6 +87,14 @@ export interface Player {
     }
   }
   mindDharma: MindDharma
+  moneyManagement: {
+    chanNguyen: number
+    thanNguyen: number
+  }
+  linhCan: {
+    level: number
+    kind: string
+  }
 }
 
 export type PlayerAttribute = BaseAttributes & {

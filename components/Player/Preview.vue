@@ -8,7 +8,6 @@ const options = reactive<any>({
 })
 
 const sid = ref(props.sid)
-console.log('hdhdhdh')
 onMounted(async () => {
   if (!sid.value)
     return
@@ -19,10 +18,6 @@ onMounted(async () => {
   catch (e) {
     console.error(e)
   }
-})
-
-watch(sid, () => {
-  console.log('sid')
 })
 
 const slot1 = computed(() => options.payload.equipments?.find((e: { slot: number }) => e.slot === 1))

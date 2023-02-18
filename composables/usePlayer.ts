@@ -12,6 +12,8 @@ export const usePlayerStore = defineStore('player', () => {
   const attribute = computed(() => playerInfo.value?.attribute)
   const equipments = computed(() => playerInfo.value?.equipments)
   const mindDharma = computed(() => playerInfo.value?.mindDharma)
+  const linhCan = computed(() => playerInfo.value?.linhCan)
+  const moneyManagement = computed(() => playerInfo.value?.moneyManagement)
 
   const fetchPlayer = () => {
     $io.emit('fetch:player', sid.value)
@@ -68,6 +70,8 @@ export const usePlayerStore = defineStore('player', () => {
     attribute,
     equipments,
     mindDharma,
+    linhCan,
+    moneyManagement,
   }
 })
 

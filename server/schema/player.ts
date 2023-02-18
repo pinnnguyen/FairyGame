@@ -36,6 +36,14 @@ const schema = new mongoose.Schema<Player>(
       },
     },
     mindDharma: {},
+    linhCan: {
+      level: {
+        type: Number,
+        default: 1,
+      },
+      kind: String,
+    },
+    moneyManagement: {},
   },
   {
     timestamps: true,

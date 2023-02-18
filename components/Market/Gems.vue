@@ -54,7 +54,7 @@ const buy = (gem: any) => {
   </var-popup>
 
   <div class="px-6 pt-2 overflow-auto scrollbar-hide">
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-3 gap-2">
       <div
         v-for="gem in gems" :key="gem._id"
         class="rounded p-2 relative flex flex-col gap-2"
@@ -79,8 +79,11 @@ const buy = (gem: any) => {
               {{ gem?.record?.sum }}
             </div>
           </div>
-          <div>
-            <market-name :quality="gem?.record?.quality">
+          <div w="[55%]">
+            <market-name
+              h="5"
+              :quality="gem?.record?.quality"
+            >
               {{ gem?.record?.name }}
             </market-name>
             <market-owner>

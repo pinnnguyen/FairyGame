@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { playerTitle } from '~/common'
 import type { PlayerEquipment } from '~/types'
-import { usePlayerStore } from '~/composables/usePlayer'
-import { sendMessage } from '~/composables/useMessage'
 
 interface Prop {
   equipment: PlayerEquipment

@@ -9,3 +9,8 @@ export * from './auction'
 export * from './item'
 export * from './store'
 export * from './gem'
+
+export interface TabItem {
+  name?: string
+  key?: string
+}

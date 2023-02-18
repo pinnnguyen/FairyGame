@@ -1,5 +1,5 @@
 // import type { EnemyObject, PlayerInfo } from '~/types'
-import { MIND_DHARMA_CONFIG } from '~/config'
+import { CLASS_RULE, LINH_CAN_RULE, MIND_DHARMA_CONFIG } from '~/config'
 //
 // export const classPlayerCounter = (_p: PlayerInfo, _enemyObject: EnemyObject) => {
 //   const counter = {
@@ -52,34 +52,28 @@ import { playerTitle } from '~/common'
 const mindDharmaApply = (mindDharma: MindDharma, attribute: BaseAttributes) => {
   for (const mindK in mindDharma) {
     const extentAtt = mindDharma[mindK].main * mindDharma[mindK].enhance
-    attribute[mindK] += extentAtt
+    if (attribute[mindK])
+      attribute[mindK] += extentAtt
   }
 }
-const useClass = (ofClass: number, attribute: PlayerAttribute) => {
-  // attribute.criticalDamage = attribute.criticalDamage // 150% sat thuong bao kich
-  switch (ofClass) {
-    case 1:
-      // Tu tiên 10% tấn công & 5% sát thương bạo tăng kích
-      attribute.damage += (10 * attribute.damage) / 100
-      attribute.criticalDamage += (5 * attribute.criticalDamage) / 100
-      break
-    case 2:
-      // Tu yeu 10% sinh luc & 5% phong thu
-      attribute.hp += (10 * attribute.hp) / 100
-      attribute.def += (5 * attribute.def) / 100
-      break
-    case 3:
-      // Tu ma 10% sinh luc & 5% phong thu
-      attribute.damage += (5 * attribute.damage) / 100
-      attribute.criticalDamage += (10 * attribute.criticalDamage) / 100
-      break
-    case 4:
-      // Nhan toc 10% sinh luc & 5% phong thu
-      attribute.damage += (5 * attribute.damage) / 100
-      attribute.hp += (5 * attribute.hp) / 100
-      attribute.def += (5 * attribute.def) / 100
-      break
+
+const useLinhCan = (linhCan: any, attribute: BaseAttributes) => {
+  for (const lc in LINH_CAN_RULE[linhCan.kind].status) {
+    const extentAtt = LINH_CAN_RULE[linhCan.kind].status[lc] * linhCan?.level
+    if (attribute[lc])
+      attribute[lc] += extentAtt
   }
+}
+
+const useClass = (ofClass: number, attribute: PlayerAttribute) => {
+  if (!ofClass)
+    return
+
+  const classDifference = CLASS_RULE[ofClass].status
+  attribute.damage += (classDifference.damagePercent * attribute.damage) / 100
+  attribute.criticalDamage += classDifference.criticalDamage
+  attribute.hp += (classDifference.hpPercent * attribute.hp) / 100
+  attribute.def += (classDifference.defPercent * attribute.def) / 100
 }
 
 const useAttribute = (_p: Player, attribute: PlayerAttribute) => {
@@ -210,6 +204,9 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
   if (player.mindDharma)
     mindDharmaApply(player.mindDharma, attribute)
 
+  if (player?.linhCan?.level && player.linhCan?.kind)
+    useLinhCan(player.linhCan, attribute)
+
   if (playerEquips.length > 0)
     useEquipment(playerEquips, attribute, player)
 
@@ -226,7 +223,6 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
     if (!AttributePowers[attr])
       continue
 
-    // console.log('attribute[attr]', attribute[attr])
     power += Math.round(AttributePowers[attr] * attribute[attr])
   }
 

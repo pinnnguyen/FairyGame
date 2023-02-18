@@ -90,9 +90,9 @@ const upgrade = (key: string) => {
           >
             <div>
               {{ MIND_DHARMA_DES[key].title }}
-              <span text="8">
-                {{ playerTitle(mind.enhance, mind.enhance + 1).levelTitle }} {{ playerTitle(mind.enhance, mind.enhance + 1).floor }}
-              </span>
+            </div>
+            <div text="8">
+              {{ playerTitle(mind.enhance, mind.enhance + 1).levelTitle }} {{ playerTitle(mind.enhance, mind.enhance + 1).floor }}
             </div>
             <p
               text="8"
@@ -105,7 +105,7 @@ const upgrade = (key: string) => {
             w="1/2"
             font="bold"
           >
-            (+{{ mind.main * mind.enhance }})
+            {{ mind.main * mind.enhance }} <span text="green-500">(+{{ mind.main }})</span>
           </div>
         </div>
         <var-button

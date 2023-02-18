@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { PracticeMindDharma } from '#components'
+import { LazyPracticeClass, LazyPracticeLinhCan, LazyPracticeMindDharma } from '#components'
+import type { TabItem } from '~/types'
 
 const tab = ref('mindDharma')
 const tabItems = [
@@ -8,29 +9,33 @@ const tabItems = [
     name: 'Tâm pháp',
   },
   {
-    key: '1',
-    name: 'Thần thông',
+    key: 'class',
+    name: 'Huyết mạnh',
   },
   {
-    key: '2',
+    key: 'linh_can',
     name: 'Linh căn',
   },
   {
-    key: '3',
+    key: '1',
     name: 'Thần thông',
-  },
-  {
-    key: '4',
-    name: 'Huyết mạnh',
   },
 ]
 
 const components = computed(() => {
   switch (tab.value) {
     case 'mindDharma':
-      return PracticeMindDharma
+      return LazyPracticeMindDharma
+    case 'class':
+      return LazyPracticeClass
+    case 'linh_can':
+      return LazyPracticeLinhCan
   }
 })
+
+const tabSelected = (t: TabItem) => {
+  set(tab, t)
+}
 </script>
 
 <template>
@@ -47,24 +52,11 @@ const components = computed(() => {
       w="full"
       p="2"
     >
-      <button
-        v-for="tabItem in tabItems"
-        :key="tabItem.key"
-        :class="{
-          '!opacity-100': tab === tabItem.key,
-        }"
-        transition="~ opacity duration-700"
-        m="x-2"
-        w="16"
-        h="8"
-        font="leading-3 italic bold"
-        border="1 white/40 rounded"
-        text="primary"
-        opacity="40"
-        @click.stop="tab = tabItem.key"
-      >
-        {{ tabItem.name }}
-      </button>
+      <common-tab
+        :default="tab"
+        :tab-items="tabItems"
+        @onSelected="tabSelected"
+      />
     </div>
     <div
       pos="absolute"

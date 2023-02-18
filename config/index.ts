@@ -62,7 +62,7 @@ export const MIND_DHARMA_CONFIG: Record<string, any> = {
   },
   hp: {
     enhance: 1,
-    main: 20,
+    main: 40,
   },
   criticalDamage: {
     enhance: 1,
@@ -149,5 +149,133 @@ export const MIND_DHARMA_RESOURCE: Record<string, { needGold: number; needExp: n
   reductionRecoveryPerformance: {
     needGold: 15000,
     needExp: 14000,
+  },
+}
+
+export const CLASS_RULE: Record<string, any> = {
+  1: {
+    name: 'Tu tiên',
+    status: {
+      hp: 0,
+      def: 0,
+      damage: 0,
+      hpPercent: 10,
+      defPercent: 5,
+      damagePercent: 10,
+      criticalDamage: 5,
+    },
+  },
+  2: {
+    name: 'Yêu tộc',
+    status: {
+      hp: 0,
+      def: 0,
+      damage: 0,
+      hpPercent: 10,
+      defPercent: 5,
+      damagePercent: 0,
+      criticalDamage: 0,
+    },
+  },
+  3: {
+    name: 'Tu ma',
+    status: {
+      hp: 0,
+      def: 0,
+      damage: 0,
+      hpPercent: 0,
+      defPercent: 0,
+      damagePercent: 5,
+      criticalDamage: 10,
+    },
+  },
+  4: {
+    name: 'Nhân tộc',
+    status: {
+      hp: 0,
+      def: 0,
+      damage: 0,
+      hpPercent: 5,
+      defPercent: 5,
+      damagePercent: 5,
+      criticalDamage: 0,
+    },
+  },
+}
+
+export const LINH_CAN_RESOURCE = {
+  CHAN_NGUYEN: 10000,
+}
+
+export const LINH_CAN_RULE: Record<string, any> = {
+  1: {
+    name: 'Kim',
+    color: '#ffeb3b',
+    status: {
+      damage: 20,
+      hp: 40,
+      criticalDamage: 0.15,
+      def: 5,
+      reductionCriticalDamage: 0.10,
+      speed: 2,
+      recoveryPerformance: 0,
+      speedPractice: 0.1,
+    },
+  },
+  2: {
+    name: 'Mộc',
+    color: '#4caf50',
+    status: {
+      damage: 10,
+      hp: 60,
+      criticalDamage: 0.15,
+      def: 10,
+      reductionCriticalDamage: 0.10,
+      speed: 1,
+      recoveryPerformance: 0,
+      speedPractice: 0.1,
+    },
+  },
+  3: {
+    name: 'Thuỷ',
+    color: '#00bcd4',
+    status: {
+      damage: 15,
+      hp: 50,
+      criticalDamage: 0.15,
+      def: 5,
+      reductionCriticalDamage: 0.10,
+      speed: 2,
+      recoveryPerformance: 0.5,
+      speedPractice: 0.1,
+    },
+  },
+  4: {
+    name: 'Hoả',
+    color: '#f44336',
+    status: {
+      damage: 20,
+      hp: 40,
+      criticalDamage: 0.20,
+      def: 5,
+      reductionCriticalDamage: 0.10,
+      speed: 2,
+      recoveryPerformance: 0,
+      speedPractice: 0.1,
+    },
+  },
+  5: {
+    name: 'Thổ',
+    color: '#b37417',
+    status: {
+      damage: 20,
+      hp: 40,
+      criticalDamage: 0.15,
+      def: 5,
+      reductionCriticalDamage: 0.15,
+      speed: 2,
+      recoveryPerformance: 0,
+      speedPractice: 0.1,
+    },
   },
 }

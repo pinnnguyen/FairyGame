@@ -37,7 +37,7 @@ const classList = [
     description: `<p class="text-12 mt-1">
                               Khắc chế: Gây thêm <strong class="text-red">10%</strong> sát thương gây lên người chơi hệ tu yêu
                             </p>
-                            <span class="text-12 font-normal">Huyết mạch: </span><span class="text-12">Tăng <strong class="text-red">5%</strong> Tấn công, <strong class="text-[#03a9f4]">5%</strong> sinh lực, <strong class="text-green">5%</strong> phòng thủ (Không bao gồm trang bị)</span>
+                            <span class="text-12 font-normal">Huyết mạch: </span><span class="text-12">Tăng <strong class="text-red">5%</strong> Tấn công, <strong class="text-[#03a9f4]">5%</strong> sinh lực, <strong class="text-green-500">5%</strong> phòng thủ (Không bao gồm trang bị)</span>
                          `,
   },
 ]
