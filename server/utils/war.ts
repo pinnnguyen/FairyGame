@@ -16,6 +16,7 @@ import { BattleSchema, PlayerSchema } from '~/server/schema'
 import type { BattleRequest, PlayerInfo } from '~/types'
 
 export const handlePlayerVsMonster = async (_p: PlayerInfo, battleRequest: BattleRequest) => {
+  console.log('battleRequest', battleRequest)
   const {
     _enemyObj,
     inRefresh,

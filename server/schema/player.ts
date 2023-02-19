@@ -36,12 +36,13 @@ const schema = new mongoose.Schema<Player>(
       },
     },
     mindDharma: {},
-    linhCan: {
+    spiritualRoot: {
       level: {
         type: Number,
         default: 1,
       },
       kind: String,
+      quality: Number,
     },
     moneyManagement: {},
   },

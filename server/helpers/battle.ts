@@ -168,7 +168,7 @@ export const handleBeforeStartWar = async (battleRequest: BattleRequest, _p: Pla
   const battleTargetType = battleRequest.target.type ?? ''
 
   if (isNormalMonster(battleTargetType)) {
-    const _enemyObj = await MonsterSchema.findOne({ id: _p.player.midId })
+    const _enemyObj = await MonsterSchema.findOne({ id: battleRequest.target.id })
     if (battleRequest?.skip) {
       return {
         _enemyObj,

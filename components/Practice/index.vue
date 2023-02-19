@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LazyPracticeClass, LazyPracticeLinhCan, LazyPracticeMindDharma } from '#components'
+import { LazyPracticeClass, LazyPracticeKabbalah, LazyPracticeMindDharma, LazyPracticeSpiritualRoot } from '#components'
 import type { TabItem } from '~/types'
 
 const tab = ref('mindDharma')
@@ -13,11 +13,11 @@ const tabItems = [
     name: 'Huyết mạnh',
   },
   {
-    key: 'linh_can',
+    key: 'spiritual_root',
     name: 'Linh căn',
   },
   {
-    key: '1',
+    key: 'kabbalah',
     name: 'Thần thông',
   },
 ]
@@ -28,8 +28,10 @@ const components = computed(() => {
       return LazyPracticeMindDharma
     case 'class':
       return LazyPracticeClass
-    case 'linh_can':
-      return LazyPracticeLinhCan
+    case 'spiritual_root':
+      return LazyPracticeSpiritualRoot
+    case 'kabbalah':
+      return LazyPracticeKabbalah
   }
 })
 

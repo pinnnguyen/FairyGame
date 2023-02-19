@@ -1,26 +1,35 @@
 <script lang="ts" setup>
 import { formatCash } from '~/common'
-import { LINH_CAN_RESOURCE } from '~/config'
+import { SPIRITUAL_ROOT_RESOURCE } from '~/config'
 
-const { linhCan, moneyManagement } = storeToRefs(usePlayerStore())
+const { spiritualRoot, moneyManagement } = storeToRefs(usePlayerStore())
 const { getPlayer } = usePlayerStore()
 
+const loading = ref(false)
 const needResource = computed(() => {
-  if (!linhCan.value?.level)
+  if (!spiritualRoot.value?.level)
     return 0
 
-  return formatCash(LINH_CAN_RESOURCE.CHAN_NGUYEN * linhCan.value?.level)
+  return formatCash(SPIRITUAL_ROOT_RESOURCE.CHAN_NGUYEN * spiritualRoot.value?.level)
 })
 
 const upgrade = async () => {
   try {
-    const upgradeRes: any = await $fetch('/api/practice/linhcan/upgrade')
-    console.log('upgradeRes', upgradeRes)
+    loading.value = true
+    const upgradeRes: any = await $fetch('/api/practice/spiritual-root/upgrade')
     sendMessage(upgradeRes?.message)
-    if (upgradeRes?.success)
+    if (!upgradeRes.success) {
+      loading.value = false
+      return
+    }
+
+    if (upgradeRes?.success) {
       await getPlayer()
+      loading.value = false
+    }
   }
   catch (e: any) {
+    loading.value = false
     sendMessage(e?.statusMessage)
   }
 }
@@ -35,8 +44,11 @@ const upgrade = async () => {
       Chân nguyên {{ formatCash(moneyManagement?.chanNguyen) ?? 0 }}/ {{ needResource }}
     </span>
   </div>
-  <div text="center">
+  <div text="center" p="t-2">
     <var-button
+      :disabled="loading"
+      :loading="loading"
+      loading-size="mini"
       size="mini"
       class="!text-[#333]"
       @click.stop="upgrade"

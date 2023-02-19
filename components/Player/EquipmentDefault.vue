@@ -58,9 +58,13 @@ const onchangeEquip = () => {
         @click.stop="setSlot(leftS.slot)"
       >
         <div
+          v-if="leftS.slot?.star > 0"
           flex="~ "
+          align="items-center"
+          font="bold"
+          text="8"
         >
-          <icon v-for="i of leftS.slot?.star" :key="i" name="material-symbols:star" size="10" />
+          {{ leftS.slot?.star }}<icon name="material-symbols:star" size="10" />
         </div>
         <div
           text="8"

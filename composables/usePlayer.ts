@@ -1,5 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { set } from '@vueuse/core'
+import { SPIRITUAL_ROOT_RULE } from '~/config'
 import type { PlayerDataResponse, PlayerServerResponse } from '~/types'
 
 export const usePlayerStore = defineStore('player', () => {
@@ -12,8 +13,15 @@ export const usePlayerStore = defineStore('player', () => {
   const attribute = computed(() => playerInfo.value?.attribute)
   const equipments = computed(() => playerInfo.value?.equipments)
   const mindDharma = computed(() => playerInfo.value?.mindDharma)
-  const linhCan = computed(() => playerInfo.value?.linhCan)
+  const spiritualRoot = computed(() => playerInfo.value?.spiritualRoot)
   const moneyManagement = computed(() => playerInfo.value?.moneyManagement)
+
+  const currentSpiritualRoot = computed(() => {
+    if (!spiritualRoot.value?.kind)
+      return null
+
+    return SPIRITUAL_ROOT_RULE[spiritualRoot.value?.kind]
+  })
 
   const fetchPlayer = () => {
     $io.emit('fetch:player', sid.value)
@@ -70,8 +78,9 @@ export const usePlayerStore = defineStore('player', () => {
     attribute,
     equipments,
     mindDharma,
-    linhCan,
+    spiritualRoot,
     moneyManagement,
+    currentSpiritualRoot,
   }
 })
 

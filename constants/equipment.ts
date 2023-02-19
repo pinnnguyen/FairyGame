@@ -32,7 +32,7 @@ export const attributeToName: Record<string, string> = {
   criticalDamage: 'Sát thương bạo kích',
   avoid: 'Phản đòn',
   reductionAvoid: 'Kháng phản đòn',
-  reductionCriticalDamage: 'Miễn sát thương bạo kích',
+  reductionCriticalDamage: 'Miễn thương bạo kích',
   reductionBloodsucking: 'Kháng hút máu',
   counterAttack: 'Né tránh',
   recoveryPerformance: 'Hiệu xuất hồi phục',

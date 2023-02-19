@@ -1,7 +1,6 @@
 import { getServerSession } from '#auth'
-import { LINH_CAN_RESOURCE } from '~/config'
+import { SPIRITUAL_ROOT_RESOURCE } from '~/config'
 import { PlayerSchema } from '~/server/schema'
-import { randomNumber } from '~/common'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
@@ -12,10 +11,10 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const player = await PlayerSchema.findOne({ userId: session?.user?.email }).select('_id linhCan moneyManagement')
-  const lcLevel = player?.linhCan?.level ?? 1
+  const player = await PlayerSchema.findOne({ userId: session?.user?.email }).select('_id spiritualRoot moneyManagement')
+  const lcLevel = player?.spiritualRoot?.level ?? 1
 
-  const resource = lcLevel * LINH_CAN_RESOURCE.CHAN_NGUYEN
+  const resource = lcLevel * SPIRITUAL_ROOT_RESOURCE.CHAN_NGUYEN
   const chanNguyen = player?.moneyManagement?.chanNguyen ?? 0
   if (chanNguyen < resource) {
     return {
@@ -27,7 +26,7 @@ export default defineEventHandler(async (event) => {
   await PlayerSchema.findByIdAndUpdate(player?._id, {
     $inc: {
       'moneyManagement.chanNguyen': -resource,
-      'linhCan.level': 1,
+      'spiritualRoot.level': 1,
     },
   })
 

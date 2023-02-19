@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { CLASS_RULE } from '~/config'
-
 const { playerInfo } = usePlayerStore()
 </script>
 
@@ -13,6 +11,5 @@ const { playerInfo } = usePlayerStore()
     <div text="center">
       Đang phát triển
     </div>
-    <!--    Huyết tộc hiện tại: {{ CLASS_RULE[playerInfo.class].name }} -->
   </section>
 </template>

@@ -152,10 +152,13 @@ export const MIND_DHARMA_RESOURCE: Record<string, { needGold: number; needExp: n
   },
 }
 
-export const CLASS_RULE: Record<string, any> = {
+export const CLASS_RULE: Record<string, {
+  name: string
+  values: Record<string, number>
+}> = {
   1: {
     name: 'Tu tiên',
-    status: {
+    values: {
       hp: 0,
       def: 0,
       damage: 0,
@@ -167,7 +170,7 @@ export const CLASS_RULE: Record<string, any> = {
   },
   2: {
     name: 'Yêu tộc',
-    status: {
+    values: {
       hp: 0,
       def: 0,
       damage: 0,
@@ -179,7 +182,7 @@ export const CLASS_RULE: Record<string, any> = {
   },
   3: {
     name: 'Tu ma',
-    status: {
+    values: {
       hp: 0,
       def: 0,
       damage: 0,
@@ -191,7 +194,7 @@ export const CLASS_RULE: Record<string, any> = {
   },
   4: {
     name: 'Nhân tộc',
-    status: {
+    values: {
       hp: 0,
       def: 0,
       damage: 0,
@@ -203,15 +206,19 @@ export const CLASS_RULE: Record<string, any> = {
   },
 }
 
-export const LINH_CAN_RESOURCE = {
+export const SPIRITUAL_ROOT_RESOURCE = {
   CHAN_NGUYEN: 10000,
 }
 
-export const LINH_CAN_RULE: Record<string, any> = {
+export const SPIRITUAL_ROOT_RULE: Record<string, {
+  name: string
+  color: string
+  values: Record<string, number>
+}> = {
   1: {
     name: 'Kim',
     color: '#ffeb3b',
-    status: {
+    values: {
       damage: 20,
       hp: 40,
       criticalDamage: 0.15,
@@ -225,7 +232,7 @@ export const LINH_CAN_RULE: Record<string, any> = {
   2: {
     name: 'Mộc',
     color: '#4caf50',
-    status: {
+    values: {
       damage: 10,
       hp: 60,
       criticalDamage: 0.15,
@@ -239,7 +246,7 @@ export const LINH_CAN_RULE: Record<string, any> = {
   3: {
     name: 'Thuỷ',
     color: '#00bcd4',
-    status: {
+    values: {
       damage: 15,
       hp: 50,
       criticalDamage: 0.15,
@@ -253,7 +260,7 @@ export const LINH_CAN_RULE: Record<string, any> = {
   4: {
     name: 'Hoả',
     color: '#f44336',
-    status: {
+    values: {
       damage: 20,
       hp: 40,
       criticalDamage: 0.20,
@@ -267,7 +274,7 @@ export const LINH_CAN_RULE: Record<string, any> = {
   5: {
     name: 'Thổ',
     color: '#b37417',
-    status: {
+    values: {
       damage: 20,
       hp: 40,
       criticalDamage: 0.15,
@@ -278,4 +285,56 @@ export const LINH_CAN_RULE: Record<string, any> = {
       speedPractice: 0.1,
     },
   },
+}
+
+export const KABBALAH_RULE: Record<string, any> = {
+  1: [
+    {
+      focus: 'in_battle',
+      max: 4,
+      valueOnLevel: 20,
+      active: 'percent',
+      name: 'Kim nguyên kiếm',
+      sign: 'needle_spiritual_1',
+      rank: 1,
+      rate: 20,
+      value: 185,
+      target: {
+        num: 1,
+        role: 'damage',
+      },
+      title: 'Có #rate gây #value sát thương lên #targetNum mục tiêu',
+    },
+    {
+      max: 8,
+      valueOnLevel: 2,
+      focus: 'start_battle',
+      name: 'Kim nguyên tâm pháp',
+      title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentDamage Công, #percentSpeed Tốc',
+      sign: 'needle_spiritual_2',
+      target: {
+        role: 'player',
+      },
+      values: {
+        percentDamage: 3,
+        percentSpeed: 2.25,
+      },
+    },
+    {
+      focus: 'attribute',
+      name: 'Kim nguyên công pháp',
+      sign: 'needle_spiritual_3',
+      title: 'Công pháp bậc 3 của thiên kiếm môn, kim linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
+      values: {
+        hp: 30,
+        damage: 10,
+        def: 5,
+        speed: 1,
+      },
+    },
+  ],
+  2: [],
+  3: [],
+  4: [],
+  5: [],
 }

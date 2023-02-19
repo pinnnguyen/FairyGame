@@ -23,9 +23,14 @@ defineProps<{
       :name="name"
     />
     <div
+      v-if="star > 0"
       flex="~ "
+      align="items-center"
+      font="bold"
+      text="10"
     >
-      <icon v-for="i of star" :key="i" name="material-symbols:star" size="14" />
+      {{ star }}
+      <icon name="material-symbols:star" size="10" />
     </div>
     <p
       text="10"

@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { set } from '@vueuse/core'
-import { useBattleRoundStore } from '~/composables/useBattleRound'
-import { sendMessage } from '~/composables/useMessage'
-
 defineProps<{
   isPve?: boolean
   midId?: number
@@ -63,7 +59,7 @@ const changeBattle = async () => {
     </button>
   </div>
   <div
-    v-if="midId"
+    v-if="isPve"
     text="10"
     flex="~ "
     align="items-center"

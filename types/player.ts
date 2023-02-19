@@ -59,6 +59,12 @@ export type MindDharma = {
   }
 }
 
+export interface SpiritualRoot {
+  level: number
+  kind: '1' | '2' | '3' | '4' | '5'
+  quality: number
+}
+
 export interface Player {
   _id?: string
   ofAttribute: number
@@ -91,10 +97,7 @@ export interface Player {
     chanNguyen: number
     thanNguyen: number
   }
-  linhCan: {
-    level: number
-    kind: string
-  }
+  spiritualRoot: SpiritualRoot
 }
 
 export type PlayerAttribute = BaseAttributes & {

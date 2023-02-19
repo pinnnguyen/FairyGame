@@ -146,7 +146,7 @@ onUnmounted(() => {
       @mergegem="onmergeGems"
     />
   </var-popup>
-  <div class="flex-center bg-[#191b1e] max-w-[60vh] h-[70vh]">
+  <div class="flex-center bg-[#191b1e] max-w-[60vh] h-[70vh] m-auto">
     <div class="w-full h-full relative border-t border-white/10">
       <span class="font-bold absolute left-[calc(50%_-_50px)] top-2 text-white text-12 w-25 flex justify-center">
         <slot name="title" />

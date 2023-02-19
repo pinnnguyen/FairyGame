@@ -1,52 +1,12 @@
-// import type { EnemyObject, PlayerInfo } from '~/types'
-import { CLASS_RULE, LINH_CAN_RULE, MIND_DHARMA_CONFIG } from '~/config'
-//
-// export const classPlayerCounter = (_p: PlayerInfo, _enemyObject: EnemyObject) => {
-//   const counter = {
-//     1: {
-//       3: {
-//         extraDamage: {
-//           value: 10,
-//           unit: 'percent',
-//         },
-//       },
-//     },
-//     2: {
-//       1: {
-//         extraDamage: {
-//           value: 10,
-//           unit: 'percent',
-//         },
-//       },
-//     },
-//     3: {
-//       4: {
-//         extraDamage: {
-//           value: 10,
-//           unit: 'percent',
-//         },
-//       },
-//     },
-//     4: {
-//       2: {
-//         extraDamage: {
-//           value: 10,
-//           unit: 'percent',
-//         },
-//       },
-//     },
-//   }
-//
-//   const classToClass = counter[_p?.player?.class][_enemyObject.class]
-//   if (classToClass && classToClass.extraDamage) {
-//
-//   }
-// }
+import { CLASS_RULE, MIND_DHARMA_CONFIG, SPIRITUAL_ROOT_RULE } from '~/config'
 import { conditionForUpLevel } from '~/server/common'
 import { AttributePowers } from '~/server/constants'
 import { formatAttributes, useEquipment } from '~/server/helpers/equipment'
 import { MidSchema, PlayerSchema } from '~/server/schema'
-import type { BaseAttributes, MindDharma, Player, PlayerAttribute, PlayerServerResponse } from '~/types'
+import type {
+  BaseAttributes, MindDharma
+  , Player, PlayerAttribute, PlayerServerResponse, SpiritualRoot,
+} from '~/types'
 import { playerTitle } from '~/common'
 
 const mindDharmaApply = (mindDharma: MindDharma, attribute: BaseAttributes) => {
@@ -57,9 +17,9 @@ const mindDharmaApply = (mindDharma: MindDharma, attribute: BaseAttributes) => {
   }
 }
 
-const useLinhCan = (linhCan: any, attribute: BaseAttributes) => {
-  for (const lc in LINH_CAN_RULE[linhCan.kind].status) {
-    const extentAtt = LINH_CAN_RULE[linhCan.kind].status[lc] * linhCan?.level
+const useSpiritualRoot = (spiritualRoot: SpiritualRoot, attribute: BaseAttributes) => {
+  for (const lc in SPIRITUAL_ROOT_RULE[spiritualRoot.kind].values) {
+    const extentAtt = SPIRITUAL_ROOT_RULE[spiritualRoot.kind].values[lc] * spiritualRoot?.level * parseFloat(`1.${spiritualRoot.quality}`)
     if (attribute[lc])
       attribute[lc] += extentAtt
   }
@@ -69,7 +29,7 @@ const useClass = (ofClass: number, attribute: PlayerAttribute) => {
   if (!ofClass)
     return
 
-  const classDifference = CLASS_RULE[ofClass].status
+  const classDifference = CLASS_RULE[ofClass].values
   attribute.damage += (classDifference.damagePercent * attribute.damage) / 100
   attribute.criticalDamage += classDifference.criticalDamage
   attribute.hp += (classDifference.hpPercent * attribute.hp) / 100
@@ -204,8 +164,8 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
   if (player.mindDharma)
     mindDharmaApply(player.mindDharma, attribute)
 
-  if (player?.linhCan?.level && player.linhCan?.kind)
-    useLinhCan(player.linhCan, attribute)
+  if (player?.spiritualRoot?.level && player.spiritualRoot?.kind)
+    useSpiritualRoot(player.spiritualRoot, attribute)
 
   if (playerEquips.length > 0)
     useEquipment(playerEquips, attribute, player)

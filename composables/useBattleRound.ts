@@ -36,6 +36,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     set(refreshTime, 0)
     set(reward, null)
     set(receiver, {})
+    set(realTime, {})
     options.skip = false
     options.stop = false
   }
@@ -99,7 +100,12 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
           }, options.EFFECT_DELAY)
 
           setTimeout(() => {
-            realTime.value[realTurn].showDamage = false
+            // realTime.value[realTurn].showDamage = false
+            Object.assign(realTime.value, {
+              [realTurn]: {
+                showDamage: false,
+              },
+            })
           }, options.TURN_DELAY)
 
           if (realEmu.state.damage) {

@@ -5,10 +5,10 @@
     w="full"
     flex="~ col"
   >
-    <practice-linh-can-list />
+    <practice-spiritual-root-list />
     <div p="t-12">
-      <practice-linh-can-starter />
-      <practice-linh-can-mine />
+      <practice-spiritual-root-starter />
+      <practice-spiritual-root-mine />
     </div>
   </section>
 </template>
