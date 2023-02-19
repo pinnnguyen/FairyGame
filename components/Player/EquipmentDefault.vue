@@ -107,7 +107,7 @@ const onchangeEquip = () => {
         @click.stop="setSlot(rightS.slot)"
       >
         <span
-          text="10"
+          text="8"
           font="bold italic"
         >
           {{ rightS.slot?.name }}(+{{ rightS.slot?.enhance }})
