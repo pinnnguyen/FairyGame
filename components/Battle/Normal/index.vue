@@ -52,7 +52,6 @@ const handleStartBattle = async (battleRes: BattleResponse) => {
 }
 
 const startEventPve = (skip: boolean) => {
-  console.log('skip', skip)
   useEventPve(skip)
 }
 

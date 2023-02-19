@@ -24,10 +24,9 @@ const cPlayerTitle = computed(() => {
     h="12"
     class="border-box"
     :style="{
-      transform: realTime[extend._id]?.effect ? `${pos === 1 ? 'translate(10%)' : 'translate(-10%)'}` : '',
+      transform: realTime[extend._id]?.doAction ? `${pos === 1 ? 'translate(10%)' : 'translate(-10%)'}` : '',
     }"
   >
-    <!--    <nuxt-img v-if="receiver[extend._id]?.hp <= 0" src="/battle/rip.png" z="9" w="10" pos="absolute" class="transform-center" /> -->
     <div
       w="28"
       :class="{ 'grayscale filter': receiver[extend._id]?.hp <= 0 }"
@@ -47,12 +46,12 @@ const cPlayerTitle = computed(() => {
     </div>
     <span
       class="battle-action-bloodsucking whitespace-nowrap"
-      :class="{ show: realTime[extend._id]?.bloodsucking > 0 && realTime[extend._id]?.effect }"
+      :class="{ show: realTime[extend._id]?.bloodsucking > 0 && realTime[extend._id]?.doAction }"
     >
       (+{{ realTime[extend._id]?.bloodsucking }})
     </span>
     <span
-      :class="{ show: realTime[extend._id]?.defenderCounterAttack > 0 && realTime[extend._id].effect }"
+      :class="{ show: realTime[extend._id]?.defenderCounterAttack > 0 && realTime[extend._id].doAction }"
       class="battle-damage whitespace-nowrap"
     >
       Phản đòn -{{ realTime[extend._id]?.defenderCounterAttack }}
@@ -60,7 +59,7 @@ const cPlayerTitle = computed(() => {
 
     <span
       class="battle-action whitespace-nowrap text-green-300"
-      :class="{ show: realTime[extend._id]?.defenderAvoid && realTime[extend._id].effect }"
+      :class="{ show: realTime[extend._id]?.defenderAvoid && realTime[extend._id].doAction }"
     >
       Né tránh
     </span>
@@ -68,7 +67,7 @@ const cPlayerTitle = computed(() => {
     <span
       class="battle-damage"
       :class="{
-        show: !realTime[extend._id]?.showDamage
+        show: receiver[extend._id]?.damage
           && round > 0
           && !realTime[extend._id]?.avoid,
       }"

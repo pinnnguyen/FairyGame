@@ -87,7 +87,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
 
           Object.assign(realTime.value, {
             [realTurn]: {
-              effect: true,
+              doAction: true,
               showDamage: true,
               damage: realEmu?.state?.damage,
               critical: realEmu?.state?.critical,
@@ -96,26 +96,21 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
           })
 
           setTimeout(() => {
-            realTime.value[realTurn].effect = false
+            realTime.value[realTurn].doAction = false
           }, options.EFFECT_DELAY)
 
           setTimeout(() => {
-            // realTime.value[realTurn].showDamage = false
-            Object.assign(realTime.value, {
-              [realTurn]: {
-                showDamage: false,
-              },
-            })
+            if (realTime.value[realTurn])
+              realTime.value[realTurn].showDamage = false
           }, options.TURN_DELAY)
 
-          if (realEmu.state.damage) {
-            const realDamage = Object.keys(realEmu.state.damage)
-            receiver.value[realDamage[0]].damage = realEmu?.state?.critical ? `Bạo kích -${realEmu.state.damage[realDamage[0]]}` : `-${realEmu.state.damage[realDamage[0]]}`
-          }
+          const realDamage = Object.keys(realEmu.state.damage)
+          receiver.value[realDamage[0]].damage = `-${realEmu.state.damage[realDamage[0]]}`
+          if (realEmu?.state?.critical)
+            receiver.value[realDamage[0]].damage = `Bạo kích -${realEmu.state.damage[realDamage[0]]}`
 
           if (realEmu.now.hp) {
             const keyRealEmuNow = Object.keys(realEmu.now.hp)
-
             if (receiver.value[keyRealEmuNow[0]])
               receiver.value[keyRealEmuNow[0]].hp = realEmu.now.hp[keyRealEmuNow[0]]
 
