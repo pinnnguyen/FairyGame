@@ -17,6 +17,8 @@ export type BaseAttributeKeys = 'speed'
 | 'recoveryPerformance'
 | 'reductionRecoveryPerformance'
 | 'reductionCounterAttack'
+| 'percentDamage'
+| 'percentSpeed'
 
 // speed: number
 // damage: number
@@ -59,12 +61,39 @@ export type MindDharma = {
   }
 }
 
-export interface SpiritualRoot {
+export interface PlayerSpiritualRoot {
   level: number
   kind: '1' | '2' | '3' | '4' | '5'
   quality: number
 }
 
+export interface KabbalahRule {
+  focus?: 'in_battle' | 'start_battle' | 'attribute'
+  max?: number
+  valueOnLevel?: number
+  active?: 'percent'
+  name?: string
+  sign?: KabbalahSign
+  level?: number
+  rate?: number
+  value?: number
+  target?: {
+    num?: number
+    role?: 'damage' | 'player'
+  }
+  title?: string
+  values?: {
+    [key in BaseAttributeKeys | string]: number
+  }
+}
+export type KabbalahSign = 'needle_spiritual_1' | 'needle_spiritual_2' | 'needle_spiritual_3'
+export type PlayerKabbalah = {
+  [key in KabbalahSign | string]: {
+    unlock: boolean
+    level: number
+    used: boolean
+  }
+}
 export interface Player {
   _id?: string
   ofAttribute: number
@@ -97,7 +126,8 @@ export interface Player {
     chanNguyen: number
     thanNguyen: number
   }
-  spiritualRoot: SpiritualRoot
+  spiritualRoot: PlayerSpiritualRoot
+  kabbalah: PlayerKabbalah
 }
 
 export type PlayerAttribute = BaseAttributes & {

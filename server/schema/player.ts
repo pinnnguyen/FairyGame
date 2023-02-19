@@ -36,6 +36,7 @@ const schema = new mongoose.Schema<Player>(
       },
     },
     mindDharma: {},
+    kabbalah: {},
     spiritualRoot: {
       level: {
         type: Number,

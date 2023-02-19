@@ -53,7 +53,7 @@ const buy = (item: any) => {
       :item="itemSelected"
     />
   </var-popup>
-  <div class="overflow-auto scrollbar-hide px-6 pt-4">
+  <div class="overflow-auto scrollbar-hide p-4">
     <div class="grid grid-cols-3 gap-2 text-10">
       <div
         v-for="item in items"

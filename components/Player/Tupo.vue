@@ -20,6 +20,8 @@ const cPlayerTitle = computed(() => {
 })
 
 const doUpgrade = async () => {
+  loading.value = true
+
   try {
     tupoResponse.value = await $fetch('/api/breakthrough', {
       method: 'POST',
@@ -37,6 +39,7 @@ const doUpgrade = async () => {
     sendMessage(tupoResponse.value.message, 3000)
     set(playerBefore, tupoResponse.value?.playerBefore)
     set(playerAfter, tupoResponse.value?.playerAfter)
+    loading.value = false
   }
   catch (err) {
     sendMessage(err.message)
@@ -96,6 +99,8 @@ const doUpgrade = async () => {
     </div>
     <div>
       <button
+        :disabled="loading"
+        :class="{ 'opacity-40': loading }"
         class="mx-2 h-10 w-10 shadow rounded text-12 font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
         @click.stop="doUpgrade"
       >

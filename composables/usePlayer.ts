@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { set } from '@vueuse/core'
-import { SPIRITUAL_ROOT_RULE } from '~/config'
+import { KABBALAH_RULE, SPIRITUAL_ROOT_RULE } from '~/config'
 import type { PlayerDataResponse, PlayerServerResponse } from '~/types'
 
 export const usePlayerStore = defineStore('player', () => {
@@ -9,11 +9,15 @@ export const usePlayerStore = defineStore('player', () => {
   const $io = useNuxtApp().$io
   const sid = computed(() => playerInfo.value?.sid)
   const mids = computed(() => playerInfo.value?.mid)
+
   const upgrade = computed(() => playerInfo.value?.upgrade)
   const attribute = computed(() => playerInfo.value?.attribute)
+
   const equipments = computed(() => playerInfo.value?.equipments)
   const mindDharma = computed(() => playerInfo.value?.mindDharma)
+
   const spiritualRoot = computed(() => playerInfo.value?.spiritualRoot)
+  const kabbalahState = computed(() => playerInfo.value?.kabbalah)
   const moneyManagement = computed(() => playerInfo.value?.moneyManagement)
 
   const currentSpiritualRoot = computed(() => {
@@ -21,6 +25,13 @@ export const usePlayerStore = defineStore('player', () => {
       return null
 
     return SPIRITUAL_ROOT_RULE[spiritualRoot.value?.kind]
+  })
+
+  const currentKabbalah = computed(() => {
+    if (!spiritualRoot.value?.kind)
+      return null
+
+    return KABBALAH_RULE[spiritualRoot.value.kind]
   })
 
   const fetchPlayer = () => {
@@ -81,6 +92,8 @@ export const usePlayerStore = defineStore('player', () => {
     spiritualRoot,
     moneyManagement,
     currentSpiritualRoot,
+    currentKabbalah,
+    kabbalahState,
   }
 })
 

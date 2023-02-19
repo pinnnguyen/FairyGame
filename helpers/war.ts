@@ -1,5 +1,6 @@
+import { KABBALAH_RULE } from '~/config'
 import { cloneDeep } from '~/helpers'
-import type { BaseAttributes, PlayerAttribute } from '~/types'
+import type { BaseAttributes, KabbalahRule, PlayerAttribute, PlayerKabbalah, PlayerSpiritualRoot } from '~/types'
 import { BATTLE_ACTION } from '~/constants/war'
 import { randomNumber } from '~/common'
 
@@ -124,6 +125,17 @@ const handleCritical = (critical: number, inflictDMG: number, criticalDamage: nu
   }
 }
 
+/**
+ * > It receives two objects, calculates the damage, and returns an object with the damage,
+ * bloodsucking, critical, counter attack, and avoid
+ * @param {any} battleTarget - any
+ * @returns An object with the following properties:
+ *   receiveDMG: number
+ *   attackerBloodsucking: number
+ *   attackerCritical: boolean
+ *   defenderCounterAttack: number
+ *   defenderAvoid: boolean
+ */
 export const receiveDamageV2 = (battleTarget: any) => {
   let inflictDMG: number
   const attacker = battleTarget[0]
@@ -171,10 +183,137 @@ export const attributeDeep = (attribute: BaseAttributes) => {
   }
 }
 
+/**
+ * It takes two objects, each of which has a property called `kabbalah` which is an object with
+ * properties that are strings. The function then checks if the `kabbalah` property of each object has
+ * a property called `used` that is set to `true`. If it does, it adds the property name to an array.
+ * Then it filters an array of objects called `KABBALAH_RULE` to only include objects whose `sign`
+ * property matches one of the property names in the array
+ * @param {Target} targetA - Target, targetB: Target
+ * @param {Target} targetB - Target
+ */
+const formatKabbalah = (targetA: Target, targetB: Target) => {
+  // Check & get xem có thần thông không để bước vào trận chiến
+  if (targetA.spiritualRoot?.kind && targetA?.kabbalah) {
+    let aKabbalahRule = null
+    const kabbalahKeyUsed: (string | undefined)[] = []
+
+    for (const kaUsed in targetA?.kabbalah) {
+      if (targetA?.kabbalah[kaUsed].used)
+        kabbalahKeyUsed.push(kaUsed)
+    }
+
+    aKabbalahRule = KABBALAH_RULE[targetA.spiritualRoot?.kind]
+    targetA.kabbalahRule = aKabbalahRule.filter(k => kabbalahKeyUsed.includes(k.sign))
+  }
+
+  if (targetB.spiritualRoot?.kind && targetB?.kabbalah) {
+    let aKabbalahRule = null
+    const kabbalahKeyUsed: (string | undefined)[] = []
+
+    for (const kaUsed in targetA?.kabbalah) {
+      if (targetB?.kabbalah[kaUsed].used)
+        kabbalahKeyUsed.push(kaUsed)
+    }
+
+    aKabbalahRule = KABBALAH_RULE[targetB.spiritualRoot?.kind]
+    targetB.kabbalahRule = aKabbalahRule.filter(k => kabbalahKeyUsed.includes(k.sign))
+  }
+}
+
+/**
+ * It takes two objects, and returns a new object with the same keys, but with the values of the
+ * original objects swapped
+ * @param {Target} targetA - Target
+ * @param {Target} targetB - Target
+ * @returns An object with two keys, each key is a string of the target's _id.
+ */
+const matchFormat = (targetA: Target, targetB: Target) => {
+  return {
+    [(targetA.extends._id as string)]: {
+      extends: {
+        pos: 1,
+        ...targetA.extends,
+      },
+      attribute: {
+        ...attributeDeep(targetA.attribute),
+      },
+    },
+    [(targetB.extends._id as string)]: {
+      extends: {
+        pos: 2,
+        ...targetB.extends,
+      },
+      attribute: {
+        ...attributeDeep(targetB.attribute),
+      },
+    },
+  }
+}
+
+/**
+ * It takes two objects, and returns an object with two keys, each key is a string that is a
+ * concatenation of the speed of the object and the id of the object, and the value of each key is an
+ * array of two objects, the first object is the object itself, and the second object is the other
+ * object
+ * @param {Target} targetA - Target
+ * @param {Target} targetB - Target
+ * @returns An object with two keys, each key has an array with two objects.
+ */
+const formatBeforeStartBattle = (targetA: Target, targetB: Target) => {
+  const battle: Record<string, any> = {
+    [`${targetA.attribute.speed}_${targetA.extends._id}`]: [
+      {
+        kabbalahRule: targetA.kabbalahRule,
+        ...targetA.attribute,
+      },
+      {
+        kabbalahRule: targetB.kabbalahRule,
+        ...targetB.attribute,
+      },
+    ],
+    [`${targetB.attribute.speed}_${targetB.extends._id}`]: [
+      {
+        kabbalahRule: targetB.kabbalahRule,
+        ...targetB.attribute,
+      },
+      {
+        kabbalahRule: targetA.kabbalahRule,
+        ...targetA.attribute,
+      },
+    ],
+  }
+
+  return battle
+}
+
+/**
+ * It takes an object, sorts it by key, and returns a new object with the same keys and values
+ * @param {any} battle - any
+ * @returns An object with the same keys and values as the input object, but sorted by key.
+ */
+const orderTurn = (battle: any) => {
+  return Object.entries(battle)
+    .sort()
+  // eslint-disable-next-line no-sequences
+    .reduce((o: any, [k, v]) => (((o[k]) = v), o), {})
+}
+
 interface Target {
+  spiritualRoot?: PlayerSpiritualRoot
+  kabbalah?: PlayerKabbalah
+  kabbalahRule?: KabbalahRule[]
   extends: { level?: number; name?: string; _id?: string }
   attribute: PlayerAttribute
 }
+
+/**
+ * It takes two objects, and returns an object with the winner, the total damage, and the emulators
+ * @param {Target} targetA - Target, targetB: Target, personBeingAttacked?: string | undefined
+ * @param {Target} targetB - Target
+ * @param {string | undefined} [personBeingAttacked] - The person who is being attacked.
+ * @returns An object with the following properties:
+ */
 export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttacked?: string | undefined) => {
   let round = 0
   const totalDamage: Record<string, any> = {
@@ -185,46 +324,20 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
   targetA.attribute._id = targetA.extends._id
   targetB.attribute._id = targetB.extends._id
 
-  const match = {
-    [targetA.extends._id]: {
-      extends: {
-        pos: 1,
-        ...targetA.extends,
-      },
-      attribute: {
-        ...attributeDeep(targetA.attribute),
-      },
-    },
-    [targetB.extends._id]: {
-      extends: {
-        pos: 2,
-        ...targetB.extends,
-      },
-      attribute: {
-        ...attributeDeep(targetB.attribute),
-      },
-    },
-  }
+  // TODO: Format thần thông nếu có
+  formatKabbalah(targetA, targetB)
+  const match = matchFormat(targetA, targetB)
 
   const emulators = []
   for (let i = 0; i < 60; i++) {
-    const battle: Record<string, any> = {
-      [`${targetA.attribute.speed}_${targetA.extends._id}`]: [
-        targetA.attribute,
-        targetB.attribute,
-      ],
-      [`${targetB.attribute.speed}_${targetB.extends._id}`]: [
-        targetB.attribute,
-        targetA.attribute,
-      ],
-    }
-
-    const battleReverse = Object.entries(battle)
-      .sort()
-      .reduce((o, [k, v]) => (((o[k]) = v), o), {})
+    // TODO Chuẩn bị dữ liệu
+    const battle = formatBeforeStartBattle(targetA, targetB)
+    // TODO: Xem mục tiêu nào được đánh trước
+    const battleReverse = orderTurn(battle)
 
     for (const b in battleReverse) {
       const battleTarget = battle[b]
+
       const {
         receiveDMG,
         attackerBloodsucking,
@@ -241,13 +354,13 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
         totalDamage.list[realDamageId] = 0
 
       totalDamage.list[realDamageId] += receiveDMG
-
       defender.hp -= formatHP(defender?.hp, receiveDMG)
       attacker.hp -= formatHP(attacker.hp, defenderCounterAttack)
 
       if (attacker.hp > 0 && attackerBloodsucking > 0)
         attacker.hp += attackerBloodsucking
 
+      // TODO: Lưu giả lập
       emulators.push({
         [b]: {
           action: BATTLE_ACTION.ATTACK,

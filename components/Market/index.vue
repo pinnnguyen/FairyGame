@@ -41,7 +41,6 @@ const callBackBuy = () => {
   refresh()
 }
 
-const isTabMarket = computed(() => tab.value === 'market')
 const gemTab = computed(() => typeTab.value === 'gem')
 const itemTab = computed(() => typeTab.value === 'item')
 const equipTab = computed(() => typeTab.value === 'equipment')
@@ -49,7 +48,9 @@ const equipTab = computed(() => typeTab.value === 'equipment')
 
 <template>
   <div class="h-full">
-    <div class="px-4">
+    <div
+      p="2"
+    >
       <button
         v-for="n in typeTabItems"
         :key="n.key"

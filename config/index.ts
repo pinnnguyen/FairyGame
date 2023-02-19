@@ -1,4 +1,4 @@
-import type { PlayerAttribute } from '~/types'
+import type { KabbalahRule, PlayerAttribute } from '~/types'
 export enum REACH_LIMIT {
   TIEN_DAU = 10,
 }
@@ -287,7 +287,7 @@ export const SPIRITUAL_ROOT_RULE: Record<string, {
   },
 }
 
-export const KABBALAH_RULE: Record<string, any> = {
+export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
   1: [
     {
       focus: 'in_battle',
@@ -296,7 +296,7 @@ export const KABBALAH_RULE: Record<string, any> = {
       active: 'percent',
       name: 'Kim nguyên kiếm',
       sign: 'needle_spiritual_1',
-      rank: 1,
+      level: 1,
       rate: 20,
       value: 185,
       target: {
@@ -321,6 +321,7 @@ export const KABBALAH_RULE: Record<string, any> = {
       },
     },
     {
+      max: 50,
       focus: 'attribute',
       name: 'Kim nguyên công pháp',
       sign: 'needle_spiritual_3',
@@ -333,8 +334,4 @@ export const KABBALAH_RULE: Record<string, any> = {
       },
     },
   ],
-  2: [],
-  3: [],
-  4: [],
-  5: [],
 }

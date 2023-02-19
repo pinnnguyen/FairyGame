@@ -11,12 +11,6 @@ const { getPlayer } = usePlayerStore()
     v-if="currentSpiritualRoot"
     font="leading-5"
   >
-    <Line
-      m="b-2"
-      :style="{ color: qualityPalette(spiritualRoot.quality) }"
-    >
-      {{ qualityToName[spiritualRoot.quality] }} {{ currentSpiritualRoot.name }} Linh Căn
-    </Line>
     <div>
       Cấp độ: {{ playerTitle(spiritualRoot.level).levelTitle }} {{ playerTitle(spiritualRoot.level).floor }}
     </div>

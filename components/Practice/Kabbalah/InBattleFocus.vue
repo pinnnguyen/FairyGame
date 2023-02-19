@@ -3,6 +3,7 @@ defineProps<{
   kabbalah: any
 }>()
 
+const { kabbalahState } = storeToRefs(usePlayerStore())
 const convertTitleTemplate = (str: string, kabbalah: any, level: number) => {
   return str
     .replace('#rate', `${kabbalah.rate}%`)
@@ -12,12 +13,9 @@ const convertTitleTemplate = (str: string, kabbalah: any, level: number) => {
 </script>
 
 <template>
-  <div
-    max-h="10"
-    overflow="scroll"
-  >
+  <div>
     <div font="bold">
-      {{ kabbalah.name }}
+      {{ kabbalah.name }} ({{ kabbalahState[kabbalah.sign]?.level ?? 0 }}/{{ kabbalah?.max ?? 0 }})
     </div>
     <span
       v-for="m in kabbalah.max"
@@ -25,6 +23,7 @@ const convertTitleTemplate = (str: string, kabbalah: any, level: number) => {
       flex="~ col"
       m="y-1"
       text="8"
+      :class="{ 'text-green-500': m === kabbalahState[kabbalah.sign]?.level }"
     >
       {{ convertTitleTemplate(kabbalah.title, kabbalah, m) }}
     </span>

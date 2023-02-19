@@ -1,8 +1,8 @@
 import { createError } from 'h3'
 import moment from 'moment'
+import { REACH_LIMIT } from '~/config'
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { startWarSolo } from '~/helpers'
-import { REACH_LIMIT } from '~/config'
 import {
   getBaseReward,
   getPlayer,
@@ -15,8 +15,62 @@ import {
 import { BattleSchema, PlayerSchema } from '~/server/schema'
 import type { BattleRequest, PlayerInfo } from '~/types'
 
+/**
+ * It takes a player object and returns a new object with some of the player's properties
+ * @param {PlayerInfo} _p - PlayerInfo
+ * @returns A function that takes a PlayerInfo and returns an object with the following properties:
+ *   spiritualRoot: _p.player.spiritualRoot
+ *   kabbalah: _p.player.kabbalah
+ *   kabbalahRule: null
+ *   extends: {
+ *     _id: _p.player._id ?? 'a',
+ *     name: _p
+ */
+const preparePlayerTargetData = (_p: PlayerInfo) => {
+  return {
+    spiritualRoot: _p.player.spiritualRoot,
+    kabbalah: _p.player.kabbalah,
+    kabbalahRule: null,
+    extends: {
+      _id: _p.player._id ?? 'a',
+      name: _p.player.name,
+      level: _p.player.level,
+      sid: _p.player.sid,
+    },
+    attribute: _p.attribute,
+  }
+}
+
+/**
+ * It takes an object with a bunch of properties, and returns an object with a subset of those
+ * properties
+ * @param {any} _enemyObj - The enemy object.
+ * @returns An object with the following properties:
+ *   spiritualRoot: null,
+ *   kabbalah: null,
+ *   kabbalahRule: null,
+ *   extends: {
+ *     _id: _enemyObj._id ?? 'b',
+ *     name: _enemyObj.name,
+ *     level: _enemyObj.level,
+ *     sid: null,
+ */
+const prepareEnemyTargetData = (_enemyObj: any) => {
+  return {
+    spiritualRoot: null,
+    kabbalah: null,
+    kabbalahRule: null,
+    extends: {
+      _id: _enemyObj._id ?? 'b',
+      name: _enemyObj.name,
+      level: _enemyObj.level,
+      sid: null,
+    },
+    attribute: _enemyObj.attribute,
+  }
+}
+
 export const handlePlayerVsMonster = async (_p: PlayerInfo, battleRequest: BattleRequest) => {
-  console.log('battleRequest', battleRequest)
   const {
     _enemyObj,
     inRefresh,
@@ -40,25 +94,8 @@ export const handlePlayerVsMonster = async (_p: PlayerInfo, battleRequest: Battl
     }
   }
 
-  const targetA = {
-    extends: {
-      _id: _p.player._id ?? 'player',
-      name: _p.player.name,
-      level: _p.player.level,
-      sid: _p.player.sid,
-    },
-    attribute: _p.attribute,
-  }
-
-  const targetB = {
-    extends: {
-      _id: _enemyObj._id ?? 'monster',
-      name: _enemyObj.name,
-      level: _enemyObj.level,
-      sid: null,
-    },
-    attribute: _enemyObj.attribute,
-  }
+  const targetA = preparePlayerTargetData(_p)
+  const targetB = prepareEnemyTargetData(_enemyObj)
 
   const {
     emulators,
@@ -196,23 +233,8 @@ export const handleArenaTienDauSolo = async (request: {
     })
   }
 
-  const targetA = {
-    extends: {
-      _id: attacker.player._id,
-      name: attacker.player.name,
-      level: attacker.player.level,
-    },
-    attribute: attacker.attribute,
-  }
-
-  const targetB = {
-    extends: {
-      _id: defender.player._id,
-      name: defender.player.name,
-      level: defender.player.level,
-    },
-    attribute: defender.attribute,
-  }
+  const targetA = preparePlayerTargetData(attacker)
+  const targetB = preparePlayerTargetData(defender)
 
   const warResponse = startWarSolo(targetA, targetB, attacker.player._id)
   await new BattleSchema({

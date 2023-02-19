@@ -2,21 +2,21 @@
 defineProps<{
   kabbalah: any
 }>()
+
+const { kabbalahState } = storeToRefs(usePlayerStore())
 </script>
 
 <template>
-  <div
-    max-h="10"
-    overflow="scroll"
-  >
+  <div>
     <div font="bold">
-      {{ kabbalah?.name }}
+      {{ kabbalah?.name }} ({{ kabbalahState[kabbalah.sign]?.level ?? 0 }}/{{ kabbalah?.max ?? 0 }})
     </div>
     <span
       v-for="m in kabbalah.max"
       :key="m"
       flex="~ col"
       text="8"
+      :class="{ 'text-green-500': m === kabbalahState[kabbalah.sign]?.level }"
     >
       {{
         kabbalah.title

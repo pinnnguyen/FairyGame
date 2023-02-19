@@ -53,7 +53,7 @@ const storeItemType = computed(() => {
     <div
       class="h-[calc(100%_-_45px)]"
       overflow="auto"
-      p="x-4"
+      p="4"
     >
       <div class="grid grid-cols-3 gap-2">
         <lazy-store-item

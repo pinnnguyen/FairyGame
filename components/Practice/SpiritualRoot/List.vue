@@ -6,11 +6,11 @@ const { getPlayer } = usePlayerStore()
 </script>
 
 <template>
-  <div flex="~ " justify="between" align="items-center">
+  <div flex="~ " justify="around" align="items-center">
     <div
       v-for="lc in SPIRITUAL_ROOT_RULE"
       :key="lc.name"
-      class="relative w-10"
+      class="relative w-8"
     >
       <div
         :style="{ border: lc.name === currentSpiritualRoot?.name ? `1px solid ${currentSpiritualRoot?.color}` : false }"
