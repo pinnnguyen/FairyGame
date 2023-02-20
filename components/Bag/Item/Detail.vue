@@ -20,12 +20,12 @@ const useItem = async () => {
       },
     })
 
-    sendMessage(res.statusMessage, 2000)
+    sendNotification(res.statusMessage, 2000)
     emits('refresh')
     fetchPlayer()
   }
   catch (e: any) {
-    sendMessage(e.statusMessage)
+    sendNotification(e.statusMessage)
   }
 }
 </script>

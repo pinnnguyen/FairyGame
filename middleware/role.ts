@@ -2,7 +2,7 @@ export default defineNuxtRouteMiddleware(async () => {
   const { loadPlayer } = usePlayerStore()
 
   try {
-    const role = await $fetch('/api/player', {
+    const role: any = await $fetch('/api/player', {
       headers: (useRequestHeaders(['cookie']) as any),
     })
 

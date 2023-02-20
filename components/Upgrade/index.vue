@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { sendMessage, usePlayerStore, useSoundClickEvent } from '#imports'
+import { sendNotification, usePlayerStore, useSoundClickEvent } from '#imports'
 import type { PlayerEquipment } from '~/types'
 const emits = defineEmits(['close'])
 
@@ -27,7 +27,7 @@ $io.on('equip:upgrade:response', async (require: any) => {
   fetchPlayer()
   needResource.value = require
   loading.value = false
-  sendMessage('Cường hoá thành công', 2000, 'bottom')
+  sendNotification('Cường hoá thành công', 2000, 'bottom')
 })
 
 onUnmounted(() => {
@@ -48,19 +48,19 @@ const upgrade = () => {
     return
 
   if (!options.equipSelected._id) {
-    sendMessage('Đạo hữu cần chọn trang bị để nâng cấp', 2000, 'bottom')
+    sendNotification('Đạo hữu cần chọn trang bị để nâng cấp', 2000, 'bottom')
     loading.value = false
     return
   }
 
   if (needResource.value.gold > playerInfo.value?.gold) {
-    sendMessage('Đạo hữu không đủ Tiền tiên để nâng cấp', 2000, 'bottom')
+    sendNotification('Đạo hữu không đủ Tiền tiên để nâng cấp', 2000, 'bottom')
     loading.value = false
     return
   }
 
   if (needResource.value.totalCuongHoaThach < needResource.value.cuongHoaThach) {
-    sendMessage('Nguyên liệu nâng cấp của đạo hữu không đủ', 2000, 'bottom')
+    sendNotification('Nguyên liệu nâng cấp của đạo hữu không đủ', 2000, 'bottom')
     loading.value = false
     return
   }

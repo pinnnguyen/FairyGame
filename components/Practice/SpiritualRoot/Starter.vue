@@ -6,12 +6,12 @@ const unLock = async () => {
   try {
     const resUnlock: any = await $fetch('/api/practice/spiritual-root')
 
-    sendMessage(resUnlock.message)
+    sendNotification(resUnlock.message)
     if (resUnlock.success)
       await getPlayer()
   }
   catch (e: any) {
-    sendMessage(e.statusMessage)
+    sendNotification(e.statusMessage)
   }
 }
 </script>

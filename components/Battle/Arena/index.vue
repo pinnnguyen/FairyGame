@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { set } from '@vueuse/core'
-import { sendMessage, useBattleRoundStore, usePlayerStore, useSoundRewardEvent } from '#imports'
+import { sendNotification, useBattleRoundStore, usePlayerStore, useSoundRewardEvent } from '#imports'
 import { BATTLE_KIND, ItemToName, ItemToQuality, tips } from '~/constants'
 import type { BattleResponse } from '~/types'
 import { qualityPalette, randomNumber, sleep } from '~/common'
@@ -42,7 +42,7 @@ const close = () => {
 onMounted(async () => {
   $io.on('response:pvp:solo', async (war: any) => {
     if (war?.reachLimit) {
-      sendMessage('Đã đạt đến giới hạn khiêu chiến mỗi ngày', 2000)
+      sendNotification('Đã đạt đến giới hạn khiêu chiến mỗi ngày', 2000)
       onBack()
       return
     }

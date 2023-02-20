@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { sendMessage } from '#imports'
+import { sendNotification } from '#imports'
 import type { PlayerGem } from '~/types'
 import { qualityPalette } from '~/common'
 import { qualityToName, slotToName } from '~/constants'
@@ -19,7 +19,7 @@ const qualityTitle = computed(() => {
 
 $io.off('gem:merge:response')
 $io.on('gem:merge:response', (data) => {
-  sendMessage(data.message, 2000)
+  sendNotification(data.message, 2000)
   if (data.success)
     emits('mergegem')
 })

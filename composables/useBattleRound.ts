@@ -43,7 +43,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   }
 
   const startBattle = async (war: any & { statusCode?: number }, cb: Function) => {
-    // console.log('war', war)
+    console.log('war', war)
     makeDefault()
 
     if (war?.statusCode === 400)
@@ -93,7 +93,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
         Object.assign(realTime.value, {
           [realTurn]: {
             doAction: true,
-            damage: realEmu?.state?.damage,
+            receiveDamage: realEmu?.state?.receiveDamage,
             critical: realEmu?.state?.critical,
             bloodsucking: realEmu.state.bloodsucking,
             kabbalahProps: realEmu.self.kabbalahProps,
@@ -104,10 +104,10 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
           realTime.value[realTurn].doAction = false
         }, options.EFFECT_DELAY)
 
-        const realDamage = Object.keys(realEmu.state.damage)
-        receiver.value[realDamage[0]].damage = `-${realEmu.state.damage[realDamage[0]]}`
+        const realDamage = Object.keys(realEmu.state.receiveDamage)
+        receiver.value[realDamage[0]].receiveDamage = `-${realEmu.state.receiveDamage[realDamage[0]]}`
         if (realEmu?.state?.critical)
-          receiver.value[realDamage[0]].damage = `Bạo kích -${realEmu.state.damage[realDamage[0]]}`
+          receiver.value[realDamage[0]].receiveDamage = `Bạo kích -${realEmu.state.receiveDamage[realDamage[0]]}`
 
         if (realEmu.now.hp) {
           const keyRealEmuNow = Object.keys(realEmu.now.hp)

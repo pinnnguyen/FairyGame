@@ -2,7 +2,7 @@
 import { set } from '@vueuse/core'
 import { useRequest } from '#imports'
 import { usePlayerStore } from '~/composables/usePlayer'
-import { sendMessage } from '~/composables/useMessage'
+import { sendNotification } from '~/composables/useNotification'
 import type { BossFrameTime } from '~/types'
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { playerTitle, startTimeEvent, timeOffset } from '~/common'
@@ -35,7 +35,7 @@ const startWar = async (boss?: BossFrameTime) => {
     return
 
   if (!isStart.value) {
-    sendMessage('Thời gian hoạt động chưa mở mời đạo hữu quay lại sau')
+    sendNotification('Thời gian hoạt động chưa mở mời đạo hữu quay lại sau')
     return
   }
 

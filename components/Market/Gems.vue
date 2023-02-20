@@ -33,12 +33,12 @@ const buy = (gem: any) => {
           },
         })
 
-        sendMessage(buyRes.message, 2000)
+        sendNotification(buyRes.message, 2000)
         if (buyRes.success)
           emits('buy')
       }
       catch (e: any) {
-        sendMessage(e.statusMessage, 2000)
+        sendNotification(e.statusMessage, 2000)
       }
     },
   })

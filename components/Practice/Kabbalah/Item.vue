@@ -22,7 +22,7 @@ const upgrade = async (sign: KabbalahSign) => {
     },
   })
 
-  sendMessage(usedRes.message)
+  sendNotification(usedRes.message)
   if (usedRes.success)
     await getPlayer()
 
@@ -39,7 +39,7 @@ const used = async (sign: KabbalahSign, action: 'unused' | 'used') => {
     },
   })
 
-  sendMessage(usedRes.message)
+  sendNotification(usedRes.message)
   if (usedRes.success)
     await getPlayer()
 
@@ -55,7 +55,7 @@ const unlock = async (sign: KabbalahSign) => {
     },
   })
 
-  sendMessage(unlockRes.message)
+  sendNotification(unlockRes.message)
   if (unlockRes.success)
     await getPlayer()
 

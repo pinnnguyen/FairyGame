@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { sendMessage, usePlayerStore } from '#imports'
+import { sendNotification, usePlayerStore } from '#imports'
 
 const { playerInfo, attribute } = storeToRefs(usePlayerStore())
 const { loadPlayer } = usePlayerStore()
@@ -15,12 +15,12 @@ const addAttribute = async (target: string) => {
       },
     })
 
-    sendMessage(response.statusMessage)
+    sendNotification(response.statusMessage)
     if (response.player)
       loadPlayer(response.player)
   }
   catch (e: any) {
-    sendMessage(e.statusMessage)
+    sendNotification(e.statusMessage)
   }
 }
 </script>

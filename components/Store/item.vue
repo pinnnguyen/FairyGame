@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { sendMessage, usePlayerStore } from '#imports'
+import { sendNotification, usePlayerStore } from '#imports'
 import type { StoreItem } from '~/types'
 import { qualityPalette } from '~/common'
 import { CurrencyTitle } from '~/constants'
@@ -23,12 +23,12 @@ const buy = async (storeItem: StoreItem) => {
       },
     })
 
-    sendMessage(resBuy.statusMessage)
+    sendNotification(resBuy.statusMessage)
     if (resBuy.statusCode === 200)
       playerInfo.value!.knb -= storeItem.price
   }
   catch (e: any) {
-    sendMessage(e.statusMessage)
+    sendNotification(e.statusMessage)
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <script setup>
-import { sendMessage } from '~/composables/useMessage'
+import { sendNotification } from '~/composables/useNotification'
 
 definePageMeta({
   layout: 'auth',
@@ -14,17 +14,17 @@ const email = ref('')
 
 const handleRegister = async () => {
   if (!email.value) {
-    sendMessage('Mail không được để trống')
+    sendNotification('Mail không được để trống')
     return
   }
 
   if (!password.value) {
-    sendMessage('Passowrd không được để trống')
+    sendNotification('Passowrd không được để trống')
     return
   }
 
   if (password.value !== rePassword.value) {
-    sendMessage('Mật khẩu không trùng nhau')
+    sendNotification('Mật khẩu không trùng nhau')
     return
   }
 
@@ -38,12 +38,12 @@ const handleRegister = async () => {
     })
 
     if (user) {
-      sendMessage('Đăng ký thành công!')
+      sendNotification('Đăng ký thành công!')
       return navigateTo('/login')
     }
   }
   catch (e) {
-    sendMessage('Tài khoản đã tồn tại')
+    sendNotification('Tài khoản đã tồn tại')
   }
 }
 </script>

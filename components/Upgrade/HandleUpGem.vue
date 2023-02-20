@@ -5,7 +5,7 @@ import { set } from '@vueuse/core'
 import { slotToName } from '../../constants'
 import { usePlayerSlot } from '~/composables/usePlayerSlot'
 import type { PlayerEquipment, PlayerGem } from '~/types'
-import { sendMessage, usePlayerStore } from '#imports'
+import { sendNotification, usePlayerStore } from '#imports'
 import { qualityPalette } from '~/common'
 
 const emits = defineEmits(['equipSelected'])
@@ -36,7 +36,7 @@ const getGems = async () => {
 }
 
 $io.on('gem:mosaic:response', async (data) => {
-  sendMessage(data.message, 3000)
+  sendNotification(data.message, 3000)
   if (data.success) {
     await getGems()
     await getPlayer()
@@ -45,7 +45,7 @@ $io.on('gem:mosaic:response', async (data) => {
 })
 
 $io.on('gem:unmosaic:response', async (data) => {
-  sendMessage(data.message, 3000)
+  sendNotification(data.message, 3000)
   if (data.success) {
     await getGems()
     await getPlayer()
@@ -54,7 +54,7 @@ $io.on('gem:unmosaic:response', async (data) => {
 })
 
 $io.on('gem:punchahole:response', (data) => {
-  sendMessage(data.message, 2000)
+  sendNotification(data.message, 2000)
   set(punchaLoading, false)
   if (data.success)
     set(equipSelected, data.equipment)

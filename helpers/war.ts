@@ -1,7 +1,7 @@
 import { KABBALAH_RULE } from '~/config'
 import { cloneDeep } from '~/helpers'
-import { handleKabbalahInBattle } from '~/helpers/kabbalah'
-import type { BaseAttributes, KabbalahRule, PlayerAttribute, PlayerKabbalah, PlayerSpiritualRoot } from '~/types'
+import { handleKabbalahInBattle, handleKabbalahStartBattle } from '~/helpers/kabbalah'
+import type { BaseAttributes, Emulator, KabbalahRule, PlayerAttribute, PlayerKabbalah, PlayerSpiritualRoot } from '~/types'
 import { BATTLE_ACTION } from '~/constants/war'
 import { randomNumber } from '~/common'
 
@@ -17,7 +17,7 @@ const handleAvoid = (avoid: number, reductionAvoid: number) => {
     if (reductionAvoid > 0)
       a = (avoid - reductionAvoid) <= 0 ? 1 : (avoid - reductionAvoid)
 
-    const ran = randomNumber(1, 100)
+    const ran = randomNumber(1, 200)
     if (a >= ran) {
       return {
         hasAvoid: true,
@@ -127,6 +127,7 @@ const handleCritical = (critical: number, inflictDMG: number, criticalDamage: nu
 }
 
 type BattleTarget = BaseAttributes & {
+  kabbalah: PlayerKabbalah
   kabbalahRule?: KabbalahRule[]
 }
 /**
@@ -152,7 +153,7 @@ export const receiveDamageV2 = (battleTarget: BattleTarget[]) => {
   if (originDMG < 0)
     originDMG = 0
 
-  const { kabbalahDamage, kabbalahProps } = handleKabbalahInBattle(attacker.kabbalahRule, originDMG)
+  const { kabbalahDamage, kabbalahProps } = handleKabbalahInBattle(attacker.kabbalahRule, attacker.kabbalah, originDMG)
   if (kabbalahDamage)
     originDMG = kabbalahDamage
 
@@ -273,20 +274,24 @@ const formatBeforeStartBattle = (targetA: Target, targetB: Target) => {
   const battle: Record<string, any> = {
     [`${targetA.attribute.speed}_${targetA.extends._id}`]: [
       {
+        kabbalah: targetA.kabbalah,
         kabbalahRule: targetA.kabbalahRule,
         ...targetA.attribute,
       },
       {
+        kabbalah: targetB.kabbalah,
         kabbalahRule: targetB.kabbalahRule,
         ...targetB.attribute,
       },
     ],
     [`${targetB.attribute.speed}_${targetB.extends._id}`]: [
       {
+        kabbalah: targetB.kabbalah,
         kabbalahRule: targetB.kabbalahRule,
         ...targetB.attribute,
       },
       {
+        kabbalah: targetA.kabbalah,
         kabbalahRule: targetA.kabbalahRule,
         ...targetA.attribute,
       },
@@ -337,12 +342,20 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
   formatKabbalah(targetA, targetB)
   const match = matchFormat(targetA, targetB)
 
-  const emulators = []
+  const emulators: Emulator[] = []
   for (let i = 0; i < 60; i++) {
     // TODO Chuẩn bị dữ liệu
     const battle = formatBeforeStartBattle(targetA, targetB)
     // TODO: Xem mục tiêu nào được đánh trước
     const battleReverse = orderTurn(battle)
+
+    for (const b in battleReverse) {
+      const battleTarget = battle[b]
+      const attacker = battleTarget[0]
+      // const defender = battleTarget[1]
+
+      handleKabbalahStartBattle(attacker.kabbalahRule, attacker.kabbalah)
+    }
 
     for (const b in battleReverse) {
       const battleTarget = battle[b]
@@ -371,11 +384,11 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
         attacker.hp += attackerBloodsucking
 
       // TODO: Lưu giả lập
-      emulators.push({
+      emulators.push(<Emulator>{
         [b]: {
           action: BATTLE_ACTION.ATTACK,
           state: {
-            damage: {
+            receiveDamage: {
               [defender._id]: receiveDMG,
             },
             bloodsucking: attackerBloodsucking,

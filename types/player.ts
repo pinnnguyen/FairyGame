@@ -75,7 +75,10 @@ export interface KabbalahRule {
   name?: string
   sign?: KabbalahSign
   level?: number
-  rate?: number
+  rate?: {
+    value: number
+    max: number
+  }
   value?: number
   target?: {
     num?: number

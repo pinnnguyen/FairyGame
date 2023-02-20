@@ -69,13 +69,13 @@ const handleCreateFigure = async () => {
       },
     })
 
-    sendMessage(role.message)
+    sendNotification(role.message)
 
     loadPlayer(role)
     navigateTo('/')
   }
   catch (e: any) {
-    sendMessage(e.statusMessage)
+    sendNotification(e.statusMessage)
   }
 }
 </script>

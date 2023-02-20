@@ -6,7 +6,7 @@ defineProps<{
 const { kabbalahState } = storeToRefs(usePlayerStore())
 const convertTitleTemplate = (str: string, kabbalah: any, level: number) => {
   return str
-    .replace('#rate', `${kabbalah.rate}%`)
+    .replace('#rate', `${kabbalah.rate.value + (level * kabbalah.valueOnLevel)}%`)
     .replace('#value', `${kabbalah.value + (level * kabbalah.valueOnLevel)}%`)
     .replace('#targetNum', `${kabbalah?.target?.num}`)
 }

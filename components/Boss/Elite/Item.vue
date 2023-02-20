@@ -2,7 +2,7 @@
 import { set } from '@vueuse/core'
 import { useRequest } from '#imports'
 import { usePlayerStore } from '~/composables/usePlayer'
-import { sendMessage } from '~/composables/useMessage'
+import { sendNotification } from '~/composables/useNotification'
 import type { BossElite } from '~/types'
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
 import { playerTitle, timeOffset } from '~/common'
@@ -32,12 +32,12 @@ setInterval(() => {
 
 const startWar = async (boss: BossElite) => {
   if (playerInfo.value!.level < boss.level) {
-    sendMessage('Chưa đạt cấp độ')
+    sendNotification('Chưa đạt cấp độ')
     return
   }
 
   if (revive.value > 0) {
-    sendMessage('Boss đang hồi sinh')
+    sendNotification('Boss đang hồi sinh')
     return
   }
 

@@ -38,7 +38,7 @@ const read = (mail: any) => {
 
 const take = async (mail: any) => {
   if (mail.isRead) {
-    sendMessage('Phần thưởng đã được nhận trước đó', 2500)
+    sendNotification('Phần thưởng đã được nhận trước đó', 2500)
     return
   }
 
@@ -50,11 +50,11 @@ const take = async (mail: any) => {
       },
     })
 
-    sendMessage(takeRes.message, 2500)
+    sendNotification(takeRes.message, 2500)
     emits('read')
   }
   catch (e: any) {
-    sendMessage(e.statusMessage)
+    sendNotification(e.statusMessage)
   }
 }
 </script>

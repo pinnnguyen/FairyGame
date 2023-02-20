@@ -9,9 +9,9 @@
     "sex": "",
     "attribute": {
       "speed": 10,
-      "damage": 250,
+      "damage": 550,
       "def": 100,
-      "hp": 1000000,
+      "hp": 5000000,
       "mp": 0,
       "critical": 20,
       "bloodsucking": 10
@@ -39,9 +39,9 @@
     "sex": "",
     "attribute": {
       "speed": 30,
-      "damage": 500,
+      "damage": 100,
       "def": 100,
-      "hp": 2000000,
+      "hp": 10000000,
       "mp": 0,
       "critical": 20,
       "bloodsucking": 10
@@ -69,9 +69,9 @@
     "sex": "",
     "attribute": {
       "speed": 40,
-      "damage": 1000,
+      "damage": 1500,
       "def": 100,
-      "hp": 3000000,
+      "hp": 15000000,
       "mp": 0,
       "critical": 20,
       "bloodsucking": 10
@@ -99,9 +99,9 @@
     "sex": "",
     "attribute": {
       "speed": 70,
-      "damage": 2000,
+      "damage": 2500,
       "def": 100,
-      "hp": 4000000,
+      "hp": 20000000,
       "mp": 0,
       "critical": 20,
       "bloodsucking": 10

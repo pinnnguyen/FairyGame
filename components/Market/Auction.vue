@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { startTimeEvent, timeOffset } from '~/common'
 import type { AuctionItem } from '~/types'
-import { sendMessage, usePlayerStore } from '#imports'
+import { sendNotification, usePlayerStore } from '#imports'
 
 const emits = defineEmits(['close'])
 const { sid } = storeToRefs(usePlayerStore())
@@ -21,7 +21,7 @@ onMounted(() => {
     endTime.value -= 1
   }, 1000)
   $io.on('auction-response', (response: any) => {
-    sendMessage(response.statusMessage)
+    sendNotification(response.statusMessage)
 
     if (response.auctionItem) {
       for (const i in auctionItems.value) {

@@ -1,7 +1,6 @@
 import type { BasicItem } from './item'
 import type { BattleTargetKey } from '~/types/battle'
 import type { PlayerEquipment } from '~/types/equiment'
-import type { BaseAttributes } from '~/types/player'
 
 export interface BattleRequest {
   kind: string
@@ -16,30 +15,28 @@ export interface BattleRequest {
 }
 
 export interface EmulatorBattle {
-  action: string
+  action: 'attack' | 'buff'
   state: {
-    damage?: number
-    bloodsucking?: number
-    critical?: boolean
-    counterDamage?: number
-    avoid?: boolean
+    receiveDamage: Record<string, number>
+    bloodsucking: number
+    critical: boolean
+    counterDamage: number
+    avoid: boolean
+  }
+  self: {
+    hp: number
+    mp: number
+    kabbalahProps: any
   }
   now: {
-    hp: Record<string | 'player' | 'enemy', number>
-    mp: Record<string | 'player' | 'enemy', number>
+    hp: Record<string, number>
+    mp: Record<string, number>
   }
 }
 
-export type Emulator = Record<string | 'player' | 'enemy', EmulatorBattle>
-export type BaseProperties = BaseAttributes & {
-  _id?: string
-  name: string
-  level: number
-  levelTitle?: string
-  floor?: string
-  class: number
+export interface Emulator {
+  [key: string]: EmulatorBattle
 }
-
 export interface BaseReward {
   exp: number
   gold: number

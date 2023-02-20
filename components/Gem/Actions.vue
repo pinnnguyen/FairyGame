@@ -19,7 +19,7 @@ const sellOptions = ref<any>({
 
 const mergeGems = () => {
   if (props.gem.sum! < 3) {
-    sendMessage('Số lượng đá hồn không đủ để hợp nhất', 2000)
+    sendNotification('Số lượng đá hồn không đủ để hợp nhất', 2000)
     return
   }
 
@@ -28,12 +28,12 @@ const mergeGems = () => {
 
 const sell = async () => {
   if (sellOptions.value.price <= 0) {
-    sendMessage('Giá treo bán không hợp lệ')
+    sendNotification('Giá treo bán không hợp lệ')
     return
   }
 
   if (sellOptions.value.quantity <= 0 || sellOptions.value.quantity > props.gem.sum!) {
-    sendMessage('Số lượng treo bán không hợp lệ')
+    sendNotification('Số lượng treo bán không hợp lệ')
     return
   }
 
@@ -54,11 +54,11 @@ const sell = async () => {
     if (sellRes.success) {
       emits('refresh')
       sellPopup.value = false
-      sendMessage(sellRes.message)
+      sendNotification(sellRes.message)
     }
   }
   catch (e: any) {
-    sendMessage(e.statusMessage)
+    sendNotification(e.statusMessage)
   }
 }
 </script>

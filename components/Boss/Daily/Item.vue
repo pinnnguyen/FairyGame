@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { set } from '@vueuse/core'
-import { sendMessage, usePlayerStore } from '#imports'
+import { sendNotification, usePlayerStore } from '#imports'
 import { playerTitle } from '~/common'
 import type { BossDaily } from '~/types'
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
@@ -16,12 +16,12 @@ const showReward = ref(false)
 
 const startWar = (boss: BossDaily) => {
   if (playerInfo.value!.level < boss.level) {
-    sendMessage('Chưa đạt cấp độ')
+    sendNotification('Chưa đạt cấp độ')
     return
   }
 
   if (boss.numberOfTurn! <= 0) {
-    sendMessage('Lượt khiêu chiến trong ngày đã hết')
+    sendNotification('Lượt khiêu chiến trong ngày đã hết')
     return
   }
 

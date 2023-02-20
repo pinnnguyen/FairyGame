@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { set } from '@vueuse/core'
-import { sendMessage, usePlayerStore } from '#imports'
+import { sendNotification, usePlayerStore } from '#imports'
 import type { PlayerEquipment } from '~/types'
 
 interface Require {
@@ -31,7 +31,7 @@ $io.on('equip:star:response', async (require: any) => {
   fetchPlayer()
   set(needResource, require)
   set(loading, false)
-  sendMessage('Nâng sao trang bị thành công')
+  sendNotification('Nâng sao trang bị thành công')
 })
 
 const onEquipSelected = (equip: PlayerEquipment) => {
@@ -45,25 +45,25 @@ const upgrade = () => {
     return
 
   if (!equipSelected.value._id) {
-    sendMessage('Đạo hữu cần chọn trang bị để nâng cấp')
+    sendNotification('Đạo hữu cần chọn trang bị để nâng cấp')
     loading.value = false
     return
   }
 
   if (needResource.value!.gold! > playerInfo.value?.gold) {
-    sendMessage('Đạo hữu không đủ Tiền tiên để nâng cấp')
+    sendNotification('Đạo hữu không đủ Tiền tiên để nâng cấp')
     loading.value = false
     return
   }
 
   if (needResource.value!.knb! > playerInfo.value?.knb) {
-    sendMessage('Đạo hữu không đủ KNB để nâng cấp')
+    sendNotification('Đạo hữu không đủ KNB để nâng cấp')
     loading.value = false
     return
   }
 
   if (needResource.value!.totalDaNangSao < needResource.value!.daNangSao) {
-    sendMessage('Nguyên liệu nâng cấp của đạo hữu không đủ')
+    sendNotification('Nguyên liệu nâng cấp của đạo hữu không đủ')
     loading.value = false
     return
   }

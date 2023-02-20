@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Snackbar } from '@varlet/ui'
 import { set } from '@vueuse/core'
-import { sendMessage, useBattleEvents, useBattleRoundStore, usePlayerStore, useSoundRewardEvent } from '#imports'
+import { sendNotification, useBattleEvents, useBattleRoundStore, usePlayerStore, useSoundRewardEvent } from '#imports'
 import { tips } from '~/constants'
 import type { BattleResponse } from '~/types'
 import { randomNumber } from '~/common'
@@ -38,13 +38,13 @@ const handleStartBattle = async (battleRes: BattleResponse) => {
 
     if (stateRunning.value) {
       Snackbar.allowMultiple(true)
-      sendMessage(`Nhận Tiền Tiên x${stateRunning.value.reward?.base.gold}`, 3000, 'top')
-      sendMessage(`Nhận Tu Vi x${stateRunning.value.reward?.base.exp}`, 3000, 'top')
+      sendNotification(`Nhận Tiền Tiên x${stateRunning.value.reward?.base.gold}`, 3000, 'top')
+      sendNotification(`Nhận Tu Vi x${stateRunning.value.reward?.base.exp}`, 3000, 'top')
     }
 
     if (stateRunning.value.reward?.items && stateRunning.value.reward?.items.length > 0) {
       for (const item of stateRunning.value.reward?.items)
-        sendMessage(`${item.name} x${item.quantity}`, 3000, 'top')
+        sendNotification(`${item.name} x${item.quantity}`, 3000, 'top')
     }
 
     useEventPve()

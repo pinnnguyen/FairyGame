@@ -17,7 +17,7 @@ const upgrade = async () => {
   try {
     loading.value = true
     const upgradeRes: any = await $fetch('/api/practice/spiritual-root/upgrade')
-    sendMessage(upgradeRes?.message)
+    sendNotification(upgradeRes?.message)
     if (!upgradeRes.success) {
       loading.value = false
       return
@@ -30,7 +30,7 @@ const upgrade = async () => {
   }
   catch (e: any) {
     loading.value = false
-    sendMessage(e?.statusMessage)
+    sendNotification(e?.statusMessage)
   }
 }
 </script>

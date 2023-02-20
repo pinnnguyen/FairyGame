@@ -82,12 +82,12 @@ const kabbalahInBattleProp = computed(() => {
     <span
       class="battle-damage"
       :class="{
-        show: receiver[extend._id]?.damage
+        show: receiver[extend._id]?.receiveDamage
           && round > 0
           && !realTime[extend._id]?.avoid,
       }"
     >
-      <span>{{ receiver[extend._id]?.damage }}</span>
+      <span>{{ receiver[extend._id]?.receiveDamage }}</span>
     </span>
   </div>
 </template>

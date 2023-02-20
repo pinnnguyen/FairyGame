@@ -25,7 +25,7 @@ onMounted(() => {
 
     // set(pending, false)
     if (!r.success) {
-      sendMessage(r.message, 2000)
+      sendNotification(r.message, 2000)
       return
     }
 

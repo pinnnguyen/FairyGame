@@ -76,11 +76,11 @@ const sell = async () => {
 
     if (sellRes.success) {
       emits('refresh')
-      sendMessage(sellRes.message)
+      sendNotification(sellRes.message)
     }
   }
   catch (e: any) {
-    sendMessage(e.statusMessage)
+    sendNotification(e.statusMessage)
   }
 }
 </script>

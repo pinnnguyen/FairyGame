@@ -2,7 +2,7 @@
 import { set } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '~/composables/usePlayer'
-import { sendMessage } from '~/composables/useMessage'
+import { sendNotification } from '~/composables/useNotification'
 import { formatCash, playerTitle } from '~/common'
 
 const { upgrade, playerInfo } = storeToRefs(usePlayerStore())
@@ -36,13 +36,13 @@ const doUpgrade = async () => {
     if (tupoResponse.value.status)
       set(change, true)
 
-    sendMessage(tupoResponse.value.message, 3000)
+    sendNotification(tupoResponse.value.message, 3000)
     set(playerBefore, tupoResponse.value?.playerBefore)
     set(playerAfter, tupoResponse.value?.playerAfter)
     loading.value = false
   }
   catch (err) {
-    sendMessage(err.message)
+    sendNotification(err.message)
   }
 }
 </script>

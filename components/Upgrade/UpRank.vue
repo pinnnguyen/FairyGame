@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { set } from '@vueuse/core'
 import { qualityToName } from '../../constants'
 import { formatCash, qualityPalette } from '~/common'
-import { sendMessage, usePlayerStore } from '#imports'
+import { sendNotification, usePlayerStore } from '#imports'
 import type { PlayerEquipment } from '~/types'
 
 interface Require {
@@ -47,7 +47,7 @@ $io.on('equip:rank:response', async (require: any) => {
     set(needResource, require)
   }
   set(loading, false)
-  sendMessage(require.message)
+  sendNotification(require.message)
 })
 
 onUnmounted(() => {
@@ -68,25 +68,25 @@ const upgrade = () => {
     return
 
   if (!options.equipSelected._id) {
-    sendMessage('Đạo hữu cần chọn trang bị để nâng cấp', 2000, 'bottom')
+    sendNotification('Đạo hữu cần chọn trang bị để nâng cấp', 2000, 'bottom')
     set(loading, false)
     return
   }
 
   if (needResource.value!.gold! > playerInfo.value?.gold) {
-    sendMessage('Đạo hữu không đủ Tiền tiên để nâng cấp', 2000, 'bottom')
+    sendNotification('Đạo hữu không đủ Tiền tiên để nâng cấp', 2000, 'bottom')
     set(loading, false)
     return
   }
 
   if (needResource.value!.knb! > playerInfo.value?.knb) {
-    sendMessage('Đạo hữu không đủ KNB để nâng cấp', 2000, 'bottom')
+    sendNotification('Đạo hữu không đủ KNB để nâng cấp', 2000, 'bottom')
     set(loading, false)
     return
   }
 
   if (currentFood.value.length < needResource.value!.needFoodNumber) {
-    sendMessage('Số lượng trang bị phôi của đạo hữu không đủ', 2000, 'bottom')
+    sendNotification('Số lượng trang bị phôi của đạo hữu không đủ', 2000, 'bottom')
     set(loading, false)
     return
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { sendMessage } from '~/composables/useMessage'
+import { sendNotification } from '~/composables/useNotification'
 const { signIn } = useSession()
 
 definePageMeta({
@@ -12,23 +12,23 @@ const email = ref('')
 
 const handleLogin = async () => {
   if (!email.value) {
-    sendMessage('Mail không được để trống')
+    sendNotification('Mail không được để trống')
     return
   }
 
   if (!password.value) {
-    sendMessage('Passowrd không được để trống')
+    sendNotification('Passowrd không được để trống')
     return
   }
 
   const { error, url } = await signIn('credentials', { username: email.value, password: password.value, redirect: false })
   if (url) {
-    sendMessage('Đăng nhập thành công!')
+    sendNotification('Đăng nhập thành công!')
     return navigateTo('/role')
   }
 
   if (error)
-    sendMessage('Tài khoản mật khẩu không chính xác')
+    sendNotification('Tài khoản mật khẩu không chính xác')
 }
 </script>
 
