@@ -29,6 +29,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     EFFECT_DELAY: 400,
     RESULT_DELAY: 1000,
   })
+
   const makeDefault = () => {
     set(loading, true)
     set(roundNum, 0)
@@ -40,6 +41,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     options.skip = false
     options.stop = false
   }
+
   const startBattle = async (war: any & { statusCode?: number }, cb: Function) => {
     // console.log('war', war)
     makeDefault()
@@ -82,56 +84,51 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
         const realTurn = turn.split('_')[1]
         const realEmu = emulator[turn]
 
-        if (realEmu.action === 'attack') {
-          await sleep(options.TURN_DELAY)
-          roundNum.value++
+        if (realEmu.action !== 'attack')
+          continue
 
-          Object.assign(realTime.value, {
-            [realTurn]: {
-              doAction: true,
-              showDamage: true,
-              damage: realEmu?.state?.damage,
-              critical: realEmu?.state?.critical,
-              bloodsucking: realEmu.state.bloodsucking,
-              kabbalahProps: realEmu.self.kabbalahProps,
-            },
-          })
+        await sleep(options.TURN_DELAY)
+        roundNum.value++
 
-          setTimeout(() => {
-            realTime.value[realTurn].doAction = false
-          }, options.EFFECT_DELAY)
+        Object.assign(realTime.value, {
+          [realTurn]: {
+            doAction: true,
+            damage: realEmu?.state?.damage,
+            critical: realEmu?.state?.critical,
+            bloodsucking: realEmu.state.bloodsucking,
+            kabbalahProps: realEmu.self.kabbalahProps,
+          },
+        })
 
-          setTimeout(() => {
-            if (realTime.value[realTurn])
-              realTime.value[realTurn].showDamage = false
-          }, options.TURN_DELAY)
+        setTimeout(() => {
+          realTime.value[realTurn].doAction = false
+        }, options.EFFECT_DELAY)
 
-          const realDamage = Object.keys(realEmu.state.damage)
-          receiver.value[realDamage[0]].damage = `-${realEmu.state.damage[realDamage[0]]}`
-          if (realEmu?.state?.critical)
-            receiver.value[realDamage[0]].damage = `Bạo kích -${realEmu.state.damage[realDamage[0]]}`
+        const realDamage = Object.keys(realEmu.state.damage)
+        receiver.value[realDamage[0]].damage = `-${realEmu.state.damage[realDamage[0]]}`
+        if (realEmu?.state?.critical)
+          receiver.value[realDamage[0]].damage = `Bạo kích -${realEmu.state.damage[realDamage[0]]}`
 
-          if (realEmu.now.hp) {
-            const keyRealEmuNow = Object.keys(realEmu.now.hp)
-            if (receiver.value[keyRealEmuNow[0]])
-              receiver.value[keyRealEmuNow[0]].hp = realEmu.now.hp[keyRealEmuNow[0]]
+        if (realEmu.now.hp) {
+          const keyRealEmuNow = Object.keys(realEmu.now.hp)
+          if (receiver.value[keyRealEmuNow[0]])
+            receiver.value[keyRealEmuNow[0]].hp = realEmu.now.hp[keyRealEmuNow[0]]
 
-            if ((receiver.value[keyRealEmuNow[0]].hp) <= 0) {
-              setTimeout(() => {
-                cb()
-              }, options.RESULT_DELAY)
-
-              return
-            }
-          }
-
-          if (roundNum.value === (war.emulators.length * 2)) {
+          if ((receiver.value[keyRealEmuNow[0]].hp) <= 0) {
             setTimeout(() => {
               cb()
             }, options.RESULT_DELAY)
 
             return
           }
+        }
+
+        if (roundNum.value === (war.emulators.length * 2)) {
+          setTimeout(() => {
+            cb()
+          }, options.RESULT_DELAY)
+
+          return
         }
       }
     }
