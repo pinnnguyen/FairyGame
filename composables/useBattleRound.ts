@@ -46,7 +46,6 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   }
 
   const startBattle = async (war: any & { statusCode?: number }, cb: Function) => {
-    console.log('war', war)
     makeDefault()
 
     if (war?.statusCode === 400)

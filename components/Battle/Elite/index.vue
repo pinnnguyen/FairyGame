@@ -121,6 +121,7 @@ onUnmounted(async () => {
             :real-time="stateRunning?.realTime"
             :pos="m.extends.pos"
             :round="roundNum"
+            :buff="stateRunning.buff"
           />
         </template>
       </div>

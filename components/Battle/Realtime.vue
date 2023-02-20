@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { attributeToName } from '../../constants'
 import { playerTitle } from '~/common'
 
 const props = defineProps<{
@@ -55,7 +56,7 @@ const kabbalahStartBattleProp = computed(() => {
     w="2"
     text="space-normal white 14"
     opacity="0"
-    :class="{ 'left-4': pos === 1, 'right-4': pos === 2, '!opacity-100': hasBuffOptions }"
+    :class="{ 'left-4': pos === 1, 'right-4': pos === 2, '!opacity-100': hasBuffOptions && !kabbalahInBattleProp }"
   >
     {{ kabbalahStartBattleProp?.name }}
   </span>
@@ -97,7 +98,6 @@ const kabbalahStartBattleProp = computed(() => {
     >
       Phản đòn -{{ realTime[extend._id]?.defenderCounterAttack }}
     </span>
-
     <span
       class="battle-action whitespace-nowrap text-green-300"
       :class="{ show: realTime[extend._id]?.defenderAvoid && realTime[extend._id].doAction }"
@@ -114,5 +114,12 @@ const kabbalahStartBattleProp = computed(() => {
     >
       <span>{{ receiver[extend._id]?.receiveDamage }}</span>
     </span>
+
+    <div v-if="kabbalahStartBattleProp" text="8" w="28" m="t-1">
+      <span v-for="(value, key) in kabbalahStartBattleProp.values" :key="key" text="green-500" p="x-[1px]">
+        <icon name="ic:outline-keyboard-double-arrow-up" />
+        {{ value }}{{ attributeToName[key] }}
+      </span>
+    </div>
   </div>
 </template>

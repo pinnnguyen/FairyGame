@@ -39,4 +39,6 @@ export const attributeToName: Record<string, string> = {
   reductionRecoveryPerformance: 'Kháng hồi phục',
   reductionCounterAttack: 'Bỏ qua nó tránh',
   speedPractice: 'Tốc độ tu luyện',
+  percentDamage: '% Công',
+  percentSpeed: '% Tốc',
 }
