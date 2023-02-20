@@ -126,45 +126,42 @@ const handleCritical = (critical: number, inflictDMG: number, criticalDamage: nu
   }
 }
 
-type BattleTarget = BaseAttributes & {
+export type BattleTarget = BaseAttributes & {
   kabbalah: PlayerKabbalah
   kabbalahRule?: KabbalahRule[]
+  attribute: BaseAttributes
 }
-/**
- * > It receives two objects, calculates the damage, and returns an object with the damage,
- * bloodsucking, critical, counter attack, and avoid
- * @param {any} battleTarget - any
- * @returns An object with the following properties:
- *   receiveDMG: number
- *   attackerBloodsucking: number
- *   attackerCritical: boolean
- *   defenderCounterAttack: number
- *   defenderAvoid: boolean
- */
+
 export const receiveDamageV2 = (battleTarget: BattleTarget[]) => {
   let originDMG: number
   const attacker = battleTarget[0]
   const defender = battleTarget[1]
 
-  const attackerDamage = attacker.damage ?? 0
-  const defenderDef = defender.def ?? 0
+  const attackerAttribute = battleTarget[0].attribute
+  const defenderAttribute = battleTarget[1].attribute
+
+  const attackerKabbalahRule = attacker.kabbalahRule
+  const attackerKabbalah = attacker.kabbalah
+
+  const attackerDamage = attackerAttribute.damage ?? 0
+  const defenderDef = defenderAttribute.def ?? 0
 
   originDMG = Math.round(attackerDamage - defenderDef * 0.75)
   if (originDMG < 0)
     originDMG = 0
 
-  const { kabbalahDamage, kabbalahProps } = handleKabbalahInBattle(attacker.kabbalahRule, attacker.kabbalah, originDMG)
+  const { kabbalahDamage, kabbalahProps } = handleKabbalahInBattle(attackerKabbalahRule, attackerKabbalah, originDMG)
   if (kabbalahDamage)
     originDMG = kabbalahDamage
 
-  const { blood } = handleBloodsucking(originDMG, attacker?.bloodsucking, defender.reductionBloodsucking)
-  const { recovery } = handleRecoveryPerformance(blood, attacker.recoveryPerformance, defender.reductionRecoveryPerformance)
-  const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(attacker?.critical, originDMG, attacker?.criticalDamage, defender?.reductionCriticalDamage)
+  const { blood } = handleBloodsucking(originDMG, attackerAttribute?.bloodsucking, defenderAttribute.reductionBloodsucking)
+  const { recovery } = handleRecoveryPerformance(blood, attackerAttribute.recoveryPerformance, defenderAttribute.reductionRecoveryPerformance)
+  const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(attackerAttribute?.critical, originDMG, attackerAttribute?.criticalDamage, defender?.reductionCriticalDamage)
   if (hasCritical && inflictDMGAfter > 0)
     originDMG = inflictDMGAfter
 
-  const { counterDamage } = handleCounterAttack(originDMG, attacker?.reductionCounterAttack, defender?.counterAttack)
-  const { hasAvoid } = handleAvoid(defender?.avoid, attacker?.reductionAvoid)
+  const { counterDamage } = handleCounterAttack(originDMG, attackerAttribute?.reductionCounterAttack, defenderAttribute?.counterAttack)
+  const { hasAvoid } = handleAvoid(defenderAttribute?.avoid, attackerAttribute?.reductionAvoid)
   if (hasAvoid)
     originDMG = 0
 
@@ -209,12 +206,14 @@ const formatKabbalah = (targetA: Target, targetB: Target) => {
     const kabbalahKeyUsed: (string | undefined)[] = []
 
     for (const kaUsed in targetA?.kabbalah) {
-      if (targetA?.kabbalah[kaUsed].used)
+      if (targetA?.kabbalah[kaUsed].unlock
+          && ['automatic', 'manual'].includes(targetA.kabbalah[kaUsed].type))
         kabbalahKeyUsed.push(kaUsed)
     }
 
     aKabbalahRule = KABBALAH_RULE[targetA.spiritualRoot?.kind]
-    targetA.kabbalahRule = aKabbalahRule.filter(k => kabbalahKeyUsed.includes(k.sign))
+    targetA.kabbalahRule = aKabbalahRule
+      .filter(k => kabbalahKeyUsed.includes(k.sign))
   }
 
   if (targetB.spiritualRoot?.kind && targetB?.kabbalah) {
@@ -231,13 +230,6 @@ const formatKabbalah = (targetA: Target, targetB: Target) => {
   }
 }
 
-/**
- * It takes two objects, and returns a new object with the same keys, but with the values of the
- * original objects swapped
- * @param {Target} targetA - Target
- * @param {Target} targetB - Target
- * @returns An object with two keys, each key is a string of the target's _id.
- */
 const matchFormat = (targetA: Target, targetB: Target) => {
   return {
     [(targetA.extends._id as string)]: {
@@ -261,39 +253,30 @@ const matchFormat = (targetA: Target, targetB: Target) => {
   }
 }
 
-/**
- * It takes two objects, and returns an object with two keys, each key is a string that is a
- * concatenation of the speed of the object and the id of the object, and the value of each key is an
- * array of two objects, the first object is the object itself, and the second object is the other
- * object
- * @param {Target} targetA - Target
- * @param {Target} targetB - Target
- * @returns An object with two keys, each key has an array with two objects.
- */
 const formatBeforeStartBattle = (targetA: Target, targetB: Target) => {
   const battle: Record<string, any> = {
     [`${targetA.attribute.speed}_${targetA.extends._id}`]: [
       {
         kabbalah: targetA.kabbalah,
         kabbalahRule: targetA.kabbalahRule,
-        ...targetA.attribute,
+        attribute: targetA.attribute,
       },
       {
         kabbalah: targetB.kabbalah,
         kabbalahRule: targetB.kabbalahRule,
-        ...targetB.attribute,
+        attribute: targetB.attribute,
       },
     ],
     [`${targetB.attribute.speed}_${targetB.extends._id}`]: [
       {
         kabbalah: targetB.kabbalah,
         kabbalahRule: targetB.kabbalahRule,
-        ...targetB.attribute,
+        attribute: targetB.attribute,
       },
       {
         kabbalah: targetA.kabbalah,
         kabbalahRule: targetA.kabbalahRule,
-        ...targetA.attribute,
+        attribute: targetA.attribute,
       },
     ],
   }
@@ -301,11 +284,6 @@ const formatBeforeStartBattle = (targetA: Target, targetB: Target) => {
   return battle
 }
 
-/**
- * It takes an object, sorts it by key, and returns a new object with the same keys and values
- * @param {any} battle - any
- * @returns An object with the same keys and values as the input object, but sorted by key.
- */
 const orderTurn = (battle: any) => {
   return Object.entries(battle)
     .sort()
@@ -321,13 +299,6 @@ interface Target {
   attribute: PlayerAttribute
 }
 
-/**
- * It takes two objects, and returns an object with the winner, the total damage, and the emulators
- * @param {Target} targetA - Target, targetB: Target, personBeingAttacked?: string | undefined
- * @param {Target} targetB - Target
- * @param {string | undefined} [personBeingAttacked] - The person who is being attacked.
- * @returns An object with the following properties:
- */
 export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttacked?: string | undefined) => {
   let round = 0
   const totalDamage: Record<string, any> = {
@@ -352,13 +323,23 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
     for (const b in battleReverse) {
       const battleTarget = battle[b]
       const attacker = battleTarget[0]
-      // const defender = battleTarget[1]
-
-      handleKabbalahStartBattle(attacker.kabbalahRule, attacker.kabbalah)
+      const { kabbalahProps } = handleKabbalahStartBattle(attacker)
+      emulators.push(<Emulator>{
+        [b]: {
+          action: BATTLE_ACTION.BUFF,
+          state: {},
+          self: {
+            kabbalahProps: [{ ...kabbalahProps }],
+          },
+          now: {},
+        },
+      })
     }
 
     for (const b in battleReverse) {
       const battleTarget = battle[b]
+      const attackerAttribute = battleTarget[0].attribute
+      const defenderAttribute = battleTarget[1].attribute
 
       const {
         receiveDMG,
@@ -369,19 +350,16 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
         kabbalahProps,
       } = receiveDamageV2(battleTarget)
 
-      const attacker = battleTarget[0]
-      const defender = battleTarget[1]
-
       const realDamageId = b.split('_')[1]
       if (!totalDamage.list[realDamageId])
         totalDamage.list[realDamageId] = 0
 
       totalDamage.list[realDamageId] += receiveDMG
-      defender.hp -= formatHP(defender?.hp, receiveDMG)
-      attacker.hp -= formatHP(attacker.hp, defenderCounterAttack)
+      defenderAttribute.hp -= formatHP(defenderAttribute?.hp, receiveDMG)
+      attackerAttribute.hp -= formatHP(attackerAttribute.hp, defenderCounterAttack)
 
-      if (attacker.hp > 0 && attackerBloodsucking > 0)
-        attacker.hp += attackerBloodsucking
+      if (attackerAttribute.hp > 0 && attackerBloodsucking > 0)
+        attackerAttribute.hp += attackerBloodsucking
 
       // TODO: Lưu giả lập
       emulators.push(<Emulator>{
@@ -389,7 +367,7 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
           action: BATTLE_ACTION.ATTACK,
           state: {
             receiveDamage: {
-              [defender._id]: receiveDMG,
+              [defenderAttribute._id]: receiveDMG,
             },
             bloodsucking: attackerBloodsucking,
             critical: attackerCritical,
@@ -397,22 +375,22 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
             avoid: defenderAvoid,
           },
           self: {
-            hp: attacker.hp,
-            mp: attacker.mp,
+            hp: attackerAttribute.hp,
+            mp: attackerAttribute.mp,
             kabbalahProps: [{ ...kabbalahProps }],
           },
           now: {
             hp: {
-              [defender._id]: defender.hp,
+              [defenderAttribute._id]: defenderAttribute.hp,
             },
             mp: {
-              [attacker._id]: attacker.mp,
+              [attackerAttribute._id]: attackerAttribute.mp,
             },
           },
         },
       })
 
-      if (attacker.hp <= 0 || defender.hp <= 0) {
+      if (attackerAttribute.hp <= 0 || defenderAttribute.hp <= 0) {
         const realId = b.split('_')[1]
         return {
           emulators,

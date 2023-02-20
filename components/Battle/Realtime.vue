@@ -7,6 +7,7 @@ const props = defineProps<{
   match: any
   pos: number
   round: number
+  buff: any
 }>()
 
 const extend = computed(() => props.match.extends)
@@ -19,6 +20,20 @@ const cPlayerTitle = computed(() => {
 const kabbalahInBattleProp = computed(() => {
   return props.realTime[extend.value._id]?.kabbalahProps.find((k: any) => k.focus === 'in_battle')
 })
+
+const hasBuffOptions = computed(() => {
+  if (props.buff && props.buff[extend.value._id])
+    return props.buff[extend.value._id]
+
+  return null
+})
+
+const kabbalahStartBattleProp = computed(() => {
+  if (!hasBuffOptions.value)
+    return null
+
+  return hasBuffOptions.value.kabbalahProps.find((k: any) => k.focus === 'before_s_battle')
+})
 </script>
 
 <template>
@@ -29,10 +44,20 @@ const kabbalahInBattleProp = computed(() => {
     w="2"
     text="space-normal white 14"
     opacity="0"
-    style="font-family: fangsong"
     :class="{ 'left-4': pos === 1, 'right-4': pos === 2, '!opacity-100': kabbalahInBattleProp }"
   >
     {{ kabbalahInBattleProp?.name }}
+  </span>
+  <span
+    transition="~ opacity duration-800"
+    pos="absolute"
+    left="2"
+    w="2"
+    text="space-normal white 14"
+    opacity="0"
+    :class="{ 'left-4': pos === 1, 'right-4': pos === 2, '!opacity-100': hasBuffOptions }"
+  >
+    {{ kabbalahStartBattleProp?.name }}
   </span>
   <div
     pos="relative"

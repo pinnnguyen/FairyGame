@@ -1,51 +1,59 @@
+import type { BattleTarget } from './war'
 import { randomNumber } from '~/common'
-import type { KabbalahRule, PlayerKabbalah } from '~/types'
+import type { BaseAttributeKeys, KabbalahRule, PlayerKabbalah } from '~/types'
+import { useApplyPercentAttribute } from '~/server/helpers'
 
-export const handleKabbalahStartBattle = (kabbalahRule?: KabbalahRule[], kabbalah?: PlayerKabbalah) => {
-  const kabbalahProps = {}
+export const handleKabbalahStartBattle = (attacker: BattleTarget) => {
+  let kabbalahProps = {}
 
-  console.log('kabbalahRule', kabbalahRule)
-  if (!kabbalah) {
+  if (!attacker.kabbalah) {
     return {
       kabbalahProps: null,
     }
   }
 
-  if (!kabbalahRule || kabbalahRule.length <= 0) {
+  if (!attacker.kabbalahRule || attacker.kabbalahRule.length <= 0) {
     return {
       kabbalahProps: null,
     }
   }
 
-  for (const rule of kabbalahRule) {
-    if (rule.focus !== 'start_battle')
+  for (const rule of attacker.kabbalahRule) {
+    if (rule.focus !== 'before_s_battle')
       continue
 
     // Thần thông hệ kim 2
     if (rule.sign === 'needle_spiritual_2') {
       // TODO: Lấy cấp độ thần thông tính độ trưởng thành
-      // const kabbalahLevel = kabbalah[rule.sign].level
-      // let rateValue = rule.rate!.value! + (kabbalahLevel * rule.valueOnLevel!)
-      // TODO: Check giới hạn tỷ lệ xuất ra thần thông theo config
-      // if (rateValue > rule.rate!.max!)
-      //   rateValue = rule.rate!.max!
+      let kabbalahLevel = attacker.kabbalah[rule.sign].level
+      if (kabbalahLevel > rule.max!)
+        kabbalahLevel = rule.max!
 
-      // if (rateValue >= ran) {
-      // kabbalahDamage! += (originDMG! * rule.value!) / 100
+      const rateLevelValue = kabbalahLevel * rule.valueOnLevel!
       if (rule.target?.role === 'player') {
         const values = rule.values
-        for (const v in values)
-          console.log('values', values[v])
-      }
+        const endValues: any = {}
+        for (const v in values) {
+          endValues[v] = values[v] + rateLevelValue
+          useApplyPercentAttribute({
+            key: v as BaseAttributeKeys,
+            value: values[v] + rateLevelValue,
+          }, attacker.attribute)
+        }
 
-      // kabbalahProps = {
-      //   name: rule.name,
-      //   sign: rule.sign,
-      //   value: rule.value,
-      //   focus: rule.focus,
-      // }
-      // }
+        kabbalahProps = {
+          name: rule.name,
+          sign: rule.sign,
+          value: rule.value,
+          values: endValues,
+          focus: rule.focus,
+        }
+      }
     }
+  }
+
+  return {
+    kabbalahProps,
   }
 }
 

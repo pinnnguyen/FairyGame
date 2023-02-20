@@ -3,11 +3,28 @@ import { conditionForUpLevel } from '~/server/common'
 import { AttributePowers } from '~/server/constants'
 import { formatAttributes, useEquipment } from '~/server/helpers/equipment'
 import { MidSchema, PlayerSchema } from '~/server/schema'
-import type {
-  BaseAttributes, MindDharma
-  , Player, PlayerAttribute, PlayerKabbalah, PlayerServerResponse, PlayerSpiritualRoot,
-} from '~/types'
 import { playerTitle } from '~/common'
+import type {
+  BaseAttributeKeys,
+  BaseAttributes,
+  MindDharma,
+  Player,
+  PlayerAttribute,
+  PlayerKabbalah,
+  PlayerServerResponse,
+  PlayerSpiritualRoot,
+} from '~/types'
+
+export const useApplyPercentAttribute = (per: { key: BaseAttributeKeys; value: number }, attribute: BaseAttributes) => {
+  switch (per.key) {
+    case 'percentDamage':
+      attribute.damage += (attribute.damage * per.value) / 100
+      break
+    case 'percentSpeed':
+      attribute.speed += (attribute.speed * per.value) / 100
+      break
+  }
+}
 
 const mindDharmaApply = (mindDharma: MindDharma, attribute: BaseAttributes) => {
   for (const mindK in mindDharma) {
@@ -97,6 +114,13 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
         localField: 'sid',
         foreignField: 'sid',
         as: 'attribute',
+        pipeline: [
+          {
+            $project: {
+              __v: false,
+            },
+          },
+        ],
       },
     },
     {

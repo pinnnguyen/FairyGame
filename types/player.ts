@@ -68,7 +68,7 @@ export interface PlayerSpiritualRoot {
 }
 
 export interface KabbalahRule {
-  focus?: 'in_battle' | 'start_battle' | 'attribute'
+  focus?: 'in_battle' | 'before_s_battle' | 'attribute'
   max?: number
   valueOnLevel?: number
   active?: 'percent'
@@ -95,6 +95,7 @@ export type PlayerKabbalah = {
     unlock: boolean
     level: number
     used: boolean
+    type: 'automatic' | 'manual' | 'intrinsic'
   }
 }
 export interface Player {

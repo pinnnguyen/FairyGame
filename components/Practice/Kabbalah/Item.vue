@@ -10,7 +10,7 @@ const { kabbalahState } = storeToRefs(usePlayerStore())
 const { getPlayer } = usePlayerStore()
 
 const isFocusInBattle = computed(() => props.kabbalah.focus === 'in_battle')
-const isFocusStartBattle = computed(() => props.kabbalah.focus === 'start_battle')
+const isFocusStartBattle = computed(() => props.kabbalah.focus === 'before_s_battle')
 const isFocusAttribute = computed(() => props.kabbalah.focus === 'attribute')
 
 const upgrade = async (sign: KabbalahSign) => {
@@ -47,11 +47,22 @@ const used = async (sign: KabbalahSign, action: 'unused' | 'used') => {
 }
 
 const unlock = async (sign: KabbalahSign) => {
+  let typeKabbalah: 'manual' | 'automatic' | 'intrinsic' = 'intrinsic'
+  if (isFocusInBattle.value)
+    typeKabbalah = 'manual'
+
+  if (isFocusStartBattle.value)
+    typeKabbalah = 'automatic'
+
+  if (isFocusAttribute.value)
+    typeKabbalah = 'intrinsic'
+
   loading.value = true
   const unlockRes: any = await $fetch('/api/practice/kabbalah/unlock', {
     method: 'POST',
     body: {
       sign,
+      type: typeKabbalah,
     },
   })
 

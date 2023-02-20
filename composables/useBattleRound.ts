@@ -1,6 +1,7 @@
 import { set, useLocalStorage } from '@vueuse/core'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { sleep } from '~/common'
+import { BATTLE_ACTION } from '~/constants'
 import type { BasicItem, PlayerEquipment } from '~/types'
 import type { BaseReward } from '~/types/war'
 
@@ -18,6 +19,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   const match = ref({})
   const receiver = ref<any>({})
   const realTime = ref<any>({})
+  const buff = ref<any>({})
 
   const roundNum = ref(0)
   const speed = useLocalStorage('speed', 1)
@@ -38,6 +40,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     set(reward, null)
     set(receiver, {})
     set(realTime, {})
+    set(buff, {})
     options.skip = false
     options.stop = false
   }
@@ -84,51 +87,58 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
         const realTurn = turn.split('_')[1]
         const realEmu = emulator[turn]
 
-        if (realEmu.action !== 'attack')
-          continue
+        if (realEmu.action === BATTLE_ACTION.BUFF) {
+          Object.assign(buff.value, {
+            [realTurn]: {
+              ...realEmu.self,
+            },
+          })
+        }
 
-        await sleep(options.TURN_DELAY)
-        roundNum.value++
+        if (realEmu.action === BATTLE_ACTION.ATTACK) {
+          await sleep(options.TURN_DELAY)
+          roundNum.value++
 
-        Object.assign(realTime.value, {
-          [realTurn]: {
-            doAction: true,
-            receiveDamage: realEmu?.state?.receiveDamage,
-            critical: realEmu?.state?.critical,
-            bloodsucking: realEmu.state.bloodsucking,
-            kabbalahProps: realEmu.self.kabbalahProps,
-          },
-        })
+          Object.assign(realTime.value, {
+            [realTurn]: {
+              doAction: true,
+              receiveDamage: realEmu?.state?.receiveDamage,
+              critical: realEmu?.state?.critical,
+              bloodsucking: realEmu.state.bloodsucking,
+              kabbalahProps: realEmu.self.kabbalahProps,
+            },
+          })
 
-        setTimeout(() => {
-          realTime.value[realTurn].doAction = false
-        }, options.EFFECT_DELAY)
+          setTimeout(() => {
+            realTime.value[realTurn].doAction = false
+          }, options.EFFECT_DELAY)
 
-        const realDamage = Object.keys(realEmu.state.receiveDamage)
-        receiver.value[realDamage[0]].receiveDamage = `-${realEmu.state.receiveDamage[realDamage[0]]}`
-        if (realEmu?.state?.critical)
-          receiver.value[realDamage[0]].receiveDamage = `Bạo kích -${realEmu.state.receiveDamage[realDamage[0]]}`
+          const realDamage = Object.keys(realEmu.state.receiveDamage)
+          receiver.value[realDamage[0]].receiveDamage = `-${realEmu.state.receiveDamage[realDamage[0]]}`
+          if (realEmu?.state?.critical)
+            receiver.value[realDamage[0]].receiveDamage = `Bạo kích -${realEmu.state.receiveDamage[realDamage[0]]}`
 
-        if (realEmu.now.hp) {
-          const keyRealEmuNow = Object.keys(realEmu.now.hp)
-          if (receiver.value[keyRealEmuNow[0]])
-            receiver.value[keyRealEmuNow[0]].hp = realEmu.now.hp[keyRealEmuNow[0]]
+          if (realEmu.now.hp) {
+            const keyRealEmuNow = Object.keys(realEmu.now.hp)
+            if (receiver.value[keyRealEmuNow[0]])
+              receiver.value[keyRealEmuNow[0]].hp = realEmu.now.hp[keyRealEmuNow[0]]
 
-          if ((receiver.value[keyRealEmuNow[0]].hp) <= 0) {
+            if ((receiver.value[keyRealEmuNow[0]].hp) <= 0) {
+              setTimeout(() => {
+                cb()
+              }, options.RESULT_DELAY)
+
+              return
+            }
+          }
+
+          if (roundNum.value === (war.emulators.length * 2)) {
             setTimeout(() => {
               cb()
             }, options.RESULT_DELAY)
 
             return
           }
-        }
-
-        if (roundNum.value === (war.emulators.length * 2)) {
-          setTimeout(() => {
-            cb()
-          }, options.RESULT_DELAY)
-
-          return
         }
       }
     }
@@ -155,6 +165,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
       receiver,
       realTime,
       reward,
+      buff,
     }),
     speed,
     roundNum,

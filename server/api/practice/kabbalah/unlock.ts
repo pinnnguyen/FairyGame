@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
 
   const body = await readBody<{
     sign: string
+    type: 'manual' | 'automatic'
   }>(event)
 
   if (!body.sign) {
@@ -29,12 +30,14 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  const kabbalahCreated: any = player?.kabbalah
+  const kabbalahCreated: any = player?.kabbalah ?? {}
+  console.log('kabbalahCreated', kabbalahCreated)
   const currentKabbalah = Object.assign(kabbalahCreated, {
     [body.sign]: {
       unlock: true,
       level: 1,
       used: false,
+      type: body.type,
     },
   })
 

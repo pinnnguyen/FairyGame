@@ -24,7 +24,7 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
     {
       max: 8,
       valueOnLevel: 2,
-      focus: 'start_battle',
+      focus: 'before_s_battle',
       name: 'Kim nguyên tâm pháp',
       title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentDamage Công, #percentSpeed Tốc',
       sign: 'needle_spiritual_2',
