@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { attributeToName } from '../../constants'
+import { clearTimeout } from 'timers'
+import { attributeToName } from '~/constants'
 import { playerTitle } from '~/common'
 
 const props = defineProps<{
@@ -13,6 +14,7 @@ const props = defineProps<{
 
 const extend = computed(() => props.match.extends)
 const attribute = computed(() => props.match.attribute)
+const showATime = ref(true)
 
 const cPlayerTitle = computed(() => {
   return playerTitle(extend.value?.level, extend.value?.level + 1)
@@ -35,6 +37,10 @@ const kabbalahStartBattleProp = computed(() => {
 
   return hasBuffOptions.value.kabbalahProps.find((k: any) => k.focus === 'before_s_battle')
 })
+
+setTimeout(() => {
+  showATime.value = false
+}, 1000)
 </script>
 
 <template>
@@ -43,7 +49,7 @@ const kabbalahStartBattleProp = computed(() => {
     pos="absolute"
     left="2"
     w="2"
-    text="space-normal white 14"
+    text="space-normal white 10"
     opacity="0"
     :class="{ 'left-4': pos === 1, 'right-4': pos === 2, '!opacity-100': kabbalahInBattleProp }"
   >
@@ -54,9 +60,9 @@ const kabbalahStartBattleProp = computed(() => {
     pos="absolute"
     left="2"
     w="2"
-    text="space-normal white 14"
+    text="space-normal white 10"
     opacity="0"
-    :class="{ 'left-4': pos === 1, 'right-4': pos === 2, '!opacity-100': hasBuffOptions && !kabbalahInBattleProp }"
+    :class="{ 'left-4': pos === 1, 'right-4': pos === 2, '!opacity-100': hasBuffOptions && showATime }"
   >
     {{ kabbalahStartBattleProp?.name }}
   </span>
