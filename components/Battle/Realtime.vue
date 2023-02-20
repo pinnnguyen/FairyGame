@@ -39,7 +39,7 @@ const kabbalahStartBattleProp = computed(() => {
 
 <template>
   <span
-    transition="~ opacity duration-800"
+    transition="~ opacity duration-1000"
     pos="absolute"
     left="2"
     w="2"
@@ -50,7 +50,7 @@ const kabbalahStartBattleProp = computed(() => {
     {{ kabbalahInBattleProp?.name }}
   </span>
   <span
-    transition="~ opacity duration-800"
+    transition="~ opacity duration-1000"
     pos="absolute"
     left="2"
     w="2"
@@ -62,7 +62,7 @@ const kabbalahStartBattleProp = computed(() => {
   </span>
   <div
     pos="relative"
-    transition="~ duration-800 transform"
+    transition="~ duration-1000 transform"
     h="12"
     class="border-box"
     :style="{
