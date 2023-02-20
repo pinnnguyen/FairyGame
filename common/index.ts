@@ -167,44 +167,6 @@ export const colorQuality = (quality: number) => {
     }
   }
 }
-export const backgroundQuality = (quality: number) => {
-  if (quality === 1) {
-    return {
-      'background-image': 'linear-gradient(#6ba55f, #5e9a5038)',
-    }
-  }
-
-  if (quality === 2) {
-    return {
-      'background-image': 'linear-gradient(#5388c1, #5e90c71a)',
-    }
-  }
-
-  if (quality === 3) {
-    return {
-      'background-image': 'linear-gradient(#915fb3, #915fb31a)',
-    }
-  }
-
-  if (quality === 4) {
-    return {
-      'background-image': 'linear-gradient(#db8840, #db884017)',
-    }
-  }
-
-  if (quality === 5) {
-    return {
-      'background-image': 'linear-gradient(#cb525f, #cb525f17)',
-    }
-  }
-
-  if (quality! >= 6) {
-    return {
-      'background-image': 'linear-gradient(#e17298, #e172981a)',
-    }
-  }
-}
-
 export const playerTitle = (level: number, playerNextLevel: number) => {
   let levelTitle = ''
   let floor = ''

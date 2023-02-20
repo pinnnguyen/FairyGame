@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import type { KabbalahSign } from '~/types'
+import type { KabbalahRule, KabbalahSign } from '~/types'
 
-defineProps<{
-  kabbalah: any
+const props = defineProps<{
+  kabbalah: KabbalahRule
 }>()
 
 const loading = ref(false)
 const { kabbalahState } = storeToRefs(usePlayerStore())
 const { getPlayer } = usePlayerStore()
+
+const isFocusInBattle = computed(() => props.kabbalah.focus === 'in_battle')
+const isFocusStartBattle = computed(() => props.kabbalah.focus === 'start_battle')
+const isFocusAttribute = computed(() => props.kabbalah.focus === 'attribute')
 
 const upgrade = async (sign: KabbalahSign) => {
   loading.value = true
@@ -65,20 +69,20 @@ const unlock = async (sign: KabbalahSign) => {
     align="items-center"
     flex="~ "
   >
-    <div>
+    <section>
       <practice-kabbalah-in-battle-focus
-        v-if="kabbalah.focus === 'in_battle'"
+        v-if="isFocusInBattle"
         :kabbalah="kabbalah"
       />
       <practice-kabbalah-start-battle-focus
-        v-if="kabbalah.focus === 'start_battle'"
+        v-if="isFocusStartBattle"
         :kabbalah="kabbalah"
       />
       <practice-kabbalah-attribute-focus
-        v-if="kabbalah.focus === 'attribute'"
+        v-if="isFocusAttribute"
         :kabbalah="kabbalah"
       />
-    </div>
+    </section>
     <div
       flex="~ col"
       gap="2"
@@ -87,7 +91,7 @@ const unlock = async (sign: KabbalahSign) => {
         v-if="kabbalahState && kabbalahState[kabbalah.sign]"
       >
         <var-button
-          v-if="kabbalah.focus === 'in_battle' && !kabbalahState[kabbalah.sign].used"
+          v-if="isFocusInBattle && !kabbalahState[kabbalah.sign].used"
           class="!text-[#333]"
           size="mini"
           :disabled="loading"
@@ -98,7 +102,7 @@ const unlock = async (sign: KabbalahSign) => {
           Trang bị
         </var-button>
         <var-button
-          v-else
+          v-if="isFocusInBattle && kabbalahState[kabbalah.sign].used"
           class="!text-[#333]"
           size="mini"
           :disabled="loading"

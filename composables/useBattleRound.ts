@@ -41,6 +41,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     options.stop = false
   }
   const startBattle = async (war: any & { statusCode?: number }, cb: Function) => {
+    // console.log('war', war)
     makeDefault()
 
     if (war?.statusCode === 400)
@@ -92,6 +93,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
               damage: realEmu?.state?.damage,
               critical: realEmu?.state?.critical,
               bloodsucking: realEmu.state.bloodsucking,
+              kabbalahProps: realEmu.self.kabbalahProps,
             },
           })
 

@@ -1,11 +1,11 @@
-import { CLASS_RULE, MIND_DHARMA_CONFIG, SPIRITUAL_ROOT_RULE } from '~/config'
+import { CLASS_RULE, KABBALAH_RULE, MIND_DHARMA_CONFIG, SPIRITUAL_ROOT_RULE } from '~/config'
 import { conditionForUpLevel } from '~/server/common'
 import { AttributePowers } from '~/server/constants'
 import { formatAttributes, useEquipment } from '~/server/helpers/equipment'
 import { MidSchema, PlayerSchema } from '~/server/schema'
 import type {
   BaseAttributes, MindDharma
-  , Player, PlayerAttribute, PlayerServerResponse, SpiritualRoot,
+  , Player, PlayerAttribute, PlayerKabbalah, PlayerServerResponse, PlayerSpiritualRoot,
 } from '~/types'
 import { playerTitle } from '~/common'
 
@@ -17,11 +17,29 @@ const mindDharmaApply = (mindDharma: MindDharma, attribute: BaseAttributes) => {
   }
 }
 
-const useSpiritualRoot = (spiritualRoot: SpiritualRoot, attribute: BaseAttributes) => {
+const useSpiritualRoot = (spiritualRoot: PlayerSpiritualRoot, kabbalah: PlayerKabbalah, attribute: BaseAttributes) => {
   for (const lc in SPIRITUAL_ROOT_RULE[spiritualRoot.kind].values) {
     const extentAtt = SPIRITUAL_ROOT_RULE[spiritualRoot.kind].values[lc] * spiritualRoot?.level * parseFloat(`1.${spiritualRoot.quality}`)
     if (attribute[lc])
       attribute[lc] += extentAtt
+  }
+
+  const focusAttribute = KABBALAH_RULE[spiritualRoot.kind].filter(s => s.focus === 'attribute')
+  for (const fAtt of focusAttribute) {
+    if (kabbalah && kabbalah[fAtt.sign!]) {
+      const unlock = kabbalah[fAtt.sign!].unlock
+      if (!unlock)
+        continue
+
+      const level = kabbalah[fAtt.sign!].level
+      const values = fAtt.values
+
+      for (const v in values) {
+        const extentAtt = values[v] * level
+        if (attribute[v])
+          attribute[v] += extentAtt
+      }
+    }
   }
 }
 
@@ -165,7 +183,7 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
     mindDharmaApply(player.mindDharma, attribute)
 
   if (player?.spiritualRoot?.level && player.spiritualRoot?.kind)
-    useSpiritualRoot(player.spiritualRoot, attribute)
+    useSpiritualRoot(player.spiritualRoot, player.kabbalah, attribute)
 
   if (playerEquips.length > 0)
     useEquipment(playerEquips, attribute, player)

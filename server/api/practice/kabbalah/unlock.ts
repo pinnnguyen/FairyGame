@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  const kabbalahCreated = {}
+  const kabbalahCreated: any = player?.kabbalah
   const currentKabbalah = Object.assign(kabbalahCreated, {
     [body.sign]: {
       unlock: true,

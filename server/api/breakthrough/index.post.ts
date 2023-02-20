@@ -166,7 +166,10 @@ export default defineEventHandler(async (event) => {
     gold: {
       $gte: needGold,
     },
-  })
+    exp: {
+      $gte: playerAfter?.player?.expLimited,
+    },
+  }).select('sid')
 
   if (!pGold) {
     return createError({

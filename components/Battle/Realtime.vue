@@ -15,9 +15,25 @@ const attribute = computed(() => props.match.attribute)
 const cPlayerTitle = computed(() => {
   return playerTitle(extend.value?.level, extend.value?.level + 1)
 })
+
+const kabbalahInBattleProp = computed(() => {
+  return props.realTime[extend.value._id]?.kabbalahProps.find((k: any) => k.focus === 'in_battle')
+})
 </script>
 
 <template>
+  <span
+    transition="~ opacity duration-800"
+    pos="absolute"
+    left="2"
+    w="2"
+    text="space-normal white 14"
+    opacity="0"
+    style="font-family: fangsong"
+    :class="{ 'left-4': pos === 1, 'right-4': pos === 2, '!opacity-100': kabbalahInBattleProp }"
+  >
+    {{ kabbalahInBattleProp?.name }}
+  </span>
   <div
     pos="relative"
     transition="~ duration-800 transform"
@@ -63,7 +79,6 @@ const cPlayerTitle = computed(() => {
     >
       Né tránh
     </span>
-
     <span
       class="battle-damage"
       :class="{

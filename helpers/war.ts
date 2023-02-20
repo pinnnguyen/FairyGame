@@ -1,5 +1,6 @@
 import { KABBALAH_RULE } from '~/config'
 import { cloneDeep } from '~/helpers'
+import { handleKabbalahInBattle } from '~/helpers/kabbalah'
 import type { BaseAttributes, KabbalahRule, PlayerAttribute, PlayerKabbalah, PlayerSpiritualRoot } from '~/types'
 import { BATTLE_ACTION } from '~/constants/war'
 import { randomNumber } from '~/common'
@@ -125,6 +126,9 @@ const handleCritical = (critical: number, inflictDMG: number, criticalDamage: nu
   }
 }
 
+type BattleTarget = BaseAttributes & {
+  kabbalahRule?: KabbalahRule[]
+}
 /**
  * > It receives two objects, calculates the damage, and returns an object with the damage,
  * bloodsucking, critical, counter attack, and avoid
@@ -136,35 +140,40 @@ const handleCritical = (critical: number, inflictDMG: number, criticalDamage: nu
  *   defenderCounterAttack: number
  *   defenderAvoid: boolean
  */
-export const receiveDamageV2 = (battleTarget: any) => {
-  let inflictDMG: number
+export const receiveDamageV2 = (battleTarget: BattleTarget[]) => {
+  let originDMG: number
   const attacker = battleTarget[0]
   const defender = battleTarget[1]
 
   const attackerDamage = attacker.damage ?? 0
   const defenderDef = defender.def ?? 0
 
-  inflictDMG = Math.round(attackerDamage - defenderDef * 0.75)
-  if (inflictDMG < 0)
-    inflictDMG = 0
+  originDMG = Math.round(attackerDamage - defenderDef * 0.75)
+  if (originDMG < 0)
+    originDMG = 0
 
-  const { blood } = handleBloodsucking(inflictDMG, attacker?.bloodsucking, defender.reductionBloodsucking)
+  const { kabbalahDamage, kabbalahProps } = handleKabbalahInBattle(attacker.kabbalahRule, originDMG)
+  if (kabbalahDamage)
+    originDMG = kabbalahDamage
+
+  const { blood } = handleBloodsucking(originDMG, attacker?.bloodsucking, defender.reductionBloodsucking)
   const { recovery } = handleRecoveryPerformance(blood, attacker.recoveryPerformance, defender.reductionRecoveryPerformance)
-  const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(attacker?.critical, inflictDMG, attacker?.criticalDamage, defender?.reductionCriticalDamage)
+  const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(attacker?.critical, originDMG, attacker?.criticalDamage, defender?.reductionCriticalDamage)
   if (hasCritical && inflictDMGAfter > 0)
-    inflictDMG = inflictDMGAfter
+    originDMG = inflictDMGAfter
 
-  const { counterDamage } = handleCounterAttack(inflictDMG, attacker?.reductionCounterAttack, defender?.counterAttack)
+  const { counterDamage } = handleCounterAttack(originDMG, attacker?.reductionCounterAttack, defender?.counterAttack)
   const { hasAvoid } = handleAvoid(defender?.avoid, attacker?.reductionAvoid)
   if (hasAvoid)
-    inflictDMG = 0
+    originDMG = 0
 
   return {
-    receiveDMG: inflictDMG,
+    receiveDMG: originDMG,
     attackerBloodsucking: recovery,
     attackerCritical: hasCritical,
     defenderCounterAttack: counterDamage,
     defenderAvoid: hasAvoid,
+    kabbalahProps,
   }
 }
 
@@ -344,6 +353,7 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
         attackerCritical,
         defenderCounterAttack,
         defenderAvoid,
+        kabbalahProps,
       } = receiveDamageV2(battleTarget)
 
       const attacker = battleTarget[0]
@@ -376,6 +386,7 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
           self: {
             hp: attacker.hp,
             mp: attacker.mp,
+            kabbalahProps: [{ ...kabbalahProps }],
           },
           now: {
             hp: {

@@ -13,7 +13,6 @@ import {
 import {
   battleJoinHandler,
   handleAuction,
-  // handleEquipStar,
   handleEquipUpRank,
   handleEquipUpgrade,
   handleEventUpGem,
