@@ -308,34 +308,30 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
   const match = matchFormat(targetA, targetB)
 
   const emulators: Emulator[] = []
+
+  const multipleTarget = formatBeforeEntering(targetA, targetB)
+  for (const attacker of multipleTarget) {
+    const { kabbalahProps } = handleKabbalahStartBattle(attacker)
+    emulators.push(<Emulator>{
+      [attacker._id as string]: {
+        action: BATTLE_ACTION.BUFF,
+        state: {},
+        self: {
+          kabbalahProps: [{ ...kabbalahProps }],
+        },
+        now: {},
+      },
+    })
+  }
+
   for (let i = 0; i < 60; i++) {
     // TODO Chuẩn bị dữ liệu
-    const multipleTarget = formatBeforeEntering(targetA, targetB)
-    for (const attacker of multipleTarget) {
-      const { kabbalahProps } = handleKabbalahStartBattle(attacker)
-      emulators.push(<Emulator>{
-        [attacker._id as string]: {
-          action: BATTLE_ACTION.BUFF,
-          state: {},
-          self: {
-            kabbalahProps: [{ ...kabbalahProps }],
-          },
-          now: {},
-        },
-      })
-    }
-
     for (const attacker of multipleTarget) {
       const attackerAttribute = attacker.attribute
       const currentDefender = multipleTarget.find(m => m._id === attacker.enemyId)
-
-      console.log('attackerAttribute', attackerAttribute.hp)
-
       const attackerID = attacker._id ?? ''
       const defenderID = currentDefender?._id ?? ''
-
       const defenderAttribute = currentDefender?.attribute
-      console.log('defenderAttribute', defenderAttribute?.hp)
 
       if (!defenderAttribute)
         return
@@ -375,19 +371,11 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
         totalDamage.list[attackerID] = 0
 
       totalDamage.list[attackerID] += receiveDMG
-      let originHP = 0
-      if (round < 1)
-        originHP = cloneDeep(attackerAttribute.hp)
-
       defenderAttribute.hp -= formatHP(defenderAttribute?.hp, receiveDMG)
       attackerAttribute.hp -= formatHP(attackerAttribute.hp, defenderCounterAttack)
 
-      if (attackerAttribute.hp > 0 && totalRestoreHP > 0) {
+      if (attackerAttribute.hp > 0 && totalRestoreHP > 0)
         attackerAttribute.hp += totalRestoreHP
-
-        if (attackerAttribute.hp > originHP)
-          attackerAttribute.hp = originHP
-      }
 
       // TODO: Lưu giả lập
       emulators.push(<Emulator>{
@@ -443,6 +431,7 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
         } as any
       }
 
+      console.log('round', round)
       round++
     }
   }
