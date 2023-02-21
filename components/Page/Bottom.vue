@@ -180,12 +180,12 @@ const setTab = (t: string) => {
         m="x-1"
         w="10"
         h="10"
-        text="10 primary"
+        text="12 primary"
         font="italic semibold"
         border="rounded-full"
         class="bg-button-menu"
         pos="relative"
-        style="background-size: cover; background: url('/1.png') center;"
+        style="background: url('/1.png'); background-size: cover"
         @click.stop="setTab(menu.key)"
       >
         <div

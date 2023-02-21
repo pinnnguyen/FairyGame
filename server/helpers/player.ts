@@ -23,6 +23,12 @@ export const useApplyPercentAttribute = (per: { key: BaseAttributeKeys; value: n
     case 'percentSpeed':
       attribute.speed += (attribute.speed * per.value) / 100
       break
+    case 'percentHp':
+      attribute.hp += (attribute.hp * per.value) / 100
+      break
+    case 'percentDef':
+      attribute.def += (attribute.def + per.value) / 100
+      break
   }
 }
 

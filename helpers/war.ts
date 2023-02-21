@@ -2,6 +2,7 @@ import { KABBALAH_RULE } from '~/config'
 import { cloneDeep } from '~/helpers'
 import { handleKabbalahInBattle, handleKabbalahStartBattle } from '~/helpers/kabbalah'
 import type {
+  BaseAttributeKeys,
   BaseAttributes,
   BattleEffectDisadvantageKey,
   Emulator,
@@ -20,7 +21,13 @@ export interface BattleTarget {
   extends: { level?: number; name?: string; _id?: string }
   attribute: BaseAttributes
   effect: {
-    disadvantage: Record<BattleEffectDisadvantageKey, any>
+    disadvantage: {
+      [key in BattleEffectDisadvantageKey]: {
+        expire: number
+        value: number
+        target: BaseAttributeKeys
+      }
+    }
     helpful: {}
   }
   _id?: string
@@ -148,7 +155,7 @@ const handleCritical = (critical: number, inflictDMG: number, criticalDamage: nu
   }
 }
 
-export const receiveDamageV2 = (attacker: BattleTarget, defender: BattleTarget) => {
+export const receiveDamageV2 = (attacker: BattleTarget, defender: BattleTarget, round: number) => {
   let originDMG: number
 
   const attackerAttribute = attacker.attribute
@@ -165,8 +172,19 @@ export const receiveDamageV2 = (attacker: BattleTarget, defender: BattleTarget) 
     originDMG = 0
 
   const { kabbalahDamage, kabbalahProps } = handleKabbalahInBattle(attackerKabbalahRule, attackerKabbalah, originDMG)
-  if (kabbalahDamage)
-    originDMG = kabbalahDamage
+  if (kabbalahProps && kabbalahDamage) {
+    if (kabbalahProps.tag === 'carpentry_techniques') {
+      const disadvantage = kabbalahProps.effect?.disadvantage
+
+      if (disadvantage?.poisoned) {
+        disadvantage.poisoned.expire = round + disadvantage?.poisoned.round
+        defender.effect.disadvantage = { ...disadvantage }
+      }
+    }
+
+    if (kabbalahProps.tag === 'jinyuan_sword')
+      originDMG = kabbalahDamage
+  }
 
   const { blood } = handleBloodsucking(originDMG, attackerAttribute?.bloodsucking, defenderAttribute.reductionBloodsucking)
   const { recovery } = handleRecoveryPerformance(blood, attackerAttribute.recoveryPerformance, defenderAttribute.reductionRecoveryPerformance)
@@ -311,17 +329,21 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
       const attackerAttribute = attacker.attribute
       const currentDefender = multipleTarget.find(m => m._id === attacker.enemyId)
 
+      console.log('attackerAttribute', attackerAttribute.hp)
+
       const attackerID = attacker._id ?? ''
       const defenderID = currentDefender?._id ?? ''
 
       const defenderAttribute = currentDefender?.attribute
+      console.log('defenderAttribute', defenderAttribute?.hp)
+
       if (!defenderAttribute)
         return
 
       const {
         groupAction,
         kabbalahProps,
-      } = receiveDamageV2(attacker, currentDefender)
+      } = receiveDamageV2(attacker, currentDefender, round)
 
       const {
         receiveDMG,
@@ -331,16 +353,41 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
         defenderAvoid,
       } = groupAction
 
+      let totalRestoreHP = attackerBloodsucking
+      const disadvantage = currentDefender.effect.disadvantage
+
+      if (disadvantage) {
+        for (const disv in disadvantage) {
+          // TODO hiệu ứng bị trúng độc
+          if (disv === 'poisoned') {
+            const { value, target, expire } = disadvantage[disv]
+            if (expire < round)
+              return
+
+            // TODO: Bị giảm tỉ lệ hồi máu
+            if (target === 'reductionRecoveryPerformance')
+              totalRestoreHP -= (totalRestoreHP * value) / 100
+          }
+        }
+      }
+
       if (!totalDamage.list[attackerID])
         totalDamage.list[attackerID] = 0
 
       totalDamage.list[attackerID] += receiveDMG
+      let originHP = 0
+      if (round < 1)
+        originHP = cloneDeep(attackerAttribute.hp)
 
       defenderAttribute.hp -= formatHP(defenderAttribute?.hp, receiveDMG)
       attackerAttribute.hp -= formatHP(attackerAttribute.hp, defenderCounterAttack)
 
-      if (attackerAttribute.hp > 0 && attackerBloodsucking > 0)
-        attackerAttribute.hp += attackerBloodsucking
+      if (attackerAttribute.hp > 0 && totalRestoreHP > 0) {
+        attackerAttribute.hp += totalRestoreHP
+
+        if (attackerAttribute.hp > originHP)
+          attackerAttribute.hp = originHP
+      }
 
       // TODO: Lưu giả lập
       emulators.push(<Emulator>{

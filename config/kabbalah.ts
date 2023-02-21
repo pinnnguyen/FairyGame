@@ -3,31 +3,32 @@ import type { KabbalahRule } from '~/types'
 export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
   1: [
     {
+      tag: 'jinyuan_sword',
+      hasEffect: false,
       focus: 'in_battle',
-      max: 4,
+      max: 6,
       valueOnLevel: 20,
       active: 'percent',
       name: 'Kim nguyên kiếm',
-      sign: 'needle_spiritual_1',
-      level: 1,
+      sign: 'spiritual_1',
       rate: {
         value: 0,
-        max: 80,
+        max: 30,
       },
-      value: 185,
+      value: 115,
       target: {
         num: 1,
         role: 'damage',
       },
-      title: 'Có #rate gây #value sát thương lên #targetNum mục tiêu',
+      title: 'Có #rate gây #value% sát thương lên #targetNum mục tiêu',
     },
     {
       max: 8,
       valueOnLevel: 2,
       focus: 'before_s_battle',
-      name: 'Kim nguyên tâm pháp',
+      name: 'Kim nguyên công pháp',
       title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentDamage Công, #percentSpeed Tốc',
-      sign: 'needle_spiritual_2',
+      sign: 'spiritual_2',
       target: {
         role: 'player',
       },
@@ -39,8 +40,8 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
     {
       max: 50,
       focus: 'attribute',
-      name: 'Kim nguyên công pháp',
-      sign: 'needle_spiritual_3',
+      name: 'Kim nguyên tâm pháp',
+      sign: 'spiritual_3',
       title: 'Công pháp bậc 3 của thiên kiếm môn, kim linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
       values: {
         hp: 50,
@@ -52,44 +53,55 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
   ],
   2: [
     {
+      tag: 'carpentry_techniques',
       focus: 'in_battle',
-      max: 4,
-      valueOnLevel: 20,
+      max: 6,
+      valueOnLevel: 15,
       active: 'percent',
-      name: 'Kim nguyên kiếm',
-      sign: 'needle_spiritual_1',
-      level: 1,
+      name: 'Mộc nguyên công',
+      sign: 'spiritual_1',
       rate: {
         value: 0,
-        max: 80,
+        max: 30,
       },
-      value: 185,
+      value: 98,
       target: {
         num: 1,
         role: 'damage',
       },
-      title: 'Có #rate gây #value sát thương lên #targetNum mục tiêu',
+      title: 'Có #rate đầu độc kẻ địch trong 3 lượt, gây #value% sát thương mỗi lượt',
+      hasEffect: true,
+      effect: {
+        disadvantage: {
+          poisoned: {
+            round: 3,
+            target: 'reductionRecoveryPerformance',
+            value: 90,
+          },
+        },
+        helpful: {},
+      },
     },
     {
       max: 8,
       valueOnLevel: 2,
       focus: 'before_s_battle',
-      name: 'Kim nguyên tâm pháp',
-      title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentDamage Công, #percentSpeed Tốc',
-      sign: 'needle_spiritual_2',
+      name: 'Mộc nguyên công pháp',
+      title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentHp Sinh lực, #percentDef Phòng thủ',
+      sign: 'spiritual_2',
       target: {
         role: 'player',
       },
       values: {
-        percentDamage: 3,
-        percentSpeed: 2.25,
+        percentHp: 4.5,
+        percentDef: 3.25,
       },
     },
     {
       max: 50,
       focus: 'attribute',
-      name: 'Kim nguyên công pháp',
-      sign: 'needle_spiritual_3',
+      name: 'Mộc nguyên tâm pháp',
+      sign: 'spiritual_3',
       title: 'Công pháp bậc 3 của thiên kiếm môn, kim linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
       values: {
         hp: 50,
@@ -106,8 +118,7 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
       valueOnLevel: 20,
       active: 'percent',
       name: 'Kim nguyên kiếm',
-      sign: 'needle_spiritual_1',
-      level: 1,
+      sign: 'spiritual_1',
       rate: {
         value: 0,
         max: 80,
@@ -125,7 +136,7 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
       focus: 'before_s_battle',
       name: 'Kim nguyên tâm pháp',
       title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentDamage Công, #percentSpeed Tốc',
-      sign: 'needle_spiritual_2',
+      sign: 'spiritual_2',
       target: {
         role: 'player',
       },
@@ -138,7 +149,7 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
       max: 50,
       focus: 'attribute',
       name: 'Kim nguyên công pháp',
-      sign: 'needle_spiritual_3',
+      sign: 'spiritual_3',
       title: 'Công pháp bậc 3 của thiên kiếm môn, kim linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
       values: {
         hp: 50,
@@ -155,8 +166,7 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
       valueOnLevel: 20,
       active: 'percent',
       name: 'Kim nguyên kiếm',
-      sign: 'needle_spiritual_1',
-      level: 1,
+      sign: 'spiritual_1',
       rate: {
         value: 0,
         max: 80,
@@ -174,7 +184,7 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
       focus: 'before_s_battle',
       name: 'Kim nguyên tâm pháp',
       title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentDamage Công, #percentSpeed Tốc',
-      sign: 'needle_spiritual_2',
+      sign: 'spiritual_2',
       target: {
         role: 'player',
       },
@@ -187,7 +197,7 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
       max: 50,
       focus: 'attribute',
       name: 'Kim nguyên công pháp',
-      sign: 'needle_spiritual_3',
+      sign: 'spiritual_3',
       title: 'Công pháp bậc 3 của thiên kiếm môn, kim linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
       values: {
         hp: 50,
@@ -204,8 +214,7 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
       valueOnLevel: 20,
       active: 'percent',
       name: 'Kim nguyên kiếm',
-      sign: 'needle_spiritual_1',
-      level: 1,
+      sign: 'spiritual_1',
       rate: {
         value: 0,
         max: 80,
@@ -223,7 +232,7 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
       focus: 'before_s_battle',
       name: 'Kim nguyên tâm pháp',
       title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentDamage Công, #percentSpeed Tốc',
-      sign: 'needle_spiritual_2',
+      sign: 'spiritual_2',
       target: {
         role: 'player',
       },
@@ -236,7 +245,7 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
       max: 50,
       focus: 'attribute',
       name: 'Kim nguyên công pháp',
-      sign: 'needle_spiritual_3',
+      sign: 'spiritual_3',
       title: 'Công pháp bậc 3 của thiên kiếm môn, kim linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
       values: {
         hp: 50,

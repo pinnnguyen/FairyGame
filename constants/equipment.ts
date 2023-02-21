@@ -1,3 +1,5 @@
+import type { BaseAttributeKeys } from '~/types'
+
 export const slotToName: Record<string, string> = {
   1: 'Vũ Khí',
   2: 'Trang Phục',
@@ -19,26 +21,4 @@ export const qualityToName: Record<number, string> = {
   7: 'Lục Phẩm',
   8: 'Bát Phẩm',
   9: 'Cửu Phẩm',
-}
-
-export const attributeToName: Record<string, string> = {
-  speed: 'Tốc độ',
-  damage: 'Công kích',
-  hp: 'Sinh lực',
-  mp: 'Năng lượng',
-  def: 'Phòng thủ',
-  critical: 'Bạo kích',
-  bloodsucking: 'Hút sinh lực',
-  criticalDamage: 'Sát thương bạo kích',
-  avoid: 'Phản đòn',
-  reductionAvoid: 'Kháng phản đòn',
-  reductionCriticalDamage: 'Miễn thương bạo kích',
-  reductionBloodsucking: 'Kháng hút máu',
-  counterAttack: 'Né tránh',
-  recoveryPerformance: 'Hiệu xuất hồi phục',
-  reductionRecoveryPerformance: 'Kháng hồi phục',
-  reductionCounterAttack: 'Bỏ qua nó tránh',
-  speedPractice: 'Tốc độ tu luyện',
-  percentDamage: '% Công',
-  percentSpeed: '% Tốc',
 }

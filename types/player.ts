@@ -1,3 +1,4 @@
+import type { BattleEffectDisadvantageKey } from '~/types/battle'
 import type { Mid } from '~/types/mid'
 import type { PlayerEquipment } from '~/types/equiment'
 
@@ -19,6 +20,9 @@ export type BaseAttributeKeys = 'speed'
 | 'reductionCounterAttack'
 | 'percentDamage'
 | 'percentSpeed'
+| 'percentHp'
+| 'percentDef'
+| 'speedPractice'
 
 // speed: number
 // damage: number
@@ -68,6 +72,8 @@ export interface PlayerSpiritualRoot {
 }
 
 export interface KabbalahRule {
+  tag?: string
+  hasEffect?: boolean
   focus?: 'in_battle' | 'before_s_battle' | 'attribute'
   max?: number
   valueOnLevel?: number
@@ -88,8 +94,15 @@ export interface KabbalahRule {
   values?: {
     [key in BaseAttributeKeys | string]: number
   }
+  effect?: {
+    disadvantage: {
+      [key in BattleEffectDisadvantageKey]: any
+    }
+    helpful: {}
+  }
 }
-export type KabbalahSign = 'needle_spiritual_1' | 'needle_spiritual_2' | 'needle_spiritual_3'
+export type KabbalahSign = 'spiritual_1' | 'spiritual_2' | 'spiritual_3' | 'spiritual_1'
+
 export type PlayerKabbalah = {
   [key in KabbalahSign | string]: {
     unlock: boolean

@@ -30,6 +30,10 @@ const preparePlayerTargetData = (_p: PlayerInfo) => {
     },
     _id: _p.player._id,
     attribute: _p.attribute,
+    effect: {
+      disadvantage: {},
+      helpful: {},
+    },
   } as unknown as BattleTarget
 }
 
@@ -46,6 +50,10 @@ const prepareEnemyTargetData = (_enemyObj: any) => {
     },
     _id: _enemyObj._id,
     attribute: _enemyObj.attribute,
+    effect: {
+      disadvantage: {},
+      helpful: {},
+    },
   } as unknown as BattleTarget
 }
 

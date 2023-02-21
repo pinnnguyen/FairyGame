@@ -23,7 +23,7 @@ export const handleKabbalahStartBattle = (attacker: BattleTarget) => {
       continue
 
     // Thần thông hệ kim 2
-    if (rule.sign === 'needle_spiritual_2') {
+    if (rule.sign === 'spiritual_2') {
       // TODO: Lấy cấp độ thần thông tính độ trưởng thành
       let kabbalahLevel = attacker.kabbalah[rule.sign].level
       if (kabbalahLevel > rule.max!)
@@ -59,7 +59,7 @@ export const handleKabbalahStartBattle = (attacker: BattleTarget) => {
 
 export const handleKabbalahInBattle = (kabbalahRule?: KabbalahRule[], kabbalah?: PlayerKabbalah, originDMG?: number) => {
   let kabbalahDamage = originDMG
-  let kabbalahProps = {}
+  let kabbalahProps: Partial<KabbalahRule> = {}
 
   if (!kabbalah) {
     return {
@@ -80,8 +80,7 @@ export const handleKabbalahInBattle = (kabbalahRule?: KabbalahRule[], kabbalah?:
     if (rule.focus !== 'in_battle')
       continue
 
-    // Thần thông hệ kim 1
-    if (rule.sign === 'needle_spiritual_1') {
+    if (rule.sign === 'spiritual_1') {
       // TODO: Lấy cấp độ thần thông tính độ trưởng thành
       const kabbalahLevel = kabbalah[rule.sign].level
       let rateValue = rule.rate!.value! + (kabbalahLevel * rule.valueOnLevel!)
@@ -92,10 +91,12 @@ export const handleKabbalahInBattle = (kabbalahRule?: KabbalahRule[], kabbalah?:
       if (rateValue >= ran) {
         kabbalahDamage! += (originDMG! * rule.value!) / 100
         kabbalahProps = {
+          tag: rule.tag,
           name: rule.name,
           sign: rule.sign,
           value: rule.value,
           focus: rule.focus,
+          effect: rule.effect,
         }
       }
     }
