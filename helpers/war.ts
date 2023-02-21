@@ -1,7 +1,7 @@
 import { KABBALAH_RULE } from '~/config'
 import { cloneDeep } from '~/helpers'
 import { handleKabbalahInBattle, handleKabbalahStartBattle } from '~/helpers/kabbalah'
-import type { BaseAttributes, Emulator, KabbalahRule, PlayerAttribute, PlayerKabbalah, PlayerSpiritualRoot } from '~/types'
+import type { BaseAttributes, Emulator, KabbalahRule, PlayerKabbalah, PlayerSpiritualRoot } from '~/types'
 import { BATTLE_ACTION } from '~/constants/war'
 import { randomNumber } from '~/common'
 
@@ -10,7 +10,7 @@ export interface BattleTarget {
   kabbalah?: PlayerKabbalah
   kabbalahRule?: KabbalahRule[]
   extends: { level?: number; name?: string; _id?: string }
-  attribute: PlayerAttribute
+  attribute: BaseAttributes
   _id?: string
   enemyId?: string
 }
@@ -268,9 +268,6 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
     self: 0,
   }
 
-  targetA.attribute._id = targetA._id
-  targetB.attribute._id = targetB._id
-
   targetA.enemyId = targetB._id
   targetB.enemyId = targetA._id
 
@@ -282,15 +279,10 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
   for (let i = 0; i < 60; i++) {
     // TODO Chuẩn bị dữ liệu
     const multipleTarget = formatBeforeEntering(targetA, targetB)
-    // TODO: Xem mục tiêu nào được đánh trước
-    // const battleReverse = orderTurn(battle)
-
-    for (const mt of multipleTarget) {
-      // const battleTarget = battle[b]
-      const attacker = mt
+    for (const attacker of multipleTarget) {
       const { kabbalahProps } = handleKabbalahStartBattle(attacker)
       emulators.push(<Emulator>{
-        [mt._id as string]: {
+        [attacker._id as string]: {
           action: BATTLE_ACTION.BUFF,
           state: {},
           self: {
