@@ -261,7 +261,7 @@ const formatBeforeEntering = (targetA: BattleTarget, targetB: BattleTarget) => {
   return multipleTarget.sort(compare)
 }
 
-export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, personBeingAttacked?: string | undefined) => {
+export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, personBeingAttacked?: string) => {
   let round = 0
   const totalDamage: Record<string, any> = {
     list: {},

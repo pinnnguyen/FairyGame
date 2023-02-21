@@ -2,7 +2,9 @@ import { createError } from 'h3'
 import moment from 'moment'
 import { REACH_LIMIT } from '~/config'
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
+import type { BattleTarget } from '~/helpers'
 import { startWarSolo } from '~/helpers'
+
 import {
   getBaseReward,
   getPlayer,
@@ -15,17 +17,6 @@ import {
 import { BattleSchema, PlayerSchema } from '~/server/schema'
 import type { BattleRequest, PlayerInfo } from '~/types'
 
-/**
- * It takes a player object and returns a new object with some of the player's properties
- * @param {PlayerInfo} _p - PlayerInfo
- * @returns A function that takes a PlayerInfo and returns an object with the following properties:
- *   spiritualRoot: _p.player.spiritualRoot
- *   kabbalah: _p.player.kabbalah
- *   kabbalahRule: null
- *   extends: {
- *     _id: _p.player._id ?? 'a',
- *     name: _p
- */
 const preparePlayerTargetData = (_p: PlayerInfo) => {
   return {
     spiritualRoot: _p.player.spiritualRoot,
@@ -39,23 +30,9 @@ const preparePlayerTargetData = (_p: PlayerInfo) => {
     },
     _id: _p.player._id,
     attribute: _p.attribute,
-  }
+  } as unknown as BattleTarget
 }
 
-/**
- * It takes an object with a bunch of properties, and returns an object with a subset of those
- * properties
- * @param {any} _enemyObj - The enemy object.
- * @returns An object with the following properties:
- *   spiritualRoot: null,
- *   kabbalah: null,
- *   kabbalahRule: null,
- *   extends: {
- *     _id: _enemyObj._id ?? 'b',
- *     name: _enemyObj.name,
- *     level: _enemyObj.level,
- *     sid: null,
- */
 const prepareEnemyTargetData = (_enemyObj: any) => {
   return {
     spiritualRoot: null,
@@ -69,7 +46,7 @@ const prepareEnemyTargetData = (_enemyObj: any) => {
     },
     _id: _enemyObj._id,
     attribute: _enemyObj.attribute,
-  }
+  } as unknown as BattleTarget
 }
 
 export const handlePlayerVsMonster = async (_p: PlayerInfo, battleRequest: BattleRequest) => {

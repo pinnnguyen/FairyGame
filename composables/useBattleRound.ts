@@ -46,6 +46,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   }
 
   const startBattle = async (war: any & { statusCode?: number }, cb: Function) => {
+    console.log('war', war)
     makeDefault()
 
     if (war?.statusCode === 400)
@@ -83,12 +84,10 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
         if (options.stop)
           return
 
-        const realTurn = turn.split('_')[1]
         const realEmu = emulator[turn]
-
         if (realEmu.action === BATTLE_ACTION.BUFF) {
           Object.assign(buff.value, {
-            [realTurn]: {
+            [turn]: {
               ...realEmu.self,
             },
           })
@@ -99,7 +98,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
           roundNum.value++
 
           Object.assign(realTime.value, {
-            [realTurn]: {
+            [turn]: {
               doAction: true,
               receiveDamage: realEmu?.state?.receiveDamage,
               critical: realEmu?.state?.critical,
@@ -109,7 +108,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
           })
 
           setTimeout(() => {
-            realTime.value[realTurn].doAction = false
+            realTime.value[turn].doAction = false
           }, options.EFFECT_DELAY)
 
           const realDamage = Object.keys(realEmu.state.receiveDamage)
