@@ -2,7 +2,7 @@ import type { BasicItem } from './item'
 import type { PlayerEquipment } from '~/types/equiment'
 import type { BaseReward } from '~/types/war'
 
-export type BattleEffectKey = 'poisoned' | 'freeze' | 'burn' | 'ignore_defense'
+export type BattleEffectDisadvantageKey = 'poisoned' | 'freeze' | 'burn' | 'ignore_defense'
 
 export type BattleTargetKey = 'pve' | 'pvp' | 'boss_daily' | 'dungeon' | 'boss_elite' | 'boss_frame_time'
 export interface Battle {

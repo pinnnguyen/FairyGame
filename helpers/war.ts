@@ -1,7 +1,15 @@
 import { KABBALAH_RULE } from '~/config'
 import { cloneDeep } from '~/helpers'
 import { handleKabbalahInBattle, handleKabbalahStartBattle } from '~/helpers/kabbalah'
-import type { BaseAttributes, Emulator, KabbalahRule, PlayerKabbalah, PlayerSpiritualRoot } from '~/types'
+import type {
+  BaseAttributes,
+  BattleEffectDisadvantageKey,
+  Emulator,
+  KabbalahRule,
+  PlayerKabbalah,
+  PlayerSpiritualRoot,
+} from '~/types'
+
 import { BATTLE_ACTION } from '~/constants/war'
 import { randomNumber } from '~/common'
 
@@ -11,6 +19,10 @@ export interface BattleTarget {
   kabbalahRule?: KabbalahRule[]
   extends: { level?: number; name?: string; _id?: string }
   attribute: BaseAttributes
+  effect: {
+    disadvantage: Record<BattleEffectDisadvantageKey, any>
+    helpful: {}
+  }
   _id?: string
   enemyId?: string
 }
@@ -168,11 +180,13 @@ export const receiveDamageV2 = (attacker: BattleTarget, defender: BattleTarget) 
     originDMG = 0
 
   return {
-    receiveDMG: originDMG,
-    attackerBloodsucking: recovery,
-    attackerCritical: hasCritical,
-    defenderCounterAttack: counterDamage,
-    defenderAvoid: hasAvoid,
+    groupAction: {
+      receiveDMG: originDMG,
+      attackerBloodsucking: recovery,
+      attackerCritical: hasCritical,
+      defenderCounterAttack: counterDamage,
+      defenderAvoid: hasAvoid,
+    },
     kabbalahProps,
   }
 }
@@ -305,13 +319,17 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
         return
 
       const {
+        groupAction,
+        kabbalahProps,
+      } = receiveDamageV2(attacker, currentDefender)
+
+      const {
         receiveDMG,
         attackerBloodsucking,
         attackerCritical,
         defenderCounterAttack,
         defenderAvoid,
-        kabbalahProps,
-      } = receiveDamageV2(attacker, currentDefender)
+      } = groupAction
 
       if (!totalDamage.list[attackerID])
         totalDamage.list[attackerID] = 0
