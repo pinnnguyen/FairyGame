@@ -1,7 +1,8 @@
 import type { BasicItem } from './item'
 import type { PlayerEquipment } from '~/types/equiment'
-import type { EnemyObject } from '~/types/monster'
-import type { BaseReward, Emulator } from '~/types/war'
+import type { BaseReward } from '~/types/war'
+
+export type BattleEffectKey = 'poisoned' | 'freeze' | 'burn' | 'ignore_defense'
 
 export type BattleTargetKey = 'pve' | 'pvp' | 'boss_daily' | 'dungeon' | 'boss_elite' | 'boss_frame_time'
 export interface Battle {
@@ -23,11 +24,4 @@ export interface Battle {
   createdAt?: string
   updatedAt?: string
   match: Record<string, any>
-}
-
-export interface TopDMG {
-  _id: string
-  totalDamage: number
-  sid: string
-  name: string
 }

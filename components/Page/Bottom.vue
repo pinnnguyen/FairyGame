@@ -178,13 +178,14 @@ const setTab = (t: string) => {
         :key="menu.key"
         transition="~ colors duration-800"
         m="x-1"
-        w="9"
-        h="9"
-        text="12 primary"
+        w="10"
+        h="10"
+        text="10 primary"
         font="italic semibold"
-        border="rounded-full 1 white/40"
+        border="rounded-full"
         class="bg-button-menu"
         pos="relative"
+        style="background-size: cover; background: url('/1.png') center;"
         @click.stop="setTab(menu.key)"
       >
         <div

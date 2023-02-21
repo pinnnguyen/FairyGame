@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { clearTimeout } from 'timers'
 import { attributeToName } from '~/constants'
 import { playerTitle } from '~/common'
 

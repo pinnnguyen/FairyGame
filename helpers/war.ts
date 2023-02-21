@@ -5,6 +5,16 @@ import type { BaseAttributes, Emulator, KabbalahRule, PlayerAttribute, PlayerKab
 import { BATTLE_ACTION } from '~/constants/war'
 import { randomNumber } from '~/common'
 
+export interface BattleTarget {
+  spiritualRoot?: PlayerSpiritualRoot
+  kabbalah?: PlayerKabbalah
+  kabbalahRule?: KabbalahRule[]
+  extends: { level?: number; name?: string; _id?: string }
+  attribute: PlayerAttribute
+  _id?: string
+  enemyId?: string
+}
+
 const handleAvoid = (avoid: number, reductionAvoid: number) => {
   if (avoid <= 0) {
     return {
@@ -126,19 +136,11 @@ const handleCritical = (critical: number, inflictDMG: number, criticalDamage: nu
   }
 }
 
-export type BattleTarget = BaseAttributes & {
-  kabbalah: PlayerKabbalah
-  kabbalahRule?: KabbalahRule[]
-  attribute: BaseAttributes
-}
-
-export const receiveDamageV2 = (battleTarget: BattleTarget[]) => {
+export const receiveDamageV2 = (attacker: BattleTarget, defender: BattleTarget) => {
   let originDMG: number
-  const attacker = battleTarget[0]
-  const defender = battleTarget[1]
 
-  const attackerAttribute = battleTarget[0].attribute
-  const defenderAttribute = battleTarget[1].attribute
+  const attackerAttribute = attacker.attribute
+  const defenderAttribute = defender.attribute
 
   const attackerKabbalahRule = attacker.kabbalahRule
   const attackerKabbalah = attacker.kabbalah
@@ -156,7 +158,7 @@ export const receiveDamageV2 = (battleTarget: BattleTarget[]) => {
 
   const { blood } = handleBloodsucking(originDMG, attackerAttribute?.bloodsucking, defenderAttribute.reductionBloodsucking)
   const { recovery } = handleRecoveryPerformance(blood, attackerAttribute.recoveryPerformance, defenderAttribute.reductionRecoveryPerformance)
-  const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(attackerAttribute?.critical, originDMG, attackerAttribute?.criticalDamage, defender?.reductionCriticalDamage)
+  const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(attackerAttribute?.critical, originDMG, attackerAttribute?.criticalDamage, defenderAttribute?.reductionCriticalDamage)
   if (hasCritical && inflictDMGAfter > 0)
     originDMG = inflictDMGAfter
 
@@ -190,16 +192,7 @@ export const attributeDeep = (attribute: BaseAttributes) => {
   }
 }
 
-/**
- * It takes two objects, each of which has a property called `kabbalah` which is an object with
- * properties that are strings. The function then checks if the `kabbalah` property of each object has
- * a property called `used` that is set to `true`. If it does, it adds the property name to an array.
- * Then it filters an array of objects called `KABBALAH_RULE` to only include objects whose `sign`
- * property matches one of the property names in the array
- * @param {Target} targetA - Target, targetB: Target
- * @param {Target} targetB - Target
- */
-const formatKabbalah = (targetA: Target, targetB: Target) => {
+const formatKabbalah = (targetA: BattleTarget, targetB: BattleTarget) => {
   // Check & get xem có thần thông không để bước vào trận chiến
   if (targetA.spiritualRoot?.kind && targetA?.kabbalah) {
     let aKabbalahRule = null
@@ -230,7 +223,7 @@ const formatKabbalah = (targetA: Target, targetB: Target) => {
   }
 }
 
-const matchFormat = (targetA: Target, targetB: Target) => {
+const matchFormat = (targetA: BattleTarget, targetB: BattleTarget) => {
   return {
     [(targetA.extends._id as string)]: {
       extends: {
@@ -253,61 +246,33 @@ const matchFormat = (targetA: Target, targetB: Target) => {
   }
 }
 
-const formatBeforeStartBattle = (targetA: Target, targetB: Target) => {
-  const battle: Record<string, any> = {
-    [`${targetA.attribute.speed}_${targetA.extends._id}`]: [
-      {
-        kabbalah: targetA.kabbalah,
-        kabbalahRule: targetA.kabbalahRule,
-        attribute: targetA.attribute,
-      },
-      {
-        kabbalah: targetB.kabbalah,
-        kabbalahRule: targetB.kabbalahRule,
-        attribute: targetB.attribute,
-      },
-    ],
-    [`${targetB.attribute.speed}_${targetB.extends._id}`]: [
-      {
-        kabbalah: targetB.kabbalah,
-        kabbalahRule: targetB.kabbalahRule,
-        attribute: targetB.attribute,
-      },
-      {
-        kabbalah: targetA.kabbalah,
-        kabbalahRule: targetA.kabbalahRule,
-        attribute: targetA.attribute,
-      },
-    ],
+const formatBeforeEntering = (targetA: BattleTarget, targetB: BattleTarget) => {
+  function compare(a: any, b: any) {
+    if (a.attribute.speed < b.attribute.speed)
+      return 1
+
+    if (a.attribute.speed > b.attribute.speed)
+      return -1
+
+    return 0
   }
 
-  return battle
+  const multipleTarget = [targetA, targetB]
+  return multipleTarget.sort(compare)
 }
 
-const orderTurn = (battle: any) => {
-  return Object.entries(battle)
-    .sort()
-  // eslint-disable-next-line no-sequences
-    .reduce((o: any, [k, v]) => (((o[k]) = v), o), {})
-}
-
-interface Target {
-  spiritualRoot?: PlayerSpiritualRoot
-  kabbalah?: PlayerKabbalah
-  kabbalahRule?: KabbalahRule[]
-  extends: { level?: number; name?: string; _id?: string }
-  attribute: PlayerAttribute
-}
-
-export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttacked?: string | undefined) => {
+export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, personBeingAttacked?: string | undefined) => {
   let round = 0
   const totalDamage: Record<string, any> = {
     list: {},
     self: 0,
   }
 
-  targetA.attribute._id = targetA.extends._id
-  targetB.attribute._id = targetB.extends._id
+  targetA.attribute._id = targetA._id
+  targetB.attribute._id = targetB._id
+
+  targetA.enemyId = targetB._id
+  targetB.enemyId = targetA._id
 
   // TODO: Format thần thông nếu có
   formatKabbalah(targetA, targetB)
@@ -316,16 +281,16 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
   const emulators: Emulator[] = []
   for (let i = 0; i < 60; i++) {
     // TODO Chuẩn bị dữ liệu
-    const battle = formatBeforeStartBattle(targetA, targetB)
+    const multipleTarget = formatBeforeEntering(targetA, targetB)
     // TODO: Xem mục tiêu nào được đánh trước
-    const battleReverse = orderTurn(battle)
+    // const battleReverse = orderTurn(battle)
 
-    for (const b in battleReverse) {
-      const battleTarget = battle[b]
-      const attacker = battleTarget[0]
+    for (const mt of multipleTarget) {
+      // const battleTarget = battle[b]
+      const attacker = mt
       const { kabbalahProps } = handleKabbalahStartBattle(attacker)
       emulators.push(<Emulator>{
-        [b]: {
+        [mt._id as string]: {
           action: BATTLE_ACTION.BUFF,
           state: {},
           self: {
@@ -336,10 +301,16 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
       })
     }
 
-    for (const b in battleReverse) {
-      const battleTarget = battle[b]
-      const attackerAttribute = battleTarget[0].attribute
-      const defenderAttribute = battleTarget[1].attribute
+    for (const attacker of multipleTarget) {
+      const attackerAttribute = attacker.attribute
+      const currentDefender = multipleTarget.find(m => m._id === attacker.enemyId)
+
+      const attackerID = attacker._id ?? ''
+      const defenderID = currentDefender?._id ?? ''
+
+      const defenderAttribute = currentDefender?.attribute
+      if (!defenderAttribute)
+        return
 
       const {
         receiveDMG,
@@ -348,13 +319,13 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
         defenderCounterAttack,
         defenderAvoid,
         kabbalahProps,
-      } = receiveDamageV2(battleTarget)
+      } = receiveDamageV2(attacker, currentDefender)
 
-      const realDamageId = b.split('_')[1]
-      if (!totalDamage.list[realDamageId])
-        totalDamage.list[realDamageId] = 0
+      if (!totalDamage.list[attackerID])
+        totalDamage.list[attackerID] = 0
 
-      totalDamage.list[realDamageId] += receiveDMG
+      totalDamage.list[attackerID] += receiveDMG
+
       defenderAttribute.hp -= formatHP(defenderAttribute?.hp, receiveDMG)
       attackerAttribute.hp -= formatHP(attackerAttribute.hp, defenderCounterAttack)
 
@@ -363,11 +334,11 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
 
       // TODO: Lưu giả lập
       emulators.push(<Emulator>{
-        [b]: {
+        [attackerID]: {
           action: BATTLE_ACTION.ATTACK,
           state: {
             receiveDamage: {
-              [defenderAttribute._id]: receiveDMG,
+              [defenderID]: receiveDMG,
             },
             bloodsucking: attackerBloodsucking,
             critical: attackerCritical,
@@ -381,17 +352,23 @@ export const startWarSolo = (targetA: Target, targetB: Target, personBeingAttack
           },
           now: {
             hp: {
-              [defenderAttribute._id]: defenderAttribute.hp,
+              [defenderID]: defenderAttribute.hp,
             },
             mp: {
-              [attackerAttribute._id]: attackerAttribute.mp,
+              [attackerID]: attackerAttribute.mp,
             },
           },
         },
       })
 
       if (attackerAttribute.hp <= 0 || defenderAttribute.hp <= 0) {
-        const realId = b.split('_')[1]
+        let realId = ''
+        if (attackerAttribute.hp <= 0)
+          realId = defenderID
+
+        if (defenderAttribute.hp <= 0)
+          realId = attackerID
+
         return {
           emulators,
           match,
