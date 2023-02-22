@@ -39,6 +39,7 @@ export interface BattleTarget {
         expire: number
         value: number
         target: BaseAttributeKeys
+        round: number
       }
     }
     helpful: {}

@@ -96,7 +96,7 @@ export interface KabbalahRule {
   }
   effect?: {
     disadvantage: {
-      [key in BattleEffectDisadvantageKey]?: {
+      [key in BattleEffectDisadvantageKey]: {
         round: number
         target: 'reductionRecoveryPerformance'
         value: number

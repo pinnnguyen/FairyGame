@@ -153,15 +153,19 @@ export const receiveDamageV2 = (attacker: BattleTarget, defender: BattleTarget, 
       const disadvantage = kabbalahProps.effect?.disadvantage
 
       if (disadvantage?.poisoned) {
-        disadvantage.poisoned.expire = round + disadvantage?.poisoned.round
-        if (disadvantage)
-          defender.effect?.disadvantage = { ...disadvantage }
+        defender.effect.disadvantage.poisoned = {
+          ...disadvantage.poisoned,
+          expire: round + disadvantage?.poisoned.round,
+        }
       }
     }
 
+    // TODO: 1 Số skill không có hiệu ứng
     if (kabbalahProps.tag === 'jinyuan_sword')
       originDMG = kabbalahDamage
   }
+
+  console.log('defender', defender.effect)
 
   const { blood } = handleBloodsucking(originDMG, attackerAttribute?.bloodsucking, defenderAttribute.reductionBloodsucking)
   const { recovery } = handleRecoveryPerformance(blood, attackerAttribute.recoveryPerformance, defenderAttribute.reductionRecoveryPerformance)
