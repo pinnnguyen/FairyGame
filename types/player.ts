@@ -72,7 +72,7 @@ export interface PlayerSpiritualRoot {
 }
 
 export interface KabbalahRule {
-  tag?: string
+  tag?: 'jinyuan_sword' | 'carpentry_techniques'
   hasEffect?: boolean
   focus?: 'in_battle' | 'before_s_battle' | 'attribute'
   max?: number
@@ -96,12 +96,18 @@ export interface KabbalahRule {
   }
   effect?: {
     disadvantage: {
-      [key in BattleEffectDisadvantageKey]: any
+      [key in BattleEffectDisadvantageKey]?: {
+        round: number
+        target: 'reductionRecoveryPerformance'
+        value: number
+        expire?: number
+      }
     }
     helpful: {}
   }
 }
-export type KabbalahSign = 'spiritual_1' | 'spiritual_2' | 'spiritual_3' | 'spiritual_1'
+
+export type KabbalahSign = 'spiritual_1' | 'spiritual_2' | 'spiritual_3'
 
 export type PlayerKabbalah = {
   [key in KabbalahSign | string]: {
@@ -111,6 +117,7 @@ export type PlayerKabbalah = {
     type: 'automatic' | 'manual' | 'intrinsic'
   }
 }
+
 export interface Player {
   _id?: string
   ofAttribute: number

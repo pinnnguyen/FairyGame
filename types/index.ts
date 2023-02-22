@@ -9,6 +9,8 @@ export * from './item'
 export * from './store'
 export * from './gem'
 
+export type Maybe<T> = T | undefined
+
 export interface TabItem {
   name?: string
   key?: string

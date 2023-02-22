@@ -2,7 +2,7 @@ import type { BaseAttributes, CoreAttribute } from '~/types/player'
 
 export interface GemValue {
   'name': string
-  'sign': keyof BaseAttributes | keyof CoreAttribute
+  'sign': keyof BaseAttributes & keyof CoreAttribute
   'value': 200
   'type': 'normal' | 'percent'
   target: 'attribute' | 'base'

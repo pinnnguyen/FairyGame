@@ -2,37 +2,13 @@ import { KABBALAH_RULE } from '~/config'
 import { cloneDeep } from '~/helpers'
 import { handleKabbalahInBattle, handleKabbalahStartBattle } from '~/helpers/kabbalah'
 import type {
-  BaseAttributeKeys,
   BaseAttributes,
-  BattleEffectDisadvantageKey,
+  BattleTarget,
   Emulator,
-  KabbalahRule,
-  PlayerKabbalah,
-  PlayerSpiritualRoot,
 } from '~/types'
 
 import { BATTLE_ACTION } from '~/constants/war'
 import { randomNumber } from '~/common'
-
-export interface BattleTarget {
-  spiritualRoot?: PlayerSpiritualRoot
-  kabbalah?: PlayerKabbalah
-  kabbalahRule?: KabbalahRule[]
-  extends: { level?: number; name?: string; _id?: string }
-  attribute: BaseAttributes
-  effect: {
-    disadvantage: {
-      [key in BattleEffectDisadvantageKey]: {
-        expire: number
-        value: number
-        target: BaseAttributeKeys
-      }
-    }
-    helpful: {}
-  }
-  _id?: string
-  enemyId?: string
-}
 
 const handleAvoid = (avoid: number, reductionAvoid: number) => {
   if (avoid <= 0) {
@@ -178,7 +154,8 @@ export const receiveDamageV2 = (attacker: BattleTarget, defender: BattleTarget, 
 
       if (disadvantage?.poisoned) {
         disadvantage.poisoned.expire = round + disadvantage?.poisoned.round
-        defender.effect.disadvantage = { ...disadvantage }
+        if (disadvantage)
+          defender.effect?.disadvantage = { ...disadvantage }
       }
     }
 
@@ -406,7 +383,8 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
         },
       })
 
-      if (attackerAttribute.hp <= 0 || defenderAttribute.hp <= 0) {
+      const isResult = attackerAttribute.hp <= 0 || defenderAttribute.hp <= 0
+      if (isResult) {
         let realId = ''
         if (attackerAttribute.hp <= 0)
           realId = defenderID
@@ -431,7 +409,6 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
         } as any
       }
 
-      console.log('round', round)
       round++
     }
   }
