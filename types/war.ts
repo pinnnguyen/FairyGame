@@ -32,6 +32,7 @@ export interface EmulatorBattle {
     hp: Record<string, number>
     mp: Record<string, number>
   }
+  script?: string
 }
 
 export interface Emulator {

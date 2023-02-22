@@ -5,7 +5,7 @@ export * from './socket'
 export * from './war'
 export * from './equipment'
 
-export const attributeToName: Record<BaseAttributeKeys, string> = {
+export const attributeToName: Record<BaseAttributeKeys | string, string> = {
   speed: 'Tốc độ',
   damage: 'Công kích',
   hp: 'Sinh lực',
@@ -26,5 +26,5 @@ export const attributeToName: Record<BaseAttributeKeys, string> = {
   percentDamage: '% Công',
   percentSpeed: '% Tốc',
   percentHp: '% Sinh lực',
-  percentDef: '$ Phòng thủ',
+  percentDef: '% Phòng thủ',
 }

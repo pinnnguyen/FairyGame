@@ -1,4 +1,5 @@
-import { KABBALAH_RULE } from '~/config'
+import { KABBALAH_RULE, randomKabbalahScript } from '~/config'
+import { attributeToName } from '~/constants'
 import { cloneDeep } from '~/helpers'
 import { handleKabbalahInBattle, handleKabbalahStartBattle } from '~/helpers/kabbalah'
 import type {
@@ -8,7 +9,7 @@ import type {
 } from '~/types'
 
 import { BATTLE_ACTION } from '~/constants/war'
-import { randomNumber } from '~/common'
+import { formatCash, randomNumber } from '~/common'
 
 const handleAvoid = (avoid: number, reductionAvoid: number) => {
   if (avoid <= 0) {
@@ -165,8 +166,6 @@ export const receiveDamageV2 = (attacker: BattleTarget, defender: BattleTarget, 
       originDMG = kabbalahDamage
   }
 
-  console.log('defender', defender.effect)
-
   const { blood } = handleBloodsucking(originDMG, attackerAttribute?.bloodsucking, defenderAttribute.reductionBloodsucking)
   const { recovery } = handleRecoveryPerformance(blood, attackerAttribute.recoveryPerformance, defenderAttribute.reductionRecoveryPerformance)
   const { hasCritical, inflictDMG: inflictDMGAfter } = handleCritical(attackerAttribute?.critical, originDMG, attackerAttribute?.criticalDamage, defenderAttribute?.reductionCriticalDamage)
@@ -205,7 +204,7 @@ export const attributeDeep = (attribute: BaseAttributes) => {
   }
 }
 
-const formatKabbalah = (targetA: BattleTarget, targetB: BattleTarget) => {
+const kabbalahFormat = (targetA: BattleTarget, targetB: BattleTarget) => {
   // Check & get xem có thần thông không để bước vào trận chiến
   if (targetA.spiritualRoot?.kind && targetA?.kabbalah) {
     let aKabbalahRule = null
@@ -259,7 +258,7 @@ const matchFormat = (targetA: BattleTarget, targetB: BattleTarget) => {
   }
 }
 
-const formatBeforeEntering = (targetA: BattleTarget, targetB: BattleTarget) => {
+const beforeEnteringFormat = (targetA: BattleTarget, targetB: BattleTarget) => {
   function compare(a: any, b: any) {
     if (a.attribute.speed < b.attribute.speed)
       return 1
@@ -285,16 +284,25 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
   targetB.enemyId = targetA._id
 
   // TODO: Format thần thông nếu có
-  formatKabbalah(targetA, targetB)
+  kabbalahFormat(targetA, targetB)
   const match = matchFormat(targetA, targetB)
-
   const emulators: Emulator[] = []
 
-  const multipleTarget = formatBeforeEntering(targetA, targetB)
+  const multipleTarget = beforeEnteringFormat(targetA, targetB)
   for (const attacker of multipleTarget) {
+    let script = ''
     const { kabbalahProps } = handleKabbalahStartBattle(attacker)
+    if (!kabbalahProps)
+      continue
+
+    const vScript = []
+    for (const v in kabbalahProps.values)
+      vScript.push(`${kabbalahProps.values[v]}${attributeToName[v]}`)
+
+    script = `${attacker.extends.name} Phát động kỹ năng ${kabbalahProps.name} giúp tăng ${vScript.join(' ')}`
     emulators.push(<Emulator>{
       [attacker._id as string]: {
+        script,
         action: BATTLE_ACTION.BUFF,
         state: {},
         self: {
@@ -306,6 +314,7 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
   }
 
   for (let i = 0; i < 60; i++) {
+    let script = ''
     // TODO Chuẩn bị dữ liệu
     for (const attacker of multipleTarget) {
       const attackerAttribute = attacker.attribute
@@ -348,12 +357,24 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
         }
       }
 
-      if (!totalDamage.list[attackerID])
-        totalDamage.list[attackerID] = 0
-
+      // if (!totalDamage.list[attackerID])
+      //   totalDamage.list[attackerID] = 0
       totalDamage.list[attackerID] += receiveDMG
-      defenderAttribute.hp -= formatHP(defenderAttribute?.hp, receiveDMG)
-      attackerAttribute.hp -= formatHP(attackerAttribute.hp, defenderCounterAttack)
+
+      script = `${attacker?.extends?.name} Tung ra một đòn cực mạnh ${currentDefender?.extends.name} trực tiếp nhận ${formatCash(receiveDMG)} sát thương`
+      if (kabbalahProps && kabbalahProps?.tag) {
+        script = randomKabbalahScript()
+          .replace('#attacker', attacker?.extends?.name ?? '')
+          .replace('#kabbalahName', kabbalahProps?.name ?? '')
+          .replace('#defender', currentDefender?.extends.name ?? '')
+          .replace('#damage', formatCash(receiveDMG))
+      }
+
+      if (receiveDMG)
+        defenderAttribute.hp -= formatHP(defenderAttribute?.hp, receiveDMG)
+
+      if (defenderCounterAttack)
+        attackerAttribute.hp -= formatHP(attackerAttribute.hp, defenderCounterAttack)
 
       if (attackerAttribute.hp > 0 && totalRestoreHP > 0)
         attackerAttribute.hp += totalRestoreHP
@@ -361,6 +382,7 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
       // TODO: Lưu giả lập
       emulators.push(<Emulator>{
         [attackerID]: {
+          script,
           action: BATTLE_ACTION.ATTACK,
           state: {
             receiveDamage: {

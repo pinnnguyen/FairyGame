@@ -3,7 +3,7 @@ import { randomNumber } from '~/common'
 import { useApplyPercentAttribute } from '~/server/helpers'
 
 export const handleKabbalahStartBattle = (attacker: BattleTarget) => {
-  let kabbalahProps = {}
+  let kabbalahProps = null
 
   if (!attacker.kabbalah) {
     return {
@@ -58,7 +58,7 @@ export const handleKabbalahStartBattle = (attacker: BattleTarget) => {
 
 export const handleKabbalahInBattle = (kabbalahRule?: KabbalahRule[], kabbalah?: PlayerKabbalah, originDMG?: number) => {
   let kabbalahDamage = originDMG
-  let kabbalahProps: Partial<KabbalahRule> = {}
+  let kabbalahProps = null
 
   if (!kabbalah) {
     return {

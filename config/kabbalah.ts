@@ -1,5 +1,16 @@
+import { randomNumber } from '~/common'
 import type { KabbalahRule } from '~/types'
 
+export const KABBALAH_SCRIPTS = [
+  '#attacker Tụ lực xuất ra một chiêu #kabbalahName khí thế mạnh mẽ, Dễ như trở bản tay #defender lấy thân ngăn cản thừa nhận #damage sát thương',
+  '#attacker Tung ra một chiêu #kabbalahName trong nháy mắt đến #defender phải nhận lấy #damage sát thương',
+]
+
+export const randomKabbalahScript = () => {
+  const ran = Math.round(randomNumber(0, KABBALAH_SCRIPTS.length - 1))
+
+  return KABBALAH_SCRIPTS[ran]
+}
 export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
   1: [
     {
