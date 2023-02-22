@@ -419,7 +419,7 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
           realId = attackerID
 
         return {
-          emulators,
+          emulators: emulators ?? [],
           match,
           winner: realId,
           totalDamage,
@@ -428,7 +428,7 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
 
       if (round === 50) {
         return {
-          emulators,
+          emulators: emulators ?? [],
           match,
           winner: personBeingAttacked,
           totalDamage,
