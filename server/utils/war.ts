@@ -1,8 +1,7 @@
-import { createError } from 'h3'
 import moment from 'moment'
 import { REACH_LIMIT } from '~/config'
 import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
-import type { BattleTarget } from '~/helpers'
+import type { BattleRequest, BattleTarget, PlayerInfo } from '~/types'
 import { startWarSolo } from '~/helpers'
 
 import {
@@ -15,7 +14,6 @@ import {
   setLastTimeReceivedRss,
 } from '~/server/helpers'
 import { BattleSchema, PlayerSchema } from '~/server/schema'
-import type { BattleRequest, PlayerInfo } from '~/types'
 
 const preparePlayerTargetData = (_p: PlayerInfo) => {
   return {
@@ -84,66 +82,71 @@ export const handlePlayerVsMonster = async (_p: PlayerInfo, battleRequest: Battl
   const targetA = preparePlayerTargetData(_p)
   const targetB = prepareEnemyTargetData(_enemyObj)
 
-  const {
-    emulators,
-    match,
-    winner: realWinner,
-    totalDamage,
-  } = startWarSolo(targetA, targetB, battleRequest.target.id)
+  try {
+    const {
+      emulators,
+      match,
+      winner: realWinner,
+      totalDamage,
+    } = startWarSolo(targetA, targetB, battleRequest.target.id)
 
-  for (const d in totalDamage.list) {
-    if (d === _p.player._id)
-      totalDamage.self = totalDamage.list[d]
+    for (const d in totalDamage.list) {
+      if (d === _p.player._id)
+        totalDamage.self = totalDamage.list[d]
+    }
+
+    const { exp, gold } = await getBaseReward(_p.player, _enemyObj, realWinner)
+    const { equipments } = await receivedEquipment(_p.player, _enemyObj, realWinner)
+    const { itemDrafts } = await receivedItems(_p.player, _enemyObj, realWinner)
+    await setLastTimeReceivedRss(_p.player.sid)
+
+    // Log battle
+    await new BattleSchema({
+      sid: _p.player.sid,
+      mid: {
+        id: _p.player.midId,
+      },
+      kind: battleRequest.kind,
+      targetId: battleRequest.target.id,
+      match,
+      emulators,
+      winner: realWinner,
+      damageList: totalDamage,
+      reward: {
+        base: {
+          exp,
+          gold,
+        },
+        items: itemDrafts,
+        equipments,
+      },
+    }).save()
+
+    await handleAfterEndWar({
+      battleRequest,
+      _p,
+      realWinner,
+      totalDamage,
+    })
+
+    return {
+      match,
+      emulators,
+      winner: realWinner,
+      damageList: totalDamage,
+      kind: battleRequest.kind,
+      reward: {
+        base: {
+          exp,
+          gold,
+        },
+        items: itemDrafts,
+        equipments,
+      },
+    }
   }
-
-  const { exp, gold } = await getBaseReward(_p.player, _enemyObj, realWinner)
-  const { equipments } = await receivedEquipment(_p.player, _enemyObj, realWinner)
-  const { itemDrafts } = await receivedItems(_p.player, _enemyObj, realWinner)
-  await setLastTimeReceivedRss(_p.player.sid)
-
-  // Log battle
-  await new BattleSchema({
-    sid: _p.player.sid,
-    mid: {
-      id: _p.player.midId,
-    },
-    kind: battleRequest.kind,
-    targetId: battleRequest.target.id,
-    match,
-    emulators,
-    winner: realWinner,
-    damageList: totalDamage,
-    reward: {
-      base: {
-        exp,
-        gold,
-      },
-      items: itemDrafts,
-      equipments,
-    },
-  }).save()
-
-  await handleAfterEndWar({
-    battleRequest,
-    _p,
-    realWinner,
-    totalDamage,
-  })
-
-  return {
-    match,
-    emulators,
-    winner: realWinner,
-    damageList: totalDamage,
-    kind: battleRequest.kind,
-    reward: {
-      base: {
-        exp,
-        gold,
-      },
-      items: itemDrafts,
-      equipments,
-    },
+  catch (e) {
+    console.log('e', e)
   }
 }
 
