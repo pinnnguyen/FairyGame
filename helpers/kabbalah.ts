@@ -1,6 +1,5 @@
-import type { BattleTarget } from './war'
+import type { BaseAttributeKeys, BattleTarget, KabbalahRule, PlayerKabbalah } from '~/types'
 import { randomNumber } from '~/common'
-import type { BaseAttributeKeys, KabbalahRule, PlayerKabbalah } from '~/types'
 import { useApplyPercentAttribute } from '~/server/helpers'
 
 export const handleKabbalahStartBattle = (attacker: BattleTarget) => {
