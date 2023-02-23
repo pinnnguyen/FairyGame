@@ -1,18 +1,24 @@
 import moment from 'moment'
-import { REACH_LIMIT } from '~/config'
-import { BATTLE_KIND, TARGET_TYPE } from '~/constants'
-import type { BattleRequest, BattleTarget, PlayerInfo } from '~/types'
-import { startWarSolo } from '~/helpers'
-
+import { formatCash } from '~/common'
+import { REACH_LIMIT, randomKabbalahScript } from '~/config'
+import { BATTLE_ACTION, BATTLE_KIND, TARGET_TYPE, attributeToName } from '~/constants'
+import { handleKabbalahStartBattle } from '~/helpers/kabbalah'
+import type { BattleRequest, BattleTarget, Emulator, PlayerInfo } from '~/types'
 import {
+  beforeEnteringFormat,
+  formatHP,
   getBaseReward,
   getPlayer,
   handleAfterEndWar,
   handleBeforeStartWar,
+  kabbalahFormat,
+  matchFormat,
+  receiveDamageV2,
   receivedEquipment,
   receivedItems,
   setLastTimeReceivedRss,
 } from '~/server/helpers'
+
 import { BattleSchema, PlayerSchema } from '~/server/schema'
 
 const preparePlayerTargetData = (_p: PlayerInfo) => {
@@ -53,6 +59,179 @@ const prepareEnemyTargetData = (_enemyObj: any) => {
       helpful: {},
     },
   } as unknown as BattleTarget
+}
+
+export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, personBeingAttacked?: string) => {
+  let round = 0
+  const MAX_ROUND = 60
+  const emulators: Emulator[] = []
+
+  const totalDamage: Record<string, any> = { list: {}, self: 0 }
+
+  targetA.enemyId = targetB._id
+  targetB.enemyId = targetA._id
+
+  // TODO: Format thần thông nếu có
+  kabbalahFormat(targetA, targetB)
+  const match = matchFormat(targetA, targetB)
+
+  const multipleTarget = beforeEnteringFormat(targetA, targetB)
+  for (const attacker of multipleTarget) {
+    const scripts = []
+    const { kabbalahProps } = handleKabbalahStartBattle(attacker)
+    if (!kabbalahProps)
+      continue
+
+    const vScript = []
+    for (const v in kabbalahProps.values)
+      vScript.push(`${kabbalahProps.values[v]}${attributeToName[v]}`)
+
+    const script = `<span class="text-red-400">${attacker.extends.name}</span> Phát động kỹ năng <span class="text-red-500">${kabbalahProps.name}</span> giúp tăng ${vScript.join(' ')}`
+    scripts.push(script)
+
+    emulators.push(<Emulator>{
+      [attacker._id as string]: {
+        scripts,
+        action: BATTLE_ACTION.BUFF,
+        state: {},
+        self: {
+          kabbalahProps: [{ ...kabbalahProps }],
+        },
+        now: {},
+      },
+    })
+  }
+
+  for (let i = 0; i < MAX_ROUND; i++) {
+    const scripts = []
+    // TODO Chuẩn bị dữ liệu
+    for (const attacker of multipleTarget) {
+      const attackerAttribute = attacker.attribute
+      const currentDefender = multipleTarget.find(m => m._id === attacker.enemyId)
+      const attackerID = attacker._id ?? ''
+      const defenderID = currentDefender?._id ?? ''
+      const defenderAttribute = currentDefender?.attribute
+
+      if (!defenderAttribute)
+        return
+
+      const {
+        groupAction,
+        kabbalahProps,
+      } = receiveDamageV2(attacker, currentDefender, round)
+
+      const {
+        receiveDMG,
+        attackerBloodsucking,
+        attackerCritical,
+        defenderCounterAttack,
+        defenderAvoid,
+      } = groupAction
+
+      let totalRestoreHP = attackerBloodsucking
+      const disadvantage = currentDefender.effect.disadvantage
+
+      for (const disv in disadvantage) {
+        // TODO hiệu ứng bị trúng độc
+        if (disv === 'poisoned') {
+          const { value, target, expire } = disadvantage[disv]
+          if (expire < round)
+            continue
+
+          // const attackerDmg = (attackerAttribute.damage * value) / 100
+          // scripts.push(`${currentDefender?.extends.name} trúng độc bởi ${name} nhận ${attackerDmg} sát thương`)
+          // defenderAttribute.hp -= formatHP(defenderAttribute?.hp, (attackerDmg ?? 0))
+
+          // TODO: Bị giảm tỉ lệ hồi máu
+          if (target === 'reductionRecoveryPerformance')
+            totalRestoreHP -= (totalRestoreHP * value) / 100
+        }
+      }
+
+      totalDamage.list[attackerID] += receiveDMG
+      if (kabbalahProps && kabbalahProps?.tag) {
+        const script = randomKabbalahScript()
+          .replace('#attacker', attacker?.extends?.name ?? '')
+          .replace('#kabbalahName', kabbalahProps?.name ?? '')
+          .replace('#defender', currentDefender?.extends.name ?? '')
+          .replace('#damage', formatCash(receiveDMG))
+
+        scripts.push(script)
+      }
+      else {
+        const script = `<span class="underline">${attacker?.extends?.name}</span> 
+        Tung ra một đòn cực mạnh 
+        <span class="underline">${currentDefender?.extends.name}</span> 
+        trực tiếp nhận <span class="text-red-500">${formatCash(receiveDMG)} sát thương </span>`
+        scripts.push(script)
+      }
+
+      defenderAttribute.hp -= formatHP(defenderAttribute?.hp, (receiveDMG ?? 0))
+      attackerAttribute.hp -= formatHP(attackerAttribute.hp, (defenderCounterAttack ?? 0))
+
+      if (attackerAttribute.hp > 0 && totalRestoreHP > 0)
+        attackerAttribute.hp += totalRestoreHP
+
+      console.log('scripts', scripts)
+      // TODO: Lưu giả lập
+      emulators.push(<Emulator>{
+        [attackerID]: {
+          scripts,
+          action: BATTLE_ACTION.ATTACK,
+          state: {
+            receiveDamage: {
+              [defenderID]: receiveDMG,
+            },
+            bloodsucking: attackerBloodsucking,
+            critical: attackerCritical,
+            counterDamage: defenderCounterAttack,
+            avoid: defenderAvoid,
+          },
+          self: {
+            hp: attackerAttribute.hp,
+            mp: attackerAttribute.mp,
+            kabbalahProps: [{ ...kabbalahProps }],
+          },
+          now: {
+            hp: {
+              [defenderID]: defenderAttribute.hp,
+            },
+            mp: {
+              [attackerID]: attackerAttribute.mp,
+            },
+          },
+        },
+      })
+
+      const isResult = attackerAttribute.hp <= 0 || defenderAttribute.hp <= 0
+      if (isResult) {
+        let realId = ''
+        if (attackerAttribute.hp <= 0)
+          realId = defenderID
+
+        if (defenderAttribute.hp <= 0)
+          realId = attackerID
+
+        return {
+          emulators: emulators ?? [],
+          match,
+          winner: realId,
+          totalDamage,
+        } as any
+      }
+
+      if (round === 50) {
+        return {
+          emulators: emulators ?? [],
+          match,
+          winner: personBeingAttacked,
+          totalDamage,
+        } as any
+      }
+
+      round++
+    }
+  }
 }
 
 export const handlePlayerVsMonster = async (_p: PlayerInfo, battleRequest: BattleRequest) => {

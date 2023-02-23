@@ -360,3 +360,7 @@ body::after {
     50% {clip: rect($clip-size - $path-width, $clip-size, $clip-size, 0px); }
     75% {clip: rect(0px, $clip-size, $clip-size, $clip-size - $path-width); }
 }
+
+.bg-transparent {
+    background: transparent;
+}

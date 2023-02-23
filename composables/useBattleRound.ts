@@ -20,6 +20,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   const receiver = ref<any>({})
   const realTime = ref<any>({})
   const buff = ref<any>({})
+  const scripts = ref([])
 
   const roundNum = ref(0)
   const speed = useLocalStorage('speed', 1)
@@ -41,6 +42,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     set(receiver, {})
     set(realTime, {})
     set(buff, {})
+    // set(scripts, [])
     options.skip = false
     options.stop = false
   }
@@ -85,6 +87,11 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
           return
 
         const realEmu = emulator[turn]
+        // console.log('realEmu.scripts', realEmu.scripts)
+        if (scripts.value.length > 15)
+          scripts.value.splice(-1)
+
+        scripts.value.unshift(realEmu.scripts)
         if (realEmu.action === BATTLE_ACTION.BUFF) {
           Object.assign(buff.value, {
             [turn]: {
@@ -146,6 +153,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
     match,
     loading,
     options,
+    scripts,
     fn: {
       startBattle,
       stopBattle: () => {

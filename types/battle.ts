@@ -40,6 +40,7 @@ export interface BattleTarget {
         value: number
         target: BaseAttributeKeys
         round: number
+        name?: string
       }
     }
     helpful: {}

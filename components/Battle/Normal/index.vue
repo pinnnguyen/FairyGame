@@ -14,6 +14,7 @@ const {
   speed,
   roundNum,
   options,
+  scripts,
 } = storeToRefs(useBattleRoundStore())
 
 const { $io } = useNuxtApp()
@@ -25,6 +26,8 @@ const {
 } = useBattleEvents()
 
 const battleCurrently = ref()
+const warNotice = ref(true)
+
 const handleStartBattle = async (battleRes: BattleResponse) => {
   set(battleCurrently, battleRes)
 
@@ -72,6 +75,28 @@ onUnmounted(async () => {
 </script>
 
 <template>
+  <var-popup
+    v-model:show="warNotice"
+    position="bottom"
+    :overlay-style="{ background: 'transparent' }"
+  >
+    <div
+      text="[#ffffff] 10"
+      h="[60vh]"
+      bg="[#000000]"
+    >
+      <Line p="y-2">
+        Hiệp {{ roundNum }}
+      </Line>
+      <div p="x-2" transition="~ all duration-800" font="italic">
+        <div v-for="(script, i) in scripts" :key="i">
+          <div v-for="(s, j) in script" :key="j" m="y-2">
+            <div v-html="s" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </var-popup>
   <var-loading
     :loading="loading"
     size="mini"
@@ -86,6 +111,14 @@ onUnmounted(async () => {
       w="full"
       h="full"
     >
+      <div
+        pos="absolute"
+        top="2" right="2"
+        text="yellow-400 8 underline"
+        @click.stop="warNotice = true"
+      >
+        Chiến báp
+      </div>
       <div
         flex="~ "
         pos="absolute"

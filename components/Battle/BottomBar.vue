@@ -14,9 +14,6 @@ const showTopDmg = ref(false)
 const { fn } = useBattleRoundStore()
 const changeBattle = async () => {
   try {
-    // const player = await $fetch('/api/mid')
-    // console.log('player', player)
-
     set(loading, true)
     const player = await $fetch('/api/mid/set', {
       method: 'POST',
@@ -36,7 +33,7 @@ const changeBattle = async () => {
 </script>
 
 <template>
-  <var-popup v-model:show="showTopDmg" position="bottom">
+  <var-popup v-model:show="showTopDmg" position="bottom" :overlay="false">
     <battle-top-d-m-g />
   </var-popup>
   <div
