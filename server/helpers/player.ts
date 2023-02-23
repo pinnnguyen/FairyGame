@@ -32,6 +32,15 @@ export const useApplyPercentAttribute = (per: { key: BaseAttributeKeys; value: n
     case 'recoveryPerformance':
       attribute.recoveryPerformance += per.value
       break
+    case 'criticalDamage':
+      attribute.criticalDamage += per.value
+      break
+    case 'reductionRecoveryPerformance':
+      attribute.reductionRecoveryPerformance += per.value
+      break
+    case 'reductionCriticalDamage':
+      attribute.reductionCriticalDamage += per.value
+      break
   }
 }
 

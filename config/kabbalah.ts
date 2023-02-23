@@ -1,7 +1,6 @@
 import { randomNumber } from '~/common'
 import type { KabbalahRule } from '~/types'
 
-export const KABBALAH_DEFAULT_SCRIPTS = ''
 export const KABBALAH_SCRIPTS = [
   `<span class="underline">#attacker</span> 
   Tụ lực xuất ra một chiêu 
@@ -203,47 +202,53 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
   ],
   4: [
     {
+      tag: 'fire_gong',
       focus: 'in_battle',
-      max: 4,
-      valueOnLevel: 20,
+      max: 6,
+      valueOnLevel: 15,
       active: 'percent',
-      name: 'Kim nguyên kiếm',
+      name: 'Hoả nguyên công',
       sign: 'spiritual_1',
       rate: {
         value: 0,
-        max: 80,
+        max: 30,
       },
-      value: 185,
+      value: 98,
       target: {
         num: 1,
         role: 'damage',
       },
-      title: 'Có #rate gây #value sát thương lên #targetNum mục tiêu',
+      title: 'Có #rate gây #value% sát thương hệ hoả lên #targetNum kẻ địch',
+      hasEffect: true,
+      effect: {
+        disadvantage: {},
+        helpful: {},
+      },
     },
     {
       max: 8,
       valueOnLevel: 2,
       focus: 'before_s_battle',
-      name: 'Kim nguyên tâm pháp',
-      title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentDamage Công, #percentSpeed Tốc',
+      name: 'Hoả nguyên công pháp',
+      title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentDamage Công kích, #criticalDamage% Sát thương bạo kích',
       sign: 'spiritual_2',
       target: {
         role: 'player',
       },
       values: {
-        percentDamage: 3,
-        percentSpeed: 2.25,
+        percentDamage: 5.5,
+        criticalDamage: 3.25,
       },
     },
     {
       max: 50,
       focus: 'attribute',
-      name: 'Kim nguyên công pháp',
+      name: 'Hoả nguyên tâm pháp',
       sign: 'spiritual_3',
-      title: 'Công pháp bậc 3 của thiên kiếm môn, kim linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
+      title: 'Công pháp bậc 3 của thiên kiếm môn, Hoả linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
       values: {
         hp: 50,
-        damage: 10,
+        damage: 13,
         def: 5,
         speed: 1,
       },
@@ -251,49 +256,55 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
   ],
   5: [
     {
+      tag: 'earth_gong',
       focus: 'in_battle',
-      max: 4,
-      valueOnLevel: 20,
+      max: 6,
+      valueOnLevel: 15,
       active: 'percent',
-      name: 'Kim nguyên kiếm',
+      name: 'Thổ nguyên công',
       sign: 'spiritual_1',
       rate: {
         value: 0,
-        max: 80,
+        max: 30,
       },
-      value: 185,
+      value: 98,
       target: {
         num: 1,
         role: 'damage',
       },
-      title: 'Có #rate gây #value sát thương lên #targetNum mục tiêu',
+      title: 'Có #rate gây #value% sát thương hệ Thổ lên #targetNum kẻ địch',
+      hasEffect: true,
+      effect: {
+        disadvantage: {},
+        helpful: {},
+      },
     },
     {
       max: 8,
       valueOnLevel: 2,
       focus: 'before_s_battle',
-      name: 'Kim nguyên tâm pháp',
-      title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentDamage Công, #percentSpeed Tốc',
+      name: 'Thổ nguyên công pháp',
+      title: 'Bắt đầu vào chiến trường, Bản thân tăng #reductionRecoveryPerformance Kháng hồi phục, #reductionCriticalDamage% Miễn sát thương bạo kích',
       sign: 'spiritual_2',
       target: {
         role: 'player',
       },
       values: {
-        percentDamage: 3,
-        percentSpeed: 2.25,
+        reductionRecoveryPerformance: 5.5,
+        reductionCriticalDamage: 4.25,
       },
     },
     {
       max: 50,
       focus: 'attribute',
-      name: 'Kim nguyên công pháp',
+      name: 'Thổ nguyên tâm pháp',
       sign: 'spiritual_3',
-      title: 'Công pháp bậc 3 của thiên kiếm môn, kim linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
+      title: 'Công pháp bậc 3 của thiên kiếm môn, Thổ linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
       values: {
         hp: 50,
-        damage: 10,
+        damage: 13,
         def: 5,
-        speed: 1,
+        speed: 2,
       },
     },
   ],
