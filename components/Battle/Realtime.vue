@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { attributeToName } from '~/constants'
 import { playerTitle } from '~/common'
 
 const props = defineProps<{
@@ -23,20 +22,6 @@ const kabbalahInBattleProp = computed(() => {
   return props.realTime[extend.value._id]?.kabbalahProps.find((k: any) => k.focus === 'in_battle')
 })
 
-const hasBuffOptions = computed(() => {
-  if (props.buff && props.buff[extend.value._id])
-    return props.buff[extend.value._id]
-
-  return null
-})
-
-const kabbalahStartBattleProp = computed(() => {
-  if (!hasBuffOptions.value)
-    return null
-
-  return hasBuffOptions.value.kabbalahProps.find((k: any) => k.focus === 'before_s_battle')
-})
-
 setTimeout(() => {
   showATime.value = false
 }, 1000)
@@ -53,17 +38,6 @@ setTimeout(() => {
     :class="{ 'left-4': pos === 1, 'right-4': pos === 2, '!opacity-100': kabbalahInBattleProp }"
   >
     {{ kabbalahInBattleProp?.name }}
-  </span>
-  <span
-    transition="~ opacity duration-1000"
-    pos="absolute"
-    left="2"
-    w="2"
-    text="space-normal white 10"
-    opacity="0"
-    :class="{ 'left-4': pos === 1, 'right-4': pos === 2, '!opacity-100': hasBuffOptions && showATime }"
-  >
-    {{ kabbalahStartBattleProp?.name }}
   </span>
   <div
     pos="relative"
@@ -119,12 +93,5 @@ setTimeout(() => {
     >
       <span>{{ receiver[extend._id]?.receiveDamage }}</span>
     </span>
-
-    <div v-if="kabbalahStartBattleProp" text="8" w="28" m="t-1">
-      <span v-for="(value, key) in kabbalahStartBattleProp.values" :key="key" text="green-500" p="x-[1px]">
-        <icon name="ic:outline-keyboard-double-arrow-up" />
-        {{ value }}{{ attributeToName[key] }}
-      </span>
-    </div>
   </div>
 </template>

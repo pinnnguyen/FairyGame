@@ -10,7 +10,8 @@
     "start": "node .output/server/index.mjs",
     "lint": "eslint .",
     "postinstall": "nuxi prepare",
-    "generate": "nuxi generate"
+    "generate": "nuxi generate",
+    "prepare": "nuxi prepare"
   },
   "devDependencies": {
     "@pkgs/components": "workspace:*",

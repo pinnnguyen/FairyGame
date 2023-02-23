@@ -26,7 +26,7 @@ const {
 } = useBattleEvents()
 
 const battleCurrently = ref()
-const warNotice = ref(true)
+const warNotice = ref(false)
 
 const handleStartBattle = async (battleRes: BattleResponse) => {
   set(battleCurrently, battleRes)
@@ -117,7 +117,7 @@ onUnmounted(async () => {
         text="yellow-400 8 underline"
         @click.stop="warNotice = true"
       >
-        Chiến báp
+        Chiến báo
       </div>
       <div
         flex="~ "
