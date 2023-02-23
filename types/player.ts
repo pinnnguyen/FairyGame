@@ -71,7 +71,7 @@ export interface PlayerSpiritualRoot {
   quality: number
 }
 
-export type KabbalahTagName = 'jinyuan_sword' | 'carpentry_techniques'
+export type KabbalahTagName = 'jinyuan_sword' | 'carpentry_techniques' | 'waterbending'
 export interface KabbalahRule {
   tag?: KabbalahTagName
   hasEffect?: boolean

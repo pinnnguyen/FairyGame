@@ -29,6 +29,9 @@ export const useApplyPercentAttribute = (per: { key: BaseAttributeKeys; value: n
     case 'percentDef':
       attribute.def += (attribute.def + per.value) / 100
       break
+    case 'recoveryPerformance':
+      attribute.recoveryPerformance += per.value
+      break
   }
 }
 

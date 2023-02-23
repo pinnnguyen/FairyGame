@@ -39,6 +39,10 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
       active: 'percent',
       name: 'Kim nguyên kiếm',
       sign: 'spiritual_1',
+      effect: {
+        disadvantage: {},
+        helpful: {},
+      },
       rate: {
         value: 0,
         max: 30,
@@ -48,7 +52,7 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
         num: 1,
         role: 'damage',
       },
-      title: 'Có #rate gây #value% sát thương lên #targetNum mục tiêu',
+      title: 'Có #rate gây #value% sát thương hệ kim lên #targetNum kẻ địch',
     },
     {
       max: 8,
@@ -73,7 +77,7 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
       title: 'Công pháp bậc 3 của thiên kiếm môn, kim linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
       values: {
         hp: 50,
-        damage: 10,
+        damage: 15,
         def: 5,
         speed: 1,
       },
@@ -92,23 +96,27 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
         value: 0,
         max: 30,
       },
-      value: 98,
+      value: 115,
       target: {
         num: 1,
         role: 'damage',
       },
-      title: 'Có #rate đầu độc kẻ địch trong 3 lượt, gây #value% sát thương mỗi lượt',
+      title: 'Có #rate gây #value% sát thương hệ mộc lên #targetNum kẻ địch',
       hasEffect: true,
       effect: {
-        disadvantage: {
-          poisoned: {
-            round: 3,
-            target: 'reductionRecoveryPerformance',
-            value: 90,
-          },
-        },
+        disadvantage: {},
         helpful: {},
       },
+      // effect: {
+      //   disadvantage: {
+      //     poisoned: {
+      //       round: 3,
+      //       target: 'reductionRecoveryPerformance',
+      //       value: 90,
+      //     },
+      //   },
+      //   helpful: {},
+      // },
     },
     {
       max: 8,
@@ -130,9 +138,9 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
       focus: 'attribute',
       name: 'Mộc nguyên tâm pháp',
       sign: 'spiritual_3',
-      title: 'Công pháp bậc 3 của thiên kiếm môn, kim linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
+      title: 'Công pháp bậc 3 của thiên kiếm môn, mộc linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
       values: {
-        hp: 50,
+        hp: 65,
         damage: 10,
         def: 5,
         speed: 1,
@@ -141,48 +149,54 @@ export const KABBALAH_RULE: Record<string, KabbalahRule[]> = {
   ],
   3: [
     {
+      tag: 'waterbending',
       focus: 'in_battle',
-      max: 4,
-      valueOnLevel: 20,
+      max: 6,
+      valueOnLevel: 15,
       active: 'percent',
-      name: 'Kim nguyên kiếm',
+      name: 'Thuỷ nguyên công',
       sign: 'spiritual_1',
       rate: {
         value: 0,
-        max: 80,
+        max: 30,
       },
-      value: 185,
+      value: 98,
       target: {
         num: 1,
         role: 'damage',
       },
-      title: 'Có #rate gây #value sát thương lên #targetNum mục tiêu',
+      title: 'Có #rate gây #value% sát thương hệ thuỷ lên #targetNum kẻ địch',
+      hasEffect: true,
+      effect: {
+        disadvantage: {},
+        helpful: {},
+      },
     },
     {
       max: 8,
       valueOnLevel: 2,
       focus: 'before_s_battle',
-      name: 'Kim nguyên tâm pháp',
-      title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentDamage Công, #percentSpeed Tốc',
+      name: 'Thuỷ nguyên công pháp',
+      title: 'Bắt đầu vào chiến trường, Bản thân tăng #percentHp Sinh lực, #recoveryPerformance% Hiệu xuất hồi phục',
       sign: 'spiritual_2',
       target: {
         role: 'player',
       },
       values: {
-        percentDamage: 3,
-        percentSpeed: 2.25,
+        percentHp: 5.5,
+        recoveryPerformance: 3.25,
       },
     },
     {
       max: 50,
       focus: 'attribute',
-      name: 'Kim nguyên công pháp',
+      name: 'Thuỷ nguyên tâm pháp',
       sign: 'spiritual_3',
-      title: 'Công pháp bậc 3 của thiên kiếm môn, kim linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
+      title: 'Công pháp bậc 3 của thiên kiếm môn, thuỷ linh căn mới có thể tu luyện, chủ yếu tăng công tốc',
       values: {
-        hp: 50,
-        damage: 10,
-        def: 5,
+        hp: 70,
+        damage: 8,
+        def: 6,
         speed: 1,
       },
     },

@@ -86,7 +86,9 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
     for (const v in kabbalahProps.values)
       vScript.push(`${kabbalahProps.values[v]}${attributeToName[v]}`)
 
-    const script = `<span class="text-red-400">${attacker.extends.name}</span> Phát động kỹ năng <span class="text-red-500">${kabbalahProps.name}</span> giúp tăng ${vScript.join(' ')}`
+    const script = `<span class="text-red-400">${attacker.extends.name}</span> 
+    Phát động kỹ năng <span class="text-red-500">${kabbalahProps.name}</span> 
+    giúp tăng ${vScript.join(' ')}`
     scripts.push(script)
 
     emulators.push(<Emulator>{
@@ -138,10 +140,6 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
           if (expire < round)
             continue
 
-          // const attackerDmg = (attackerAttribute.damage * value) / 100
-          // scripts.push(`${currentDefender?.extends.name} trúng độc bởi ${name} nhận ${attackerDmg} sát thương`)
-          // defenderAttribute.hp -= formatHP(defenderAttribute?.hp, (attackerDmg ?? 0))
-
           // TODO: Bị giảm tỉ lệ hồi máu
           if (target === 'reductionRecoveryPerformance')
             totalRestoreHP -= (totalRestoreHP * value) / 100
@@ -172,7 +170,6 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
       if (attackerAttribute.hp > 0 && totalRestoreHP > 0)
         attackerAttribute.hp += totalRestoreHP
 
-      console.log('scripts', scripts)
       // TODO: Lưu giả lập
       emulators.push(<Emulator>{
         [attackerID]: {
