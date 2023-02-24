@@ -1,4 +1,4 @@
-import { KABBALAH_RULE, KABBALAH_TAG_NAME } from '~/config'
+import { KABBALAH_RULE, KABBALAH_TAG_NAME } from '@game/config'
 import { cloneDeep } from '~/helpers'
 import { handleKabbalahInBattle } from '~/helpers/kabbalah'
 import type {

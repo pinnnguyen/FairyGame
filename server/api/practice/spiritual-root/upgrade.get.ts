@@ -1,5 +1,5 @@
+import { SPIRITUAL_ROOT_RESOURCE } from '@game/config'
 import { getServerSession } from '#auth'
-import { SPIRITUAL_ROOT_RESOURCE } from '~/config'
 import { PlayerSchema } from '~/server/schema'
 
 export default defineEventHandler(async (event) => {

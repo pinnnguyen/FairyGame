@@ -1,9 +1,9 @@
 import moment from 'moment'
+import { REACH_LIMIT } from '@game/config'
 import { getServerSession } from '#auth'
 import { shuffle } from '~/common'
 import { BATTLE_KIND } from '~/constants'
 import { BattleSchema, PlayerSchema } from '~/server/schema'
-import { REACH_LIMIT } from '~/config'
 
 export default defineEventHandler(async (event) => {
   const today = moment().startOf('day')

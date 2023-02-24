@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ROLE_NAME } from '~/config'
+import { ROLE_NAME } from '@game/config'
 import { formatCash } from '~/common'
 
 const props = defineProps<{

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SPIRITUAL_ROOT_RULE } from '~/config'
+import { SPIRITUAL_ROOT_RULE } from '@game/config'
 
 const { spiritualRoot, currentSpiritualRoot } = storeToRefs(usePlayerStore())
 const { getPlayer } = usePlayerStore()

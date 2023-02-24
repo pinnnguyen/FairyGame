@@ -1,4 +1,4 @@
-import { CLASS_RULE, KABBALAH_RULE, MIND_DHARMA_CONFIG, SPIRITUAL_ROOT_RULE } from '~/config'
+import { CLASS_RULE, KABBALAH_RULE, MIND_DHARMA_CONFIG, SPIRITUAL_ROOT_RULE } from '@game/config'
 import { conditionForUpLevel } from '~/server/common'
 import { AttributePowers } from '~/server/constants'
 import { formatAttributes, useEquipment } from '~/server/helpers/equipment'

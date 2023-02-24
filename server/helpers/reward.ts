@@ -1,10 +1,9 @@
+import { DEFAULT_MAX_RATE_RECEIVED, DEFAULT_MIN_RATE_RECEIVED } from '@game/config'
 import { PlayerStatusTypeCon } from '~/types'
 import type { BasicItem, EnemyObject, Player, PlayerEquipment } from '~/types'
 import { randomNumber } from '~/common'
 import { BASE_EXP, BASE_GOLD } from '~/server/rule/reward'
 import { ItemSchema, PlayerSchema, PlayerStatusSchema, addPlayerEquipments, addPlayerItem } from '~/server/schema'
-
-import { DEFAULT_MAX_RATE_RECEIVED, DEFAULT_MIN_RATE_RECEIVED } from '~/config'
 
 export const setLastTimeReceivedRss = async (sid: string) => {
   await PlayerSchema.findOneAndUpdate({ sid }, { lastTimeReceivedRss: new Date().getTime() })

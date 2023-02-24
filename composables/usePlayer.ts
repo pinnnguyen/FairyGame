@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { set } from '@vueuse/core'
-import { KABBALAH_RULE, SPIRITUAL_ROOT_RULE } from '~/config'
+import { KABBALAH_RULE, SPIRITUAL_ROOT_RULE } from '@game/config'
 import type { PlayerDataResponse, PlayerServerResponse } from '~/types'
 
 export const usePlayerStore = defineStore('player', () => {

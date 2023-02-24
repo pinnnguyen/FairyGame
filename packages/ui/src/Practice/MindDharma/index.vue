@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { set } from '@vueuse/core'
+import { MIND_DHARMA_DES } from '@game/config'
 import { formatCash, playerTitle, randomNumber } from '~/common'
 import { ItemToName, tips } from '~/constants'
-import { MIND_DHARMA_DES } from '~/config'
 import type { MindDharmaResource } from '~/types'
 
 const { $io } = useNuxtApp()

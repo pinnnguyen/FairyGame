@@ -1,5 +1,5 @@
+import { KABBALAH_RULE } from '@game/config'
 import { getServerSession } from '#auth'
-import { KABBALAH_RULE } from '~/config'
 import { PlayerSchema } from '~/server/schema'
 
 export default defineEventHandler(async (event) => {

@@ -1,5 +1,5 @@
 import { Server } from 'socket.io'
-import { MIND_DHARMA_RESOURCE } from '~/config'
+import { MIND_DHARMA_RESOURCE } from '@game/config'
 import { BATTLE_KIND } from '~/constants/war'
 import { cloneDeep } from '~/helpers'
 import {

@@ -87,7 +87,6 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
           return
 
         const realEmu = emulator[turn]
-        // console.log('realEmu.scripts', realEmu.scripts)
         if (scripts.value.length > 15)
           scripts.value.splice(-1)
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
+import { SPIRITUAL_ROOT_RESOURCE } from '@game/config'
 import { formatCash } from '~/common'
-import { SPIRITUAL_ROOT_RESOURCE } from '~/config'
 
 const { spiritualRoot, moneyManagement } = storeToRefs(usePlayerStore())
 const { getPlayer } = usePlayerStore()
