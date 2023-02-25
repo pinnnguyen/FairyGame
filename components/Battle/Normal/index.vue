@@ -83,7 +83,8 @@ onUnmounted(async () => {
     <div
       text="[#ffffff] 10"
       h="[60vh]"
-      bg="[#000000]"
+      bg="[#191b1e]"
+      overflow="auto"
     >
       <Line p="y-2">
         Hiệp {{ roundNum }}

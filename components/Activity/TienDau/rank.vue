@@ -6,7 +6,7 @@ const { data: ranks, pending, refresh } = useFetch<any>('/api/arena/tienDau/rank
 </script>
 
 <template>
-  <Line class="bg-[#191b1e]" p="t-2" text="12">
+  <Line class="bg-[#191b1e]" p="t-2">
     Xếp hạng
   </Line>
   <div class="max-w-[60vh] h-[70vh] overflow-auto bg-[#191b1e] m-auto">
