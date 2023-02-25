@@ -14,6 +14,7 @@
     "prepare": "nuxi prepare"
   },
   "devDependencies": {
+    "@game/schema": "workspace:*",
     "@game/config": "workspace:*",
     "@pkgs/components": "workspace:*",
     "@antfu/eslint-config": "0.34.0",

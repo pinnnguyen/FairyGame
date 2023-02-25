@@ -27,9 +27,15 @@ const kabbalahStateSign = computed(() => {
       :class="{ 'text-green-500': m === kabbalahStateSign?.level }"
     >
       {{
-        kabbalah.title
+        kabbalah?.title
           .replace('#percentDamage', `${kabbalah.values.percentDamage + (kabbalah.valueOnLevel * m)}%`)
           .replace('#percentSpeed', `${kabbalah.values.percentSpeed + (kabbalah.valueOnLevel * m)}%`)
+          .replace('#percentDef', `${kabbalah.values.percentDef + (kabbalah.valueOnLevel * m)}%`)
+          .replace('#percentHp', `${kabbalah.values.percentHp + (kabbalah.valueOnLevel * m)}%`)
+          .replace('#recoveryPerformance', `${kabbalah.values.recoveryPerformance + (kabbalah.valueOnLevel * m)}%`)
+          .replace('#criticalDamage', `${kabbalah.values.criticalDamage + (kabbalah.valueOnLevel * m)}%`)
+          .replace('#reductionRecoveryPerformance', `${kabbalah.values.reductionRecoveryPerformance + (kabbalah.valueOnLevel * m)}%`)
+          .replace('#reductionCriticalDamage', `${kabbalah.values.reductionCriticalDamage + (kabbalah.valueOnLevel * m)}%`)
       }}
     </span>
   </div>

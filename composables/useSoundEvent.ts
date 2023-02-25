@@ -15,31 +15,30 @@ import reward from '~/assets/sound/reward.mp3'
 const audioHome = new Audio(bg_music_home)
 
 export const useSoundRewardEvent = async () => {
-  try {
-    const audio = new Audio(reward)
-    await audio.play()
-  }
-  catch (e) {
-    console.warn(e)
-  }
+    try {
+        const audio = new Audio(reward)
+        await audio.play()
+    } catch (e) {
+        console.warn(e)
+    }
 }
 
 export const useSoundClickEvent = async () => {
-  const audio = new Audio(click)
-  await audio.play()
+    const audio = new Audio(click)
+    await audio.play()
 }
 
 export const useSoundBattleEvent = () => {
-  const audio = new Audio(bg_music_22)
-  return audio
+    const audio = new Audio(bg_music_22)
+    return audio
 }
 
 export const useSoundHomeEvent = () => {
-  return audioHome
+    return audioHome
 }
 
 export const useSoundEventAttack = async () => {
-  audioHome.pause()
-  const audio = new Audio(attack)
-  await audio.play()
+    audioHome.pause()
+    const audio = new Audio(attack)
+    await audio.play()
 }

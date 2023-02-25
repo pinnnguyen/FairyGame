@@ -6,6 +6,7 @@ importers:
     specifiers:
       '@antfu/eslint-config': 0.34.0
       '@game/config': workspace:*
+      '@game/schema': workspace:*
       '@kevinmarrec/nuxt-pwa': ^0.15.0
       '@nuxt/devtools': ^0.1.2
       '@nuxt/image-edge': ^1.0.0-27840416.dc1ed65
@@ -41,6 +42,7 @@ importers:
     devDependencies:
       '@antfu/eslint-config': 0.34.0_7kw3g6rralp5ps6mg3uyzz6azm
       '@game/config': link:packages/config
+      '@game/schema': link:packages/schema
       '@kevinmarrec/nuxt-pwa': 0.15.0
       '@nuxt/devtools': 0.1.6_nuxt@3.2.2
       '@nuxt/image-edge': 1.0.0-27919678.2f5b64b
@@ -68,6 +70,9 @@ importers:
       unplugin-vue-components: 0.23.0
 
   packages/config:
+    specifiers: {}
+
+  packages/schema:
     specifiers: {}
 
   packages/ui:

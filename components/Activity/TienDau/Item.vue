@@ -6,7 +6,9 @@ import { BATTLE_KIND } from '~/constants'
 const props = defineProps<{
   pos: number
   rank: any
-  reachLimit: boolean
+  reachLimit?: boolean
+  enableAction?: boolean
+  enableRank?: boolean
 }>()
 
 const { sid } = usePlayerStore()
@@ -33,6 +35,7 @@ const getPlayerTitle = computed(() => {
   >
     <div
       p="1"
+      w="full"
     >
       <div
         text="12"
@@ -43,11 +46,16 @@ const getPlayerTitle = computed(() => {
       <div text="10">
         Tiên lực: {{ formatCash(rank?.power) }}
       </div>
-      <div text="10">
-        Điểm: {{ rank?.arenas?.tienDau?.pos ?? 0 }}
+      <div text="10" gap="2" flex="~ " justify="between">
+        <div>
+          Điểm: {{ rank?.arenas?.tienDau?.pos ?? 0 }}
+        </div>
+        <div v-if="enableRank">
+          Xếp hạng: {{ pos }}
+        </div>
       </div>
     </div>
-    <div m="t-2" pos="absolute" right="2" top="[20%]">
+    <div v-if="enableAction" m="t-2" pos="absolute" right="2" top="[20%]">
       <var-button
         v-if="sid !== rank.sid"
         :disabled="reachLimit"

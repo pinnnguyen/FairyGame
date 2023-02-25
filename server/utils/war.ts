@@ -2,7 +2,7 @@ import moment from 'moment'
 import { REACH_LIMIT, randomKabbalahScript } from '@game/config'
 import { formatCash } from '~/common'
 import { BATTLE_ACTION, BATTLE_KIND, TARGET_TYPE, attributeToName } from '~/constants'
-import { handleKabbalahStartBattle } from '~/helpers/kabbalah'
+import { handleKabbalahStartBattle } from '~/server/utils'
 import type { BattleRequest, BattleTarget, Emulator, PlayerInfo } from '~/types'
 import {
   beforeEnteringFormat,

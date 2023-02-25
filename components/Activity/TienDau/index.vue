@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { randomNumber, shuffle } from '~/common'
+import { randomNumber } from '~/common'
 import { tips } from '~/constants'
 
 const { sid, playerInfo } = storeToRefs(usePlayerStore())
@@ -9,11 +9,15 @@ const options = reactive({
   sid: '',
   toggle: false,
   tooltip: false,
+  showRank: false,
 })
+
+const reachLimit = computed(() => ranks.value.reachLimit?.remaining >= ranks.value.reachLimit?.maximum)
 
 watch(refreshArena, () => {
   refresh()
 })
+
 const playerPreview = (sid: string) => {
   if (!sid)
     return
@@ -21,23 +25,21 @@ const playerPreview = (sid: string) => {
   options.toggle = true
   options.sid = sid
 }
-
-const reachLimit = computed(() => ranks.value.reachLimit?.remaining >= ranks.value.reachLimit?.maximum)
-const shuffleItem = computed(() => {
-  return shuffle(ranks.value.data)
-})
 </script>
 
 <template>
   <player-preview
     :sid="options.sid"
   />
+  <var-popup v-model:show="options.showRank" position="bottom">
+    <activity-tien-dau-rank />
+  </var-popup>
   <var-popup v-model:show="options.tooltip">
     <div
       border="1 white/40 rounded"
       p="4"
       bg="[#000000]"
-      font="leading-6"
+      font="leading-5"
       w="11/12"
       m="auto"
     >
@@ -63,23 +65,33 @@ const shuffleItem = computed(() => {
         justify="between"
       >
         <div>
-          <div
-            text="underline left"
-            @click.stop="refresh"
-          >
-            Làm mới
+          <div flex="~ " gap="2">
+            <div
+              text="underline left"
+              @click.stop="refresh"
+            >
+              Làm mới
+            </div>
+            <div
+              text="underline right"
+              @click.stop="options.tooltip = true"
+            >
+              Thể thức
+            </div>
           </div>
           <div>Điểm Tiên Đấu: {{ playerInfo?.arenas?.tienDau?.score ?? 0 }}</div>
           <div>Điểm Xếp Hạng: {{ playerInfo?.arenas?.tienDau?.pos ?? 0 }}</div>
         </div>
         <div>
-          <div
-            text="underline right"
-            @click.stop="options.tooltip = true"
-          >
-            Thể thức
+          <div flex="~ " gap="2">
+            <div
+              text="underline right"
+              @click.stop="options.showRank = true"
+            >
+              Xếp hạng
+            </div>
           </div>
-          <div v-if="ranks?.reachLimit">
+          <div v-if="ranks?.reachLimit" text="right">
             Lượt: {{ ranks?.reachLimit?.remaining }}/{{ ranks?.reachLimit?.maximum }}
           </div>
         </div>
@@ -99,6 +111,8 @@ const shuffleItem = computed(() => {
         <activity-tien-dau-item
           :rank="rank"
           :pos="index + 1"
+          :enable-action="true"
+          :enable-rank="false"
           :reach-limit="reachLimit"
           @click.stop="playerPreview(rank.sid)"
         />

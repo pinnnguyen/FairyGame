@@ -46,8 +46,6 @@ const dynamicBattles = computed(() => {
         border="b white/10"
         bg="primary"
       >
-        <!--        <Battle v-if="!isArena" /> -->
-        <!--        <Arena v-else /> -->
         <component :is="dynamicBattles" />
       </div>
     </div>
