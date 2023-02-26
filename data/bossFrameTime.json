@@ -12,6 +12,7 @@
           "damage": 2500,
           "def": 200,
           "hp": 9999999,
+          "maxhp": 9999999,
           "mp": 1000,
           "critical": 35,
           "bloodsucking": 0

@@ -167,8 +167,11 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
       defenderAttribute.hp -= formatHP(defenderAttribute?.hp, (receiveDMG ?? 0))
       attackerAttribute.hp -= formatHP(attackerAttribute.hp, (defenderCounterAttack ?? 0))
 
-      if (attackerAttribute.hp > 0 && totalRestoreHP > 0)
+      if (attackerAttribute.hp > 0 && totalRestoreHP > 0) {
         attackerAttribute.hp += totalRestoreHP
+        if (attackerAttribute.hp > attackerAttribute.maxhp)
+          attackerAttribute.hp = attackerAttribute.maxhp
+      }
 
       // TODO: Lưu giả lập
       emulators.push(<Emulator>{

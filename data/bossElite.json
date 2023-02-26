@@ -12,6 +12,7 @@
       "damage": 550,
       "def": 100,
       "hp": 5000000,
+      "maxhp": 5000000,
       "mp": 0,
       "critical": 20,
       "bloodsucking": 10
@@ -42,6 +43,7 @@
       "damage": 100,
       "def": 100,
       "hp": 10000000,
+      "maxhp": 10000000,
       "mp": 0,
       "critical": 20,
       "bloodsucking": 10
@@ -72,6 +74,7 @@
       "damage": 1500,
       "def": 100,
       "hp": 15000000,
+      "maxhp": 15000000,
       "mp": 0,
       "critical": 20,
       "bloodsucking": 10
@@ -102,6 +105,7 @@
       "damage": 2500,
       "def": 100,
       "hp": 20000000,
+      "maxhp": 20000000,
       "mp": 0,
       "critical": 20,
       "bloodsucking": 10

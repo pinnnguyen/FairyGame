@@ -3,6 +3,7 @@ import type { Mid } from '~/types/mid'
 import type { PlayerEquipment } from '~/types/equiment'
 
 export type BaseAttributeKeys = 'speed'
+| 'maxhp'
 | 'damage'
 | 'def'
 | 'hp'

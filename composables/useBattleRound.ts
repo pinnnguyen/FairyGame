@@ -48,7 +48,6 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
   }
 
   const startBattle = async (war: any & { statusCode?: number }, cb: Function) => {
-    console.log('war', war)
     makeDefault()
 
     if (war?.statusCode === 400)
@@ -59,6 +58,7 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
 
     set(reward, war.reward)
     set(match, war.match)
+    await sleep(500)
 
     if (war.inRefresh) {
       set(loading, false)
@@ -122,7 +122,6 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
             receiver.value[realDamageIds[0]].receiveDamage = 0
           }, 2000)
 
-          console.log('realDamage', realDamageIds)
           receiver.value[realDamageIds[0]].receiveDamage = `-${realEmu.state.receiveDamage[realDamageIds[0]]}`
           if (realEmu?.state?.critical)
             receiver.value[realDamageIds[0]].receiveDamage = `Bạo kích -${realEmu.state.receiveDamage[realDamageIds[0]]}`

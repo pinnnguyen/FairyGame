@@ -250,6 +250,8 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
     power,
   })
 
+  attribute.maxhp = attribute.hp
+
   return {
     player,
     mid: {
