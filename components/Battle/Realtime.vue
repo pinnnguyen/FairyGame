@@ -69,13 +69,13 @@ setTimeout(() => {
       class="battle-action-bloodsucking whitespace-nowrap"
       :class="{ show: realTime[extend._id]?.bloodsucking > 0 && realTime[extend._id]?.doAction }"
     >
-      (+{{ realTime[extend._id]?.bloodsucking }})
+      (+{{ realTime[extend?._id]?.bloodsucking }})
     </span>
     <span
       :class="{ show: realTime[extend._id]?.defenderCounterAttack > 0 && realTime[extend._id].doAction }"
       class="battle-damage whitespace-nowrap"
     >
-      Phản đòn -{{ realTime[extend._id]?.defenderCounterAttack }}
+      Phản đòn -{{ realTime[extend?._id]?.defenderCounterAttack }}
     </span>
     <span
       class="battle-action whitespace-nowrap text-green-300"
@@ -91,7 +91,7 @@ setTimeout(() => {
           && !realTime[extend._id]?.avoid,
       }"
     >
-      <span>{{ receiver[extend._id]?.receiveDamage }}</span>
+      <span>{{ receiver[extend?._id]?.receiveDamage }}</span>
     </span>
   </div>
 </template>
