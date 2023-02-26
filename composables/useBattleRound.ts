@@ -117,10 +117,15 @@ export const useBattleRoundStore = defineStore('battleRound', () => {
             realTime.value[turn].doAction = false
           }, options.EFFECT_DELAY)
 
-          const realDamage = Object.keys(realEmu.state.receiveDamage)
-          receiver.value[realDamage[0]].receiveDamage = `-${realEmu.state.receiveDamage[realDamage[0]]}`
+          const realDamageIds = Object.keys(realEmu.state.receiveDamage)
+          setTimeout(() => {
+            receiver.value[realDamageIds[0]].receiveDamage = 0
+          }, 2000)
+
+          console.log('realDamage', realDamageIds)
+          receiver.value[realDamageIds[0]].receiveDamage = `-${realEmu.state.receiveDamage[realDamageIds[0]]}`
           if (realEmu?.state?.critical)
-            receiver.value[realDamage[0]].receiveDamage = `Bạo kích -${realEmu.state.receiveDamage[realDamage[0]]}`
+            receiver.value[realDamageIds[0]].receiveDamage = `Bạo kích -${realEmu.state.receiveDamage[realDamageIds[0]]}`
 
           if (realEmu.now.hp) {
             const keyRealEmuNow = Object.keys(realEmu.now.hp)
