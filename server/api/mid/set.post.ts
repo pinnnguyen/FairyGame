@@ -4,6 +4,7 @@ import { BattleSchema, PlayerSchema } from '~/server/schema'
 import { getPlayer } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
+  const body = await readBody(event)
   const session = await getServerSession(event)
   if (!session) {
     return createError({
@@ -21,16 +22,16 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const changeMid = await PlayerSchema.findOneAndUpdate({ userId: session?.user?.email }, {
-    $inc: {
-      midId: 1,
-    },
-  })
-
-  if (!changeMid) {
-    return createError({
-      statusCode: 400,
-      statusMessage: 'Chuyển map thất bại',
+  if (body.midId) {
+    await PlayerSchema.findOneAndUpdate({ userId: session?.user?.email }, {
+      midId: body.midId,
+    })
+  }
+  else {
+    await PlayerSchema.findOneAndUpdate({ userId: session?.user?.email }, {
+      $inc: {
+        midId: 1,
+      },
     })
   }
 

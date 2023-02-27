@@ -10,6 +10,7 @@ export interface BattleRequest {
   target: {
     id?: string
     type?: BattleTargetKey
+    channel?: string
   }
   skip: boolean
 }

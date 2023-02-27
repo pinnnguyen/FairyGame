@@ -19,7 +19,7 @@ import {
   useBaseReward,
 } from '~/server/helpers'
 
-import { BattleSchema, PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
+import { BattleSchema, PlayerSchema } from '~/server/schema'
 
 const preparePlayerTargetData = (_p: PlayerInfo) => {
   return {

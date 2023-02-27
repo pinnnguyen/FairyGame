@@ -16,6 +16,7 @@ export const useBattleEvents = () => {
       target: {
         type: TARGET_TYPE.MONSTER,
         id: playerInfo.value?.mid?.current?.monsterId,
+        channel: `battle_normal_${playerInfo.value?.mid?.current?.monsterId}`,
       },
     })
   }
@@ -60,7 +61,7 @@ export const useBattleEvents = () => {
   }
 
   const offAllEvent = () => {
-    $io.off('battle:start:pve')
+    $io.off('battle-normal:response')
     $io.off('battle:start:daily')
     $io.off('battle:start:elite')
     $io.off('battle:start:frame_time')

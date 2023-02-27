@@ -9,9 +9,10 @@ export const battleJoinHandler = async (io: any, socket: any) => {
   })
 
   socket.on('battle-normal:join:pve', async (warRequest: BattleRequest) => {
-    console.log('warRequest...', warRequest)
+    console.log('join room: ', warRequest.target.channel)
+    socket.join(warRequest.target.channel)
     const response = await handleWars(warRequest)
-    socket.emit('battle:start:pve', response)
+    socket.emit('battle-normal:response', response)
   })
 
   socket.on('battle:join:daily', async (warRequest: BattleRequest) => {

@@ -24,7 +24,7 @@ const changeBattle = async () => {
     fn.stopBattle()
     loadPlayer(player)
     set(loading, false)
-    sendNotification('Qua ải thành công', 2000)
+    sendNotification('Di chuyển bản đồ thành công', 2000)
     emits('changeBattle')
   }
   catch (e: any) {

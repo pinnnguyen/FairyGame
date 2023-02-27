@@ -64,19 +64,19 @@ const onEventRefresh = () => {
 
 onMounted(() => {
   useEventPve()
-  $io.on('battle:start:pve', async (war: BattleResponse) => {
+  $io.on('battle-normal:response', async (war: BattleResponse) => {
     await handleStartBattle(war)
   })
 })
 
 onUnmounted(async () => {
-  $io.off('battle:start:pve')
+  $io.off('battle-normal:response')
 })
 </script>
 
 <template>
   <var-popup v-model:show="showMid" position="bottom">
-    <battle-normal-map />
+    <battle-normal-map @change-battle="startEventPve(true)" />
   </var-popup>
   <var-popup
     v-model:show="warNotice"
@@ -123,7 +123,7 @@ onUnmounted(async () => {
         text="yellow-400 8 underline"
         @click.stop="showMid = true"
       >
-        Cốt truyện
+        Bản đồ thế giới
       </div>
       <div
         pos="absolute"
