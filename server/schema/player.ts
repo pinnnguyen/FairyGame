@@ -11,16 +11,44 @@ const schema = new mongoose.Schema<Player>(
       },
     },
     sid: { type: String, unique: true },
+    isDie: {
+      type: Boolean,
+      default: false
+    },
     name: String,
-    knb: Number,
-    gold: Number,
+    knb: {
+      type: Number,
+      default: 0
+    },
+    gold: {
+      type: Number,
+      default: 0
+    },
     gender: String,
-    coin: Number,
-    power: Number,
-    vipLevel: Number,
-    level: Number,
-    exp: Number,
-    midId: Number,
+    coin: {
+      type: Number,
+      default: 0
+    },
+    power: {
+      type: Number,
+      default: 0
+    },
+    vipLevel: {
+      type: Number,
+      default: 0
+    },
+    level: {
+      type: Number,
+      default: 0
+    },
+    exp: {
+      type: Number,
+      default: 0
+    },
+    midId: {
+      type: Number,
+      default: 1
+    },
     userId: String,
     lastTimeReceivedRss: Number,
     levelTitle: String,

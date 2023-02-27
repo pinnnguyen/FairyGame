@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import {set} from '@vueuse/core'
-import {storeToRefs} from 'pinia'
-import {usePlayerStore, useSoundClickEvent} from '#imports'
-import {LazyActivity, LazyBag, LazyBoss, LazyCharacter, LazyMarket, LazyPractice, LazyStore} from '#components'
+import { set } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
+import { usePlayerStore, useSoundClickEvent } from '#imports'
+import { LazyActivity, LazyBag, LazyBoss, LazyCharacter, LazyMarket, LazyPractice, LazyStore } from '#components'
 
 const {
-    playerInfo,
-    attribute
+  playerInfo,
+  attribute,
 } = storeToRefs(usePlayerStore())
 
 const togglePlayerInfo = useState('togglePlayerInfo')
@@ -16,127 +16,127 @@ const toggleUpRank = useState('toggleUpRank')
 const toggleUpGem = useState('toggleUpGem')
 
 const toggleOptions = reactive({
-    showUpgrade: false,
+  showUpgrade: false,
 })
 
 const onToggleUpgrade = () => {
-    toggleUpgrade.value = true
-    useSoundClickEvent()
+  toggleUpgrade.value = true
+  useSoundClickEvent()
 }
 const onToggleUpStar = () => {
-    toggleUpStar.value = true
-    useSoundClickEvent()
+  toggleUpStar.value = true
+  useSoundClickEvent()
 }
 
 const onToggleUpRank = () => {
-    toggleUpRank.value = true
-    useSoundClickEvent()
+  toggleUpRank.value = true
+  useSoundClickEvent()
 }
 
 const onToggleUpGem = () => {
-    toggleUpGem.value = true
-    useSoundClickEvent()
+  toggleUpGem.value = true
+  useSoundClickEvent()
 }
 
 const onUpgradeOptions = () => {
-    toggleOptions.showUpgrade = true
-    useSoundClickEvent()
+  toggleOptions.showUpgrade = true
+  useSoundClickEvent()
 }
 
 const onPlayerInfo = () => {
-    togglePlayerInfo.value = true
-    useSoundClickEvent()
+  togglePlayerInfo.value = true
+  useSoundClickEvent()
 }
 
 const tab = ref('character')
 const menuItems = [
-    {
-        key: 'character',
-        name: 'Nhân vật',
-        fn: onPlayerInfo,
-    },
-    {
-        key: 'practice',
-        name: 'Tu luyện',
-    },
-    {
-        key: 'upgrade',
-        name: 'Nâng Cấp',
-        fn: onUpgradeOptions,
-    },
-    {
-        key: 'bag',
-        name: 'Túi',
-    },
-    {
-        key: 'market',
-        name: 'Chợ',
-    },
-    {
-        key: 'store',
-        name: 'Cửa Hàng',
-    },
-    {
-        key: 'activity',
-        name: 'Hoạt động',
-    },
-    {
-        key: 'boss',
-        name: 'Boss',
-    },
+  {
+    key: 'character',
+    name: 'Nhân vật',
+    fn: onPlayerInfo,
+  },
+  {
+    key: 'practice',
+    name: 'Tu luyện',
+  },
+  {
+    key: 'upgrade',
+    name: 'Nâng Cấp',
+    fn: onUpgradeOptions,
+  },
+  {
+    key: 'bag',
+    name: 'Túi',
+  },
+  {
+    key: 'market',
+    name: 'Chợ',
+  },
+  {
+    key: 'store',
+    name: 'Cửa Hàng',
+  },
+  {
+    key: 'activity',
+    name: 'Hoạt động',
+  },
+  {
+    key: 'boss',
+    name: 'Boss',
+  },
 ]
 
 const upgradeTabOptions = [
-    {
-        name: 'Cường hoá',
-        fn: onToggleUpgrade,
-    },
-    {
-        name: 'Nâng sao',
-        fn: onToggleUpStar,
-    },
-    {
-        name: 'Tăng bậc',
-        fn: onToggleUpRank,
-    },
-    {
-        name: 'Đá hồn',
-        fn: onToggleUpGem,
-    },
+  {
+    name: 'Cường hoá',
+    fn: onToggleUpgrade,
+  },
+  {
+    name: 'Nâng sao',
+    fn: onToggleUpStar,
+  },
+  {
+    name: 'Tăng bậc',
+    fn: onToggleUpRank,
+  },
+  {
+    name: 'Đá hồn',
+    fn: onToggleUpGem,
+  },
 ]
 
 const dynamicComponent = computed(() => {
-    switch (tab.value) {
-        case 'market':
-            return LazyMarket
+  switch (tab.value) {
+    case 'market':
+      return LazyMarket
 
-        case 'store':
-            return LazyStore
+    case 'store':
+      return LazyStore
 
-        case 'character':
-            return LazyCharacter
+    case 'character':
+      return LazyCharacter
 
-        case 'bag':
-            return LazyBag
+    case 'bag':
+      return LazyBag
 
-        case 'boss':
-            return LazyBoss
+    case 'boss':
+      return LazyBoss
 
-        case 'activity':
-            return LazyActivity
+    case 'activity':
+      return LazyActivity
 
-        case 'practice':
-            return LazyPractice
-    }
+    case 'practice':
+      return LazyPractice
+  }
 })
 
 const setTab = (t: string) => {
-    if (['upgrade'].includes(t)) {
-        onUpgradeOptions()
-        return
-    }
+  if (['upgrade'].includes(t)) {
+    onUpgradeOptions()
+    return
+  }
 
-    set(tab, t)
+  set(tab, t)
 }
 </script>
 
@@ -185,10 +185,9 @@ const setTab = (t: string) => {
         h="10"
         text="12 primary"
         font="italic semibold"
-        border="rounded-full"
+        border="rounded-full 1 white/40"
         class="bg-button-menu"
         pos="relative"
-        style="background: url('/1.png'); background-size: cover"
         @click.stop="setTab(menu.key)"
       >
         <div
@@ -204,7 +203,7 @@ const setTab = (t: string) => {
       </button>
     </div>
     <div class="absolute top-16 text-10 text-[#eaeced] italic w-full h-[calc(100%_-_115px)]">
-      <component :is="dynamicComponent"/>
+      <component :is="dynamicComponent" />
     </div>
   </div>
 </template>

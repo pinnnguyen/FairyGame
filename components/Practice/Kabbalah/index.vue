@@ -13,18 +13,18 @@ const {
   <section
     w="full"
     flex="~ col"
+    h="full"
+    overflow="scroll"
     pos="relative"
   >
     <Line
       m="b-4"
       :style="{ color: qualityPalette(spiritualRoot.quality) }"
     >
-      {{ qualityToName[spiritualRoot.quality] }} {{ currentSpiritualRoot.name }} Linh Căn
+      {{ qualityToName[spiritualRoot?.quality] }} {{ currentSpiritualRoot.name }} Linh Căn
     </Line>
     <practice-spiritual-root-list />
     <div
-      class="h-[calc(100%_-_220px)]"
-      overflow="scroll"
       m="t-12"
     >
       <div v-if="currentKabbalah">

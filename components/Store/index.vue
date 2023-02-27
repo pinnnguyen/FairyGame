@@ -36,7 +36,7 @@ const storeItemType = computed(() => {
       <button
         v-for="n in typeTabItems"
         :key="n.key"
-        :class="{ '!opacity-100': n.key === typeTab }"
+        :class="{ '!opacity-100 !text-[#4add3b]': n.key === typeTab }"
         transition="~ opacity duration-800"
         m="x-2"
         p="x-2"

@@ -20,7 +20,7 @@ const togglePlayerInfo = useState('togglePlayerInfo')
         m="x-2"
         w="9"
         p="y-2"
-        font="leading-3 semibold"
+        font="leading-3 semibold italic"
         border="rounded 1 white/40"
         @click.stop="togglePlayerInfo = true"
       >

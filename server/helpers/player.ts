@@ -250,7 +250,9 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
     power,
   })
 
-  attribute.maxhp = attribute.hp
+  // attribute.maxhp = attribute.hp
+  console.log('att', attribute.maxhp)
+  console.log('maxhp', player.isDie)
 
   return {
     player,

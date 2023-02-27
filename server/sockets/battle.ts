@@ -3,14 +3,13 @@ import { getDamageList, handleArenaTienDauSolo, handleWars } from '~/server/util
 
 export const battleJoinHandler = async (io: any, socket: any) => {
   socket.on('battle:log', async (_bossId: string) => {
-    console.log('_bossId', _bossId)
     const topDMG = await getDamageList(_bossId)
-    console.log('topDMG', topDMG)
 
     socket.emit('send-battle:log', topDMG)
   })
 
-  socket.on('battle:join:pve', async (warRequest: BattleRequest) => {
+  socket.on('battle-normal:join:pve', async (warRequest: BattleRequest) => {
+    console.log('warRequest...', warRequest)
     const response = await handleWars(warRequest)
     socket.emit('battle:start:pve', response)
   })

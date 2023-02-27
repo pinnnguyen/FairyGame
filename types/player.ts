@@ -122,6 +122,7 @@ export type PlayerKabbalah = {
 
 export interface Player {
   _id?: string
+  isDie: boolean
   ofAttribute: number
   coreAttribute: CoreAttribute
   sid: string

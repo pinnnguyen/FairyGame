@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Snackbar } from '@varlet/ui'
 import { set } from '@vueuse/core'
-import { sendNotification, useBattleEvents, useBattleRoundStore, usePlayerStore, useSoundRewardEvent } from '#imports'
 import { tips } from '~/constants'
 import type { BattleResponse } from '~/types'
 import { randomNumber } from '~/common'
@@ -27,6 +26,7 @@ const {
 
 const battleCurrently = ref()
 const warNotice = ref(false)
+const showMid = ref(false)
 
 const handleStartBattle = async (battleRes: BattleResponse) => {
   set(battleCurrently, battleRes)
@@ -75,6 +75,9 @@ onUnmounted(async () => {
 </script>
 
 <template>
+  <var-popup v-model:show="showMid" position="bottom">
+    <battle-normal-map />
+  </var-popup>
   <var-popup
     v-model:show="warNotice"
     position="bottom"
@@ -84,6 +87,8 @@ onUnmounted(async () => {
       text="[#ffffff] 10"
       h="[60vh]"
       bg="[#191b1e]"
+      max-w="[70vh]"
+      m="auto"
       overflow="auto"
     >
       <Line p="y-2">
@@ -114,12 +119,21 @@ onUnmounted(async () => {
     >
       <div
         pos="absolute"
-        top="2" right="2"
+        top="6" right="4"
+        text="yellow-400 8 underline"
+        @click.stop="showMid = true"
+      >
+        Cốt truyện
+      </div>
+      <div
+        pos="absolute"
+        top="2" right="4"
         text="yellow-400 8 underline"
         @click.stop="warNotice = true"
       >
         Chiến báo
       </div>
+
       <div
         flex="~ "
         pos="absolute"
@@ -152,7 +166,6 @@ onUnmounted(async () => {
     </div>
     <battle-controls />
     <div
-      :class="{ '!bg-[#540905]': stateRunning }"
       transition="~ colors duration-800"
       h="10"
       pos="absolute"
@@ -167,7 +180,7 @@ onUnmounted(async () => {
     >
       <battle-bottom-bar
         :is-pve="true"
-        :mid-id="playerInfo.midId"
+        :mid="playerInfo.mid"
         @change-battle="startEventPve(true)"
       />
     </div>

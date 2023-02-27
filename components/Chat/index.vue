@@ -59,7 +59,7 @@ const sendChat = () => {
       <button
         v-for="menu in menus"
         :key="menu.key"
-        transition="~ opacity duration-700"
+        transition="~ opacity duration-800"
         m="x-2"
         w="16"
         h="6"
@@ -68,7 +68,7 @@ const sendChat = () => {
         text="primary space-nowrap 8"
         opacity="60"
         :class="{
-          '!opacity-100': tab === menu.key,
+          '!opacity-100 !text-[#4add3b]': tab === menu.key,
         }"
         @click.stop="tab = menu.key"
       >

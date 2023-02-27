@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 import type { Mid } from '~/types/mid'
-
 const ObjectId = mongoose.Types.ObjectId
 
 const schema = new mongoose.Schema<Mid>(
@@ -16,10 +15,8 @@ const schema = new mongoose.Schema<Mid>(
     description: String,
     monsterId: Number,
     ms: Number,
-    isPvp: String,
+    isPvp: Boolean,
     reward: {},
-    // rateExp: Number,
-    // rateResource: Number,
   },
   {
     timestamps: true,

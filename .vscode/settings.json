@@ -1,4 +1,7 @@
 {
+  "editor.fontFamily": "JetBrains Mono",
+  "editor.fontSize": 12,
+  "editor.lineHeight": 1.7,
   "prettier.enable": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true

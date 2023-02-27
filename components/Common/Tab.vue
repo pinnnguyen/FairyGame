@@ -19,15 +19,14 @@ watch(tab, (t) => {
     v-for="tabItem in tabItems"
     :key="tabItem.key"
     :class="{
-      '!opacity-100': tab === tabItem.key,
+      '!opacity-100 !text-[#4add3b]': tab === tabItem.key,
     }"
-    transition="~ opacity duration-700"
+    transition="~ opacity duration-800"
     m="x-2"
-    w="16"
     h="8"
     font="leading-3 italic bold"
     border="1 white/40 rounded"
-    text="primary"
+    text="primary space-nowrap 10"
     opacity="40"
     @click.stop="tab = tabItem.key"
   >

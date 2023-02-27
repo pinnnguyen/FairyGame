@@ -64,7 +64,7 @@ const buy = (equipment: any) => {
         }"
         @click.stop="onItemSelected(equipment)"
       >
-        <market-name :quality="equipment?.record?.quality">
+        <market-name class="line-clamp-2" :quality="equipment?.record?.quality">
           [{{ slotToName[equipment?.record?.slot] }}]
           {{ qualityToName[equipment?.record?.quality] }} - {{ equipment?.record?.name }} (+{{ equipment?.record?.enhance }})
         </market-name>

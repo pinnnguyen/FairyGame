@@ -34,7 +34,7 @@ const dynamicComponents = computed(() => {
     <button
       v-for="tabItem in tabItems"
       :key="tabItem.key"
-      :class="{ '!opacity-100': tab === tabItem.key }"
+      :class="{ '!opacity-100 !text-[#4add3b]': tab === tabItem.key }"
       transition="~ opacity duration-800"
       m="x-2"
       w="16"

@@ -57,7 +57,7 @@ const tabSelected = (t: TabItem) => {
       <common-tab
         :default="tab"
         :tab-items="tabItems"
-        @onSelected="tabSelected"
+        @on-selected="tabSelected"
       />
     </div>
     <div

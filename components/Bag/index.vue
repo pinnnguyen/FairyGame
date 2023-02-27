@@ -48,9 +48,9 @@ const components = computed(() => {
         v-for="tabItem in tabItems"
         :key="tabItem.key"
         :class="{
-          '!opacity-100': tab === tabItem.key,
+          '!opacity-100 !text-[#4add3b]': tab === tabItem.key,
         }"
-        transition="~ opacity duration-700"
+        transition="~ opacity duration-800"
         m="x-2"
         w="16"
         h="8"

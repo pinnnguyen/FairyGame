@@ -6,7 +6,8 @@ export const useBattleEvents = () => {
   const { useBattleRequest } = useRequest()
 
   const useEventPve = (skip?: boolean) => {
-    $io.emit('battle:join:pve', {
+    console.log('start')
+    $io.emit('battle-normal:join:pve', {
       skip,
       kind: BATTLE_KIND.PVE,
       player: {

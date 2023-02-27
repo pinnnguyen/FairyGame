@@ -101,7 +101,7 @@ const doUpgrade = async () => {
       <button
         :disabled="loading"
         :class="{ 'opacity-40': loading }"
-        class="mx-2 h-10 w-10 shadow rounded text-12 font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
+        class="italic mx-2 h-10 w-10 shadow rounded text-12 font-semibold border-1 text-primary rounded-full border-white/40 bg-button-menu"
         @click.stop="doUpgrade"
       >
         Đột phá

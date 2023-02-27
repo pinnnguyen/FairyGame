@@ -1,9 +1,8 @@
-import { DEFAULT_MAX_RATE_RECEIVED, DEFAULT_MIN_RATE_RECEIVED } from '@game/config'
+import { DEFAULT_MAX_RATE_RECEIVED, DEFAULT_MIN_RATE_RECEIVED, receviedBaseExp, receviedBaseGold } from '@game/config'
 import { PlayerStatusTypeCon } from '~/types'
 import type { BasicItem, EnemyObject, Player, PlayerEquipment } from '~/types'
 import { randomNumber } from '~/common'
-import { BASE_EXP, BASE_GOLD } from '~/server/rule/reward'
-import { ItemSchema, PlayerSchema, PlayerStatusSchema, addPlayerEquipments, addPlayerItem } from '~/server/schema'
+import { ItemSchema, MidSchema, PlayerSchema, PlayerStatusSchema, addPlayerEquipments, addPlayerItem } from '~/server/schema'
 
 export const setLastTimeReceivedRss = async (sid: string) => {
   await PlayerSchema.findOneAndUpdate({ sid }, { lastTimeReceivedRss: new Date().getTime() })
@@ -100,7 +99,7 @@ export const receivedItems = async (player: Player, _enemyObj: EnemyObject, winn
   }
 }
 
-export const getBaseReward = async (player: Player, _enemyObj: EnemyObject, winner: string) => {
+export const useBaseReward = async (player: Player, _enemyObj: EnemyObject, winner: string) => {
   if (winner !== player._id) {
     return {
       exp: 0,
@@ -122,8 +121,16 @@ export const getBaseReward = async (player: Player, _enemyObj: EnemyObject, winn
     }
   }
 
-  let expInMinute = Math.round(BASE_EXP() * _enemyObj?.reward?.base?.exp)
-  const goldInMinute = Math.round(BASE_GOLD() * _enemyObj?.reward?.base?.gold)
+  const midInfo = await MidSchema.findOne({ id: player.midId }).select('isPvp, reward')
+  if (!midInfo) {
+    return {
+      exp: 0,
+      gold: 0,
+    }
+  }
+
+  let expInMinute = receviedBaseExp(midInfo?.reward?.base?.exp, midInfo?.isPvp)
+  const goldInMinute = receviedBaseGold(midInfo?.reward?.base?.gold, midInfo?.isPvp)
 
   const playerStatus = await PlayerStatusSchema.findOne({
     sid: player.sid,
@@ -136,7 +143,7 @@ export const getBaseReward = async (player: Player, _enemyObj: EnemyObject, winn
   if (playerStatus && playerStatus.value)
     expInMinute += expInMinute * (playerStatus.value / 100)
 
-  await PlayerSchema.updateOne({ sid: player.sid }, {
+  await PlayerSchema.findOneAndUpdate({ sid: player.sid }, {
     lastTimeReceivedRss: new Date().getTime(),
     $inc: {
       exp: expInMinute,

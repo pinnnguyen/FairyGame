@@ -34,6 +34,7 @@ setTimeout(() => {
     left="2"
     w="2"
     text="space-normal white 10"
+    z="9"
     opacity="0"
     :class="{ 'left-4': pos === 1, 'right-4': pos === 2, '!opacity-100': kabbalahInBattleProp }"
   >

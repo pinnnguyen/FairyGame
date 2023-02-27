@@ -13,7 +13,7 @@ const isFocusInBattle = computed(() => props.kabbalah.focus === 'in_battle')
 const isFocusStartBattle = computed(() => props.kabbalah.focus === 'before_s_battle')
 const isFocusAttribute = computed(() => props.kabbalah.focus === 'attribute')
 
-const upgrade = async (sign: KabbalahSign) => {
+const upgrade = async (sign?: KabbalahSign) => {
   loading.value = true
   const usedRes: any = await $fetch('/api/practice/kabbalah/upgrade', {
     method: 'POST',
@@ -29,7 +29,7 @@ const upgrade = async (sign: KabbalahSign) => {
   loading.value = false
 }
 
-const used = async (sign: KabbalahSign, action: 'unused' | 'used') => {
+const used = async (sign?: KabbalahSign, action: 'unused' | 'used') => {
   loading.value = true
   const usedRes: any = await $fetch('/api/practice/kabbalah/used', {
     method: 'POST',

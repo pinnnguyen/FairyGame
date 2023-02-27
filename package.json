@@ -16,7 +16,6 @@
   "devDependencies": {
     "@game/schema": "workspace:*",
     "@game/config": "workspace:*",
-    "@pkgs/components": "workspace:*",
     "@antfu/eslint-config": "0.34.0",
     "@kevinmarrec/nuxt-pwa": "^0.15.0",
     "@nuxt/devtools": "^0.1.2",

@@ -10,9 +10,7 @@ export default defineEventHandler(async (event) => {
   //   })
   // }
 
-  const mids = MidSchema.find({})
-
-  return mids
+  return MidSchema.find({})
 
   // const player = await PlayerSchema.findOne({ userId: session?.user?.email }).select('_id')
 })

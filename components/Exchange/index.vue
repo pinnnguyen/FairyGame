@@ -93,7 +93,7 @@ const mailsUnRead = computed(() => {
         <button
           v-for="exchangeTab in exchangeTabs"
           :key="exchangeTab.key"
-          transition="~ opacity duration-700"
+          transition="~ opacity duration-800"
           m="x-2 y-1"
           w="16"
           h="8"

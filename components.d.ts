@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VarButton: typeof import('@varlet/ui')['_ButtonComponent']
+    VarChip: typeof import('@varlet/ui')['_ChipComponent']
     VarInput: typeof import('@varlet/ui')['_InputComponent']
     VarLoading: typeof import('@varlet/ui')['_LoadingComponent']
     VarPopup: typeof import('@varlet/ui')['_PopupComponent']

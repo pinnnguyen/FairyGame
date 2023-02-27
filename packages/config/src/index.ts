@@ -4,6 +4,8 @@ export * from './kabbalah'
 export * from './spiritual'
 export * from './mind'
 export * from './classRule'
+export * from './map'
+export * from './reward'
 
 export enum REACH_LIMIT {
   TIEN_DAU = 10,
@@ -19,6 +21,7 @@ export const DEFAULT_ROLE = {
   midId: 1,
   exp: 0,
   knb: 0,
+  isDie: false,
   arenas: {
     tienDau: {
       score: 0,
@@ -37,6 +40,7 @@ export const DEFAULT_ATTRIBUTE: PlayerAttribute = {
   damage: 50,
   def: 30,
   hp: 200,
+  maxhp: 200,
   mp: 50,
   bloodsucking: 0,
   critical: 0, // 0%

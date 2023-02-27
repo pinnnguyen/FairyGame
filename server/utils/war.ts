@@ -7,7 +7,6 @@ import type { BattleRequest, BattleTarget, Emulator, PlayerInfo } from '~/types'
 import {
   beforeEnteringFormat,
   formatHP,
-  getBaseReward,
   getPlayer,
   handleAfterEndWar,
   handleBeforeStartWar,
@@ -17,9 +16,10 @@ import {
   receivedEquipment,
   receivedItems,
   setLastTimeReceivedRss,
+  useBaseReward,
 } from '~/server/helpers'
 
-import { BattleSchema, PlayerSchema } from '~/server/schema'
+import { BattleSchema, PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
 
 const preparePlayerTargetData = (_p: PlayerInfo) => {
   return {
@@ -61,7 +61,7 @@ const prepareEnemyTargetData = (_enemyObj: any) => {
   } as unknown as BattleTarget
 }
 
-export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, personBeingAttacked?: string) => {
+export const startWarSolo = async (targetA: BattleTarget, targetB: BattleTarget, personBeingAttacked?: string) => {
   let round = 0
   const MAX_ROUND = 60
   const emulators: Emulator[] = []
@@ -203,8 +203,16 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
         },
       })
 
-      const isResult = attackerAttribute.hp <= 0 || defenderAttribute.hp <= 0
+      const isResult = attackerAttribute.hp <= 0 || defenderAttribute.hp <= 0 || round === 50
       if (isResult) {
+        //         const p = await PlayerSchema.findOne({ _id: attackerID }).select('sid')
+        //         if (p) {
+        //           console.log('attackerAttribute.hp', attackerAttribute.hp)
+        // //          await PlayerAttributeSchema.findOneAndUpdate({ sid: p.sid }, {
+        // //            hp: attackerAttribute.hp,
+        // //          })
+        //         }
+
         let realId = ''
         if (attackerAttribute.hp <= 0)
           realId = defenderID
@@ -215,16 +223,7 @@ export const startWarSolo = (targetA: BattleTarget, targetB: BattleTarget, perso
         return {
           emulators: emulators ?? [],
           match,
-          winner: realId,
-          totalDamage,
-        } as any
-      }
-
-      if (round === 50) {
-        return {
-          emulators: emulators ?? [],
-          match,
-          winner: personBeingAttacked,
+          winner: round === 50 ? personBeingAttacked : realId,
           totalDamage,
         } as any
       }
@@ -267,14 +266,14 @@ export const handlePlayerVsMonster = async (_p: PlayerInfo, battleRequest: Battl
       match,
       winner: realWinner,
       totalDamage,
-    } = startWarSolo(targetA, targetB, battleRequest.target.id)
+    } = await startWarSolo(targetA, targetB, battleRequest.target.id)
 
     for (const d in totalDamage.list) {
       if (d === _p.player._id)
         totalDamage.self = totalDamage.list[d]
     }
 
-    const { exp, gold } = await getBaseReward(_p.player, _enemyObj, realWinner)
+    const { exp, gold } = await useBaseReward(_p.player, _enemyObj, realWinner)
     const { equipments } = await receivedEquipment(_p.player, _enemyObj, realWinner)
     const { itemDrafts } = await receivedItems(_p.player, _enemyObj, realWinner)
     await setLastTimeReceivedRss(_p.player.sid)
@@ -405,7 +404,7 @@ export const handleArenaTienDauSolo = async (request: {
   const targetA = preparePlayerTargetData(attacker)
   const targetB = preparePlayerTargetData(defender)
 
-  const warResponse = startWarSolo(targetA, targetB, attacker.player._id)
+  const warResponse = await startWarSolo(targetA, targetB, attacker.player._id)
   await new BattleSchema({
     sid: attacker.player.sid,
     kind: BATTLE_KIND.ARENA_SOLO_PVP,

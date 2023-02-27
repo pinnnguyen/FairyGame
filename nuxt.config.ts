@@ -26,7 +26,7 @@ export default defineNuxtConfig({
   },
   ssr: false,
   routeRules: {
-    '/api/mid': { static: true },
+    '/api/mid': { swr: true },
     '/login': { static: true },
     '/register': { static: true },
   },
