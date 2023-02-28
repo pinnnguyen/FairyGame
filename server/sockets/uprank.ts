@@ -1,5 +1,5 @@
 import { PlayerEquipmentSchema, PlayerSchema } from '~/server/schema'
-import { needResourceUpRank } from '~/server/helpers'
+import { needResourceUpRank } from '~/server/utils'
 
 export const handleEquipUpRank = async (io: any, socket: any) => {
   // socket.on('equip:rank:start', (_channel: string) => {

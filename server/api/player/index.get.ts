@@ -1,6 +1,6 @@
 import type { PlayerServerResponse } from '~/types'
 import { getServerSession } from '#auth'
-import { getPlayer } from '~/server/helpers'
+import { getPlayer } from '~/server/utils'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)

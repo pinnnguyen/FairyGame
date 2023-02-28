@@ -1,7 +1,7 @@
 import { getServerSession } from '#auth'
 import { BATTLE_KIND } from '~/constants'
 import { BattleSchema, PlayerSchema } from '~/server/schema'
-import { getPlayer } from '~/server/helpers'
+import { getPlayer } from '~/server/utils'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)

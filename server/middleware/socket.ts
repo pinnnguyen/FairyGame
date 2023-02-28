@@ -17,8 +17,7 @@ import {
   handleEquipUpgrade,
   handleEventUpGem,
 } from '~/server/sockets'
-import { getPlayer, needResourceUpStar } from '~/server/helpers'
-import { getDamageList } from '~/server/utils'
+import { getDamageList, getPlayer, needResourceUpStar } from '~/server/utils'
 import type { MindDharmaResource } from '~/types'
 
 let server: any = null

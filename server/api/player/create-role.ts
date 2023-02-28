@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import { DEFAULT_ATTRIBUTE, DEFAULT_ROLE } from '@game/config'
 import { getServerSession } from '#auth'
 import { MidSchema, PlayerAttributeSchema, PlayerSchema, addSystemChat } from '~/server/schema'
-import { getPlayer } from '~/server/helpers'
+import { getPlayer } from '~/server/utils'
 
 const ObjectId = mongoose.Types.ObjectId
 

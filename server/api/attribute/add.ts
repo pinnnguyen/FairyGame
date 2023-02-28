@@ -1,5 +1,5 @@
 import type { H3Event } from 'h3'
-import { getPlayer } from '~/server/helpers'
+import { getPlayer } from '~/server/utils'
 import { PlayerSchema } from '~/server/schema'
 import { getServerSession } from '#auth'
 

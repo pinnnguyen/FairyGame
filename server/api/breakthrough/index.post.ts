@@ -2,7 +2,7 @@ import { conditionForUpLevel, playerLevelUp, shouldTupo } from '~/server/common'
 import { PlayerAttributeSchema, PlayerSchema, addSystemChat } from '~/server/schema'
 import { randomNumber } from '~/common'
 import { UPGRADE_LEVEL } from '~/server/rule'
-import { getPlayer } from '~/server/helpers'
+import { getPlayer } from '~/server/utils'
 import type { Player } from '~/types'
 interface Response {
   level: number

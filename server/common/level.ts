@@ -7,7 +7,7 @@ import {
 } from '~/server/rule/level'
 import type { Player } from '~/types'
 import { PlayerAttributeSchema, PlayerSchema } from '~/server/schema'
-import { getPlayer } from '~/server/helpers'
+import { getPlayer } from '~/server/utils'
 import { getSjs } from '~/server/api/breakthrough/index.post'
 
 export const shouldTupo = (_p: Player) => {

@@ -1,5 +1,5 @@
 import { PlayerEquipmentSchema, PlayerItemSchema, PlayerSchema } from '~/server/schema'
-import { needResourceUpgrade } from '~/server/helpers'
+import { needResourceUpgrade } from '~/server/utils'
 
 export const handleEquipUpgrade = (io: any, socket: any) => {
   // socket.on('equip:upgrade:start', async (_channel: string) => {

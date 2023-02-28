@@ -1,17 +1,15 @@
-import { CLASS_RULE, KABBALAH_RULE, MIND_DHARMA_CONFIG, SPIRITUAL_ROOT_RULE } from '@game/config'
+import { playerTitle } from '~/common'
+import { CLASS_RULE, KABBALAH_RULE, MIND_DHARMA_CONFIG, SPIRITUAL_ROOT_RULE } from '~/packages/config'
 import { conditionForUpLevel } from '~/server/common'
 import { AttributePowers } from '~/server/constants'
-import { formatAttributes, useEquipment } from '~/server/helpers/equipment'
+import { formatAttributes, useEquipment } from '~/server/utils'
 import { MidSchema, PlayerSchema } from '~/server/schema'
-import { playerTitle } from '~/common'
 import type {
   BaseAttributeKeys,
   BaseAttributes,
-  MindDharma,
-  Player,
+  MindDharma, Player,
   PlayerAttribute,
-  PlayerKabbalah,
-  PlayerServerResponse,
+  PlayerKabbalah, PlayerServerResponse,
   PlayerSpiritualRoot,
 } from '~/types'
 
@@ -251,8 +249,6 @@ export const getPlayer = async (userId: string | null | undefined, sid: string) 
   })
 
   // attribute.maxhp = attribute.hp
-  console.log('att', attribute.maxhp)
-  console.log('maxhp', player.isDie)
 
   return {
     player,
